@@ -38,7 +38,7 @@
 			<include name="de/osmembrane/controller/ShowHelpAction.java"/>
 			<include name="de/osmembrane/controller/ZoomViewAction.java"/>
 			<include name="de/osmembrane/controller/UndoAction.java"/>
-			<include name="de/osmembrane/view/panels/FunctionLibaryPanel.java"/>
+			<include name="de/osmembrane/view/panels/FunctionLibraryPanel.java"/>
 			<include name="de/osmembrane/view/panels/FunctionInspectorPanel.java"/>
 			<include name="de/osmembrane/view/panels/PipelinePanel.java"/>
 			<include name="de/osmembrane/view/panels/accordion/JComponent.java"/>
@@ -90,7 +90,6 @@
 			<include name="de/osmembrane/model/parser/BatchParser.java"/>
 			<include name="de/osmembrane/model/parser/CmdParser.java"/>
 			<include name="de/osmembrane/model/FunctionGroup.java"/>
-			<include name="de/osmembrane/model/ConnectorList.java"/>
 			<include name="de/osmembrane/model/Function.java"/>
 			<include name="de/osmembrane/model/Pipeline.java"/>
 			<include name="de/osmembrane/model/Settings.java"/>
