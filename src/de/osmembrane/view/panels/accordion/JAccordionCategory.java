@@ -1,11 +1,13 @@
 package de.osmembrane.view.panels.accordion;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import de.osmembrane.view.panels.accordion.JComponent;
 
 public class JAccordionCategory {
 	private String title;
-	private Accordion accordion;
+	private JAccordion accordion;
 	private List<JComponent> items;
 	public JAccordion unnamed_JAccordion_;
 	public ArrayList<JComponent> unnamed_JComponent_ = new ArrayList<JComponent>();

@@ -1,5 +1,7 @@
 package de.osmembrane.view.panels.pipeline;
 
+import java.awt.Point;
+
 public class ViewConnector {
 	private Point from;
 	private Point to;

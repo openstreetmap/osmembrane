@@ -1,9 +1,10 @@
 package de.osmembrane.view.panels.accordion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JAccordion {
-	private LIst<JAccordionCategory> categories;
+	private List<JAccordionCategory> categories;
 	private boolean singleOpen;
 	public ArrayList<JAccordionCategory> unnamed_JAccordionCategory_ = new ArrayList<JAccordionCategory>();
 
