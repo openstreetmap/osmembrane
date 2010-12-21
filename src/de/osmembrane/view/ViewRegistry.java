@@ -7,15 +7,15 @@ import de.osmembrane.view.IView;
 /**
  * The view registry implements the View-Handler pattern to organize the views.
  * 
- * @author Whaite
- *
+ * @author tobias_kuhn
+ * 
  */
 public class ViewRegistry {
 	/**
 	 * implements the Singleton pattern
 	 */
 	private ViewRegistry instance = new ViewRegistry();
-	
+
 	/**
 	 * internal storage of the views, indexed by class
 	 */
@@ -31,7 +31,9 @@ public class ViewRegistry {
 
 	/**
 	 * Adds a view to the registry
-	 * @param view IView to add
+	 * 
+	 * @param view
+	 *            IView to add
 	 */
 	public void register(IView view) {
 		views.put(view.getClass(), view);
@@ -39,10 +41,12 @@ public class ViewRegistry {
 
 	/**
 	 * Returns a view from the registry
-	 * @param clazz desired class to return
+	 * 
+	 * @param clazz
+	 *            desired class to return
 	 * @return the registered object for that class
 	 */
-	public IView get(Class clazz) {
+	public IView get(Class<? extends IView> clazz) {
 		return views.get(clazz);
 	}
 }
