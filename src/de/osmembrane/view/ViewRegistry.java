@@ -1,6 +1,5 @@
 package de.osmembrane.view;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import de.osmembrane.view.IView;
@@ -35,7 +34,7 @@ public class ViewRegistry {
 	 * @param view IView to add
 	 */
 	public void register(IView view) {
-		views.put(view.class, view);
+		views.put(view.getClass(), view);
 	}
 
 	/**
