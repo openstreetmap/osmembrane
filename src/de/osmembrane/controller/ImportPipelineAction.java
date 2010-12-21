@@ -1,0 +1,14 @@
+package de.osmembrane.controller;
+
+import javax.swing.AbstractAction;
+
+public class ImportPipelineAction extends AbstractAction {
+
+	public ImportPipelineAction() {
+		throw new UnsupportedOperationException();
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		throw new UnsupportedOperationException();
+	}
+}
