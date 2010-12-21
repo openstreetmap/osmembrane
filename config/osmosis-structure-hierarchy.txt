@@ -1,0 +1,106 @@
+input-output
+	read
+		read-xml
+		fast-read-xml
+		read-apidb
+		read-apidb-current
+		read-pbf
+		read-api
+	read-change
+		read-xml-change
+		read-apidb-change
+	read-dataset
+		read-pgsql
+	write
+		write-xml
+		write-apidb
+		write-pbf
+		write-pgsql
+		fast-write-pgsql
+		write-pgsql-dump
+	write-change
+		write-xml-change
+		write-apidb-change
+		upload-xml-change
+		write-pgsql-change
+	truncate
+		truncate-apidb
+		truncate-pgsql
+	
+area-filtering
+	bbox-entity
+		bounding-box
+	bbox-dataset
+		dataset-bounding-box
+	bpolygon-entity
+		bounding-polygon
+
+data-manipulation
+	node
+		node-key
+		node-key-value
+	way
+		way-key
+		way-key-value
+	used-node
+		used-node
+		
+flow-control
+	dataset-dump
+		dataset-dump
+	write-null
+		write-null
+	write-null-change
+		write-null-change
+	buffer
+		buffer
+	buffer-change
+		buffer-change
+
+report
+	log-progress
+		log-progress
+	log-progress-change
+		log-progress-change
+	report-entity
+		report-entity
+	report-integrity
+		report-integrity
+
+set
+	sort
+		sort
+	sort-change
+		sort-change
+	merge
+		merge
+	merge-change
+		merge-change
+	append-change
+		append-change
+	simplify-change
+		simplify-change
+
+changeset
+	derive-change
+		derive-change
+	apply-change
+		apply-change
+
+replication
+	read-change-interval
+		read-change-interval
+	read-change-interval-init
+		read-change-interval-init
+	read-replication-interval
+		read-replication-interval
+	read-replication-interval-init
+		read-replication-interval-init
+	merge-replication-files
+		merge-replication-files
+	merge-replication-files-init
+		merge-replication-files-init
+	replicate-apidb
+		replicate-apidb
+	read-replication-lag
+		read-replication-lag
