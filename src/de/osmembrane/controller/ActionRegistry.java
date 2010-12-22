@@ -1,21 +1,54 @@
 package de.osmembrane.controller;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.Action;
 
+/**
+ * The action registry implements the Broker pattern to organize the
+ * {@link Action}s.
+ * 
+ * @author tobias_kuhn
+ * 
+ */
 public class ActionRegistry {
-	private ActionRegistry instance;
-	public ArrayList<Action> unnamed_Action_ = new ArrayList<Action>();
+	/**
+	 * implements the Singleton pattern
+	 */
+	private ActionRegistry instance = new ActionRegistry();
 
-	public void getInstance() {
-		throw new UnsupportedOperationException();
+	/**
+	 * internal storage of the actions, indexed by class
+	 */
+	public Map<Class<? extends Action>, Action> actions = new HashMap<Class<? extends Action>, Action>();
+
+	/**
+	 * 
+	 * @return the one and only instance of ActionRegistry
+	 */
+	public ActionRegistry getInstance() {
+		return instance;
 	}
 
-	public void register(Action a) {
-		throw new UnsupportedOperationException();
+	/**
+	 * Adds an action to the registry
+	 * 
+	 * @param action
+	 *            Action to add
+	 */
+	public void register(Action action) {
+		actions.put(action.getClass(), action);
 	}
 
-	public void get(Class clazz) {
-		throw new UnsupportedOperationException();
+	/**
+	 * Returns an action from the registry
+	 * 
+	 * @param clazz
+	 *            desired class to return
+	 * @return the registered object for that class
+	 */
+	public Action get(Class<? extends Action> clazz) {
+		return actions.get(clazz);
 	}
 }

@@ -8,6 +8,6 @@ public class FunctionInspectorPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		throw new UnsupportedOperationException();
-		
+
 	}
 }

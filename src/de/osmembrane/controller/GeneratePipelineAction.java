@@ -10,6 +10,7 @@ public class GeneratePipelineAction extends AbstractAction {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		throw new UnsupportedOperationException();
 	}

@@ -10,6 +10,7 @@ public class MoveFunctionAction extends AbstractAction {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		throw new UnsupportedOperationException();
 	}

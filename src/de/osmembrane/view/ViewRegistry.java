@@ -1,16 +1,20 @@
 package de.osmembrane.view;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import de.osmembrane.view.IView;
 
 /**
- * The view registry implements the View-Handler pattern to organize the views.
+ * The view registry implements the View-Handler pattern to organize the
+ * {@link IView}s.
  * 
  * @author tobias_kuhn
  * 
  */
-public class ViewRegistry {
+public class ViewRegistry implements Observer {
 	/**
 	 * implements the Singleton pattern
 	 */
@@ -19,7 +23,7 @@ public class ViewRegistry {
 	/**
 	 * internal storage of the views, indexed by class
 	 */
-	private Map<Class<? extends IView>, IView> views;
+	private Map<Class<? extends IView>, IView> views = new HashMap<Class<? extends IView>, IView>();
 
 	/**
 	 * 
@@ -48,5 +52,12 @@ public class ViewRegistry {
 	 */
 	public IView get(Class<? extends IView> clazz) {
 		return views.get(clazz);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO: forward update() for ViewRegistry
+		throw new UnsupportedOperationException();
+		
 	}
 }

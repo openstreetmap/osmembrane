@@ -3,7 +3,7 @@ package de.osmembrane.view.panels.accordion;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.osmembrane.view.panels.accordion.JComponent;
+import javax.swing.JComponent;
 
 public class JAccordionCategory {
 	private String title;
