@@ -1,7 +1,22 @@
 package de.osmembrane.view;
 
+import javax.swing.JDialog;
 
-public abstract class AbstractDialog implements IView {
+public abstract class AbstractDialog extends JDialog implements IView {
 
-	public abstract void setTitle(String viewTitle);
+	@Override
+	public void showWindow() {
+		setVisible(true);
+	}
+
+	@Override
+	public void hideWindow() {
+		setVisible(false);
+	}
+
+	@Override
+	public void setWindowTitle(String title) {
+		setTitle(title);
+	}
+
 }

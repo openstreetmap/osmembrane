@@ -1,7 +1,22 @@
 package de.osmembrane.view;
 
+import javax.swing.JFrame;
 
-public abstract class AbstractFrame implements IView {
+public abstract class AbstractFrame extends JFrame implements IView {
 
-	public abstract void setTitle(String viewTitle);
+	@Override
+	public void showWindow() {
+		setVisible(true);
+	}
+
+	@Override
+	public void hideWindow() {
+		setVisible(false);
+	}
+
+	@Override
+	public void setWindowTitle(String title) {
+		setTitle(title);
+	}
+
 }
