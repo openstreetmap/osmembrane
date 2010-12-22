@@ -1,7 +1,11 @@
 package de.osmembrane.model;
 
 import de.osmembrane.model.xml.XMLTask;
+
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
+
 import de.osmembrane.model.Connector;
 import de.osmembrane.model.xml.XMLFunction;
 import java.util.Observable;
@@ -9,7 +13,7 @@ import java.util.Observable;
 public class Function extends Observable implements IFunction {
 	private Point coordinate;
 	private XMLTask[] availableTasks;
-	private Task activeTask;
+	private XMLTask activeTask;
 	private List<Connector> inConnectors;
 	private List<Connector> outConnectors;
 	public Connector unnamed_Connector_;

@@ -2,6 +2,8 @@ package de.osmembrane.model;
 
 import de.osmembrane.model.xml.XMLFunction;
 import de.osmembrane.model.xml.XMLTask;
+
+import java.awt.Point;
 import java.io.Serializable;
 
 public interface IFunction extends Serializable {

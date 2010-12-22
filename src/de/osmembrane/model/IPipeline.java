@@ -26,5 +26,5 @@ public interface IPipeline {
 
 	public void truncate();
 
-	public void generate(FILE_TYPE filetype);
+	public void generate(String filetype);
 }

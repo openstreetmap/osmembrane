@@ -1,13 +1,15 @@
 package de.osmembrane.model;
 
+import java.util.List;
 import java.util.Observable;
+import java.util.Stack;
 
 public class Pipeline extends Observable implements IPipeline {
-	private Stack<pipelineMemento> undoStack;
+	private Stack<Pipeline> undoStack;
 	private List<Function> functions;
-	private Stack<pipelineMemento> redoStack;
+	private Stack<Pipeline> redoStack;
 
-	private pipelineMemento getState() {
+	private Pipeline getState() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -59,7 +61,7 @@ public class Pipeline extends Observable implements IPipeline {
 		throw new UnsupportedOperationException();
 	}
 
-	public void generate(FILE_TYPE filetype) {
+	public void generate(String filetype) {
 		throw new UnsupportedOperationException();
 	}
 }

@@ -19,4 +19,9 @@ public class ModelProxy extends Observable implements Observer {
 	public void accessFunctions() {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		throw new UnsupportedOperationException();
+	}
 }
