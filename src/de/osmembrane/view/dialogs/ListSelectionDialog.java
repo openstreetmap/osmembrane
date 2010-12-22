@@ -1,6 +1,8 @@
-package de.osmembrane.view;
+package de.osmembrane.view.dialogs;
 
-public class HelpFrame extends AbstractFrame {
+import de.osmembrane.view.AbstractDialog;
+
+public class ListSelectionDialog extends AbstractDialog {
 
 	public void show() {
 		throw new UnsupportedOperationException();

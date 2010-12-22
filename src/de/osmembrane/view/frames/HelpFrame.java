@@ -1,6 +1,8 @@
-package de.osmembrane.view;
+package de.osmembrane.view.frames;
 
-public class PreviewFrame extends AbstractFrame {
+import de.osmembrane.view.AbstractFrame;
+
+public class HelpFrame extends AbstractFrame {
 
 	public void show() {
 		throw new UnsupportedOperationException();

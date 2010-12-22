@@ -1,6 +1,8 @@
-package de.osmembrane.view;
+package de.osmembrane.view.frames;
 
-public class SettingsDialog extends AbstractDialog {
+import de.osmembrane.view.AbstractFrame;
+
+public class PreviewFrame extends AbstractFrame {
 
 	public void show() {
 		throw new UnsupportedOperationException();
