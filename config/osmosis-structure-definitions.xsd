@@ -275,13 +275,13 @@
     </annotation>
   </element>
 
-  <element name="inpuXMLPipe" type="otd:XMLPipe">
+  <element name="inputXMLPipe" type="otd:XMLPipe">
     <annotation>
       <documentation>List of the input pipes of the task.</documentation>
     </annotation>
   </element>
 
-  <element name="outpuXMLPipe" type="otd:XMLPipe">
+  <element name="outputXMLPipe" type="otd:XMLPipe">
     <annotation>
       <documentation>An output pipes of the task.</documentation>
     </annotation>
@@ -294,8 +294,8 @@
     <complexContent>
       <extension base="otd:XMLHasDescription">
         <sequence>
-          <element ref="otd:inpuXMLPipe" minOccurs="0" maxOccurs="unbounded" />
-          <element ref="otd:outpuXMLPipe" minOccurs="0" maxOccurs="unbounded" />
+          <element ref="otd:inputXMLPipe" minOccurs="0" maxOccurs="unbounded" />
+          <element ref="otd:outputXMLPipe" minOccurs="0" maxOccurs="unbounded" />
           <element ref="otd:parameter" minOccurs="0" maxOccurs="unbounded" />
         </sequence>
         <attribute name="name" type="string" use="required">
@@ -327,12 +327,12 @@
       <documentation>List of the tasks contained in this function.</documentation>
     </annotation>
 
-    <unique name="inpuXMLPipeIndex">
+    <unique name="inputXMLPipeIndex">
       <selector xpath="otd:inpuXMLPipe" />
       <field xpath="@index" />
     </unique>
 
-    <unique name="outpuXMLPipeIndex">
+    <unique name="outputXMLPipeIndex">
       <selector xpath="otd:outpuXMLPipe" />
       <field xpath="@index" />
     </unique>
