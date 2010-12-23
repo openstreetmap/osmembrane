@@ -1,6 +1,6 @@
 package de.osmembrane.model;
 
-public interface IFunctionFactory {
+public interface IFunctionPrototype {
 
 	public void initiate(String xmlFilename);
 

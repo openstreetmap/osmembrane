@@ -1,5 +1,10 @@
 package de.osmembrane.model.persistence;
 
+/**
+ * Loads the osmosis structure from a given file and returns a 
+ * 
+ * @author jakob_jarosch
+ */
 public class XMLOsmosisStructurePersistence implements IPersistence {
 
 	public void save(String file, Object data) {

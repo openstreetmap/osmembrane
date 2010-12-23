@@ -1,6 +1,6 @@
 package de.osmembrane.model;
 
-public class FunctionFactory implements IFunctionFactory {
+public class FunctionPrototype implements IFunctionPrototype {
 
 	public void initiate(String xmlFilename) {
 		throw new UnsupportedOperationException();

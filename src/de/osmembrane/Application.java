@@ -13,13 +13,6 @@ public class Application {
 		 */
 	}
 
-	/*
-	 * TODO: when is this method called?
-	 */
-	public void checkPersistence() {
-		throw new UnsupportedOperationException();
-	}
-
 	public void createModels() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
