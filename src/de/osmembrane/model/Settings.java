@@ -3,7 +3,7 @@ package de.osmembrane.model;
 import de.osmembrane.model.settings.AbstractSetting;
 import java.util.Observable;
 
-public class Settings extends Observable implements ISettings {
+public class Settings extends AbstractSettings {
 
 	public void initiate(String settingsFilename) {
 		throw new UnsupportedOperationException();

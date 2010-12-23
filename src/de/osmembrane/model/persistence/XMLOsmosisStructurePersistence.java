@@ -5,7 +5,7 @@ package de.osmembrane.model.persistence;
  * 
  * @author jakob_jarosch
  */
-public class XMLOsmosisStructurePersistence implements IPersistence {
+public class XMLOsmosisStructurePersistence extends AbstractPersistence {
 
 	public void save(String file, Object data) {
 		throw new UnsupportedOperationException();

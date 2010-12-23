@@ -1,6 +1,6 @@
 package de.osmembrane.model.persistence;
 
-public class CmdPersistence implements IPersistence {
+public class CmdPersistence extends AbstractPersistence {
 
 	public void save(String file, Object data) {
 		throw new UnsupportedOperationException();

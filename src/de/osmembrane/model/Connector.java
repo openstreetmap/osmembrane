@@ -3,7 +3,7 @@ package de.osmembrane.model;
 import java.util.ArrayList;
 import de.osmembrane.model.Function;
 
-public class Connector implements IConnector {
+public class Connector extends AbstractConnector {
 	public ArrayList<Function> unnamed_Function_ = new ArrayList<Function>();
 
 	public void getType() {
@@ -18,11 +18,11 @@ public class Connector implements IConnector {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addConnection(IFunction connection) {
+	public void addConnection(AbstractFunction connection) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void deleteConnection(IFunction connection) {
+	public void deleteConnection(AbstractFunction connection) {
 		throw new UnsupportedOperationException();
 	}
 }

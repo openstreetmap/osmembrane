@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
 
-public class Pipeline extends Observable implements IPipeline {
+public class Pipeline extends AbstractPipeline {
 	private Stack<Pipeline> undoStack;
 	private List<Function> functions;
 	private Stack<Pipeline> redoStack;
@@ -17,15 +17,15 @@ public class Pipeline extends Observable implements IPipeline {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addFunction(IFunction func) {
+	public void addFunction(AbstractFunction func) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void deleteFunction(IFunction func) {
+	public void deleteFunction(AbstractFunction func) {
 		throw new UnsupportedOperationException();
 	}
 
-	public IFunction[] getFunctions() {
+	public AbstractFunction[] getFunctions() {
 		throw new UnsupportedOperationException();
 	}
 

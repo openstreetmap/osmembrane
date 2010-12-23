@@ -10,7 +10,7 @@ import de.osmembrane.model.Connector;
 import de.osmembrane.model.xml.XMLFunction;
 import java.util.Observable;
 
-public class Function extends Observable implements IFunction {
+public class Function extends AbstractFunction {
 	private Point coordinate;
 	private XMLTask[] availableTasks;
 	private XMLTask activeTask;

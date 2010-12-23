@@ -1,24 +1,24 @@
 package de.osmembrane.model;
 
-public class FunctionPrototype implements IFunctionPrototype {
+public class FunctionPrototype extends AbstractFunctionPrototype {
 
 	public void initiate(String xmlFilename) {
 		throw new UnsupportedOperationException();
 	}
 
-	public IFunctionGroup[] getFunctionGroups() {
+	public AbstractFunctionGroup[] getFunctionGroups() {
 		throw new UnsupportedOperationException();
 	}
 
-	public IFunctionGroup getFunctionGroup(IFunctionGroup group) {
+	public AbstractFunctionGroup getFunctionGroup(AbstractFunctionGroup group) {
 		throw new UnsupportedOperationException();
 	}
 
-	public IFunction[] getFunctions(IFunctionGroup group) {
+	public AbstractFunction[] getFunctions(AbstractFunctionGroup group) {
 		throw new UnsupportedOperationException();
 	}
 
-	public IFunction getFunction(IFunction function) {
+	public AbstractFunction getFunction(AbstractFunction function) {
 		throw new UnsupportedOperationException();
 	}
 }

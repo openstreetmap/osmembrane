@@ -3,17 +3,17 @@ package de.osmembrane.model.persistence;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import de.osmembrane.model.persistence.IPersistence;
+import de.osmembrane.model.persistence.AbstractPersistence;
 import java.util.Observer;
 
 public class PersistenceFactory implements Observer {
-	public ArrayList<IPersistence> unnamed_IPersistence_ = new ArrayList<IPersistence>();
+	public ArrayList<AbstractPersistence> unnamed_IPersistence_ = new ArrayList<AbstractPersistence>();
 
 	public PersistenceFactory getInstance() {
 		throw new UnsupportedOperationException();
 	}
 
-	public void getPersistence(Class<IPersistence> clazz) {
+	public void getPersistence(Class<AbstractPersistence> clazz) {
 		throw new UnsupportedOperationException();
 	}
 

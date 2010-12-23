@@ -11,9 +11,9 @@ import java.util.Observer;
  */
 public class ModelProxy extends Observable implements Observer {
 	
-	private ISettings settings;
-	private IPipeline pipeline;
-	private IFunctionPrototype functionPrototype;
+	private AbstractSettings settings;
+	private AbstractPipeline pipeline;
+	private AbstractFunctionPrototype functionPrototype;
 	
 	/**
 	 * Implements the Singleton pattern.
@@ -37,29 +37,29 @@ public class ModelProxy extends Observable implements Observer {
 	}
 	
 	/**
-	 * Returns the {@link IPipeline}.
+	 * Returns the {@link AbstractPipeline}.
 	 * 
-	 * @return give back the active {@link IPipeline}
+	 * @return give back the active {@link AbstractPipeline}
 	 */
-	public IPipeline accessPipeline() {
+	public AbstractPipeline accessPipeline() {
 		return pipeline;
 	}
 
 	/**
-	 * Returns the {@link ISettings}.
+	 * Returns the {@link AbstractSettings}.
 	 * 
-	 * @return give back the active {@link ISettings}
+	 * @return give back the active {@link AbstractSettings}
 	 */
-	public ISettings accessSettings() {
+	public AbstractSettings accessSettings() {
 		return settings;
 	}
 
 	/**
-	 * Returns the {@link IFunctionPrototype}.
+	 * Returns the {@link AbstractFunctionPrototype}.
 	 * 
-	 * @return give back the active {@link IFunctionPrototype}
+	 * @return give back the active {@link AbstractFunctionPrototype}
 	 */
-	public IFunctionPrototype accessFunctions() {
+	public AbstractFunctionPrototype accessFunctions() {
 		return functionPrototype;
 	}
 
