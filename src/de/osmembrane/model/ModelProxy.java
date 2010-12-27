@@ -65,6 +65,10 @@ public class ModelProxy extends Observable implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		throw new UnsupportedOperationException();
+		if (o.hasChanged()) {
+			setChanged();
+		}
+		
+		notifyObservers(arg);
 	}
 }

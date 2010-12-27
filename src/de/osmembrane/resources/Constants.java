@@ -17,5 +17,5 @@ public class Constants {
 	/**
 	 * Is used by I18N for a default translation of the XMLHasDescription objects.
 	 */
-	public static final Locale DEFAULT_LOCALE = new Locale("en");
+	public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 }

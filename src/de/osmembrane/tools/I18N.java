@@ -17,14 +17,14 @@ import de.osmembrane.resources.Constants;
 public class I18N extends Observable {
 
 	/**
-	 * ResourceBundle where localized Strings are saved.
-	 */
-	private ResourceBundle resourceBundle;
-
-	/**
 	 * Locale for the current instance.
 	 */
 	private Locale activeLocale;
+
+	/**
+	 * ResourceBundle where localized Strings are saved.
+	 */
+	private ResourceBundle resourceBundle;
 
 	/**
 	 * Default-Locale for {@see XMLHasDescription}.
@@ -67,10 +67,12 @@ public class I18N extends Observable {
 	 */
 	public void setLocale(Locale locale) {
 		this.activeLocale = locale;
+		Locale.setDefault(locale);
 		this.resourceBundle = ResourceBundle.getBundle(
 				Constants.RESOURCE_BUNDLE_PATH, this.activeLocale);
 
 		/* notify the observers that possibly the language has been changed */
+		setChanged();
 		notifyObservers();
 	}
 
@@ -82,8 +84,9 @@ public class I18N extends Observable {
 	 */
 	public void setDefaultLocale(Locale locale) {
 		this.defaultLocale = locale;
-
+		
 		/* notify the observers that possibly the language has been changed */
+		setChanged();
 		notifyObservers();
 	}
 
@@ -97,10 +100,13 @@ public class I18N extends Observable {
 	 * @return a localized and formatted String
 	 */
 	public String getString(String key, Object... values) {
-		String msg = resourceBundle.getString(key);
+		String msg;
+			msg = resourceBundle.getString(key);
+		
 		if (values.length > 0) {
 			return MessageFormat.format(msg, values);
 		}
+		
 		return msg;
 	}
 
@@ -117,7 +123,7 @@ public class I18N extends Observable {
 		/* First try to find activeLocale. */
 		for (Description descriptionString : description.getDescription()) {
 			if (descriptionString.getLang().equals(activeLocale.getLanguage())) {
-				return descriptionString.getValue();
+				return descriptionString.getValue().trim();
 			}
 		}
 
@@ -127,7 +133,7 @@ public class I18N extends Observable {
 		 */
 		for (Description descriptionString : description.getDescription()) {
 			if (descriptionString.getLang().equals(defaultLocale.getLanguage())) {
-				return descriptionString.getValue();
+				return descriptionString.getValue().trim();
 			}
 		}
 
