@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public abstract class AbstractConnector implements Serializable {
 
-	public abstract void getType();
+	public abstract String getType();
 
-	public abstract void getMaxConnections();
+	public abstract int getMaxConnections();
 
-	public abstract void getConnections();
+	public abstract AbstractFunction[] getConnections();
 
 	public abstract void addConnection(AbstractFunction connection);
 

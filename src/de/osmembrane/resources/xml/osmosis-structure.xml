@@ -2428,14 +2428,13 @@
 
 	<functionGroup id="replication" friendlyName="Replication Functions">
 		<function id="read-change-interval" friendlyName="Read change-interval">
-		</function>
-
-		<function id="read-change-interval-init" friendlyName="Read change-interval-init">
 			<task name="read-change-interval" shortName="rci">
 				<description lang="en">
 					<value>
-						Retrieves a set of change files from a server, merges them into a single
-						stream, and tracks the current timestamp. The changes produced by
+						Retrieves a set of change files from a server, merges them
+						into a single
+						stream, and tracks the current timestamp. The changes
+						produced by
 						this task are typically delta changes.
       </value>
 				</description>
@@ -2451,7 +2450,7 @@
 			</task>
 		</function>
 
-		<function id="read-replication-interval" friendlyName="Read replication-interval">
+		<function id="read-change-interval-init" friendlyName="Read change-interval-init">
 			<task name="read-change-interval-init" shortName="rcii">
 				<description lang="en">
 					<value>
@@ -2459,7 +2458,7 @@
 						--read-change-interval task. This task must be run once to create
 						the directory structure and the configuration file manually edited
 						to contain the required settings.
-      </value>
+		</value>
 				</description>
 				<parameter name="workingDirectory" type="directory"
 					defaultParameter="true">
@@ -2475,6 +2474,41 @@
 							The timestamp to begin replication from. Only changesets containing
 							data after this timestamp will be downloaded. Note that unlike
 							most tasks accepting dates, this date is specified in UTC.
+        </value>
+					</description>
+				</parameter>
+			</task>
+		</function>
+
+		<function id="read-replication-interval" friendlyName="Read replication-interval">
+			<task name="read-change-interval-init" shortName="rcii">
+				<description lang="en">
+					<value>
+						Initialises a working directory to contain files necessary
+						for use by the
+						--read-change-interval task. This task must be run
+						once to create
+						the directory structure and the configuration file
+						manually edited
+						to contain the required settings.
+      </value>
+				</description>
+				<parameter name="workingDirectory" type="directory"
+					defaultParameter="true">
+					<description lang="en">
+						<value>
+							The directory to populate with state and config files.
+        </value>
+					</description>
+				</parameter>
+				<parameter name="initialDate" type="instant">
+					<description lang="en">
+						<value>
+							The timestamp to begin replication from. Only changesets
+							containing
+							data after this timestamp will be downloaded. Note that
+							unlike
+							most tasks accepting dates, this date is specified in UTC.
 						</value>
 					</description>
 				</parameter>
@@ -2485,9 +2519,12 @@
 			<task name="read-replication-interval-init" shortName="rrii">
 				<description lang="en">
 					<value>
-						Initialises a working directory to contain files necessary for use by the
-						--read-replication-interval task. This task must be run once to
-						create the directory structure and the configuration file manually
+						Initialises a working directory to contain files necessary
+						for use by the
+						--read-replication-interval task. This task must be
+						run once to
+						create the directory structure and the configuration
+						file manually
 						edited to contain the required settings.
       </value>
 				</description>
@@ -2506,9 +2543,12 @@
 			<task name="merge-replication-files" shortName="mrf">
 				<description lang="en">
 					<value>
-						Retrieves a set of replication files from a server, combines them into
-						larger time intervals, sorts the result, and tracks the current
-						timestamp. The changes produced by this task are full-history
+						Retrieves a set of replication files from a server, combines
+						them into
+						larger time intervals, sorts the result, and tracks the
+						current
+						timestamp. The changes produced by this task are
+						full-history
 						changes.
       </value>
 				</description>
@@ -2527,9 +2567,12 @@
 			<task name="merge-replication-files-init" shortName="mrfi">
 				<description lang="en">
 					<value>
-						Initialises a working directory to contain files necessary for use by the
-						--merge-replication-files task. This task must be run once to
-						create the directory structure and the configuration file manually
+						Initialises a working directory to contain files necessary
+						for use by the
+						--merge-replication-files task. This task must be
+						run once to
+						create the directory structure and the configuration
+						file manually
 						edited to contain the required settings.
       </value>
 				</description>
@@ -2548,14 +2591,21 @@
 			<task name="replicate-apidb" shortName="repa">
 				<description lang="en">
 					<value>
-						This task provides replication files for consumers to download. It is
-						primarily run against the production API database with the results
+						This task provides replication files for consumers to
+						download. It is
+						primarily run against the production API database
+						with the results
 						made available on the planet server.
-						The first time this task runs it will initialise the working
-						directory with the current state of the database server. Every
-						subsequent invocation will read all changes since the last
-						invocation and write the results to the output. All changes will
-						be sorted by type, then id, then version.
+						The first time
+						this task runs it will initialise the working
+						directory with the
+						current state of the database server. Every
+						subsequent invocation
+						will read all changes since the last
+						invocation and write the
+						results to the output. All changes will
+						be sorted by type, then id,
+						then version.
       </value>
 				</description>
 				<outputPipe count="single" index="0" type="change" />
@@ -2604,7 +2654,8 @@
 					booleanEncoding="yesno">
 					<description lang="en">
 						<value>
-							If yes is specified, the task will validate the current schema
+							If yes is specified, the task will validate the current
+							schema
 							version before accessing the database.
         </value>
 					</description>
@@ -2614,9 +2665,12 @@
 					booleanEncoding="yesno">
 					<description lang="en">
 						<value>
-							If validateSchemaVersion is yes, this option controls the result of
-							a schema version check failure. If this option is yes, a warning
-							is displayed and execution continues. If this option is no, an
+							If validateSchemaVersion is yes, this option controls the
+							result of
+							a schema version check failure. If this option is yes, a
+							warning
+							is displayed and execution continues. If this option is
+							no, an
 							error is displayed and the program aborts.
         </value>
 					</description>
@@ -2626,7 +2680,8 @@
 					booleanEncoding="yesno">
 					<description lang="en">
 						<value>
-							If set to yes, the user public edit flag will be ignored and user
+							If set to yes, the user public edit flag will be ignored
+							and user
 							information will be attached to every entity.
         </value>
 					</description>
@@ -2646,13 +2701,20 @@
 			<task name="read-replication-lag" shortName="rrl">
 				<description lang="en">
 					<value>
-						This Task takes the state.txt in an replication working directory and
-						compares its timestamp (that's the timestamp of the last chunk of
-						that that osmosis downloaded) with the timestamp of the servers
-						state.txt (that's the timestamp of the last chunk of that that the
-						server has produced). It then calculates the difference and prints
-						it to stdout. In order to get only the printed value its often
-						useful to pipe the log messages on stderr to /dev/null.
+						This Task takes the state.txt in an replication working
+						directory and
+						compares its timestamp (that's the timestamp of the
+						last chunk of
+						that that osmosis downloaded) with the timestamp of
+						the servers
+						state.txt (that's the timestamp of the last chunk of
+						that that the
+						server has produced). It then calculates the
+						difference and prints
+						it to stdout. In order to get only the
+						printed value its often
+						useful to pipe the log messages on stderr
+						to /dev/null.
       </value>
 				</description>
 				<parameter name="workingDirectory" type="directory"

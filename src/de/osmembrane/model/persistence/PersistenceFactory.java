@@ -48,7 +48,7 @@ public class PersistenceFactory extends Observable implements Observer {
 	 *            class name of the AbstractPersistence
 	 * @return an instance of the given AbstractPersistence
 	 */
-	public AbstractPersistence getPersistence(Class<AbstractPersistence> persistence) {
+	public AbstractPersistence getPersistence(Class<? extends AbstractPersistence> persistence) {
 		if (!persistences.containsKey(persistence)) {
 			try {
 				AbstractPersistence persistenceInstance = persistence
