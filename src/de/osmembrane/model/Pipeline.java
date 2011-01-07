@@ -13,54 +13,67 @@ public class Pipeline extends AbstractPipeline {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public boolean redo() {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void addFunction(AbstractFunction func) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void deleteFunction(AbstractFunction func) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public AbstractFunction[] getFunctions() {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public boolean undo() {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public boolean optimizeGraph() {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public boolean execute() {
 		throw new UnsupportedOperationException();
 	}
 
-	public void save(String filename) {
+	@Override
+	public void savePipeline(String filename) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void load(String filename) {
+	@Override
+	public void loadPipeline(String filename) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void import_326(String filename) {
+	@Override
+	public void importPipeline(String filename) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void export(String filename) {
+	@Override
+	public void exportPipeline(String filename) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void truncate() {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void generate(String filetype) {
 		throw new UnsupportedOperationException();
 	}

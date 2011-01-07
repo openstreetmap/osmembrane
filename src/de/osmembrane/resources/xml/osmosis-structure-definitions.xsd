@@ -14,7 +14,7 @@
   <annotation>
     <appinfo>
       <jaxb:globalBindings generateIsSetMethod="true">
-        <xjc:serializable uid="2010122123020001"/>
+        <xjc:serializable uid="2011010722410001"/>
       </jaxb:globalBindings>
     </appinfo>
   </annotation>
@@ -185,6 +185,11 @@
         <attribute name="defaultValue" type="string">
           <annotation>
             <documentation>The default value of a parameter.</documentation>
+          </annotation>
+        </attribute>
+		<attribute name="value" type="string">
+          <annotation>
+            <documentation>The value of a parameter (used for software, must not be inserted into xml).</documentation>
           </annotation>
         </attribute>
       </extension>

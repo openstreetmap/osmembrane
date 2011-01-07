@@ -18,13 +18,13 @@ public abstract class AbstractPipeline extends Observable {
 
 	public abstract boolean execute();
 
-	public abstract void save(String filename);
+	public abstract void savePipeline(String filename);
 
-	public abstract void load(String filename);
+	public abstract void loadPipeline(String filename);
 
-	public abstract void import_326(String filename);
+	public abstract void importPipeline(String filename);
 
-	public abstract void export(String filename);
+	public abstract void exportPipeline(String filename);
 
 	public abstract void truncate();
 
