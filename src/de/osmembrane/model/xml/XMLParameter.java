@@ -10,6 +10,7 @@ package de.osmembrane.model.xml;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.IllegalFormatException;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -92,6 +93,8 @@ public class XMLParameter
     protected String booleanEncoding;
     @XmlAttribute
     protected String defaultValue;
+    
+    protected String value;
 
     /**
      * Gets the value of the enumValue property.
@@ -346,4 +349,11 @@ public class XMLParameter
         return (this.defaultValue!= null);
     }
 
+    public String getValue() {
+    	return value;
+    }
+    
+    public void setValue(String value) {
+    	this.value = value;
+    }
 }

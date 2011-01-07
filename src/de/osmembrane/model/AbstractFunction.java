@@ -81,15 +81,36 @@ public abstract class AbstractFunction extends Observable implements
 	 * 
 	 * @return In-Connectors of the current Function
 	 */
-	public abstract Connector[] getInConnectors();
+	public abstract AbstractConnector[] getInConnectors();
 
 	/**
 	 * Returns the Out-Connectors of the current Function.
 	 * 
 	 * @return Out-Connectors of the current Function
 	 */
-	public abstract Connector[] getOutConnectors();
+	public abstract AbstractConnector[] getOutConnectors();
 
+	/**
+	 * Creates a connection to the given {@link AbstractFunction}.
+	 * 
+	 * @param connection
+	 *            to which the connection should be created.
+	 * 
+	 * @throws ConnectorException
+	 *             when the given function is not compatible or all
+	 *             {@link AbstractConnector}s are full.
+	 */
+	public abstract void addConnectionTo(AbstractFunction function)
+			throws ConnectorException;
+
+	/**
+	 * Removes a connection between the current and the given {@link AbstractFunction}.
+	 * 
+	 * @param function which connection should be removed
+	 * @return true if there was a connection
+	 */
+	public abstract boolean removeConnectionTo(AbstractFunction function);
+	
 	/**
 	 * Compares the Function with another Function.
 	 * 
