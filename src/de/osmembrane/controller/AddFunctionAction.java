@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class AddFunctionAction extends AbstractAction {
 
 	public AddFunctionAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

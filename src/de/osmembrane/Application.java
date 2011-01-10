@@ -7,15 +7,17 @@ public class Application {
 	public Main unnamed_Main_;
 
 	public void initiate() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
 		/*
 		 * TODO: IMPLEMENT ME!
 		 */
+		// FIXME
 	}
 
 	public void createModels() {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 	
 	/**

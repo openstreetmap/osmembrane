@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class AddConnectionAction extends AbstractAction {
 
 	public AddConnectionAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

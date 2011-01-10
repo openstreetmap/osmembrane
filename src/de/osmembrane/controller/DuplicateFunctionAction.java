@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class DuplicateFunctionAction extends AbstractAction {
 
 	public DuplicateFunctionAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

@@ -94,4 +94,5 @@ public class ViewRegistry implements Observer {
 	public IView getMainFrame() {
 		return get(MainFrame.class);
 	}
+	
 }

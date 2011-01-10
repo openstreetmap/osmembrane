@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class EditPropertyAction extends AbstractAction {
 
 	public EditPropertyAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

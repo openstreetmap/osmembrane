@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class MoveViewAction extends AbstractAction {
 
 	public MoveViewAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

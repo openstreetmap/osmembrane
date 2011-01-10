@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class EditBoundingBoxPropertyAction extends AbstractAction {
 
 	public EditBoundingBoxPropertyAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

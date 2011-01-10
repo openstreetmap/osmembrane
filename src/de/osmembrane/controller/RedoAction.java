@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class RedoAction extends AbstractAction {
 
 	public RedoAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

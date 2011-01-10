@@ -1,8 +1,22 @@
 package de.osmembrane.view.frames;
 
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JToolBar;
+
+import de.osmembrane.controller.ActionRegistry;
+import de.osmembrane.controller.ExitAction;
 import de.osmembrane.view.AbstractFrame;
 
 /**
@@ -14,8 +28,12 @@ import de.osmembrane.view.AbstractFrame;
  */
 public class MainFrame extends AbstractFrame {
 
+	/**
+	 * Creates the main frame.
+	 * @see Spezifikation.pdf, chapter 2.1
+	 */
 	public MainFrame() {
-		// TODO Auto-generated constructor stub
+		// WindowListener() von leeren methoden kürzen, wenn fertig
 		addWindowListener(new WindowListener() {
 
 			@Override
@@ -26,14 +44,13 @@ public class MainFrame extends AbstractFrame {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
+				ActionRegistry.getInstance().get(ExitAction.class).actionPerformed(null);
+				// TODO * check ob das ok is *
 			}
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				System.exit(0);
-				
+				// TODO Auto-generated method stub
 			}
 
 			@Override
@@ -61,6 +78,49 @@ public class MainFrame extends AbstractFrame {
 			}
 			
 		});
+		
+		// menu bar
+		JMenuBar menuBar = new JMenuBar();
+		
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.add(ActionRegistry.getInstance().get(ExitAction.class));
+		menuBar.add(fileMenu);
+		
+		JMenu editMenu = new JMenu("Edit");
+		menuBar.add(editMenu);
+		
+		JMenu pipelineMenu = new JMenu("Pipeline");
+		menuBar.add(pipelineMenu);
+		
+		JMenu aboutMenu = new JMenu("About");
+		menuBar.add(aboutMenu);
+		
+		setJMenuBar(menuBar);
+			
+		// tool bar
+		JToolBar toolBar = new JToolBar("OSMembrane", JToolBar.HORIZONTAL);
+		toolBar.add(ActionRegistry.getInstance().get(ExitAction.class));
+		getContentPane().add(toolBar, BorderLayout.NORTH);
+		
+		// function library
+		JPanel functionLibrary = new JPanel();			
+		
+		// pipeline view
+		JPanel pipelineView = new JPanel();
+		
+		// function inspector
+		JPanel functionInspector = new JPanel();
+		
+		// split containers
+		JSplitPane splitLibAndView = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, functionLibrary, pipelineView);
+		
+		JSplitPane splitMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, splitLibAndView, functionInspector);
+		getContentPane().add(splitMain);
+				
+		// center, then maximize
+		pack();
+		centerWindow();
+		setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 	
 	

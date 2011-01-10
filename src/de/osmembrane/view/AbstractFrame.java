@@ -1,5 +1,9 @@
 package de.osmembrane.view;
 
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Window;
+
 import javax.swing.JFrame;
 
 /**
@@ -12,7 +16,7 @@ import javax.swing.JFrame;
 public abstract class AbstractFrame extends JFrame implements IView {
 	
 	/**
-	 * common constructor for all dialog frame elements
+	 * common constructor for all frame view elements
 	 */
 	public AbstractFrame() {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -31,6 +35,16 @@ public abstract class AbstractFrame extends JFrame implements IView {
 	@Override
 	public void setWindowTitle(String title) {
 		setTitle(title);
+	}
+	
+	/**
+	 * Centers this particular frame on the screen
+	 */
+	public void centerWindow() {		
+		Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
+		Point edgeLeftTop = new Point(screenCenter.x - (getWidth() / 2),
+									  screenCenter.y - (getHeight() / 2));
+		setLocation(edgeLeftTop.x, edgeLeftTop.y);
 	}
 
 }

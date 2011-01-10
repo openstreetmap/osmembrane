@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class ShowHelpAction extends AbstractAction {
 
 	public ShowHelpAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

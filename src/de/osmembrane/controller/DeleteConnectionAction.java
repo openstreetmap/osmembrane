@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class DeleteConnectionAction extends AbstractAction {
 
 	public DeleteConnectionAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

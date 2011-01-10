@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class DeleteFunctionAction extends AbstractAction {
 
 	public DeleteFunctionAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

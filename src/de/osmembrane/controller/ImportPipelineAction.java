@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class ImportPipelineAction extends AbstractAction {
 
 	public ImportPipelineAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

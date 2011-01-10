@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class ChangeSettingsAction extends AbstractAction {
 
 	public ChangeSettingsAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override

@@ -16,7 +16,8 @@ public abstract class AbstractDialog extends JDialog implements IView {
 	 * common constructor for all dialog view elements
 	 */
 	public AbstractDialog() {
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		// TODO
 	}
 
 	@Override

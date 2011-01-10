@@ -7,7 +7,8 @@ import javax.swing.AbstractAction;
 public class ZoomViewAction extends AbstractAction {
 
 	public ZoomViewAction() {
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		// FIXME
 	}
 
 	@Override
