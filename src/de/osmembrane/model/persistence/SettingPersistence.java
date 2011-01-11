@@ -12,6 +12,8 @@ import java.util.Observable;
 import de.osmembrane.model.AbstractSettings;
 import de.osmembrane.model.ObserverObject;
 import de.osmembrane.model.Settings;
+import de.osmembrane.view.ExceptionType;
+import de.osmembrane.view.ViewRegistry;
 
 /**
  * Saves the {@see AbstractSettings} in a file.
@@ -23,25 +25,31 @@ public class SettingPersistence extends AbstractPersistence {
 	@Override
 	public void save(String file, Object data) throws IOException {
 		if (!(data instanceof Settings)) {
-			// TODO implement an exception which matches here
+			ViewRegistry.getInstance().pushException(
+					this.getClass(),
+					ExceptionType.ABNORMAL_BEHAVIOR,
+					new Exception("SettingsPersistence#save() got a wrong"
+							+ " object, object is the following instance:\n"
+							+ data.getClass()));
 		}
 		FileOutputStream fos = new FileOutputStream(file);
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
 		ObjectOutputStream oos = new ObjectOutputStream(bos);
-		
-		oos.writeObject(data); 
+
+		oos.writeObject(data);
 		oos.close();
 	}
 
 	@Override
-	public Object load(String file) throws IOException, ClassNotFoundException, ClassCastException {
+	public Object load(String file) throws IOException, ClassNotFoundException,
+			ClassCastException {
 		FileInputStream fis = new FileInputStream(file);
 		BufferedInputStream bis = new BufferedInputStream(fis);
-		ObjectInputStream ois = new ObjectInputStream(bis); 
-		
-		AbstractSettings object = (AbstractSettings) ois.readObject(); 
+		ObjectInputStream ois = new ObjectInputStream(bis);
+
+		AbstractSettings object = (AbstractSettings) ois.readObject();
 		ois.close();
-		
+
 		return object;
 	}
 
@@ -50,12 +58,13 @@ public class SettingPersistence extends AbstractPersistence {
 		if (o instanceof Settings) {
 			String file = ((ObserverObject) arg).getString();
 			Object data = ((ObserverObject) arg).getObject();
-			
+
 			try {
 				save(file, data);
 			} catch (IOException e) {
-				// TODO how to catch these exceptions when auto saving is used
-				e.printStackTrace();
+				/* forward the exception to the view */
+				ViewRegistry.getInstance().pushException(this.getClass(),
+						ExceptionType.SAVE_SETTINGS_FAILED, e);
 			}
 		}
 	}

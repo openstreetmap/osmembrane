@@ -94,5 +94,19 @@ public class ViewRegistry implements Observer {
 	public IView getMainFrame() {
 		return get(MainFrame.class);
 	}
-	
+
+	/**
+	 * Pushes an Exception to the View.
+	 * 
+	 * @param triggerClass
+	 *            class in which the Exception occurred
+	 * @param type
+	 *            indicates what happened and how fatal it is
+	 * @param exception
+	 *            original Exception
+	 */
+	public void pushException(Class<?> triggerClass, ExceptionType type,
+			Exception exception) {
+		/* TODO implement view exception handling here */
+	}
 }

@@ -1,14 +1,18 @@
 package de.osmembrane.model.parser;
 
-import de.osmembrane.model.Pipeline;
+import java.util.List;
+
+import de.osmembrane.model.AbstractFunction;
 
 public class CmdParser implements IParser {
 
-	public Pipeline parseString(String input) {
+	@Override
+	public List<AbstractFunction> parseString(String input) {
 		throw new UnsupportedOperationException();
 	}
 
-	public String parsePipeline(Pipeline pipeline) {
+	@Override
+	public String parsePipeline(List<AbstractFunction> pipeline) {
 		throw new UnsupportedOperationException();
 	}
 }

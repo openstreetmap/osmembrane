@@ -56,6 +56,10 @@ public abstract class AbstractFunction extends Observable implements
 	/**
 	 * Returns the currently active XMLTask for the actual Function.
 	 * 
+	 * If any changes are applied to the XMLTask call
+	 * {@link AbstractFunction#setChanged()()} and
+	 * {@link AbstractFunction#notifyObservers()}.
+	 * 
 	 * @return active XMLTask for the Function
 	 */
 	public abstract XMLTask getActiveTask();
@@ -104,13 +108,15 @@ public abstract class AbstractFunction extends Observable implements
 			throws ConnectorException;
 
 	/**
-	 * Removes a connection between the current and the given {@link AbstractFunction}.
+	 * Removes a connection between the current and the given
+	 * {@link AbstractFunction}.
 	 * 
-	 * @param function which connection should be removed
+	 * @param function
+	 *            which connection should be removed
 	 * @return true if there was a connection
 	 */
 	public abstract boolean removeConnectionTo(AbstractFunction function);
-	
+
 	/**
 	 * Compares the Function with another Function.
 	 * 
@@ -120,4 +126,6 @@ public abstract class AbstractFunction extends Observable implements
 	 *         false if they do not equal.
 	 */
 	public abstract boolean same(AbstractFunction function);
+
+	/* TODO implement auto-inform Pipeline-Observer */
 }
