@@ -1,6 +1,6 @@
 package de.osmembrane.model;
 
-import de.osmembrane.model.xml.XMLHasDescription.Description;
+import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.model.xml.XMLTask;
@@ -70,8 +70,8 @@ public class Function extends AbstractFunction {
 	}
 
 	@Override
-	public List<Description> getDescription() {
-		return xmlFunction.getDescription();
+	public XMLHasDescription getDescription() {
+		return xmlFunction;
 	}
 
 	@Override

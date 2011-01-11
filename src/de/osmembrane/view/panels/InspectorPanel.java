@@ -109,7 +109,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				if (inspecting != null) {
 					int row = display.rowAtPoint(e.getPoint());
 					if (row == -1) {
-						setHintText(inspecting);
+						setHintText(inspecting.getDescription());
 					} else if (row == 0) {
 						setHintText(inspecting.getActiveTask());
 					} else {
@@ -169,7 +169,7 @@ public class InspectorPanel extends JPanel implements Observer {
 		repaint();
 		if (inspecting != null) {
 			caption.setText(inspecting.getFriendlyName());
-			hintLabel.setText(I18N.getInstance().getDescription(inspecting));
+			hintLabel.setText(I18N.getInstance().getDescription(inspecting.getDescription()));
 		} else {
 			caption.setText(I18N.getInstance().getString(
 					"View.InspectorPanel.NoSelection"));
@@ -252,8 +252,7 @@ public class InspectorPanel extends JPanel implements Observer {
 			if (inspecting != null) {
 				inspecting.getActiveTask().getParameter().get(row)
 						.setValue(aValue.toString());
-				inspecting.setChanged();
-				inspecting.noti
+				inspecting.changedNotifyObservers();
 			}
 		}
 

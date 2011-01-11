@@ -1,12 +1,12 @@
 package de.osmembrane.model;
 
-import de.osmembrane.model.xml.XMLHasDescription.Description;
+import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.model.xml.XMLTask;
 
 import java.awt.Point;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * This represents a simple Function for the XML-Functions.
@@ -40,11 +40,11 @@ public abstract class AbstractFunction extends Observable implements
 	public abstract String getFriendlyName();
 
 	/**
-	 * Returns a List of Descriptions in available languages.
+	 * Returns the Description of the {@link AbstractFunction} .
 	 * 
-	 * @return list of Descriptions in the available languages.
+	 * @return a {@link XMLHasDescription} object
 	 */
-	public abstract List<Description> getDescription();
+	public abstract XMLHasDescription getDescription();
 
 	/**
 	 * Returns the available XMLTasks for the current Function.
@@ -127,5 +127,13 @@ public abstract class AbstractFunction extends Observable implements
 	 */
 	public abstract boolean same(AbstractFunction function);
 
+	/**
+	 * Notifies all registered {@link Observer}s with pre-called {@link Observable#setChanged())}.
+	 */
+	public void changedNotifyObservers() {
+		this.setChanged();
+		this.notifyObservers();
+	}
+	
 	/* TODO implement auto-inform Pipeline-Observer */
 }
