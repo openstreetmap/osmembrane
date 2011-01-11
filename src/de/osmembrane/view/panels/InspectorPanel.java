@@ -17,6 +17,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import de.osmembrane.model.AbstractFunction;
+import de.osmembrane.view.ExceptionType;
+import de.osmembrane.view.ViewRegistry;
+
 /**
  * The inspector panel component to realize the function inspector.
  * 
@@ -31,6 +35,11 @@ public class InspectorPanel extends JPanel implements Observer {
 	 * the table that displays the data of the function
 	 */
 	protected JTable display;
+	
+	/**
+	 * The main pipeline panel, including all references
+	 */
+	private PipelinePanel pipeline;
 
 	/**
 	 * Initializes the inspector panel and display
@@ -67,6 +76,20 @@ public class InspectorPanel extends JPanel implements Observer {
 	public void update(Observable o, Object arg) {
 		throw new UnsupportedOperationException();
 	}
+	
+	/**
+	 * @param pipeline the new pipeline to work with
+	 */
+	public void setPipeline(PipelinePanel pipeline) {
+		this.pipeline = pipeline;
+	}
+
+	/**
+	 * @return the pipeline to work with
+	 */
+	public PipelinePanel getPipeline() {
+		return pipeline;
+	}
 
 	/**
 	 * The table model of the display table of the inspector panel.
@@ -85,7 +108,18 @@ public class InspectorPanel extends JPanel implements Observer {
 		
 		@Override
 		public int getRowCount() {
-			return 2;
+			if (pipeline != null) {
+				AbstractFunction selected = pipeline.getSelectedFunction();
+				if (selected == null) {
+					return 1;
+				} else {
+					return 1 + selected.getActiveTask().getParameter().size();
+				}
+
+			} else {
+				// this state may occur shortly during initialization
+				return 0;
+			}
 		}
 		
 		@Override
@@ -130,6 +164,7 @@ public class InspectorPanel extends JPanel implements Observer {
 		private static final long serialVersionUID = -8005963595998602494L;
 		
 		private final Color WHITE = Color.WHITE;
+		private final Color LIGHT_BLUE = new Color(1.0f, 0.7f, 0.7f);
 		private final Color LIGHT_YELLOW = new Color(1.0f, 1.0f, 0.7f);
 		
 
@@ -140,11 +175,16 @@ public class InspectorPanel extends JPanel implements Observer {
 			Component c = super.getTableCellRendererComponent(table, value,
 					isSelected, hasFocus, row, column);
 			
+			if (column == 0) {
+				c.setBackground(LIGHT_BLUE);
+			} else {
+			
 			// alternate colors white and yellow
 			if (row % 2 == 0) {
 				c.setBackground(WHITE);				
 			} else {
 				c.setBackground(LIGHT_YELLOW);
+			}
 			}
 			
 			// suppress borders

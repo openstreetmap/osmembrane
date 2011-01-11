@@ -22,6 +22,16 @@ import de.osmembrane.view.frames.MainFrame;
  * 
  */
 public class ViewRegistry implements Observer {
+
+	/**
+	 * implements the error-handling dialog Note: This is important to be static
+	 * and external to the ViewRegistry instance, because anyway else occurring
+	 * exceptions during anything static would cause an
+	 * ExceptionInInitializerError because the error handling would require the
+	 * ViewRegistry instance to be available.
+	 */
+	private static ErrorDialog errorDialog;
+
 	/**
 	 * implements the Singleton pattern
 	 */
@@ -33,19 +43,9 @@ public class ViewRegistry implements Observer {
 	private Map<Class<? extends IView>, IView> views = new HashMap<Class<? extends IView>, IView>();
 
 	/**
-	 * initializes the view registry with all the views this view component has
+	 * initializes the view registry
 	 */
 	private ViewRegistry() {
-		// frames
-		register(new MainFrame());
-		register(new HelpFrame());
-
-		// dialogs
-		register(new ErrorDialog());
-		register(new CommandLineDialog());
-		register(new SettingsDialog());
-		register(new ListSelectionDialog());
-		register(new MapSelectionDialog());
 	}
 
 	/**
@@ -67,14 +67,28 @@ public class ViewRegistry implements Observer {
 	}
 
 	/**
-	 * Returns a view from the registry
+	 * Returns a view from the registry. If not already registered, creates it
+	 * and registers it.
 	 * 
 	 * @param clazz
 	 *            desired class to return
 	 * @return the registered object for that class
 	 */
 	public IView get(Class<? extends IView> clazz) {
-		return views.get(clazz);
+		IView result = views.get(clazz);
+
+		// if it does not exist, create it
+		if (result == null) {
+			try {
+				result = clazz.newInstance();
+			} catch (Exception e) {
+				showException(this.getClass(), ExceptionType.ABNORMAL_BEHAVIOR,
+						e);
+			}
+			views.put(clazz, result);
+		}
+
+		return result;
 	}
 
 	@Override
@@ -96,7 +110,8 @@ public class ViewRegistry implements Observer {
 	}
 
 	/**
-	 * Pushes an Exception to the View.
+	 * A parameter being null results automatically in a fatal error blaming the
+	 * initial caller.
 	 * 
 	 * @param triggerClass
 	 *            class in which the Exception occurred
@@ -105,8 +120,11 @@ public class ViewRegistry implements Observer {
 	 * @param exception
 	 *            original Exception
 	 */
-	public void pushException(Class<?> triggerClass, ExceptionType type,
+	public static void showException(Class<?> triggerClass, ExceptionType type,
 			Exception exception) {
-		/* TODO implement view exception handling here */
+		if (errorDialog == null) {
+			errorDialog = new ErrorDialog();
+		}
+		errorDialog.showException(triggerClass, type, exception);
 	}
 }

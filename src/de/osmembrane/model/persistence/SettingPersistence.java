@@ -25,7 +25,7 @@ public class SettingPersistence extends AbstractPersistence {
 	@Override
 	public void save(String file, Object data) throws IOException {
 		if (!(data instanceof Settings)) {
-			ViewRegistry.getInstance().pushException(
+			ViewRegistry.getInstance().showException(
 					this.getClass(),
 					ExceptionType.ABNORMAL_BEHAVIOR,
 					new Exception("SettingsPersistence#save() got a wrong"
@@ -63,7 +63,7 @@ public class SettingPersistence extends AbstractPersistence {
 				save(file, data);
 			} catch (IOException e) {
 				/* forward the exception to the view */
-				ViewRegistry.getInstance().pushException(this.getClass(),
+				ViewRegistry.getInstance().showException(this.getClass(),
 						ExceptionType.SAVE_SETTINGS_FAILED, e);
 			}
 		}

@@ -32,6 +32,8 @@ import de.osmembrane.view.panels.PipelinePanel;
  *
  */
 public class MainFrame extends AbstractFrame {
+	
+	private String notification;
 
 	/**
 	 * Creates the main frame.
@@ -117,7 +119,8 @@ public class MainFrame extends AbstractFrame {
 		
 		// function inspector
 		InspectorPanel functionInspector = new InspectorPanel();
-		JScrollPane paneInspector = new JScrollPane(functionInspector);
+		functionInspector.setPipeline(pipelineView);
+		JScrollPane paneInspector = new JScrollPane(functionInspector);		
 		
 		// split containers
 		JSplitPane splitLibAndView = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, paneLibrary, panePipeline);
@@ -129,6 +132,13 @@ public class MainFrame extends AbstractFrame {
 		pack();
 		centerWindow();
 		setExtendedState(Frame.MAXIMIZED_BOTH);
+	}
+
+	/**
+	 * @param notification the notification to set
+	 */
+	public void setNotification(String notification) {
+		this.notification = notification;
 	}
 	
 	
