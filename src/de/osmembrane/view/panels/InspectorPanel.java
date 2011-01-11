@@ -24,6 +24,8 @@ import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.components.JRowTable;
+import de.osmembrane.view.components.RowEditorModel;
 
 /**
  * The inspector panel component to realize the function inspector.
@@ -43,7 +45,8 @@ public class InspectorPanel extends JPanel implements Observer {
 	/**
 	 * the table that displays the data of the function
 	 */
-	private JTable display;
+	private JRowTable display;
+	private RowEditorModel rowEditorModel;
 
 	/**
 	 * the panel and label that displays the context-sensitive help
@@ -72,8 +75,8 @@ public class InspectorPanel extends JPanel implements Observer {
 		caption.setFont(caption.getFont().deriveFont(Font.BOLD));
 
 		// display
-		display = new JTable(new InspectorPanelTableModel());
-		display.setOpaque(true);
+		rowEditorModel = new RowEditorModel();
+		display = new JRowTable(new InspectorPanelTableModel(), rowEditorModel);
 
 		display.addMouseListener(new MouseListener() {
 
@@ -166,15 +169,15 @@ public class InspectorPanel extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		repaint();
 		if (inspecting != null) {
 			caption.setText(inspecting.getFriendlyName());
-			hintLabel.setText(I18N.getInstance().getDescription(inspecting.getDescription()));
+			setHintText(inspecting.getDescription());
 		} else {
 			caption.setText(I18N.getInstance().getString(
 					"View.InspectorPanel.NoSelection"));
 			hintLabel.setText("");
 		}
+		repaint();
 	}
 
 	/**
