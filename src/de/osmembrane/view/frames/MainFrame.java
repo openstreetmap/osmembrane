@@ -12,12 +12,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JToolBar;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.ExitAction;
 import de.osmembrane.view.AbstractFrame;
+import de.osmembrane.view.panels.FunctionLibraryPanel;
+import de.osmembrane.view.panels.InspectorPanel;
+import de.osmembrane.view.panels.PipelinePanel;
 
 /**
  * The Main window that is the center of OSMembrane and the first thing
@@ -102,19 +107,22 @@ public class MainFrame extends AbstractFrame {
 		toolBar.add(ActionRegistry.getInstance().get(ExitAction.class));
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		
-		// function library
-		JPanel functionLibrary = new JPanel();			
+		// function library	
+		FunctionLibraryPanel functionLibrary = new FunctionLibraryPanel();
+		JScrollPane paneLibrary = new JScrollPane(functionLibrary);			
 		
 		// pipeline view
-		JPanel pipelineView = new JPanel();
+		PipelinePanel pipelineView = new PipelinePanel();
+		JScrollPane panePipeline = new JScrollPane(pipelineView);
 		
 		// function inspector
-		JPanel functionInspector = new JPanel();
+		InspectorPanel functionInspector = new InspectorPanel();
+		JScrollPane paneInspector = new JScrollPane(functionInspector);
 		
 		// split containers
-		JSplitPane splitLibAndView = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, functionLibrary, pipelineView);
+		JSplitPane splitLibAndView = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, paneLibrary, panePipeline);
 		
-		JSplitPane splitMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, splitLibAndView, functionInspector);
+		JSplitPane splitMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, splitLibAndView, paneInspector);
 		getContentPane().add(splitMain);
 				
 		// center, then maximize

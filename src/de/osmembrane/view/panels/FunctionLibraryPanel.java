@@ -1,4 +1,6 @@
 package de.osmembrane.view.panels;
 
-public class FunctionLibraryPanel {
+import javax.swing.JPanel;
+
+public class FunctionLibraryPanel extends JPanel {
 }

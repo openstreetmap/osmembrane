@@ -2,7 +2,6 @@ package de.osmembrane.view;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-import java.awt.Window;
 
 import javax.swing.JFrame;
 
@@ -38,7 +37,7 @@ public abstract class AbstractFrame extends JFrame implements IView {
 	}
 	
 	/**
-	 * Centers this particular frame on the screen
+	 * Centers this particular frame on the screen.
 	 */
 	public void centerWindow() {		
 		Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
