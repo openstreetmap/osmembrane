@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
 import de.osmembrane.view.IView;
 import de.osmembrane.view.dialogs.CommandLineDialog;
 import de.osmembrane.view.dialogs.ErrorDialog;
@@ -46,6 +49,19 @@ public class ViewRegistry implements Observer {
 	 * initializes the view registry
 	 */
 	private ViewRegistry() {
+		// try to set LnF to Nimbus, if available
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+			// if setLookAndFeel() failed
+		   ViewRegistry.showException(this.getClass(), ExceptionType.ABNORMAL_BEHAVIOR, e);
+		}
+
 	}
 
 	/**
@@ -110,8 +126,9 @@ public class ViewRegistry implements Observer {
 	}
 
 	/**
-	 * A parameter being null results automatically in a fatal error blaming the
-	 * initial caller.
+	 * Handles an occurring exception using the ExceptionDialog. A parameter
+	 * being null results automatically in a fatal error blaming the initial
+	 * caller.
 	 * 
 	 * @param triggerClass
 	 *            class in which the Exception occurred
