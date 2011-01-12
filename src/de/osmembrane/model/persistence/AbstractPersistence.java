@@ -1,8 +1,9 @@
 package de.osmembrane.model.persistence;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Observer;
+
+import de.osmembrane.model.FileException;
 
 /**
  * AbstractPersistence provides two methods save and load, so all
@@ -21,10 +22,9 @@ public abstract class AbstractPersistence implements Observer {
 	 *            object which should be saved into the file, normally it should
 	 *            be {@link Serializable}
 	 * 
-	 * @throws IOException
-	 *             is thrown if the save fails (file not writable, ...)
+	 * @throws FileException
 	 */
-	public abstract void save(String file, Object data) throws IOException;
+	public abstract void save(String file, Object data) throws FileException;
 
 	/**
 	 * Loads a file and returns the object inside of it.
@@ -33,16 +33,7 @@ public abstract class AbstractPersistence implements Observer {
 	 *            path to the file from where the object should be loaded
 	 * @return the object, which is loaded from the file
 	 * 
-	 * @throws IOException
-	 *             is thrown if the load fails (file not found, ...)
-	 * @throws ClassNotFoundException
-	 *             is thrown if the loaded class is not available. For example
-	 *             when the file is saved under a newer version of OSMembrane.
-	 * @throws ClassCastException
-	 *             is thrown if the loaded object does not match to the required
-	 *             object. For example when the system tries to open a
-	 *             Settings-file as an OSMembrane-project-file.
+	 * @throws FileException
 	 */
-	public abstract Object load(String file) throws IOException,
-			ClassNotFoundException, ClassCastException;
+	public abstract Object load(String file) throws FileException;
 }

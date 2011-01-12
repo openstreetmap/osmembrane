@@ -1,80 +1,145 @@
 package de.osmembrane.model;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Observable;
 import java.util.Stack;
 
+import de.osmembrane.model.persistence.AbstractPersistence;
+import de.osmembrane.model.persistence.FileType;
+import de.osmembrane.model.persistence.OSMembranePersistence;
+import de.osmembrane.model.persistence.PersistenceFactory;
+
 public class Pipeline extends AbstractPipeline {
+
 	private Stack<Pipeline> undoStack;
-	private List<Function> functions;
 	private Stack<Pipeline> redoStack;
+
+	private List<AbstractFunction> functions;
 
 	private Pipeline getState() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean redo() {
-		throw new UnsupportedOperationException();
+	public AbstractFunction[] getFunctions() {
+		AbstractFunction[] functions = new AbstractFunction[this.functions
+				.size()];
+		functions = this.functions.toArray(functions);
+		return functions;
 	}
 
 	@Override
 	public void addFunction(AbstractFunction func) {
-		throw new UnsupportedOperationException();
+		functions.add(func);
+
+		/* notify the observers */
+		setChanged();
+		notifyObservers();
 	}
 
 	@Override
-	public void deleteFunction(AbstractFunction func) {
-		throw new UnsupportedOperationException();
-	}
+	public boolean deleteFunction(AbstractFunction func) {
+		boolean returnValue = false;
 
-	@Override
-	public AbstractFunction[] getFunctions() {
-		throw new UnsupportedOperationException();
-	}
+		for (AbstractFunction function : functions) {
+			if (function == func) {
+				returnValue = functions.remove(function);
+			}
+		}
 
-	@Override
-	public boolean undo() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean optimizeGraph() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean execute() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void savePipeline(String filename) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void loadPipeline(String filename) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void importPipeline(String filename) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void exportPipeline(String filename) {
-		throw new UnsupportedOperationException();
+		if (returnValue == true) {
+			/* notify the observers */
+			setChanged();
+			notifyObservers();
+		}
+		return returnValue;
 	}
 
 	@Override
 	public void truncate() {
-		throw new UnsupportedOperationException();
+		this.functions.clear();
+
+		/* notify the observers */
+		setChanged();
+		notifyObservers();
 	}
 
 	@Override
-	public void generate(String filetype) {
-		throw new UnsupportedOperationException();
+	public void savePipeline(String filename) throws FileException {
+		AbstractPersistence persistence = PersistenceFactory.getInstance()
+				.getPersistence(OSMembranePersistence.class);
+
+		persistence.save(filename, functions);
+	}
+
+	@Override
+	public void loadPipeline(String filename) throws FileException {
+		AbstractPersistence persistence = PersistenceFactory.getInstance()
+				.getPersistence(OSMembranePersistence.class);
+
+		Object obj = persistence.load(filename);
+
+		/* is checked by persistence */
+		@SuppressWarnings("unchecked")
+		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
+
+		this.functions = functions;
+
+		/* notify the observers */
+		setChanged();
+		notifyObservers();
+	}
+
+	@Override
+	public void importPipeline(String filename, FileType type) throws FileException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void exportPipeline(String filename, FileType type) throws FileException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public String generate(String filetype) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean undo() {
+		/* TODO not yet implemented */
+		return false;
+	}
+
+	@Override
+	public boolean undoAvailable() {
+		/* TODO not yet implemented */
+		return false;
+	}
+
+	@Override
+	public boolean redo() {
+		/* TODO not yet implemented */
+		return false;
+	}
+
+	@Override
+	public boolean redoAvailable() {
+		/* TODO not yet implemented */
+		return false;
+	}
+
+	@Override
+	public boolean checkForLoops() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void optimizePipeline() {
+		/* TODO not yet implemented */
 	}
 }

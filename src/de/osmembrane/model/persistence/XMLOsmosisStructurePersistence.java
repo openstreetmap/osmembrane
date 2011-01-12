@@ -7,6 +7,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import de.osmembrane.model.FileException;
+import de.osmembrane.model.FileException.Type;
 import de.osmembrane.model.xml.XMLOsmosisStructure;
 
 /**
@@ -16,30 +18,40 @@ import de.osmembrane.model.xml.XMLOsmosisStructure;
  */
 public class XMLOsmosisStructurePersistence extends AbstractPersistence {
 
-	@Deprecated
-	public void save(String file, Object data) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object load(String file) {
+	@Override
+	public Object load(String file) throws FileException {
 		JAXBContext jc;
 		try {
 			jc = JAXBContext.newInstance("de.osmembrane.model.xml");
 
 			/* XML-Datei mit Osmosis-Task-Beschreibungen einlesen */
-			File xmlTasksFile = new File(file); //
+			File xmlTasksFile = new File(file);
+			
+			if (!xmlTasksFile.exists()) {
+				throw new FileException(Type.NOT_FOUND);
+			} else if (!xmlTasksFile.canRead()) {
+				throw new FileException(Type.NOT_READABLE);
+			}
+			
 			Unmarshaller u = jc.createUnmarshaller();
 			XMLOsmosisStructure otd = (XMLOsmosisStructure) u
 					.unmarshal(xmlTasksFile);
 			
 			return otd;
 		} catch (JAXBException e) {
-			throw new ClassCastException("XML-Importing won't work, like excepted");
+			throw new FileException(Type.WRONG_FORMAT, e);
 		}
 	}
 
+	@Deprecated
 	@Override
+	public void save(String file, Object data) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
 	public void update(Observable o, Object arg) {
-		/* do nothing, never used */
+		throw new UnsupportedOperationException();
 	}
 }

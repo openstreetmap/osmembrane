@@ -2,7 +2,7 @@ package de.osmembrane.model.persistence;
 
 import java.util.Observable;
 
-public class BatchPersistence extends AbstractPersistence {
+public class BashPersistence extends AbstractPersistence {
 
 	public void save(String file, Object data) {
 		throw new UnsupportedOperationException();

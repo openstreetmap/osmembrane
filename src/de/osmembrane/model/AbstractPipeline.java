@@ -2,31 +2,123 @@ package de.osmembrane.model;
 
 import java.util.Observable;
 
+import de.osmembrane.model.persistence.FileType;
+
+/**
+ * Pipeline representation.
+ * 
+ * @author jakob_jarosch
+ */
 public abstract class AbstractPipeline extends Observable {
 
-	public abstract boolean redo();
-
+	/**
+	 * Adds a {@link AbstractFunction} to the pipeline.
+	 * 
+	 * @param func function which should be added
+	 */
 	public abstract void addFunction(AbstractFunction func);
 
-	public abstract void deleteFunction(AbstractFunction func);
+	/**
+	 * Removes a {@link AbstractFunction} from the pipeline.
+	 * 
+	 * @param func function which should be removed
+	 */
+	public abstract boolean deleteFunction(AbstractFunction func);
 
+	/**
+	 * Returns the {@link AbstractFunction}s in the pipeline.
+	 * 
+	 * @return array of {@link AbstractFunction}s
+	 */
 	public abstract AbstractFunction[] getFunctions();
 
+	/**
+	 * Makes the last change undone.
+	 * 
+	 * @return false if the undo could not be done, otherwise true
+	 */
 	public abstract boolean undo();
+	
+	/**
+	 * Returns the state of the undo-method.
+	 * 
+	 * @return true if a undo is available, otherwise false
+	 */
+	public abstract boolean undoAvailable();
+	
+	/**
+	 * Redos some made undo changes.
+	 * 
+	 * @return false if the redo could not be done, otherwise true
+	 */
+	public abstract boolean redo();
+	
+	/**
+	 * Returns the state of the redo-method.
+	 * 
+	 * @return true if a redo is available, otherwise false
+	 */
+	public abstract boolean redoAvailable();
 
-	public abstract boolean optimizeGraph();
+	/**
+	 * Optimizes the pipeline. Only functions are rearranged.
+	 */
+	public abstract void optimizePipeline();
 
-	public abstract boolean execute();
+	/**
+	 * Saves the pipeline to a OSMembrane file.
+	 * 
+	 * @param filename path to the OSMembrane file
+	 * 
+	 * @throws FileException when something with the IO went wrong
+	 */
+	public abstract void savePipeline(String filename) throws FileException;
 
-	public abstract void savePipeline(String filename);
+	/**
+	 * Loads a pipeline from a OSMembrane file.
+	 * 
+	 * @param filename path to the OSMembrane file
+	 * 
+	 * @throws FileException when something with the IO went wrong
+	 */
+	public abstract void loadPipeline(String filename) throws FileException;
 
-	public abstract void loadPipeline(String filename);
+	/**
+	 * Imports the pipeline from a given file.
+	 * 
+	 * @param filename path to the file which should be loaded
+	 * @param type {@link FileType} of the given file
+	 * 
+	 * @throws FileException when something with the IO went wrong
+	 */
+	public abstract void importPipeline(String filename, FileType type) throws FileException;
 
-	public abstract void importPipeline(String filename);
+	/**
+	 *  Exports the pipeline a file on the given path.
+	 * 
+	 * @param filename path where the file should be saved
+	 * @param type {@link FileType} of the given file
+	 * 
+	 * @throws FileException when something with the IO went wrong
+	 */
+	public abstract void exportPipeline(String filename, FileType type) throws FileException;
 
-	public abstract void exportPipeline(String filename);
-
+	/**
+	 * Creates an empty pipeline.
+	 */
 	public abstract void truncate();
 
-	public abstract void generate(String filetype);
+	/**
+	 * Creates a String-representation for the current pipeline.
+	 * 
+	 * @param filetype should be created
+	 */
+	public abstract String generate(String filetype);
+	
+	/**
+	 * Checks is the pipeline contains any loops, what is not right.
+	 * 
+	 * @return true if pipeline contains a loop, otherwise false
+	 */
+	public abstract boolean checkForLoops();
 }
