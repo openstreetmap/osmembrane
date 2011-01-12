@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.osmembrane.model.Connector;
+import de.osmembrane.model.ConnectorException.Type;
 import de.osmembrane.model.xml.XMLFunction;
 
 /**
@@ -31,6 +32,8 @@ public class Function extends AbstractFunction {
 	private List<Connector> outConnectors = new ArrayList<Connector>();
 
 	private final String comparator;
+	
+	private AbstractPipeline pipeline;
 
 	/**
 	 * Creates a new Function with given parent and XMLFunction.
@@ -57,6 +60,16 @@ public class Function extends AbstractFunction {
 	@Override
 	public AbstractFunctionGroup getParent() {
 		return parent;
+	}
+
+	@Override
+	public void setPipeline(AbstractPipeline pipeline) {
+		this.pipeline = pipeline;
+	}
+
+	@Override
+	public AbstractPipeline getPipeline() {
+		return pipeline;
 	}
 
 	@Override
@@ -151,17 +164,29 @@ public class Function extends AbstractFunction {
 						.equals(connectorIn.getPipe().getType())) {
 					/* found equal Connectors */
 					if (!connectorOut.isFull() && !connectorIn.isFull()) {
+						
+						/* first, add connections */
 						connectorIn.addConnection(connectorOut);
 						connectorOut.addConnection(connectorIn);
+						
+						/* now check loop freeness */
+						if (getPipeline().checkForLoops()) {
+							/* remove 'cause that is not ok */
+							removeConnectionTo(function);
+							throw new ConnectorException(Type.LOOP_CREATED);
+						}
+						
+						changedNotifyObservers();
+						
 						return;
 					} else {
-						throw new ConnectorException(Problem.FULL);
+						throw new ConnectorException(Type.FULL);
 					}
 				}
 			}
 		}
 		
-		throw new ConnectorException(Problem.NO_MATCH);
+		throw new ConnectorException(Type.NO_MATCH);
 	}
 
 	@Override

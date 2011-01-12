@@ -9,27 +9,28 @@ package de.osmembrane.model;
 public class ConnectorException extends Exception {
 
 	private static final long serialVersionUID = 2011010722360001L;
-	
-	private Problem problem;
 
-	/**
-	 * Creates a new {@link ConnectorException} with a given {@link Problem}.
-	 * @param problem
-	 */
-	public ConnectorException(Problem problem) {
-		this.problem = problem;
+	enum Type {
+		NO_MATCH, FULL, LOOP_CREATED
 	}
 
+	private Type type;
+
 	/**
-	 * Returns the {@link Problem} of the {@link ConnectorException}.
+	 * Creates a new {@link ConnectorException} with a given {@link Type}.
 	 * 
-	 * @return {@link Problem} of the {@link ConnectorException}
+	 * @param type
 	 */
-	public Problem getProblem() {
-		return problem;
+	public ConnectorException(Type type) {
+		this.type = type;
 	}
-}
 
-enum Problem {
-	NO_MATCH, FULL
+	/**
+	 * Returns the {@link Type} of the {@link ConnectorException}.
+	 * 
+	 * @return {@link Type} of the {@link ConnectorException}
+	 */
+	public Type getType() {
+		return type;
+	}
 }

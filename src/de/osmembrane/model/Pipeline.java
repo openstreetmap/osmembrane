@@ -18,7 +18,7 @@ public class Pipeline extends AbstractPipeline {
 
 	@SuppressWarnings("unused")
 	private Stack<Pipeline> undoStack;
-	
+
 	@SuppressWarnings("unused")
 	private Stack<Pipeline> redoStack;
 
@@ -34,11 +34,11 @@ public class Pipeline extends AbstractPipeline {
 
 	@Override
 	public void addFunction(AbstractFunction func) {
+		func.setPipeline(this);
 		functions.add(func);
 
 		/* notify the observers */
-		setChanged();
-		notifyObservers();
+		changedNotifyObservers();
 	}
 
 	@Override
@@ -53,8 +53,7 @@ public class Pipeline extends AbstractPipeline {
 
 		if (returnValue == true) {
 			/* notify the observers */
-			setChanged();
-			notifyObservers();
+			changedNotifyObservers();
 		}
 		return returnValue;
 	}
@@ -64,8 +63,7 @@ public class Pipeline extends AbstractPipeline {
 		this.functions.clear();
 
 		/* notify the observers */
-		setChanged();
-		notifyObservers();
+		changedNotifyObservers();
 	}
 
 	@Override
@@ -90,20 +88,34 @@ public class Pipeline extends AbstractPipeline {
 		this.functions = functions;
 
 		/* notify the observers */
-		setChanged();
-		notifyObservers();
+		changedNotifyObservers();
 	}
 
 	@Override
-	public void importPipeline(String filename, FileType type) throws FileException {
-		// TODO Auto-generated method stub
+	public void importPipeline(String filename, FileType type)
+			throws FileException {
+		AbstractPersistence persistence = PersistenceFactory.getInstance()
+				.getPersistence(type.getPersistenceClass());
 
+		Object obj = persistence.load(filename);
+
+		/* is checked by persistence */
+		@SuppressWarnings("unchecked")
+		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
+
+		this.functions = functions;
+
+		/* notify the observers */
+		changedNotifyObservers();
 	}
 
 	@Override
-	public void exportPipeline(String filename, FileType type) throws FileException {
-		// TODO Auto-generated method stub
+	public void exportPipeline(String filename, FileType type)
+			throws FileException {
+		AbstractPersistence persistence = PersistenceFactory.getInstance()
+				.getPersistence(type.getPersistenceClass());
 
+		persistence.save(filename, functions);
 	}
 
 	@Override

@@ -1,12 +1,13 @@
 package de.osmembrane;
 
+import de.osmembrane.model.ModelProxy;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 
 public class Application {
-	public Main unnamed_Main_;
-
+	
 	public void initiate() {
 		try {
 		//throw new UnsupportedOperationException();
@@ -19,11 +20,13 @@ public class Application {
 		}
 	}
 
+	/**
+	 * Initializes the model.
+	 */
 	public void createModels() {
 		try {
-		// TODO Auto-generated method stub
-		//throw new UnsupportedOperationException();
-		// FIXME
+			ModelProxy.getInstance().accessFunctions().initiate(Constants.XML_RESOURCE_PATH);
+			ModelProxy.getInstance().accessPipeline().truncate();
 		} catch(Exception e) {
 			ViewRegistry.showException(this.getClass(), ExceptionType.CRITICAL_ABNORMAL_BEHAVIOR, e);
 		}

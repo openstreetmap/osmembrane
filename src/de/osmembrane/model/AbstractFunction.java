@@ -26,6 +26,21 @@ public abstract class AbstractFunction extends Observable implements
 	public abstract AbstractFunctionGroup getParent();
 
 	/**
+	 * Sets the {@link AbstractPipeline} of this function
+	 * 
+	 * @param pipeline
+	 *            new {@link AbstractPipeline}
+	 */
+	public abstract void setPipeline(AbstractPipeline pipeline);
+
+	/**
+	 * Returns the {@link AbstractPipeline} of this function.
+	 * 
+	 * @return {@link AbstractPipeline} of this function
+	 */
+	public abstract AbstractPipeline getPipeline();
+
+	/**
 	 * Returns the ID of the current Function.
 	 * 
 	 * @return ID of the current Function
@@ -57,8 +72,7 @@ public abstract class AbstractFunction extends Observable implements
 	 * Returns the currently active XMLTask for the actual Function.
 	 * 
 	 * If any changes are applied to the XMLTask call
-	 * {@link AbstractFunction#setChanged()()} and
-	 * {@link AbstractFunction#notifyObservers()}.
+	 * {@link AbstractFunction#changedNotifyObservers()}
 	 * 
 	 * @return active XMLTask for the Function
 	 */
@@ -128,12 +142,14 @@ public abstract class AbstractFunction extends Observable implements
 	public abstract boolean same(AbstractFunction function);
 
 	/**
-	 * Notifies all registered {@link Observer}s with pre-called {@link Observable#setChanged())}.
+	 * Notifies all registered {@link Observer}s with pre-called
+	 * {@link Observable#setChanged())}.
 	 */
 	public void changedNotifyObservers() {
 		this.setChanged();
 		this.notifyObservers();
+
+		/* now we have to notify the observer of the pipeline */
+		getPipeline().changedNotifyObservers();
 	}
-	
-	/* TODO implement auto-inform Pipeline-Observer */
 }

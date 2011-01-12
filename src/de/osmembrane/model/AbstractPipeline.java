@@ -1,6 +1,7 @@
 package de.osmembrane.model;
 
 import java.util.Observable;
+import java.util.Observer;
 
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.FileType;
@@ -122,4 +123,12 @@ public abstract class AbstractPipeline extends Observable {
 	 * @return true if pipeline contains a loop, otherwise false
 	 */
 	public abstract boolean checkForLoops();
+	
+	/**
+	 * Notifies all registered {@link Observer}s with pre-called {@link Observable#setChanged())}.
+	 */
+	public void changedNotifyObservers() {
+		this.setChanged();
+		this.notifyObservers();
+	}
 }

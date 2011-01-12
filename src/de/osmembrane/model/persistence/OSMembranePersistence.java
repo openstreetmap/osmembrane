@@ -41,7 +41,7 @@ public class OSMembranePersistence extends AbstractPersistence {
 			oos.writeObject(data);
 			oos.close();
 		} catch (IOException e) {
-			throw new FileException(Type.NOT_WRITEABLE, e);
+			throw new FileException(Type.NOT_WRITABLE, e);
 		}
 	}
 

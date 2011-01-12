@@ -24,15 +24,22 @@ public class FileException extends Exception {
 		NOT_READABLE,
 
 		/**
-		 * Is thrown when the file was not writeable.
+		 * Is thrown when the file was not writable.
 		 */
-		NOT_WRITEABLE,
+		NOT_WRITABLE,
 
 		/**
 		 * Is thrown when the input- or output-data are in a wrong format, e.g.
 		 * a wrong has been loaded.
 		 */
 		WRONG_FORMAT,
+
+		/**
+		 * Is thrown when the input has some syntax errors and the parser can't
+		 * recognize the rest. See {@link FileException#getParentException()}
+		 * for details.
+		 */
+		SYNTAX_PROBLEM,
 	}
 
 	private Type type;

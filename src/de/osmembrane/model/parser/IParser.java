@@ -18,7 +18,7 @@ public interface IParser {
 	 * @param input string which should be transformed
 	 * @return List of functions, which are used in the {@link Pipeline}
 	 */
-	public List<AbstractFunction> parseString(String input);
+	public List<AbstractFunction> parseString(String input) throws ParseException;
 
 	/**
 	 * Creates a string from a given {@link Pipeline}.

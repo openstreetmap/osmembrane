@@ -2,6 +2,8 @@ package de.osmembrane.resources;
 
 import java.util.Locale;
 
+import de.osmembrane.model.AbstractFunctionPrototype;
+
 /**
  * Constants for OSMembrane.
  * 
@@ -18,4 +20,9 @@ public class Constants {
 	 * Is used by I18N for a default translation of the XMLHasDescription objects.
 	 */
 	public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
+	
+	/**
+	 * Path to the XML resource for {@link AbstractFunctionPrototype}.
+	 */
+	public static final String XML_RESOURCE_PATH = "src/de/osmembrane/resources/xml/osmosis-structure.xml";
 }
