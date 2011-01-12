@@ -9,16 +9,20 @@ import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.model.persistence.OSMembranePersistence;
 import de.osmembrane.model.persistence.PersistenceFactory;
 
+/**
+ * Implementation of {@link AbstractPipeline}.
+ * 
+ * @author jakob_jarosch
+ */
 public class Pipeline extends AbstractPipeline {
 
+	@SuppressWarnings("unused")
 	private Stack<Pipeline> undoStack;
+	
+	@SuppressWarnings("unused")
 	private Stack<Pipeline> redoStack;
 
 	private List<AbstractFunction> functions;
-
-	private Pipeline getState() {
-		throw new UnsupportedOperationException();
-	}
 
 	@Override
 	public AbstractFunction[] getFunctions() {

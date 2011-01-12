@@ -4,7 +4,7 @@ import java.util.List;
 
 import de.osmembrane.model.AbstractFunction;
 
-public class BatchParser implements IParser {
+public class BashParser implements IParser {
 
 	@Override
 	public List<AbstractFunction> parseString(String input) {
