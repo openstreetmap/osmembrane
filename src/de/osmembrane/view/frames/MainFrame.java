@@ -20,7 +20,7 @@ import javax.swing.JToolBar;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.ExitAction;
 import de.osmembrane.view.AbstractFrame;
-import de.osmembrane.view.panels.FunctionLibraryPanel;
+import de.osmembrane.view.panels.LibraryPanel;
 import de.osmembrane.view.panels.InspectorPanel;
 import de.osmembrane.view.panels.PipelinePanel;
 
@@ -110,7 +110,7 @@ public class MainFrame extends AbstractFrame {
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		
 		// function library	
-		FunctionLibraryPanel functionLibrary = new FunctionLibraryPanel();
+		LibraryPanel functionLibrary = new LibraryPanel();
 		JScrollPane paneLibrary = new JScrollPane(functionLibrary);			
 		
 		// pipeline view
