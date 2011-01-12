@@ -58,10 +58,6 @@ public class ActionRegistry {
 		register(new UndoAction());
 		register(new RedoAction());
 
-		// view actions
-		register(new MoveViewAction());
-		register(new ZoomViewAction());
-
 		// other actions
 		register(new ShowHelpAction());
 		register(new ChangeSettingsAction());
