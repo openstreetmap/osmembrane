@@ -11,8 +11,7 @@ import java.io.ObjectOutputStream;
 import java.util.Observable;
 
 import de.osmembrane.model.AbstractSettings;
-import de.osmembrane.model.FileException;
-import de.osmembrane.model.FileException.Type;
+import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.ObserverObject;
 import de.osmembrane.model.Settings;
 import de.osmembrane.view.ExceptionType;

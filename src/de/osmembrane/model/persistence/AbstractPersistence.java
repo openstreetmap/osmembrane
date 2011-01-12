@@ -3,7 +3,6 @@ package de.osmembrane.model.persistence;
 import java.io.Serializable;
 import java.util.Observer;
 
-import de.osmembrane.model.FileException;
 
 /**
  * AbstractPersistence provides two methods save and load, so all

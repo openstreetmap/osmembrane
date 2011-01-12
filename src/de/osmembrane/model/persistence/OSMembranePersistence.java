@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Observable;
 
 import de.osmembrane.model.AbstractFunction;
-import de.osmembrane.model.FileException;
-import de.osmembrane.model.FileException.Type;
+import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;
 

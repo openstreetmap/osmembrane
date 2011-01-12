@@ -7,8 +7,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import de.osmembrane.model.FileException;
-import de.osmembrane.model.FileException.Type;
+import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.xml.XMLOsmosisStructure;
 
 /**
