@@ -88,8 +88,8 @@ public class LibraryPanel extends JPanel {
 		lpg.setId(groups.size() - 1);
 		lpg.setContentHeight(0);
 		add(lpg);
-		if (lpg.getPreferredSize().width > getWidth()) {
-			setSize(lpg.getPreferredSize().width, getHeight());
+		if (lpg.getPreferredSize().width > getPreferredSize().width) {
+			setPreferredSize(new Dimension(lpg.getPreferredSize().width, getHeight()));
 		}
 		rearrange();
 	}

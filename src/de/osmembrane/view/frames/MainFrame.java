@@ -13,12 +13,29 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+import javax.swing.undo.UndoableEdit;
 
 import de.osmembrane.controller.ActionRegistry;
+import de.osmembrane.controller.ChangeSettingsAction;
+import de.osmembrane.controller.DeleteFunctionAction;
+import de.osmembrane.controller.DuplicateFunctionAction;
+import de.osmembrane.controller.ExecutePipelineAction;
 import de.osmembrane.controller.ExitAction;
+import de.osmembrane.controller.ExportPipelineAction;
+import de.osmembrane.controller.GeneratePipelineAction;
+import de.osmembrane.controller.ImportPipelineAction;
+import de.osmembrane.controller.LoadPipelineAction;
+import de.osmembrane.controller.NewPipelineAction;
+import de.osmembrane.controller.PreviewPipelineAction;
+import de.osmembrane.controller.RedoAction;
+import de.osmembrane.controller.SavePipelineAction;
+import de.osmembrane.controller.ShowHelpAction;
+import de.osmembrane.controller.UndoAction;
 import de.osmembrane.model.AbstractFunctionGroup;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.view.AbstractFrame;
@@ -95,23 +112,55 @@ public class MainFrame extends AbstractFrame {
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu fileMenu = new JMenu("File");
+		fileMenu.add(ActionRegistry.getInstance().get(NewPipelineAction.class));
+		fileMenu.add(ActionRegistry.getInstance().get(LoadPipelineAction.class));
+		fileMenu.add(ActionRegistry.getInstance().get(SavePipelineAction.class));
+		fileMenu.add(new JSeparator());
+		fileMenu.add(ActionRegistry.getInstance().get(ImportPipelineAction.class));
+		fileMenu.add(ActionRegistry.getInstance().get(ExportPipelineAction.class));
+		fileMenu.add(new JSeparator());
+		fileMenu.add(ActionRegistry.getInstance().get(ChangeSettingsAction.class));
+		fileMenu.add(new JSeparator());
 		fileMenu.add(ActionRegistry.getInstance().get(ExitAction.class));
 		menuBar.add(fileMenu);
 		
 		JMenu editMenu = new JMenu("Edit");
+		editMenu.add(ActionRegistry.getInstance().get(UndoAction.class));
+		editMenu.add(ActionRegistry.getInstance().get(RedoAction.class));
+		fileMenu.add(new JSeparator());
+		editMenu.add(ActionRegistry.getInstance().get(DuplicateFunctionAction.class));
+		editMenu.add(ActionRegistry.getInstance().get(DeleteFunctionAction.class));
 		menuBar.add(editMenu);
 		
 		JMenu pipelineMenu = new JMenu("Pipeline");
+		pipelineMenu.add(ActionRegistry.getInstance().get(PreviewPipelineAction.class));
+		pipelineMenu.add(ActionRegistry.getInstance().get(GeneratePipelineAction.class));
+		pipelineMenu.add(ActionRegistry.getInstance().get(ExecutePipelineAction.class));
 		menuBar.add(pipelineMenu);
 		
 		JMenu aboutMenu = new JMenu("About");
+		aboutMenu.add(ActionRegistry.getInstance().get(ShowHelpAction.class));
 		menuBar.add(aboutMenu);
 		
 		setJMenuBar(menuBar);
 			
 		// tool bar
 		JToolBar toolBar = new JToolBar("OSMembrane", JToolBar.HORIZONTAL);
-		toolBar.add(ActionRegistry.getInstance().get(ExitAction.class));
+		toolBar.add(ActionRegistry.getInstance().get(NewPipelineAction.class));
+		toolBar.add(ActionRegistry.getInstance().get(LoadPipelineAction.class));
+		toolBar.add(ActionRegistry.getInstance().get(SavePipelineAction.class));
+		toolBar.add(new JSeparator(SwingConstants.VERTICAL));
+		toolBar.add(ActionRegistry.getInstance().get(ImportPipelineAction.class));
+		toolBar.add(ActionRegistry.getInstance().get(ExportPipelineAction.class));
+		toolBar.add(new JSeparator(SwingConstants.VERTICAL));
+		toolBar.add(ActionRegistry.getInstance().get(UndoAction.class));
+		toolBar.add(ActionRegistry.getInstance().get(RedoAction.class));
+		toolBar.add(new JSeparator(SwingConstants.VERTICAL));
+		toolBar.add(ActionRegistry.getInstance().get(PreviewPipelineAction.class));
+		toolBar.add(ActionRegistry.getInstance().get(GeneratePipelineAction.class));
+		toolBar.add(ActionRegistry.getInstance().get(ExecutePipelineAction.class));
+		toolBar.add(new JSeparator(SwingConstants.VERTICAL));
+		toolBar.add(ActionRegistry.getInstance().get(ShowHelpAction.class));
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		
 		// function library	

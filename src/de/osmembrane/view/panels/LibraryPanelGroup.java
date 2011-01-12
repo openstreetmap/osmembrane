@@ -20,6 +20,7 @@ import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.model.AbstractFunction;
 import de.osmembrane.model.AbstractFunctionGroup;
+import de.osmembrane.view.ViewRegistry;
 
 /**
  * A group panel that is placed for each FunctionGroup on the LibraryPanel
@@ -47,7 +48,7 @@ public class LibraryPanelGroup extends JPanel {
 	 * The height of the contained objects
 	 */
 	private int contentHeight;
-	
+
 	/**
 	 * The contained objects
 	 */
@@ -67,23 +68,25 @@ public class LibraryPanelGroup extends JPanel {
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		// best decision ever <- do not touch
 		setLayout(null);
-				
+
 		int y = 3;
+		// find the preferred width by using the maximum of all child objects
 		int maxPreferredWidth = 0;
 
 		// header button
 		headerButton = new JButton();
-		headerButton.setText(afg.getFriendlyName());		
-		
-		headerButton.setLocation(3, y);		
+		headerButton.setText(afg.getFriendlyName());
+
+		headerButton.setLocation(3, y);
 		headerButton.setSize(headerButton.getPreferredSize());
 		maxPreferredWidth = headerButton.getPreferredSize().width;
 		y += headerButton.getHeight() + 6;
-		
+
 		headerButton.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				lp.groupClicked(id);
 			}
 
 			@Override
@@ -100,7 +103,6 @@ public class LibraryPanelGroup extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				lp.groupClicked(id);
 			}
 		});
 
@@ -110,14 +112,15 @@ public class LibraryPanelGroup extends JPanel {
 		// all functions available in the function group
 		for (AbstractFunction af : afg.getFunctions()) {
 			JLabel jl = new JLabel(af.getFriendlyName());
-			
+
 			jl.setLocation(3, y);
 			jl.setSize(jl.getPreferredSize());
-			maxPreferredWidth = Math.max(maxPreferredWidth, jl.getPreferredSize().width);
+			maxPreferredWidth = Math.max(maxPreferredWidth,
+					jl.getPreferredSize().width);
 			y += jl.getHeight() + 6;
-			
+
 			contentHeight += jl.getPreferredSize().height;
-			
+
 			content.add(jl);
 		}
 
@@ -162,9 +165,10 @@ public class LibraryPanelGroup extends JPanel {
 	 * Gets called when the library panel has rearranged the library panel group
 	 */
 	public void rearranged() {
-		headerButton.setSize(getWidth() - 6, headerButton.getPreferredSize().height);
+		headerButton.setSize(getWidth() - 6,
+				headerButton.getPreferredSize().height);
 		for (JLabel jl : content) {
-			jl.setSize(getWidth() - 6, jl.getPreferredSize().height);
+			jl.setSize(this.getWidth() - 6, jl.getPreferredSize().height);
 		}
 	}
 
