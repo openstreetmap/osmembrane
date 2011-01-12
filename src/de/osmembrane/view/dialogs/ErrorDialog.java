@@ -60,6 +60,8 @@ public class ErrorDialog extends AbstractDialog {
 		captionLabel.setFont(captionLabel.getFont().deriveFont(Font.BOLD));
 		messageLabel = new JLabel();
 		exceptionText = new JTextArea();
+		exceptionText.setEditable(false);		
+		
 		okButton = new JButton();
 		okButton.addActionListener(new ActionListener() {
 			@Override
@@ -72,6 +74,7 @@ public class ErrorDialog extends AbstractDialog {
 			}
 		});
 
+		// grid bag layout
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(8, 8, 8, 8);
 		gbc.gridx = 1;
@@ -134,6 +137,7 @@ public class ErrorDialog extends AbstractDialog {
 				"View.ErrorDialog.In", exception.getClass().getCanonicalName(),
 				triggerClass.getCanonicalName()));
 
+		// find a suitable description, if one exists
 		String message = exception.getLocalizedMessage();
 		if (message == null) {
 			message = exception.getMessage();
