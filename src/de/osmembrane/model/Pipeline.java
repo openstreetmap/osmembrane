@@ -1,5 +1,6 @@
 package de.osmembrane.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -24,6 +25,13 @@ public class Pipeline extends AbstractPipeline {
 
 	private List<AbstractFunction> functions;
 
+	/**
+	 * Constructor for {@link Pipeline}.
+	 */
+	public Pipeline() {
+		this.functions = new ArrayList<AbstractFunction>();
+	}
+	
 	@Override
 	public AbstractFunction[] getFunctions() {
 		AbstractFunction[] functions = new AbstractFunction[this.functions
