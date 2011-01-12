@@ -1,8 +1,11 @@
 package de.osmembrane.view.panels;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -27,7 +30,7 @@ public class LibraryPanelGroup extends JPanel {
 	 */
 	private JButton headerButton;
 	
-	public LibraryPanelGroup(AbstractFunctionGroup afg) {
+	public LibraryPanelGroup(final LibraryPanel lp, AbstractFunctionGroup afg) {
 		setLayout(new GridBagLayout());
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
@@ -38,7 +41,29 @@ public class LibraryPanelGroup extends JPanel {
 		
 		headerButton = new JButton();
 		headerButton.setText(afg.getFriendlyName());
-		add(headerButton);
+		headerButton.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				lp.groupClicked(id);
+			}
+		});
 		
 		for (AbstractFunction af : afg.getFunctions()) {
 			

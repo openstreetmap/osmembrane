@@ -138,15 +138,21 @@ public class ErrorDialog extends AbstractDialog {
 		if (message == null) {
 			message = exception.getMessage();
 			if (message == null) {
-				message = exception.getCause().getLocalizedMessage();
-				if (message == null) {
-					message = exception.getCause().getMessage();
+				if (exception.getCause() != null) {
+					message = exception.getCause().getLocalizedMessage();
 					if (message == null) {
-						message = I18N.getInstance().getString(
-								"View.ErrorDialog.NoMessage");
+						message = exception.getCause().getMessage();
+						if (message == null) {
+							message = I18N.getInstance().getString(
+									"View.ErrorDialog.NoMessage");
+						}
 					}
+				} else {
+					message = I18N.getInstance().getString(
+							"View.ErrorDialog.NoMessage");
 				}
 			}
+
 		}
 		messageLabel.setText(message);
 

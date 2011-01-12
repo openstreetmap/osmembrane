@@ -19,9 +19,14 @@ import javax.swing.JToolBar;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.ExitAction;
+import de.osmembrane.model.AbstractFunctionGroup;
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.view.AbstractFrame;
+import de.osmembrane.view.ExceptionType;
+import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.panels.LibraryPanel;
 import de.osmembrane.view.panels.InspectorPanel;
+import de.osmembrane.view.panels.LibraryPanelGroup;
 import de.osmembrane.view.panels.PipelinePanel;
 
 /**
@@ -111,6 +116,10 @@ public class MainFrame extends AbstractFrame {
 		
 		// function library	
 		LibraryPanel functionLibrary = new LibraryPanel();
+		for (AbstractFunctionGroup afg : ModelProxy.getInstance().accessFunctions().getFunctionGroups()) {
+			LibraryPanelGroup lpg = new LibraryPanelGroup(functionLibrary, afg);
+			functionLibrary.addGroup(lpg);
+		}
 		JScrollPane paneLibrary = new JScrollPane(functionLibrary);			
 		
 		// pipeline view
