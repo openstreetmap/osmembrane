@@ -1,20 +1,35 @@
 package de.osmembrane.view.panels;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.model.AbstractFunction;
 import de.osmembrane.model.AbstractFunctionGroup;
 
+/**
+ * A group panel that is placed for each FunctionGroup on the LibraryPanel
+ * 
+ * @author tobias_kuhn
+ * 
+ */
 public class LibraryPanelGroup extends JPanel {
+
+	private static final long serialVersionUID = -2502154263887966328L;
 
 	/**
 	 * The id this panel group has in its main Library panel (used for click
@@ -29,6 +44,16 @@ public class LibraryPanelGroup extends JPanel {
 	private JButton headerButton;
 
 	/**
+	 * The height of the contained objects
+	 */
+	private int contentHeight;
+	
+	/**
+	 * The contained objects
+	 */
+	private List<JLabel> content;
+
+	/**
 	 * Initializes a new LibraryPanelGroup
 	 * 
 	 * @param lp
@@ -38,18 +63,23 @@ public class LibraryPanelGroup extends JPanel {
 	 *            represents
 	 */
 	public LibraryPanelGroup(final LibraryPanel lp, AbstractFunctionGroup afg) {
-		// grid bag layout
-		setLayout(new GridBagLayout());
+		// display
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(8, 8, 8, 8);
+		// best decision ever <- do not touch
+		setLayout(null);
+				
+		int y = 3;
+		int maxPreferredWidth = 0;
 
 		// header button
 		headerButton = new JButton();
-		headerButton.setText(afg.getFriendlyName());
+		headerButton.setText(afg.getFriendlyName());		
+		
+		headerButton.setLocation(3, y);		
+		headerButton.setSize(headerButton.getPreferredSize());
+		maxPreferredWidth = headerButton.getPreferredSize().width;
+		y += headerButton.getHeight() + 6;
+		
 		headerButton.addMouseListener(new MouseListener() {
 
 			@Override
@@ -73,17 +103,30 @@ public class LibraryPanelGroup extends JPanel {
 				lp.groupClicked(id);
 			}
 		});
-		
-		add(headerButton, gbc);
 
-		// all functions available here
+		add(headerButton);
+
+		content = new ArrayList<JLabel>();
+		// all functions available in the function group
 		for (AbstractFunction af : afg.getFunctions()) {
-
+			JLabel jl = new JLabel(af.getFriendlyName());
+			
+			jl.setLocation(3, y);
+			jl.setSize(jl.getPreferredSize());
+			maxPreferredWidth = Math.max(maxPreferredWidth, jl.getPreferredSize().width);
+			y += jl.getHeight() + 6;
+			
+			contentHeight += jl.getPreferredSize().height;
+			
+			content.add(jl);
 		}
+
+		setPreferredSize(new Dimension(maxPreferredWidth, 0));
 	}
 
 	/**
-	 * @param id the id this panel group has in its main Library panel to set
+	 * @param id
+	 *            the id this panel group has in its main Library panel to set
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -93,16 +136,36 @@ public class LibraryPanelGroup extends JPanel {
 	 * 
 	 * @return the height of this group's contents, if they are expanded
 	 */
-	public int getFullHeight() {
-		return 0;
+	public int getContentHeight() {
+		return contentHeight;
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		Dimension result = super.getPreferredSize();
+		result.height = headerButton.getPreferredSize().height;
+		return result;
 	}
 
 	/**
 	 * Sets the height for this group's contents
-	 * @param newHeight 0, if contracted, getFullHeight() if expanded
+	 * 
+	 * @param newHeight
+	 *            0, if contracted, getFullHeight() if expanded
 	 */
-	public void setHeight(int newHeight) {
-		setSize(getWidth(), newHeight);
+	public void setContentHeight(int newHeight) {
+		setSize(getWidth(), headerButton.getPreferredSize().height + 6
+				+ newHeight);
+	}
+
+	/**
+	 * Gets called when the library panel has rearranged the library panel group
+	 */
+	public void rearranged() {
+		headerButton.setSize(getWidth() - 6, headerButton.getPreferredSize().height);
+		for (JLabel jl : content) {
+			jl.setSize(getWidth() - 6, jl.getPreferredSize().height);
+		}
 	}
 
 }

@@ -1,12 +1,15 @@
 package de.osmembrane.view.panels;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
+
+import de.osmembrane.view.ExceptionType;
+import de.osmembrane.view.ViewRegistry;
 
 /**
  * The function library panel that lists all the function groups in a register
@@ -46,7 +49,12 @@ public class LibraryPanel extends JPanel {
 	/**
 	 * The typical duration of an expandation, in milliseconds
 	 */
-	private final static double expandingDuration = 400.0;
+	private final static double expandingDuration = 300.0;
+
+	/**
+	 * The thread that performs the expanding/contracting animation
+	 */
+	private Thread expandingThread;
 
 	/**
 	 * The group components listed in this library panel
@@ -61,11 +69,13 @@ public class LibraryPanel extends JPanel {
 		expanded = -1;
 		expanding = -1;
 		contracting = -1;
+		expandingThread = null;
 		groups = new ArrayList<LibraryPanelGroup>();
 
 		// display
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		// best decision ever <- do not touch
+		setLayout(null);
 	}
 
 	/**
@@ -76,7 +86,12 @@ public class LibraryPanel extends JPanel {
 	public void addGroup(LibraryPanelGroup lpg) {
 		groups.add(lpg);
 		lpg.setId(groups.size() - 1);
+		lpg.setContentHeight(0);
 		add(lpg);
+		if (lpg.getPreferredSize().width > getWidth()) {
+			setSize(lpg.getPreferredSize().width, getHeight());
+		}
+		rearrange();
 	}
 
 	/**
@@ -85,17 +100,36 @@ public class LibraryPanel extends JPanel {
 	 * @param group
 	 */
 	public void groupClicked(int group) {
+
+		// wait for the old thread to die before modifying variables
+		if ((expandingThread != null) && (expandingThread.isAlive())) {
+			expandingStart = 0L;
+			try {
+				expandingThread.join();
+			} catch (InterruptedException e) {
+				ViewRegistry.showException(this.getClass(),
+						ExceptionType.ABNORMAL_BEHAVIOR, e);
+			}
+		}
+
 		LibraryPanelGroup lpg;
 
-		// quick finish old animation
+		// finish old animation, if one was still running
+		for (int i = 0; i < groups.size(); i++) {
+			lpg = groups.get(i);
+			if ((i != expanding) && (i != expanded)) {
+				lpg.setContentHeight(0);
+			}
+		}
+
 		if (expanding != -1) {
 			lpg = groups.get(expanding);
-			lpg.setHeight(lpg.getFullHeight());
+			lpg.setContentHeight(lpg.getContentHeight());
+			expanded = expanding;
 		}
-		if (contracting != -1) {
-			lpg = groups.get(contracting);
-			lpg.setHeight(0);
-		}
+		expanding = -1;
+		contracting = -1;
+		rearrange();
 
 		// check whether there is something to expand
 		if (expanded == group) {
@@ -109,7 +143,7 @@ public class LibraryPanel extends JPanel {
 		}
 		expandingStart = System.currentTimeMillis();
 
-		Runnable animation = new Runnable() {
+		expandingThread = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
@@ -123,12 +157,19 @@ public class LibraryPanel extends JPanel {
 							/ expandingDuration;
 
 					// actual animation
-					lpg = groups.get(expanding);
-					lpg.setHeight(getExpandingHeight(timeFactor,
-							lpg.getFullHeight(), true));
-					lpg = groups.get(contracting);
-					lpg.setHeight(getExpandingHeight(timeFactor,
-							lpg.getFullHeight(), false));
+					if (expanding > -1) {
+						lpg = groups.get(expanding);
+						lpg.setContentHeight(getExpandingHeight(timeFactor,
+								lpg.getContentHeight(), true));
+					}
+					if (contracting > -1) {
+						lpg = groups.get(contracting);
+						lpg.setContentHeight(getExpandingHeight(timeFactor,
+								lpg.getContentHeight(), false));
+					}
+
+					rearrange();
+					repaint();
 
 					// might be inaccurate by several factors, but will still
 					// guarantee a fluent animation
@@ -140,19 +181,43 @@ public class LibraryPanel extends JPanel {
 				}
 
 				// animation done
-				lpg = groups.get(expanding);
-				lpg.setHeight(lpg.getFullHeight());
-				lpg = groups.get(contracting);
-				lpg.setHeight(0);
+				if (expanding > -1) {
+					lpg = groups.get(expanding);
+					lpg.setContentHeight(lpg.getContentHeight());
+				}
+				if (contracting > -1) {
+					lpg = groups.get(contracting);
+					lpg.setContentHeight(0);
+				}
 
 				expanded = expanding;
 				expanding = -1;
 				contracting = -1;
 
 			}
-		};
 
-		new Thread(animation).start();
+		});
+		expandingThread.start();
+	}
+
+	@Override
+	public void setSize(Dimension d) {
+		super.setSize(d);
+		rearrange();
+	}
+
+	/**
+	 * Rearranges the library panel groups to actually look like a library panel
+	 * Unlike the "Layout Manager" (incompetent, is a Manager)
+	 */
+	private void rearrange() {
+		int y = 3;
+		for (LibraryPanelGroup lpg : groups) {
+			lpg.setLocation(3, y);
+			lpg.setSize(this.getWidth() - 6, lpg.getHeight());
+			lpg.rearranged();
+			y += lpg.getHeight() + 6;
+		}
 	}
 
 	/**
