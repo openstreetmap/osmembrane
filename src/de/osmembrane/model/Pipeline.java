@@ -1,10 +1,10 @@
 package de.osmembrane.model;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Stack;
 
 import de.osmembrane.model.persistence.AbstractPersistence;
+import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.model.persistence.OSMembranePersistence;
 import de.osmembrane.model.persistence.PersistenceFactory;

@@ -2,6 +2,7 @@ package de.osmembrane.model;
 
 import java.util.Observable;
 
+import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.FileType;
 
 /**

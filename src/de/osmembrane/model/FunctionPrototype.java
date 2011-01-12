@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.PersistenceFactory;
 import de.osmembrane.model.persistence.XMLOsmosisStructurePersistence;
 import de.osmembrane.model.xml.XMLFunctionGroup;
