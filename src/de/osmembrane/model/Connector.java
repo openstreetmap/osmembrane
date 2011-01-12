@@ -55,7 +55,7 @@ public class Connector extends AbstractConnector {
 
 	@Override
 	public boolean isFull() {
-		return (maxConnections > 0 & connectors.size() >= maxConnections);
+		return (maxConnections > 0 && connectors.size() >= maxConnections);
 	}
 
 	@Override
