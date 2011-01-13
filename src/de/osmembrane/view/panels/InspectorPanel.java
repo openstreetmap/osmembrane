@@ -3,6 +3,7 @@ package de.osmembrane.view.panels;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -19,6 +20,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import de.osmembrane.controller.ActionRegistry;
+import de.osmembrane.controller.EditPropertyAction;
 import de.osmembrane.model.AbstractFunction;
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.tools.I18N;
@@ -253,9 +256,8 @@ public class InspectorPanel extends JPanel implements Observer {
 		@Override
 		public void setValueAt(Object aValue, int row, int column) {
 			if (inspecting != null) {
-				inspecting.getActiveTask().getParameter().get(row)
-						.setValue(aValue.toString());
-				inspecting.changedNotifyObservers();
+				ActionEvent ae = new ActionEvent(inspecting, row, aValue.toString());
+				ActionRegistry.getInstance().get(EditPropertyAction.class).actionPerformed(ae);
 			}
 		}
 

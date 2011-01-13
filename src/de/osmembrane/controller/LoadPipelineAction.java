@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
+import de.osmembrane.view.ViewRegistry;
+
 public class LoadPipelineAction extends AbstractAction {
 
 	public LoadPipelineAction() {
@@ -15,6 +17,7 @@ public class LoadPipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		ViewRegistry.showException(null, null, null);
 		throw new UnsupportedOperationException();
 	}
 }
