@@ -38,6 +38,7 @@ import de.osmembrane.controller.ShowHelpAction;
 import de.osmembrane.controller.UndoAction;
 import de.osmembrane.model.AbstractFunctionGroup;
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractFrame;
 import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;
@@ -62,6 +63,8 @@ public class MainFrame extends AbstractFrame {
 	 * @see Spezifikation.pdf, chapter 2.1
 	 */
 	public MainFrame() {
+		setWindowTitle(I18N.getInstance().getString("osmembrane"));
+		
 		// WindowListener() von leeren methoden kürzen, wenn fertig
 		addWindowListener(new WindowListener() {
 
@@ -127,7 +130,7 @@ public class MainFrame extends AbstractFrame {
 		JMenu editMenu = new JMenu("Edit");
 		editMenu.add(ActionRegistry.getInstance().get(UndoAction.class));
 		editMenu.add(ActionRegistry.getInstance().get(RedoAction.class));
-		fileMenu.add(new JSeparator());
+		editMenu.add(new JSeparator());
 		editMenu.add(ActionRegistry.getInstance().get(DuplicateFunctionAction.class));
 		editMenu.add(ActionRegistry.getInstance().get(DeleteFunctionAction.class));
 		menuBar.add(editMenu);

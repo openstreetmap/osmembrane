@@ -13,7 +13,7 @@ public class ExitAction extends AbstractAction {
 	public ExitAction() {
 		//throw new UnsupportedOperationException();
 		// FIXME
-		putValue(Action.NAME, "Exitdamnyou");
+		putValue(Action.NAME, "Exit");
 		//putValue(Action.LARGE_ICON_KEY, new ImageIcon(getClass().getResource("/res/Add.png")));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_AT,
 					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));

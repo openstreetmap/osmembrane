@@ -3,10 +3,12 @@ package de.osmembrane.controller;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 public class DuplicateFunctionAction extends AbstractAction {
 
 	public DuplicateFunctionAction() {
+		putValue(Action.NAME, "Duplicate Function");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}
