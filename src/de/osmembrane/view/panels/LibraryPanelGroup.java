@@ -105,8 +105,11 @@ public class LibraryPanelGroup extends JPanel {
 		for (AbstractFunction af : afg.getFunctions()) {
 			ViewFunction vf = new ViewFunction(af);
 
+			// determine the top
 			vf.setLocation(3, y);
+			// display them fully
 			vf.setSize(vf.getPreferredSize());
+			// find the maximum necessary width
 			maxPreferredWidth = Math.max(maxPreferredWidth,
 					vf.getPreferredSize().width);
 			y += vf.getHeight() + 6;
@@ -132,7 +135,7 @@ public class LibraryPanelGroup extends JPanel {
 	 * 
 	 * @return the height of this group's contents, if they are expanded
 	 */
-	public int getContentHeight() {
+	public int getFullContentHeight() {
 		return contentHeight;
 	}
 
@@ -158,8 +161,10 @@ public class LibraryPanelGroup extends JPanel {
 	 * Gets called when the library panel has rearranged the library panel group
 	 */
 	public void rearranged() {
+		// correct the header button's width
 		headerButton.setSize(getWidth() - 6,
 				headerButton.getPreferredSize().height);
+		// center all the content view functions
 		for (ViewFunction vf : content) {
 			vf.setLocation((getWidth() - vf.getWidth()) / 2, vf.getLocation().y);
 		}

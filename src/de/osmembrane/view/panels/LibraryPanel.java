@@ -49,7 +49,7 @@ public class LibraryPanel extends JPanel {
 	/**
 	 * The typical duration of an expandation, in milliseconds
 	 */
-	private final static double expandingDuration = 300.0;
+	private final static double expandingDuration = 333.0;
 
 	/**
 	 * The thread that performs the expanding/contracting animation
@@ -85,9 +85,12 @@ public class LibraryPanel extends JPanel {
 	 */
 	public void addGroup(LibraryPanelGroup lpg) {
 		groups.add(lpg);
+		// set the corresponding id, so the group knows it
 		lpg.setId(groups.size() - 1);
+		// make it contracted
 		lpg.setContentHeight(0);
 		add(lpg);
+		// check if we have to adjust our preferred width
 		if (lpg.getPreferredSize().width > getPreferredSize().width) {
 			setPreferredSize(new Dimension(lpg.getPreferredSize().width,
 					getHeight()));
@@ -126,7 +129,7 @@ public class LibraryPanel extends JPanel {
 
 		if (expanding != -1) {
 			lpg = groups.get(expanding);
-			lpg.setContentHeight(lpg.getContentHeight());
+			lpg.setContentHeight(lpg.getFullContentHeight());
 			expanded = expanding;
 		}
 		expanding = -1;
@@ -162,12 +165,12 @@ public class LibraryPanel extends JPanel {
 					if (expanding > -1) {
 						lpg = groups.get(expanding);
 						lpg.setContentHeight(getExpandingHeight(timeFactor,
-								lpg.getContentHeight(), true));
+								lpg.getFullContentHeight(), true));
 					}
 					if (contracting > -1) {
 						lpg = groups.get(contracting);
 						lpg.setContentHeight(getExpandingHeight(timeFactor,
-								lpg.getContentHeight(), false));
+								lpg.getFullContentHeight(), false));
 					}
 
 					rearrange();
@@ -175,7 +178,7 @@ public class LibraryPanel extends JPanel {
 					// might be inaccurate by several factors, but will still
 					// guarantee a fluent animation
 					try {
-						Thread.sleep(10L);
+						Thread.sleep(20L);
 					} catch (InterruptedException e) {
 						// don't really care, we just redraw
 					}
@@ -184,7 +187,7 @@ public class LibraryPanel extends JPanel {
 				// animation done
 				if (expanding > -1) {
 					lpg = groups.get(expanding);
-					lpg.setContentHeight(lpg.getContentHeight());
+					lpg.setContentHeight(lpg.getFullContentHeight());
 				}
 				if (contracting > -1) {
 					lpg = groups.get(contracting);
@@ -212,16 +215,23 @@ public class LibraryPanel extends JPanel {
 	 * Rearranges the library panel groups to actually look like a library panel
 	 * Unlike the "Layout Manager" (incompetent, is a Manager)
 	 */
-	private synchronized void rearrange() {
+	private void rearrange() {
 		int y = 3;
 		for (LibraryPanelGroup lpg : groups) {
+			// determine top
 			lpg.setLocation(3, y);
+			// give it the width of the library & the height it needs
 			lpg.setSize(this.getWidth() - 6, lpg.getHeight());
+			// notify the arrangement
 			lpg.rearranged();
+		
 			y += lpg.getHeight() + 6;
 		}
+		
+		// update for the scroll bar
 		setPreferredSize(new Dimension(this.getPreferredSize().width, y));
 		setSize(getWidth(), getPreferredSize().height);
+		// NB: does not call setSize(Dimension), so no death recursion loop
 	}
 
 	/**
@@ -238,10 +248,13 @@ public class LibraryPanel extends JPanel {
 	 */
 	private int getExpandingHeight(double timeFactor, int originalHeight,
 			boolean expanding) {
+		// function: timeFactor in [0, 1] ---> arg in [0, 1]
+		double arg = 0.5 - 0.5 * Math.cos(timeFactor * Math.PI);
+		
 		if (expanding) {
-			return (int) (timeFactor * originalHeight);
+			return (int) (arg * originalHeight);
 		} else {
-			return (int) ((1.0 - timeFactor) * originalHeight);
+			return (int) ((1.0 - arg) * originalHeight);
 		}
 	}
 
