@@ -9,6 +9,9 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.view.ExceptionType;
+import de.osmembrane.view.ViewRegistry;
+
 public class NewPipelineAction extends AbstractAction {
 
 	public NewPipelineAction() {
@@ -23,6 +26,7 @@ public class NewPipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		ViewRegistry.showException(this.getClass(), ExceptionType.ABNORMAL_BEHAVIOR, new UnsupportedOperationException());
 		throw new UnsupportedOperationException();
 	}
 }

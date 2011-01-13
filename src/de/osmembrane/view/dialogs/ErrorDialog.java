@@ -1,5 +1,6 @@
 package de.osmembrane.view.dialogs;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -7,10 +8,13 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
@@ -30,6 +34,7 @@ public class ErrorDialog extends AbstractDialog {
 	/**
 	 * The components that will describe the error
 	 */
+	private JLabel messageIcon;
 	private JLabel captionLabel;
 	private JLabel messageLabel;
 	private JTextArea exceptionText;
@@ -56,6 +61,8 @@ public class ErrorDialog extends AbstractDialog {
 
 		// set the basics up
 		setLayout(new GridBagLayout());
+		
+		messageIcon = new JLabel(); 
 		captionLabel = new JLabel();
 		captionLabel.setFont(captionLabel.getFont().deriveFont(Font.BOLD));
 		messageLabel = new JLabel();
@@ -75,20 +82,31 @@ public class ErrorDialog extends AbstractDialog {
 		});
 
 		// grid bag layout
-		GridBagConstraints gbc = new GridBagConstraints();
+		GridBagConstraints gbc = new GridBagConstraints(); 
 		gbc.insets = new Insets(8, 8, 8, 8);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.gridheight = 2;
+		add(messageIcon, gbc);
+		
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-
+		gbc.gridheight = 1;
 		add(captionLabel, gbc);
 
-		gbc.gridy++;
+		gbc.gridx = 1;
+		gbc.gridy = 1;
 		add(messageLabel, gbc);
 
-		gbc.gridy++;
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.weightx = 0.0;
+		gbc.gridwidth = 2;		
 		add(new JScrollPane(exceptionText), gbc);
 
-		gbc.gridy++;
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.gridwidth = 2;
 		add(okButton, gbc);
 
 		pack();
@@ -131,8 +149,8 @@ public class ErrorDialog extends AbstractDialog {
 							"View.ErrorDialog.InvalidCall")));
 		}
 
-		setWindowTitle(exception.getClass().getCanonicalName());
-
+		setWindowTitle(exception.getClass().getCanonicalName());		
+		
 		captionLabel.setText(I18N.getInstance().getString(
 				"View.ErrorDialog.In", exception.getClass().getCanonicalName(),
 				triggerClass.getCanonicalName()));
@@ -197,8 +215,10 @@ public class ErrorDialog extends AbstractDialog {
 				|| (causeWasError);
 
 		if (fatal) {
+			messageIcon.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
 			okButton.setText(I18N.getInstance().getString("View.Quit"));
 		} else {
+			messageIcon.setIcon(UIManager.getIcon("OptionPane.warningIcon"));
 			okButton.setText(I18N.getInstance().getString("View.OK"));
 		}
 
