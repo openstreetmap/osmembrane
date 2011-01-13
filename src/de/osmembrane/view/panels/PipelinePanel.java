@@ -24,4 +24,8 @@ public class PipelinePanel extends JPanel implements Observer {
 		return selectedFunction;
 	}
 	
+	public PipelinePanel() {
+		add(new ViewFunction(null));
+	}
+	
 }

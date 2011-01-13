@@ -69,9 +69,7 @@ public class MainFrame extends AbstractFrame {
 		addWindowListener(new WindowListener() {
 
 			@Override
-			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void windowOpened(WindowEvent e) {			
 			}
 
 			@Override
@@ -82,31 +80,22 @@ public class MainFrame extends AbstractFrame {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				// TODO Auto-generated method stub
 			}
 
 			@Override
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void windowIconified(WindowEvent e) {			
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 		});

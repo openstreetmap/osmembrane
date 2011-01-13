@@ -2,6 +2,7 @@ package de.osmembrane.view.panels;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -19,6 +20,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.EditPropertyAction;
@@ -80,6 +82,9 @@ public class InspectorPanel extends JPanel implements Observer {
 		// display
 		rowEditorModel = new RowEditorModel();
 		display = new JRowTable(new InspectorPanelTableModel(), rowEditorModel);
+		
+		//display.getColumnModel().getColumn(0).setPreferredWidth(64);
+		//display.getColumnModel().getColumn(1).setPreferredWidth(64);
 
 		display.addMouseListener(new MouseListener() {
 
@@ -202,7 +207,7 @@ public class InspectorPanel extends JPanel implements Observer {
 		private static final long serialVersionUID = 6495527693821933683L;
 
 		private String[] columns = new String[2];
-		
+
 		public InspectorPanelTableModel() {
 			columns[0] = I18N.getInstance().getString("View.Parameter");
 			columns[1] = I18N.getInstance().getString("View.Value");

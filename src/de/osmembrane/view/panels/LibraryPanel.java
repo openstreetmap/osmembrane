@@ -89,7 +89,8 @@ public class LibraryPanel extends JPanel {
 		lpg.setContentHeight(0);
 		add(lpg);
 		if (lpg.getPreferredSize().width > getPreferredSize().width) {
-			setPreferredSize(new Dimension(lpg.getPreferredSize().width, getHeight()));
+			setPreferredSize(new Dimension(lpg.getPreferredSize().width,
+					getHeight()));
 		}
 		rearrange();
 	}
@@ -170,7 +171,6 @@ public class LibraryPanel extends JPanel {
 					}
 
 					rearrange();
-					repaint();
 
 					// might be inaccurate by several factors, but will still
 					// guarantee a fluent animation

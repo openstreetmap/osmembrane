@@ -1,26 +1,21 @@
 package de.osmembrane.view.panels;
 
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.model.AbstractFunction;
 import de.osmembrane.model.AbstractFunctionGroup;
-import de.osmembrane.view.ViewRegistry;
 
 /**
  * A group panel that is placed for each FunctionGroup on the LibraryPanel
@@ -114,14 +109,16 @@ public class LibraryPanelGroup extends JPanel {
 			JLabel jl = new JLabel(af.getFriendlyName());
 
 			jl.setLocation(3, y);
+			jl.setHorizontalAlignment(SwingConstants.CENTER);
 			jl.setSize(jl.getPreferredSize());
 			maxPreferredWidth = Math.max(maxPreferredWidth,
 					jl.getPreferredSize().width);
 			y += jl.getHeight() + 6;
 
-			contentHeight += jl.getPreferredSize().height;
+			contentHeight += jl.getPreferredSize().height + 7;
 
 			content.add(jl);
+			add(jl);
 		}
 
 		setPreferredSize(new Dimension(maxPreferredWidth, 0));
@@ -169,6 +166,7 @@ public class LibraryPanelGroup extends JPanel {
 				headerButton.getPreferredSize().height);
 		for (JLabel jl : content) {
 			jl.setSize(this.getWidth() - 6, jl.getPreferredSize().height);
+			jl.setBackground(Color.RED);
 		}
 	}
 
