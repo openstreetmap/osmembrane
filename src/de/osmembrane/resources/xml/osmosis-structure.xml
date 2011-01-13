@@ -2391,7 +2391,7 @@
 	</functionGroup>
 
 	<functionGroup id="changeset"
-		friendlyName="Changeset Dreivation and Merging Functions">
+		friendlyName="Changeset Derivation and Merging">
 		<function id="apply-change" friendlyName="Apply change">
 			<task name="apply-change" shortName="ac">
 				<description lang="en">
@@ -2426,7 +2426,7 @@
 		</function>
 	</functionGroup>
 
-	<functionGroup id="replication" friendlyName="Replication Functions">
+	<functionGroup id="replication" friendlyName="Replication">
 		<function id="read-change-interval" friendlyName="Read change-interval">
 			<task name="read-change-interval" shortName="rci">
 				<description lang="en">

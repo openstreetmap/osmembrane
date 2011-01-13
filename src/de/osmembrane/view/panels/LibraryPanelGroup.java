@@ -1,6 +1,5 @@
 package de.osmembrane.view.panels;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -9,9 +8,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.model.AbstractFunction;
@@ -47,7 +44,7 @@ public class LibraryPanelGroup extends JPanel {
 	/**
 	 * The contained objects
 	 */
-	private List<JLabel> content;
+	private List<ViewFunction> content;
 
 	/**
 	 * Initializes a new LibraryPanelGroup
@@ -103,22 +100,21 @@ public class LibraryPanelGroup extends JPanel {
 
 		add(headerButton);
 
-		content = new ArrayList<JLabel>();
+		content = new ArrayList<ViewFunction>();
 		// all functions available in the function group
 		for (AbstractFunction af : afg.getFunctions()) {
-			JLabel jl = new JLabel(af.getFriendlyName());
+			ViewFunction vf = new ViewFunction(af);
 
-			jl.setLocation(3, y);
-			jl.setHorizontalAlignment(SwingConstants.CENTER);
-			jl.setSize(jl.getPreferredSize());
+			vf.setLocation(3, y);
+			vf.setSize(vf.getPreferredSize());
 			maxPreferredWidth = Math.max(maxPreferredWidth,
-					jl.getPreferredSize().width);
-			y += jl.getHeight() + 6;
+					vf.getPreferredSize().width);
+			y += vf.getHeight() + 6;
 
-			contentHeight += jl.getPreferredSize().height + 7;
+			contentHeight += vf.getPreferredSize().height + 7;
 
-			content.add(jl);
-			add(jl);
+			content.add(vf);
+			add(vf);
 		}
 
 		setPreferredSize(new Dimension(maxPreferredWidth, 0));
@@ -164,9 +160,8 @@ public class LibraryPanelGroup extends JPanel {
 	public void rearranged() {
 		headerButton.setSize(getWidth() - 6,
 				headerButton.getPreferredSize().height);
-		for (JLabel jl : content) {
-			jl.setSize(this.getWidth() - 6, jl.getPreferredSize().height);
-			jl.setBackground(Color.RED);
+		for (ViewFunction vf : content) {
+			vf.setLocation((getWidth() - vf.getWidth()) / 2, vf.getLocation().y);
 		}
 	}
 

@@ -2,23 +2,16 @@ package de.osmembrane.view.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
-import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
-import javax.swing.undo.UndoableEdit;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.ChangeSettingsAction;
@@ -40,8 +33,6 @@ import de.osmembrane.model.AbstractFunctionGroup;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractFrame;
-import de.osmembrane.view.ExceptionType;
-import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.panels.LibraryPanel;
 import de.osmembrane.view.panels.InspectorPanel;
 import de.osmembrane.view.panels.LibraryPanelGroup;

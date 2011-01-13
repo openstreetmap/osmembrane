@@ -6,6 +6,7 @@ import java.util.Observer;
 import javax.swing.JPanel;
 
 import de.osmembrane.model.AbstractFunction;
+import de.osmembrane.model.ModelProxy;
 
 public class PipelinePanel extends JPanel implements Observer {
 	
@@ -25,7 +26,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 	
 	public PipelinePanel() {
-		add(new ViewFunction(null));
+		//add(new ViewFunction(ModelProxy.getInstance().accessFunctions().getFunctionGroups()[1].getFunctions()[0]));
 	}
 	
 }

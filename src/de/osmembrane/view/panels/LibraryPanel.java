@@ -194,6 +194,7 @@ public class LibraryPanel extends JPanel {
 				expanded = expanding;
 				expanding = -1;
 				contracting = -1;
+				rearrange();
 
 			}
 
@@ -211,7 +212,7 @@ public class LibraryPanel extends JPanel {
 	 * Rearranges the library panel groups to actually look like a library panel
 	 * Unlike the "Layout Manager" (incompetent, is a Manager)
 	 */
-	private void rearrange() {
+	private synchronized void rearrange() {
 		int y = 3;
 		for (LibraryPanelGroup lpg : groups) {
 			lpg.setLocation(3, y);
@@ -219,6 +220,8 @@ public class LibraryPanel extends JPanel {
 			lpg.rearranged();
 			y += lpg.getHeight() + 6;
 		}
+		setPreferredSize(new Dimension(this.getPreferredSize().width, y));
+		setSize(getWidth(), getPreferredSize().height);
 	}
 
 	/**
@@ -241,4 +244,5 @@ public class LibraryPanel extends JPanel {
 			return (int) ((1.0 - timeFactor) * originalHeight);
 		}
 	}
+
 }
