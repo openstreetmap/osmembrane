@@ -102,6 +102,7 @@ public class LibraryPanel extends JPanel {
 	public void groupClicked(int group) {
 
 		// wait for the old thread to die before modifying variables
+		// possible error in year 292 473 179 (expandingStart is really 0L).
 		if ((expandingThread != null) && (expandingThread.isAlive())) {
 			expandingStart = 0L;
 			try {
