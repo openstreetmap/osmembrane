@@ -57,6 +57,11 @@ public class PipelinePanel extends JPanel implements Observer {
 	 */
 	private LibraryPanel functionLibrary;
 	private InspectorPanel functionInspector;
+	
+	/**
+	 * The currently selected object (either a PipelineFunction or a PipelineConnector)
+	 */
+	private Object selected;
 
 	/**
 	 * Initializes a new pipeline view
@@ -74,6 +79,8 @@ public class PipelinePanel extends JPanel implements Observer {
 		this.functions = new ArrayList<PipelineFunction>();
 		this.functionLibrary = functionLibrary;
 		this.functionInspector = functionInspector;
+		
+		this.selected = null;
 
 		this.zoom = new AffineTransform(1.0, 0.0, 0.0, 1.0, 0.0, 0.0);
 
@@ -87,9 +94,9 @@ public class PipelinePanel extends JPanel implements Observer {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				// zoom with mouse wheel
 				if (e.getWheelRotation() < 0) {
-					zoomIn();
+					zoomIn(e.getPoint());
 				} else {
-					zoomOut();
+					zoomOut(e.getPoint());
 				}
 			}
 		});
@@ -102,7 +109,6 @@ public class PipelinePanel extends JPanel implements Observer {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				/* here will go a lot of code */
 			}
 
 			@Override
@@ -121,20 +127,56 @@ public class PipelinePanel extends JPanel implements Observer {
 		// try to reserve some space		
 		setPreferredSize(new Dimension(400, 400));
 	}
-
+	
 	/**
 	 * Zooms in
 	 */
 	public void zoomIn() {
-		zoom.scale(2.0, 2.0);
+		zoomIn(new Point(getWidth() / 2, getHeight() / 2));
+	}
+
+	/**
+	 * Zooms in
+	 * 
+	 * @param center center of the zooming operation
+	 */
+	public void zoomIn(Point center) {
+		// translate the center
+		try {
+			zoom.inverseTransform(center, center);
+		} catch (NoninvertibleTransformException e) {
+			ViewRegistry.showException(this.getClass(),
+					ExceptionType.ABNORMAL_BEHAVIOR, e);
+		}
+		zoom.setToIdentity();
+		zoom.translate(center.x, center.y);
+		zoom.scale(zoom.getScaleX() * 1.25, zoom.getScaleY() * 1.25);
 		arrange();
+	}
+	
+	/**
+	 * Zooms in
+	 */
+	public void zoomOut() {
+		zoomOut(new Point(getWidth() / 2, getHeight() / 2));
 	}
 
 	/**
 	 * Zooms out
+	 * 
+	 * @param center center of the zooming operation
 	 */
-	public void zoomOut() {
-		zoom.scale(0.5, 0.5);
+	public void zoomOut(Point center) {
+		// translate the center
+		try {
+			zoom.inverseTransform(center, center);
+		} catch (NoninvertibleTransformException e) {
+			ViewRegistry.showException(this.getClass(),
+					ExceptionType.ABNORMAL_BEHAVIOR, e);
+		}
+		zoom.setToIdentity();
+		zoom.translate(center.x, center.y);
+		zoom.scale(zoom.getScaleX() * 0.80, zoom.getScaleY() * 0.80);
 		arrange();
 	}
 
@@ -222,6 +264,13 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * Arranges all the functions after a move/zoom change
 	 */
 	private void arrange() {
+		// left top point coordinates
+		double minX = Double.MAX_VALUE;
+		double minY = Double.MAX_VALUE;
+		// bottom right point coordinates
+		double maxX = Double.MIN_VALUE; 
+		double maxY = Double.MIN_VALUE;
+		
 		for (PipelineFunction pf : functions) {
 			arrange(pf);
 		}
@@ -277,6 +326,25 @@ public class PipelinePanel extends JPanel implements Observer {
 		ContainingLocationEvent cle = new ContainingLocationEvent(this,
 				viewFunction.getModelFunctionPrototype(), newPosition);
 		a.actionPerformed(cle);
+	}
+
+	/**
+	 * @return the currently selected object
+	 */
+	public Object getSelected() {
+		return selected;
+	}
+
+	/**
+	 * Called when a child object thinks it got selected
+	 * @param pipelineFunction
+	 */
+	public void selected(PipelineFunction pipelineFunction) {
+		selected = pipelineFunction;
+		for (PipelineFunction pf : functions) {
+			pf.repaint();
+		}
+		
 	}
 
 }

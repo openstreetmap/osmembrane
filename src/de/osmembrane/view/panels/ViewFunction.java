@@ -11,7 +11,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
@@ -73,6 +72,11 @@ public class ViewFunction extends JPanel {
 	protected boolean dragging;
 
 	/**
+	 * Where the starting click of the drag happened
+	 */
+	protected Point dragOffset;
+
+	/**
 	 * Initializes a new ViewFunction for the given model prototype function
 	 * 
 	 * @param modelFunctionPrototype
@@ -81,8 +85,9 @@ public class ViewFunction extends JPanel {
 	 * @param canDragAndDrop
 	 *            whether this view function is in the library and can be
 	 *            dragged onto the pipeline panel to create a new
-	 *            {@link PipelineFunction}. All non-library descendants are
-	 *            recommended to set this to false.
+	 *            {@link PipelineFunction}. Additionally, it gets highlighted
+	 *            when the mouse cursor moves over it. All non-library
+	 *            descendants are recommended to set this to false.
 	 */
 	public ViewFunction(final AbstractFunction modelFunctionPrototype,
 			final boolean canDragAndDrop) {
@@ -110,6 +115,9 @@ public class ViewFunction extends JPanel {
 					IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 					MainFrame mf = (MainFrame) mainFrame;
 
+					// subtract the offset when it got clicked
+					e.translatePoint(-dragOffset.x, -dragOffset.y);
+
 					// convert the mouse event into the mainFrame and
 					// pipeline panel components
 					MouseEvent mainFrameEvent = SwingUtilities
@@ -129,6 +137,7 @@ public class ViewFunction extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				dragging = true;
+				dragOffset = e.getPoint();
 			}
 
 			// mouse move hint
@@ -139,8 +148,11 @@ public class ViewFunction extends JPanel {
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
 				mf.getPipeline().setHint("");
-				highlighted = false;
-				repaint();
+
+				if (canDragAndDrop) {
+					highlighted = false;
+					repaint();
+				}
 			}
 
 			@Override
@@ -150,8 +162,11 @@ public class ViewFunction extends JPanel {
 				MainFrame mf = (MainFrame) mainFrame;
 				mf.getPipeline().setHint(
 						modelFunctionPrototype.getDescription());
-				highlighted = true;
-				repaint();
+
+				if (canDragAndDrop) {
+					highlighted = true;
+					repaint();
+				}
 			}
 
 			@Override
@@ -209,6 +224,7 @@ public class ViewFunction extends JPanel {
 		} else {
 			g.drawImage(display, 0, 0, getWidth(), getHeight(), this);
 		}
+
 		printCenteredString(g, modelFunctionPrototype.getFriendlyName(),
 				0.8 * getHeight());
 	}

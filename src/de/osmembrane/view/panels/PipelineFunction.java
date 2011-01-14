@@ -1,8 +1,14 @@
 package de.osmembrane.view.panels;
 
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.view.IView;
+import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.MainFrame;
 
 /**
  * The pipeline function, i.e. the visual representation of a model function
@@ -17,6 +23,9 @@ public class PipelineFunction extends ViewFunction {
 
 	private static final long serialVersionUID = -7573627124702293974L;
 
+	/**
+	 * The function in the model that is represented by this pipeline function
+	 */
 	private AbstractFunction modelFunction;
 
 	/**
@@ -29,6 +38,42 @@ public class PipelineFunction extends ViewFunction {
 		// pretend this is a prototype
 		super(modelFunction, false);
 		this.modelFunction = modelFunction;
+		
+		addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+				MainFrame mf = (MainFrame) mainFrame;
+				//(mf.getTool()
+				mf.getPipeline().selected(PipelineFunction.this);				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+		MainFrame mf = (MainFrame) mainFrame;
+		highlighted = this.equals(mf.getPipeline().getSelected());
+		
+		super.paintComponent(g);
 	}
 	
 	/**
