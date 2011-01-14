@@ -6,14 +6,22 @@ import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 
+/**
+ * The one OO instance of the main program
+ * 
+ * @author tobias_kuhn
+ *
+ */
 public class Application {
 	
 	/**
-	 * Connects the most basic stuff of the MVC architecture
+	 * Connects the most basic stuff of the MVC architecture,
 	 */
 	public void initiate() {
 		try {
 			ModelProxy.getInstance().addObserver(ViewRegistry.getInstance());
+			System.setProperty("sun.awt.exception.handler",
+					EDTExceptionHandler.class.getName());
 		} catch(Exception e) {
 			ViewRegistry.showException(this.getClass(), ExceptionType.CRITICAL_ABNORMAL_BEHAVIOR, e);
 		}

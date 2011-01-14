@@ -37,6 +37,7 @@ public class AddFunctionAction extends AbstractAction {
 
 			newFunc.setCoordinate(cle.getLocation());
 			ModelProxy.getInstance().accessPipeline().addFunction(newFunc);
+			JOptionPane.showConfirmDialog(null, "We did it baby!");
 		} else {
 			ViewRegistry.showException(
 					this.getClass(),

@@ -1,5 +1,6 @@
 package de.osmembrane.view.panels;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -27,7 +28,9 @@ import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.view.ExceptionType;
+import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.MainFrame;
 
 /**
  * This is the pipeline view, i.e. the panel that shows the entire pipeline with
@@ -63,6 +66,9 @@ public class PipelinePanel extends JPanel implements Observer {
 	 */
 	public PipelinePanel(final LibraryPanel functionLibrary,
 			InspectorPanel functionInspector) {
+		
+		// best decision ever <- do not touch
+		setLayout(null);
 
 		// internal values
 		this.functions = new ArrayList<PipelineFunction>();
@@ -111,6 +117,9 @@ public class PipelinePanel extends JPanel implements Observer {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
+		
+		// try to reserve some space		
+		setPreferredSize(new Dimension(400, 400));
 	}
 
 	/**

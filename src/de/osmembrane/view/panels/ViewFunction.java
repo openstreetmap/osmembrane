@@ -8,8 +8,10 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.view.IView;
@@ -107,10 +110,18 @@ public class ViewFunction extends JPanel {
 					IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 					MainFrame mf = (MainFrame) mainFrame;
 
-					Component c = mf.findComponentAt(e.getPoint());
+					// convert the mouse event into the mainFrame and
+					// pipeline panel components
+					MouseEvent mainFrameEvent = SwingUtilities
+							.convertMouseEvent(ViewFunction.this, e, mf);
+					MouseEvent pipelineEvent = SwingUtilities
+							.convertMouseEvent(ViewFunction.this, e,
+									mf.getPipeline());
+
+					Component c = mf.findComponentAt(mainFrameEvent.getPoint());
 					if (mf.getPipeline().equals(c)) {
 						mf.getPipeline().draggedOnto(ViewFunction.this,
-								e.getPoint());
+								pipelineEvent.getPoint());
 					}
 				}
 			}

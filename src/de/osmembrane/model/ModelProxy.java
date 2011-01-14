@@ -75,10 +75,7 @@ public class ModelProxy extends Observable implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o.hasChanged()) {
-			setChanged();
-		}
-		
+		setChanged();	
 		notifyObservers(arg);
 	}
 }
