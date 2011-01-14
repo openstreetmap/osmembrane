@@ -1,4 +1,4 @@
-package de.osmembrane.model;
+package de.osmembrane.model.pipeline;
 
 import java.util.ArrayList;
 import java.util.List;

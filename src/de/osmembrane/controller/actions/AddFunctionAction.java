@@ -6,8 +6,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 
 import de.osmembrane.controller.events.ContainingEvent;
-import de.osmembrane.model.AbstractFunction;
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.pipeline.AbstractFunction;
 
 public class AddFunctionAction extends AbstractAction {
 

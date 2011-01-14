@@ -17,7 +17,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import de.osmembrane.model.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;

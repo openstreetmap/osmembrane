@@ -24,8 +24,8 @@ import javax.swing.table.TableColumn;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.EditPropertyAction;
-import de.osmembrane.model.AbstractFunction;
-import de.osmembrane.model.AbstractFunctionGroup;
+import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ExceptionType;

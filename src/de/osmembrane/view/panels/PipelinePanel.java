@@ -15,9 +15,9 @@ import javax.swing.JPanel;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.AddFunctionAction;
 import de.osmembrane.controller.events.ContainingEvent;
-import de.osmembrane.model.AbstractFunction;
-import de.osmembrane.model.AbstractFunctionGroup;
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.view.ViewRegistry;
 

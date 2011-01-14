@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-import de.osmembrane.model.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;

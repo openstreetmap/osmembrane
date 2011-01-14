@@ -1,6 +1,6 @@
 package de.osmembrane.view.panels;
 
-import de.osmembrane.model.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractFunction;
 
 /**
  * The pipeline function, i.e. the visual representation of a model function

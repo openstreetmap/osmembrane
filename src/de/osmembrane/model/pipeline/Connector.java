@@ -1,9 +1,10 @@
-package de.osmembrane.model;
+package de.osmembrane.model.pipeline;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.osmembrane.model.xml.XMLPipe;
+import de.osmembrane.tools.I18N;
 
 /**
  * Implements {@link AbstractConnector}
@@ -15,8 +16,9 @@ public class Connector extends AbstractConnector {
 	private static final long serialVersionUID = 2011010722340001L;
 
 	private List<AbstractConnector> connectors = new ArrayList<AbstractConnector>();
-	private int maxConnections;
-	private XMLPipe pipe;
+	private ConnectorType type;
+
+	private XMLPipe xmlPipe;
 	private AbstractFunction parent;
 
 	/**
@@ -26,16 +28,11 @@ public class Connector extends AbstractConnector {
 	 * @param pipe
 	 * @param parent
 	 */
-	public Connector(XMLPipe pipe, AbstractFunction parent) {
-		this.pipe = pipe;
+	public Connector(AbstractFunction parent, XMLPipe pipe) {
+		this.xmlPipe = pipe;
 		this.parent = parent;
 
-		if (pipe.getType().equals("entity") || pipe.getType().equals("change")) {
-			this.maxConnections = -1;
-		} else {
-			this.maxConnections = 1;
-		}
-
+		this.type = ConnectorType.parseString(xmlPipe.getType());
 	}
 
 	@Override
@@ -44,18 +41,23 @@ public class Connector extends AbstractConnector {
 	}
 
 	@Override
-	public XMLPipe getPipe() {
-		return pipe;
+	public String getDescription() {
+		return I18N.getInstance().getDescription(xmlPipe);
+	}
+
+	@Override
+	public ConnectorType getType() {
+		return type;
 	}
 
 	@Override
 	public int getMaxConnections() {
-		return maxConnections;
+		return this.type.getMaxConnections();
 	}
 
 	@Override
 	public boolean isFull() {
-		return (maxConnections > 0 && connectors.size() >= maxConnections);
+		return (getMaxConnections() > 0 && connectors.size() >= getMaxConnections());
 	}
 
 	@Override
@@ -71,8 +73,7 @@ public class Connector extends AbstractConnector {
 		 * check if the connector is not full and both connector-types does
 		 * equal.
 		 */
-		if (!isFull()
-				&& getPipe().getType().equals(connector.getPipe().getType())) {
+		if (!isFull() && getType() == connector.getType()) {
 			connectors.add(connector);
 			return true;
 		} else {

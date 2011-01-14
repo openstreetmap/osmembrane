@@ -1,4 +1,4 @@
-package de.osmembrane.model;
+package de.osmembrane.model.pipeline;
 
 /**
  * Exception for reporting a failed connection between two

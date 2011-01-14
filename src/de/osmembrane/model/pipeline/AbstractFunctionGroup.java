@@ -1,17 +1,13 @@
-package de.osmembrane.model;
+package de.osmembrane.model.pipeline;
 
 import java.io.Serializable;
-import java.util.List;
-
-import de.osmembrane.model.xml.XMLHasDescription;
-import de.osmembrane.model.xml.XMLHasDescription.Description;
 
 /**
  * This represents a simple FunctionGroup for the XML-Functions.
  * 
  * @author jakob_jarosch
  */
-public abstract class AbstractFunctionGroup extends XMLHasDescription implements Serializable {
+public abstract class AbstractFunctionGroup implements Serializable {
 
 	private static final long serialVersionUID = 2010123022140001L;
 
@@ -34,7 +30,7 @@ public abstract class AbstractFunctionGroup extends XMLHasDescription implements
 	 * 
 	 * @return list of Descriptions in the available languages.
 	 */
-	public abstract List<Description> getDescription();
+	public abstract String getDescription();
 
 	/**
 	 * Returns the Functions inherited by this FunctionGroup.

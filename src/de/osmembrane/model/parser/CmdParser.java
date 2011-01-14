@@ -2,7 +2,7 @@ package de.osmembrane.model.parser;
 
 import java.util.List;
 
-import de.osmembrane.model.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractFunction;
 
 public class CmdParser implements IParser {
 

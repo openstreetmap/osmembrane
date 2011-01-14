@@ -2,6 +2,9 @@ package de.osmembrane.model;
 
 import java.util.Observable;
 
+import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractFunctionGroup;
+
 /**
  * This is an Prototype for accessing the XMLFunctions.
  * 

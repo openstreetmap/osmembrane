@@ -1,4 +1,4 @@
-package de.osmembrane.model;
+package de.osmembrane.model.pipeline;
 
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.model.xml.XMLTask;
@@ -29,9 +29,9 @@ public abstract class AbstractFunction extends Observable implements
 	 * Sets the {@link AbstractPipeline} of this function
 	 * 
 	 * @param pipeline
-	 *            new {@link AbstractPipeline}
+	 *            new {@link Pipeline}
 	 */
-	public abstract void setPipeline(AbstractPipeline pipeline);
+	protected abstract void setPipeline(Pipeline pipeline);
 
 	/**
 	 * Returns the {@link AbstractPipeline} of this function.
@@ -46,7 +46,7 @@ public abstract class AbstractFunction extends Observable implements
 	 * @return ID of the current Function
 	 */
 	public abstract String getId();
-
+	
 	/**
 	 * Returns a human readable name of the current Function.
 	 * 
@@ -59,14 +59,14 @@ public abstract class AbstractFunction extends Observable implements
 	 * 
 	 * @return a {@link XMLHasDescription} object
 	 */
-	public abstract XMLHasDescription getDescription();
+	public abstract String getDescription();
 
 	/**
 	 * Returns the available XMLTasks for the current Function.
 	 * 
 	 * @return available XMLTasks for the current Function
 	 */
-	public abstract XMLTask[] getAvailableTasks();
+	public abstract AbstractTask[] getAvailableTasks();
 
 	/**
 	 * Returns the currently active XMLTask for the actual Function.
@@ -76,7 +76,7 @@ public abstract class AbstractFunction extends Observable implements
 	 * 
 	 * @return active XMLTask for the Function
 	 */
-	public abstract XMLTask getActiveTask();
+	public abstract AbstractTask getActiveTask();
 
 	/**
 	 * Changes the active XMLTask to another XMLTask. Only XMLTasks of the own
@@ -85,14 +85,21 @@ public abstract class AbstractFunction extends Observable implements
 	 * @param task
 	 *            XMLTask which should be set as active
 	 */
-	public abstract void setActiveTask(XMLTask task);
+	public abstract void setActiveTask(AbstractTask task);
 
 	/**
 	 * Returns the Coordinates in the Pipeline of the current Function.
 	 * 
-	 * @return Coordiantes of the current Function
+	 * @return Coordinates of the current Function
 	 */
 	public abstract Point getCoordinate();
+	
+	/**
+	 * Sets the Coordinates in the Pipeline of the current Function.
+	 * 
+	 * @param coordinate new Coordinates of the current Function
+	 */
+	public abstract void setCoordinate(Point coordinate);
 
 	/**
 	 * Returns the In-Connectors of the current Function.

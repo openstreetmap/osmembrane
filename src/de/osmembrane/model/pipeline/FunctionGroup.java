@@ -1,12 +1,12 @@
-package de.osmembrane.model;
+package de.osmembrane.model.pipeline;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.osmembrane.model.Function;
+import de.osmembrane.model.pipeline.Function;
 import de.osmembrane.model.xml.XMLFunction;
 import de.osmembrane.model.xml.XMLFunctionGroup;
-import de.osmembrane.model.xml.XMLHasDescription.Description;
+import de.osmembrane.tools.I18N;
 
 /**
  * This represents the implementation of a simple FunctionGroup for the XML-Functions.
@@ -47,8 +47,8 @@ public class FunctionGroup extends AbstractFunctionGroup {
 	}
 
 	@Override
-	public List<Description> getDescription() {
-		return xmlGroup.getDescription();
+	public String getDescription() {
+		return I18N.getInstance().getDescription(xmlGroup);
 	}
 
 	@Override

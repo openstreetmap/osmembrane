@@ -10,11 +10,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
 
-import de.osmembrane.model.AbstractFunction;
 import de.osmembrane.model.parser.CmdParser;
 import de.osmembrane.model.parser.ParseException;
 import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.FileException.Type;
+import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;
 

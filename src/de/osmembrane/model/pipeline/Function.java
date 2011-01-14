@@ -1,5 +1,7 @@
-package de.osmembrane.model;
+package de.osmembrane.model.pipeline;
 
+import de.osmembrane.model.pipeline.Connector;
+import de.osmembrane.model.pipeline.ConnectorException.Type;
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.model.xml.XMLPipe;
@@ -9,9 +11,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.osmembrane.model.Connector;
-import de.osmembrane.model.ConnectorException.Type;
 import de.osmembrane.model.xml.XMLFunction;
+import de.osmembrane.tools.I18N;
 
 /**
  * This represents the implementation of a simple Function for the
@@ -26,14 +27,16 @@ public class Function extends AbstractFunction {
 	private XMLFunction xmlFunction;
 	private FunctionGroup parent;
 	private Point coordinate = new Point();
-	private XMLTask activeTask;
+	private Task activeTask;
 
 	private List<Connector> inConnectors = new ArrayList<Connector>();
 	private List<Connector> outConnectors = new ArrayList<Connector>();
+	
+	private List<Task> tasks = new ArrayList<Task>();
 
 	private final String comparator;
 	
-	private AbstractPipeline pipeline;
+	private Pipeline pipeline;
 
 	/**
 	 * Creates a new Function with given parent and XMLFunction.
@@ -46,9 +49,13 @@ public class Function extends AbstractFunction {
 	public Function(FunctionGroup parent, XMLFunction xmlFunction) {
 		this.xmlFunction = xmlFunction;
 		this.parent = parent;
+		
+		for (XMLTask xmlTask : xmlFunction.getTask()) {
+			tasks.add(new Task(xmlTask));
+		}
 
 		/* set the first task as default */
-		activeTask = xmlFunction.getTask().get(0);
+		activeTask = getAvailableTasks()[0];
 
 		/* create the connectors */
 		createConnectors();
@@ -58,12 +65,12 @@ public class Function extends AbstractFunction {
 	}
 
 	@Override
-	public AbstractFunctionGroup getParent() {
+	public FunctionGroup getParent() {
 		return parent;
 	}
 
 	@Override
-	public void setPipeline(AbstractPipeline pipeline) {
+	protected void setPipeline(Pipeline pipeline) {
 		this.pipeline = pipeline;
 	}
 
@@ -83,33 +90,33 @@ public class Function extends AbstractFunction {
 	}
 
 	@Override
-	public XMLHasDescription getDescription() {
-		return xmlFunction;
+	public String getDescription() {
+		return I18N.getInstance().getDescription(xmlFunction);
 	}
 
 	@Override
-	public XMLTask[] getAvailableTasks() {
-		XMLTask[] returnTasks = new XMLTask[xmlFunction.getTask().size()];
-		return xmlFunction.getTask().toArray(returnTasks);
+	public Task[] getAvailableTasks() {
+		Task[] returnTasks = new Task[tasks.size()];
+		return tasks.toArray(returnTasks);
 	}
 
 	@Override
-	public XMLTask getActiveTask() {
+	public AbstractTask getActiveTask() {
 		return activeTask;
 	}
 
 	@Override
-	public void setActiveTask(XMLTask newTask) {
+	public void setActiveTask(AbstractTask newTask) {
 		/* only allow a correct task to be set as active */
-		for (XMLTask task : xmlFunction.getTask()) {
+		for (Task task : getAvailableTasks()) {
 			/* should be the same instance of the task */
 			if (task == newTask) {
 				/*
 				 * found the new active XMLTask, so copy the settings to the new
 				 * Task.
 				 */
-				for (XMLParameter oldParam : activeTask.getParameter()) {
-					for (XMLParameter newParam : task.getParameter()) {
+				for (AbstractParameter oldParam : activeTask.getParameters()) {
+					for (AbstractParameter newParam : task.getParameters()) {
 						if (oldParam.getName().equals(newParam.getName())
 								&& oldParam.getType()
 										.equals(newParam.getType())) {
@@ -128,6 +135,11 @@ public class Function extends AbstractFunction {
 	@Override
 	public Point getCoordinate() {
 		return coordinate;
+	}
+	
+	@Override
+	public void setCoordinate(Point coordinate) {
+		this.coordinate = coordinate;
 	}
 
 	@Override
@@ -160,8 +172,7 @@ public class Function extends AbstractFunction {
 			throws ConnectorException {
 		for (AbstractConnector connectorOut : getOutConnectors()) {
 			for (AbstractConnector connectorIn : function.getInConnectors()) {
-				if (connectorOut.getPipe().getType()
-						.equals(connectorIn.getPipe().getType())) {
+				if (connectorOut.getType() == connectorIn.getType()) {
 					/* found equal Connectors */
 					if (!connectorOut.isFull() && !connectorIn.isFull()) {
 						
@@ -193,8 +204,7 @@ public class Function extends AbstractFunction {
 	public boolean removeConnectionTo(AbstractFunction function) {
 		for (AbstractConnector connectorOut : getOutConnectors()) {
 			for (AbstractConnector connectorIn : function.getInConnectors()) {
-				if (connectorOut.getPipe().getType()
-						.equals(connectorIn.getPipe().getType())) {
+				if (connectorOut.getType() == connectorIn.getType()) {
 					/* found equal Connectors, remove connection */
 					return (connectorIn.removeConnection(connectorOut) && connectorOut
 							.removeConnection(connectorIn));
@@ -215,12 +225,12 @@ public class Function extends AbstractFunction {
 	private void createConnectors() {
 		/* In-Connectors */
 		for (XMLPipe pipe : activeTask.getInputXMLPipe()) {
-			inConnectors.add(new Connector(pipe, this));
+			inConnectors.add(new Connector(this, pipe));
 		}
 
 		/* Out-Connectors */
 		for (XMLPipe pipe : activeTask.getOutputXMLPipe()) {
-			outConnectors.add(new Connector(pipe, this));
+			outConnectors.add(new Connector(this, pipe));
 		}
 	}
 }

@@ -3,6 +3,9 @@ package de.osmembrane.model;
 import java.util.Observable;
 import java.util.Observer;
 
+import de.osmembrane.model.pipeline.AbstractPipeline;
+import de.osmembrane.model.pipeline.Pipeline;
+
 /**
  * The ModelProxy is the connection to the whole Model of OSMembrane.
  * A instance can got over {@see ModelProxy#getInstance()}.

@@ -1,4 +1,4 @@
-package de.osmembrane.model;
+package de.osmembrane.model.pipeline;
 
 import java.io.Serializable;
 
@@ -14,19 +14,17 @@ public abstract class AbstractConnector implements Serializable {
 	private static final long serialVersionUID = 2011010722200001L;
 
 	/**
-	 * Returns the represented {@link XMLPipe}.
-	 * 
-	 * @return the represented {@link XMLPipe}
-	 */
-	public abstract XMLPipe getPipe();
-
-	/**
 	 * Returns the parent, a {@link AbstractFunction}, of the
 	 * {@link AbstractConnector}.
 	 * 
 	 * @return
 	 */
 	public abstract AbstractFunction getParent();
+	
+	public abstract String getDescription();
+	
+	public abstract ConnectorType getType();
+	
 
 	/**
 	 * Returns the maximum connections of this connector.

@@ -12,6 +12,9 @@ import java.util.List;
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.PersistenceFactory;
 import de.osmembrane.model.persistence.XMLOsmosisStructurePersistence;
+import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractFunctionGroup;
+import de.osmembrane.model.pipeline.FunctionGroup;
 import de.osmembrane.model.xml.XMLFunctionGroup;
 import de.osmembrane.model.xml.XMLOsmosisStructure;
 
