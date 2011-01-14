@@ -20,21 +20,6 @@ public class EditPropertyAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// find the AbstractFunction to edit
-		/*if (!(e.getSource() instanceof AbstractFunction)) {
-			ViewRegistry.showException(this.getClass(), ExceptionType.ABNORMAL_BEHAVIOR, new Exception(I18N.getInstance().getString("Controller.EditProperty.InvalidSource")));
-		}		
-		AbstractFunction editing = (AbstractFunction) e.getSource();
-		
-		// check the parameter id to edit
-		if (e.getID() >= editing.getActiveTask().getParameters().length) {
-			ViewRegistry.showException(this.getClass(), ExceptionType.ABNORMAL_BEHAVIOR, new Exception(I18N.getInstance().getString("Controller.EditProperty.InvalidID")));
-		}
-		
-		// perform
-		//editing.getActiveTask().getParameters().get(e.getID()).setValue(e.getActionCommand());		
-		editing.changedNotifyObservers();
-		*/
-		// BROKEN
+
 	}
 }

@@ -263,6 +263,13 @@ public class LibraryPanel extends JPanel {
 	 * @return the currently dragged ViewFunction, or null if no dragging
 	 */
 	public ViewFunction getDragging() {
+		for (LibraryPanelGroup lpg : groups) {
+			ViewFunction dragged = lpg.findDragging();
+			if (dragged != null) {
+				return dragged;
+			}
+		}
+		
 		return null;
 	}
 

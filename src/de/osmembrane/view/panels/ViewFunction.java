@@ -1,6 +1,7 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -24,8 +25,9 @@ import de.osmembrane.view.frames.MainFrame;
 
 /**
  * The view function, i.e. the visual representation of a model function on the
- * View, in the {@link LibraryPanel} and the one being dragged on the {@link PipelinePanel}.
- * Note, the actually drawn *in* the pipeline, are {@link PipelineFunction}.
+ * View, in the {@link LibraryPanel} and the one being dragged on the
+ * {@link PipelinePanel}. Note, the actually drawn *in* the pipeline, are
+ * {@link PipelineFunction}.
  * 
  * @author tobias_kuhn
  * 
@@ -51,19 +53,19 @@ public class ViewFunction extends JPanel {
 	 * The image that will be displayed normally
 	 */
 	protected Image display;
-	
+
 	/**
 	 * The image that will be displayed, if highlighted
 	 */
 	protected Image displayHighlight;
-	
+
 	/**
 	 * Whether this function is currently highlighted
 	 */
 	protected boolean highlighted;
-	
+
 	/**
-	 * Whether this function is currently dragged 
+	 * Whether this function is currently dragged
 	 */
 	protected boolean dragging;
 
@@ -71,34 +73,55 @@ public class ViewFunction extends JPanel {
 	 * Initializes a new ViewFunction for the given model prototype function
 	 * 
 	 * @param modelFunctionPrototype
-	 *            the model's prototype function this view function should represent
+	 *            the model's prototype function this view function should
+	 *            represent
+	 * @param canDragAndDrop
+	 *            whether this view function is in the library and can be
+	 *            dragged onto the pipeline panel to create a new
+	 *            {@link PipelineFunction}. All non-library descendants are
+	 *            recommended to set this to false.
 	 */
-	public ViewFunction(final AbstractFunction modelFunctionPrototype) {
+	public ViewFunction(final AbstractFunction modelFunctionPrototype,
+			final boolean canDragAndDrop) {
 		this.modelFunctionPrototype = modelFunctionPrototype;
 		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
 				displayTemplate.getIconHeight()));
-		
+
 		Color color = new Color(1.0f, 0.5f, 0.7f);
 		Color highlightColor = new Color(1.0f, 0.7f, 0.9f);
-		
+
 		display = derivateDisplay(color, null);
 		displayHighlight = derivateDisplay(highlightColor, null);
 		highlighted = false;
 		dragging = false;
-		
-		// mouse move hint
+
 		addMouseListener(new MouseListener() {
-			
+
+			// drag & drop
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				dragging = false;
+
+				if (canDragAndDrop) {
+					IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+					MainFrame mf = (MainFrame) mainFrame;
+
+					Component c = mf.findComponentAt(e.getPoint());
+					if (mf.getPipeline().equals(c)) {
+						mf.getPipeline().draggedOnto(ViewFunction.this,
+								e.getPoint());
+					}
+				}
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				dragging = true;
 			}
-			
+
+			// mouse move hint
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// show no hint
@@ -108,17 +131,18 @@ public class ViewFunction extends JPanel {
 				highlighted = false;
 				repaint();
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// show hint for this function
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
-				mf.getPipeline().setHint(modelFunctionPrototype.getDescription());
+				mf.getPipeline().setHint(
+						modelFunctionPrototype.getDescription());
 				highlighted = true;
 				repaint();
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			}
@@ -232,19 +256,19 @@ public class ViewFunction extends JPanel {
 		// print the lines
 		for (int i = lines.size() - 1; i >= 0; i--) {
 			line = lines.get((lines.size() - 1) - i);
-			g.drawString(line, (getWidth() - fm.stringWidth(line)) / 2, 
-					(int) y	- i * fontHeight);
+			g.drawString(line, (getWidth() - fm.stringWidth(line)) / 2, (int) y
+					- i * fontHeight);
 		}
 	}
-	
+
 	/**
 	 * @return the model function prototype associated with this view function
 	 */
 	public AbstractFunction getModelFunctionPrototype() {
 		return this.modelFunctionPrototype;
 	}
-	
-	/** 
+
+	/**
 	 * @return true, if this function is currently dragged, false otherwise
 	 */
 	public boolean isDragging() {

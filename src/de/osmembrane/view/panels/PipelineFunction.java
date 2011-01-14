@@ -27,7 +27,7 @@ public class PipelineFunction extends ViewFunction {
 	 */
 	public PipelineFunction(AbstractFunction modelFunction) {
 		// pretend this is a prototype
-		super(modelFunction);
+		super(modelFunction, false);
 		this.modelFunction = modelFunction;
 	}
 	

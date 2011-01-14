@@ -132,7 +132,7 @@ public class LibraryPanelGroup extends JPanel {
 		content = new ArrayList<ViewFunction>();
 		// all functions available in the function group
 		for (AbstractFunction af : afg.getFunctions()) {
-			ViewFunction vf = new ViewFunction(af);
+			ViewFunction vf = new ViewFunction(af, true);
 
 			// determine the top
 			vf.setLocation(3, y);
