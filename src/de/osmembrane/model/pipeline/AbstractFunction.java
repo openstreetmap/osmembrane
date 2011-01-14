@@ -157,6 +157,8 @@ public abstract class AbstractFunction extends Observable implements
 		this.notifyObservers(poo);
 
 		/* now we have to notify the observer of the pipeline */
-		getPipeline().changedNotifyObservers(poo);
+		if (getPipeline() != null) {
+			getPipeline().changedNotifyObservers(poo);
+		}
 	}
 }
