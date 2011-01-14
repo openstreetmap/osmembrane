@@ -46,7 +46,7 @@ public class Pipeline extends AbstractPipeline {
 		functions.add(func);
 
 		/* notify the observers */
-		changedNotifyObservers();
+		changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD, func));
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class Pipeline extends AbstractPipeline {
 
 		if (returnValue == true) {
 			/* notify the observers */
-			changedNotifyObservers();
+			changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD, func));
 		}
 		return returnValue;
 	}
@@ -71,7 +71,7 @@ public class Pipeline extends AbstractPipeline {
 		this.functions.clear();
 
 		/* notify the observers */
-		changedNotifyObservers();
+		changedNotifyObservers(new PipelineObserverObject(ChangeType.FULLCHANGE, null));
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class Pipeline extends AbstractPipeline {
 		this.functions = functions;
 
 		/* notify the observers */
-		changedNotifyObservers();
+		changedNotifyObservers(new PipelineObserverObject(ChangeType.FULLCHANGE, null));
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class Pipeline extends AbstractPipeline {
 		this.functions = functions;
 
 		/* notify the observers */
-		changedNotifyObservers();
+		changedNotifyObservers(new PipelineObserverObject(ChangeType.FULLCHANGE, null));
 	}
 
 	@Override

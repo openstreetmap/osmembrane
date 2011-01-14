@@ -2,6 +2,7 @@ package de.osmembrane.model.pipeline;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.model.xml.XMLPipe;
@@ -18,7 +19,9 @@ public class Task extends AbstractTask {
 		this.xmlTask = xmlTask;
 		
 		for (XMLParameter xmlParam : xmlTask.getParameter()) {
-			parameters.add(new Parameter(xmlParam));
+			Parameter param = new Parameter(xmlParam);
+			param.addObserver(this);
+			parameters.add(param);
 		}
 	}
 
@@ -61,6 +64,13 @@ public class Task extends AbstractTask {
 	@Override
 	protected List<XMLPipe> getOutputXMLPipe() {
 		return xmlTask.getOutputXMLPipe();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		/* A parameter got a change (anything changed) */
+		setChanged();
+		notifyObservers();
 	}
 
 }

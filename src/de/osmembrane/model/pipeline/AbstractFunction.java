@@ -1,7 +1,6 @@
 package de.osmembrane.model.pipeline;
 
 import de.osmembrane.model.xml.XMLHasDescription;
-import de.osmembrane.model.xml.XMLTask;
 
 import java.awt.Point;
 import java.io.Serializable;
@@ -14,7 +13,7 @@ import java.util.Observer;
  * @author jakob_jarosch
  */
 public abstract class AbstractFunction extends Observable implements
-		Serializable {
+		Observer, Serializable {
 
 	private static final long serialVersionUID = 2010123022230001L;
 
@@ -46,7 +45,7 @@ public abstract class AbstractFunction extends Observable implements
 	 * @return ID of the current Function
 	 */
 	public abstract String getId();
-	
+
 	/**
 	 * Returns a human readable name of the current Function.
 	 * 
@@ -93,11 +92,12 @@ public abstract class AbstractFunction extends Observable implements
 	 * @return Coordinates of the current Function
 	 */
 	public abstract Point getCoordinate();
-	
+
 	/**
 	 * Sets the Coordinates in the Pipeline of the current Function.
 	 * 
-	 * @param coordinate new Coordinates of the current Function
+	 * @param coordinate
+	 *            new Coordinates of the current Function
 	 */
 	public abstract void setCoordinate(Point coordinate);
 
@@ -152,11 +152,11 @@ public abstract class AbstractFunction extends Observable implements
 	 * Notifies all registered {@link Observer}s with pre-called
 	 * {@link Observable#setChanged())}.
 	 */
-	public void changedNotifyObservers() {
+	protected void changedNotifyObservers(PipelineObserverObject poo) {
 		this.setChanged();
-		this.notifyObservers();
+		this.notifyObservers(poo);
 
 		/* now we have to notify the observer of the pipeline */
-		getPipeline().changedNotifyObservers();
+		getPipeline().changedNotifyObservers(poo);
 	}
 }

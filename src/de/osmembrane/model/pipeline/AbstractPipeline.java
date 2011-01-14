@@ -127,8 +127,8 @@ public abstract class AbstractPipeline extends Observable {
 	/**
 	 * Notifies all registered {@link Observer}s with pre-called {@link Observable#setChanged())}.
 	 */
-	public void changedNotifyObservers() {
+	protected void changedNotifyObservers(PipelineObserverObject poo) {
 		this.setChanged();
-		this.notifyObservers();
+		this.notifyObservers(poo);
 	}
 }

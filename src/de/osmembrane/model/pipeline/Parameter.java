@@ -67,7 +67,7 @@ public class Parameter extends AbstractParameter {
 		xmlParam.setValue(value);
 		
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 		
 		return true;
 	}

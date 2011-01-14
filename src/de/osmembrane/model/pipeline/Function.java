@@ -2,14 +2,13 @@ package de.osmembrane.model.pipeline;
 
 import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.ConnectorException.Type;
-import de.osmembrane.model.xml.XMLHasDescription;
-import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.model.xml.XMLTask;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import de.osmembrane.model.xml.XMLFunction;
 import de.osmembrane.tools.I18N;
@@ -24,15 +23,17 @@ public class Function extends AbstractFunction {
 
 	private static final long serialVersionUID = 2010123022380001L;
 
-	private XMLFunction xmlFunction;
 	private FunctionGroup parent;
+	
+	private XMLFunction xmlFunction;
+	
 	private Point coordinate = new Point();
-	private Task activeTask;
-
+	
 	private List<Connector> inConnectors = new ArrayList<Connector>();
 	private List<Connector> outConnectors = new ArrayList<Connector>();
 	
 	private List<Task> tasks = new ArrayList<Task>();
+	private Task activeTask;
 
 	private final String comparator;
 	
@@ -51,7 +52,9 @@ public class Function extends AbstractFunction {
 		this.parent = parent;
 		
 		for (XMLTask xmlTask : xmlFunction.getTask()) {
-			tasks.add(new Task(xmlTask));
+			Task task = new Task(xmlTask);
+			task.addObserver(this);
+			tasks.add(task);
 		}
 
 		/* set the first task as default */
@@ -140,6 +143,7 @@ public class Function extends AbstractFunction {
 	@Override
 	public void setCoordinate(Point coordinate) {
 		this.coordinate = coordinate;
+		changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE, this));
 	}
 
 	@Override
@@ -187,7 +191,7 @@ public class Function extends AbstractFunction {
 							throw new ConnectorException(Type.LOOP_CREATED);
 						}
 						
-						changedNotifyObservers();
+						changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE, this));
 						
 						return;
 					} else {
@@ -206,8 +210,11 @@ public class Function extends AbstractFunction {
 			for (AbstractConnector connectorIn : function.getInConnectors()) {
 				if (connectorOut.getType() == connectorIn.getType()) {
 					/* found equal Connectors, remove connection */
-					return (connectorIn.removeConnection(connectorOut) && connectorOut
-							.removeConnection(connectorIn));
+					if(connectorIn.removeConnection(connectorOut) && connectorOut
+							.removeConnection(connectorIn)) {
+						changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE, this));
+						return true;
+					}
 				}
 			}
 		}
@@ -232,5 +239,11 @@ public class Function extends AbstractFunction {
 		for (XMLPipe pipe : activeTask.getOutputXMLPipe()) {
 			outConnectors.add(new Connector(this, pipe));
 		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		/* get Updates from a Task (changed anything) */
+		changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE, this));
 	}
 }
