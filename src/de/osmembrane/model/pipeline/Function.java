@@ -2,6 +2,7 @@ package de.osmembrane.model.pipeline;
 
 import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.ConnectorException.Type;
+import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
 import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.model.xml.XMLTask;
 

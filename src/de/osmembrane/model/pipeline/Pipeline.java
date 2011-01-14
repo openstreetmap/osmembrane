@@ -10,6 +10,7 @@ import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.model.persistence.OSMembranePersistence;
 import de.osmembrane.model.persistence.PersistenceFactory;
+import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
 
 /**
  * Implementation of {@link AbstractPipeline}.

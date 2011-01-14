@@ -2,6 +2,13 @@ package de.osmembrane.model.pipeline;
 
 public class PipelineObserverObject {
 	
+	public enum ChangeType {
+		ADD,
+		CHANGE,
+		DELETE,
+		FULLCHANGE
+	};
+	
 	private ChangeType type;
 	private AbstractFunction changedFunction;
 	
@@ -17,11 +24,4 @@ public class PipelineObserverObject {
 	public AbstractFunction getChangedFunction() {
 		return changedFunction;
 	}
-}
-
-enum ChangeType {
-	ADD,
-	CHANGE,
-	DELETE,
-	FULLCHANGE
 }
