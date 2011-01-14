@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractFunctionGroup;
+import de.osmembrane.model.pipeline.AbstractTask;
 import de.osmembrane.model.xml.XMLTask;
 
 /**
@@ -40,7 +43,7 @@ public class FunctionPrototypeTest {
 				assertEquals("Parent is not the right one", group, function.getParent());
 				
 				System.out.println("\t" + function.getFriendlyName());
-				for(XMLTask task : function.getAvailableTasks()) {
+				for(AbstractTask task : function.getAvailableTasks()) {
 					System.out.println("\t\t" + task.getName());
 				}
 			}
