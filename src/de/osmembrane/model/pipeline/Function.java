@@ -6,6 +6,7 @@ import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.model.xml.XMLTask;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -27,7 +28,7 @@ public class Function extends AbstractFunction {
 	
 	private XMLFunction xmlFunction;
 	
-	private Point coordinate = new Point();
+	private Point2D coordinate = new Point2D.Double();
 	
 	private List<Connector> inConnectors = new ArrayList<Connector>();
 	private List<Connector> outConnectors = new ArrayList<Connector>();
@@ -136,12 +137,12 @@ public class Function extends AbstractFunction {
 	}
 
 	@Override
-	public Point getCoordinate() {
+	public Point2D getCoordinate() {
 		return coordinate;
 	}
 	
 	@Override
-	public void setCoordinate(Point coordinate) {
+	public void setCoordinate(Point2D coordinate) {
 		this.coordinate = coordinate;
 		changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE, this));
 	}

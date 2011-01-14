@@ -2,7 +2,7 @@ package de.osmembrane.model.pipeline;
 
 import de.osmembrane.model.xml.XMLHasDescription;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
@@ -91,7 +91,7 @@ public abstract class AbstractFunction extends Observable implements
 	 * 
 	 * @return Coordinates of the current Function
 	 */
-	public abstract Point getCoordinate();
+	public abstract Point2D getCoordinate();
 
 	/**
 	 * Sets the Coordinates in the Pipeline of the current Function.
@@ -99,7 +99,7 @@ public abstract class AbstractFunction extends Observable implements
 	 * @param coordinate
 	 *            new Coordinates of the current Function
 	 */
-	public abstract void setCoordinate(Point coordinate);
+	public abstract void setCoordinate(Point2D coordinate);
 
 	/**
 	 * Returns the In-Connectors of the current Function.
