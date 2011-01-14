@@ -167,7 +167,7 @@ public class InspectorPanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Sets the hint text for an xml object that has a description, and
+	 * Sets the hint text for an XML object that has a description, and
 	 * therefore inherits from {@link XMLHasDescription}
 	 * 
 	 * @param xmlhd
@@ -177,7 +177,7 @@ public class InspectorPanel extends JPanel implements Observer {
 		if (xmlhd != null) {
 			hintText = I18N.getInstance().getDescription(xmlhd);
 			if (hintText == null) {
-				ViewRegistry.showException(this.getClass(), ExceptionType.ABNORMAL_BEHAVIOR, new NullPointerException());
+				hintText = I18N.getInstance().getString("View.InspectorPanel.NoDescription");
 			}
 		} else {
 			hintText = "";
