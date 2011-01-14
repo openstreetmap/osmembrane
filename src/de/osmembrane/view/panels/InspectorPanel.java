@@ -25,6 +25,7 @@ import javax.swing.table.TableColumn;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.EditPropertyAction;
 import de.osmembrane.model.AbstractFunction;
+import de.osmembrane.model.AbstractFunctionGroup;
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ExceptionType;
@@ -171,13 +172,21 @@ public class InspectorPanel extends JPanel implements Observer {
 	 * 
 	 * @param xmlhd
 	 */
-	private void setHintText(XMLHasDescription xmlhd) {
+	protected void setHintText(XMLHasDescription xmlhd) {
+		String hintText;
+		if (xmlhd != null) {
+			hintText = I18N.getInstance().getDescription(xmlhd);
+			if (hintText == null) {
+				ViewRegistry.showException(this.getClass(), ExceptionType.ABNORMAL_BEHAVIOR, new NullPointerException());
+			}
+		} else {
+			hintText = "";
+		}
 		hintLabel.setText("<html><body><p>"
-				+ I18N.getInstance().getDescription(xmlhd)
+				+ hintText
 				+ "</p></body></html>");
-
 	}
-
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		if (inspecting != null) {

@@ -3,6 +3,8 @@ package de.osmembrane.view.panels;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,9 @@ import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.model.AbstractFunction;
 import de.osmembrane.model.AbstractFunctionGroup;
+import de.osmembrane.view.IView;
+import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.MainFrame;
 
 /**
  * A group panel that is placed for each FunctionGroup on the LibraryPanel
@@ -40,6 +45,11 @@ public class LibraryPanelGroup extends JPanel {
 	 * The height of the contained objects
 	 */
 	private int contentHeight;
+	
+	/**
+	 * The function group represented
+	 */
+	private AbstractFunctionGroup functionGroup;
 
 	/**
 	 * The contained objects
@@ -56,6 +66,8 @@ public class LibraryPanelGroup extends JPanel {
 	 *            represents
 	 */
 	public LibraryPanelGroup(final LibraryPanel lp, AbstractFunctionGroup afg) {
+		this.functionGroup = afg;
+		
 		// display
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		// best decision ever <- do not touch
@@ -69,15 +81,49 @@ public class LibraryPanelGroup extends JPanel {
 		headerButton = new JButton();
 		headerButton.setText(afg.getFriendlyName());
 
+		// determine size, etc.
 		headerButton.setLocation(3, y);
 		headerButton.setSize(headerButton.getPreferredSize());
 		maxPreferredWidth = headerButton.getPreferredSize().width;
 		y += headerButton.getHeight() + 6;
 
+		// action listener
 		headerButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lp.groupClicked(id);
+			}
+		});
+		
+		// hint listener for function group
+		headerButton.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// show no hint
+				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+				MainFrame mf = (MainFrame) mainFrame;
+				mf.getPipeline().setHint(null);
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// show hint for this function group
+				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+				MainFrame mf = (MainFrame) mainFrame;
+				mf.getPipeline().setHint(functionGroup);
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
 			}
 		});
 

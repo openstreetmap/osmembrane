@@ -3,6 +3,7 @@ package de.osmembrane.model;
 import java.io.Serializable;
 import java.util.List;
 
+import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.model.xml.XMLHasDescription.Description;
 
 /**
@@ -10,7 +11,7 @@ import de.osmembrane.model.xml.XMLHasDescription.Description;
  * 
  * @author jakob_jarosch
  */
-public abstract class AbstractFunctionGroup implements Serializable {
+public abstract class AbstractFunctionGroup extends XMLHasDescription implements Serializable {
 
 	private static final long serialVersionUID = 2010123022140001L;
 

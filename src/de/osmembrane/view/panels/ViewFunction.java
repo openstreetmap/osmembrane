@@ -7,6 +7,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
@@ -16,6 +18,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import de.osmembrane.model.AbstractFunction;
+import de.osmembrane.view.IView;
+import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.MainFrame;
 
 /**
  * The view function, i.e. the visual representation of a model function on the
@@ -53,11 +58,43 @@ public class ViewFunction extends JPanel {
 	 * @param modelFunctionPrototype
 	 *            the model's prototype function this view function should represent
 	 */
-	public ViewFunction(AbstractFunction modelFunctionPrototype) {
+	public ViewFunction(final AbstractFunction modelFunctionPrototype) {
 		this.modelFunctionPrototype = modelFunctionPrototype;
 		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
 				displayTemplate.getIconHeight()));
 		display = derivateDisplay(new Color(1.0f, 0.5f, 1.0f), null);
+		
+		// mouse move hint
+		addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {	
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// show no hint
+				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+				MainFrame mf = (MainFrame) mainFrame;
+				mf.getPipeline().setHint(null);
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// show hint for this function
+				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+				MainFrame mf = (MainFrame) mainFrame;
+				mf.getPipeline().setHint(modelFunctionPrototype.getDescription());
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 	}
 
 	/**

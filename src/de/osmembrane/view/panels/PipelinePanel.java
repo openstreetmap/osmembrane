@@ -16,7 +16,9 @@ import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.AddFunctionAction;
 import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.model.AbstractFunction;
+import de.osmembrane.model.AbstractFunctionGroup;
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.view.ViewRegistry;
 
 /**
@@ -133,6 +135,14 @@ public class PipelinePanel extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		
+	}
+	
+	/**
+	 * Forwards hint display from functions and library under the cursor to the inspector.
+	 * @param xmlhd the hint to display
+	 */
+	public void setHint(XMLHasDescription xmlhd) {
+		functionInspector.setHintText(xmlhd);
 	}
 
 }
