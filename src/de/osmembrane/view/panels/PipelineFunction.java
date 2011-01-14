@@ -1,5 +1,7 @@
 package de.osmembrane.view.panels;
 
+import java.awt.geom.Point2D;
+
 import de.osmembrane.model.pipeline.AbstractFunction;
 
 /**
@@ -34,6 +36,13 @@ public class PipelineFunction extends ViewFunction {
 	 */
 	public AbstractFunction getModelFunction() {
 		return this.modelFunction;
+	}
+
+	/**
+	 * @return the location this function's model function has saved
+	 */
+	public Point2D getModelLocation() {
+		return this.modelFunction.getCoordinate();
 	}
 
 }

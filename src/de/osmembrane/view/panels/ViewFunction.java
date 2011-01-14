@@ -61,6 +61,11 @@ public class ViewFunction extends JPanel {
 	 * Whether this function is currently highlighted
 	 */
 	protected boolean highlighted;
+	
+	/**
+	 * Whether this function is currently dragged 
+	 */
+	protected boolean dragging;
 
 	/**
 	 * Initializes a new ViewFunction for the given model prototype function
@@ -79,16 +84,19 @@ public class ViewFunction extends JPanel {
 		display = derivateDisplay(color, null);
 		displayHighlight = derivateDisplay(highlightColor, null);
 		highlighted = false;
+		dragging = false;
 		
 		// mouse move hint
 		addMouseListener(new MouseListener() {
 			
 			@Override
-			public void mouseReleased(MouseEvent e) {	
+			public void mouseReleased(MouseEvent e) {
+				dragging = false;
 			}
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
+				dragging = true;
 			}
 			
 			@Override
@@ -234,6 +242,13 @@ public class ViewFunction extends JPanel {
 	 */
 	public AbstractFunction getModelFunctionPrototype() {
 		return this.modelFunctionPrototype;
+	}
+	
+	/** 
+	 * @return true, if this function is currently dragged, false otherwise
+	 */
+	public boolean isDragging() {
+		return this.dragging;
 	}
 
 }

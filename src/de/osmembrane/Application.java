@@ -8,13 +8,12 @@ import de.osmembrane.view.ViewRegistry;
 
 public class Application {
 	
+	/**
+	 * Connects the most basic stuff of the MVC architecture
+	 */
 	public void initiate() {
 		try {
-		//throw new UnsupportedOperationException();
-		/*
-		 * TODO: IMPLEMENT ME!
-		 */
-		// FIXME
+			ModelProxy.getInstance().addObserver(ViewRegistry.getInstance());
 		} catch(Exception e) {
 			ViewRegistry.showException(this.getClass(), ExceptionType.CRITICAL_ABNORMAL_BEHAVIOR, e);
 		}

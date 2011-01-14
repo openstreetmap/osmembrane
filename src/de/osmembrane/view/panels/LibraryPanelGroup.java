@@ -156,7 +156,7 @@ public class LibraryPanelGroup extends JPanel {
 	 * @param id
 	 *            the id this panel group has in its main Library panel to set
 	 */
-	public void setId(int id) {
+	protected void setId(int id) {
 		this.id = id;
 	}
 
@@ -164,7 +164,7 @@ public class LibraryPanelGroup extends JPanel {
 	 * 
 	 * @return the height of this group's contents, if they are expanded
 	 */
-	public int getFullContentHeight() {
+	protected int getFullContentHeight() {
 		return contentHeight;
 	}
 
@@ -181,7 +181,7 @@ public class LibraryPanelGroup extends JPanel {
 	 * @param newHeight
 	 *            0, if contracted, getFullHeight() if expanded
 	 */
-	public void setContentHeight(int newHeight) {
+	protected void setContentHeight(int newHeight) {
 		setSize(getWidth(), headerButton.getPreferredSize().height + 6
 				+ newHeight);
 	}
@@ -189,7 +189,7 @@ public class LibraryPanelGroup extends JPanel {
 	/**
 	 * Gets called when the library panel has rearranged the library panel group
 	 */
-	public void rearranged() {
+	protected void rearranged() {
 		// correct the header button's width
 		headerButton.setSize(getWidth() - 6,
 				headerButton.getPreferredSize().height);
@@ -197,6 +197,19 @@ public class LibraryPanelGroup extends JPanel {
 		for (ViewFunction vf : content) {
 			vf.setLocation((getWidth() - vf.getWidth()) / 2, vf.getLocation().y);
 		}
+	}
+	
+	/**
+	 * Checks whether any of this group's functions is currently dragged
+	 * @return the dragged viewfunction, null if nothing is dragged
+	 */
+	protected ViewFunction findDragging() {
+		for (ViewFunction vf : content) {
+			if (vf.isDragging()) {
+				return vf;
+			}
+		}
+		return null;
 	}
 
 }

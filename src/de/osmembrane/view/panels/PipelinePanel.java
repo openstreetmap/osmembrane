@@ -1,10 +1,12 @@
 package de.osmembrane.view.panels;
 
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -115,32 +117,67 @@ public class PipelinePanel extends JPanel implements Observer {
 		});
 	}
 
+	/**
+	 * Zooms in
+	 */
 	public void zoomIn() {
 		zoom.scale(2.0, 2.0);
+		arrange();
 	}
 
+	/**
+	 * Zooms out
+	 */
 	public void zoomOut() {
 		zoom.scale(0.5, 0.5);
+		arrange();
 	}
 
+	/**
+	 * Moves the view. Hope this is done by the damn scrollpane
+	 */	
 	public void moveView() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Resets the view to standard
+	 */
 	public void resetView() {
-		// TODO Auto-generated method stub
+		zoom.setToIdentity();
+		arrange();
 
 	}
 
+	/**
+	 * Shows the entire pipeline
+	 */
 	public void showEntireView() {
 		// TODO Auto-generated method stub
-
+		arrange();
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		
+	}
+	
+	/**
+	 * Arranges all the functions after a move/zoom change
+	 */
+	private void arrange() {
+		Point2D transformed = new Point();
+		for (PipelineFunction pf : functions) {
+			// location
+			zoom.transform(pf.getModelLocation(), transformed);
+			pf.setLocation((int) transformed.getX(), (int) transformed.getY());
+			
+			// size
+			transformed.setLocation(pf.getPreferredSize().width, pf.getPreferredSize().height);
+			zoom.transform(transformed, transformed);
+			pf.setSize((int) transformed.getX(), (int) transformed.getY());
+		}
 	}
 	
 	/**
