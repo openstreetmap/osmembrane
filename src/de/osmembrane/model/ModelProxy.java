@@ -29,6 +29,7 @@ public class ModelProxy extends Observable implements Observer {
 	private ModelProxy() {
 		settings = new Settings();
 		pipeline = new Pipeline();
+		pipeline.addObserver(this);
 		functionPrototype = new FunctionPrototype();
 	}
 	
