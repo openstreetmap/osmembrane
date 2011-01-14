@@ -2,6 +2,7 @@ package de.osmembrane.model.pipeline;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Stack;
 
 import de.osmembrane.model.persistence.AbstractPersistence;
@@ -44,6 +45,7 @@ public class Pipeline extends AbstractPipeline {
 	public void addFunction(AbstractFunction func) {
 		func.setPipeline(this);
 		functions.add(func);
+		func.addObserver(this);
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD, func));
@@ -94,6 +96,9 @@ public class Pipeline extends AbstractPipeline {
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
 
 		this.functions = functions;
+		for(AbstractFunction function : functions) {
+			function.addObserver(function);
+		}
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(ChangeType.FULLCHANGE, null));
@@ -112,6 +117,9 @@ public class Pipeline extends AbstractPipeline {
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
 
 		this.functions = functions;
+		for(AbstractFunction function : functions) {
+			function.addObserver(function);
+		}
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(ChangeType.FULLCHANGE, null));
@@ -165,5 +173,14 @@ public class Pipeline extends AbstractPipeline {
 	@Override
 	public void optimizePipeline() {
 		/* TODO not yet implemented */
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if(o.hasChanged()) {
+			setChanged();
+		}
+		
+		notifyObservers(arg);
 	}
 }

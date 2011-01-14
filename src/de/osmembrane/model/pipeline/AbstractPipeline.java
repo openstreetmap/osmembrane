@@ -11,7 +11,7 @@ import de.osmembrane.model.persistence.FileType;
  * 
  * @author jakob_jarosch
  */
-public abstract class AbstractPipeline extends Observable {
+public abstract class AbstractPipeline extends Observable implements Observer {
 
 	/**
 	 * Adds a {@link AbstractFunction} to the pipeline.
