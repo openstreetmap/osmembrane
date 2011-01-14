@@ -119,7 +119,7 @@ public class LibraryPanelGroup extends JPanel {
 				// show hint for this function group
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
-				mf.getPipeline().setHint(functionGroup);
+				mf.getPipeline().setHint(functionGroup.getDescription());
 			}
 			
 			@Override

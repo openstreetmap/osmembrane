@@ -48,9 +48,19 @@ public class ViewFunction extends JPanel {
 	protected AbstractFunction modelFunctionPrototype;
 
 	/**
-	 * The image that will be displayed
+	 * The image that will be displayed normally
 	 */
 	protected Image display;
+	
+	/**
+	 * The image that will be displayed, if highlighted
+	 */
+	protected Image displayHighlight;
+	
+	/**
+	 * Whether this function is currently highlighted
+	 */
+	protected boolean highlighted;
 
 	/**
 	 * Initializes a new ViewFunction for the given model prototype function
@@ -62,7 +72,13 @@ public class ViewFunction extends JPanel {
 		this.modelFunctionPrototype = modelFunctionPrototype;
 		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
 				displayTemplate.getIconHeight()));
-		display = derivateDisplay(new Color(1.0f, 0.5f, 1.0f), null);
+		
+		Color color = new Color(1.0f, 0.5f, 0.7f);
+		Color highlightColor = new Color(1.0f, 0.7f, 0.9f);
+		
+		display = derivateDisplay(color, null);
+		displayHighlight = derivateDisplay(highlightColor, null);
+		highlighted = false;
 		
 		// mouse move hint
 		addMouseListener(new MouseListener() {
@@ -81,6 +97,8 @@ public class ViewFunction extends JPanel {
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
 				mf.getPipeline().setHint(null);
+				highlighted = false;
+				repaint();
 			}
 			
 			@Override
@@ -89,6 +107,8 @@ public class ViewFunction extends JPanel {
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
 				mf.getPipeline().setHint(modelFunctionPrototype.getDescription());
+				highlighted = true;
+				repaint();
 			}
 			
 			@Override
@@ -141,7 +161,11 @@ public class ViewFunction extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		g.drawImage(display, 0, 0, getWidth(), getHeight(), this);
+		if (highlighted) {
+			g.drawImage(displayHighlight, 0, 0, getWidth(), getHeight(), this);
+		} else {
+			g.drawImage(display, 0, 0, getWidth(), getHeight(), this);
+		}
 		printCenteredString(g, modelFunctionPrototype.getFriendlyName(),
 				0.8 * getHeight());
 	}

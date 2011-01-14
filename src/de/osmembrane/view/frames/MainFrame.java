@@ -5,12 +5,14 @@ import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
@@ -64,7 +66,6 @@ public class MainFrame extends AbstractFrame {
 	public MainFrame() {
 		setWindowTitle(I18N.getInstance().getString("osmembrane"));
 		
-		// WindowListener() von leeren methoden kürzen, wenn fertig
 		addWindowListener(new WindowListener() {
 
 			@Override
@@ -74,7 +75,6 @@ public class MainFrame extends AbstractFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				ActionRegistry.getInstance().get(ExitAction.class).actionPerformed(null);
-				// TODO * check ob das ok is *
 			}
 
 			@Override
@@ -172,14 +172,24 @@ public class MainFrame extends AbstractFrame {
 		
 		// tools bar with tools for editing the pipeline
 		JToolBar toolsBar = new JToolBar(I18N.getInstance().getString("osmembrane"), JToolBar.HORIZONTAL);
-		toolsBar.add(new JButton("Tool1"));
-		toolsBar.add(new JButton("Tool2"));
-		toolsBar.add(new JButton("Tool3"));
-		toolsBar.add(new JButton("Tool4"));
-		toolBar.add(new JSeparator(SwingConstants.VERTICAL));
+		
+		ButtonGroup tools = new ButtonGroup();
+		JToggleButton magicTool = new JToggleButton("MagicTool", true);
+		tools.add(magicTool);
+		toolsBar.add(magicTool);
+		JToggleButton selectTool = new JToggleButton("SelectTool");
+		tools.add(selectTool);
+		toolsBar.add(selectTool);
+		JToggleButton viewTool = new JToggleButton("ViewTool");
+		tools.add(viewTool);
+		toolsBar.add(viewTool);
+		JToggleButton connectTool = new JToggleButton("ConnectTool");
+		tools.add(connectTool);
+		toolsBar.add(connectTool);
+		toolsBar.add(new JSeparator(SwingConstants.VERTICAL));
 		toolsBar.add(ActionRegistry.getInstance().get(StandardViewAction.class));
 		toolsBar.add(ActionRegistry.getInstance().get(ViewAllAction.class));
-		toolBar.add(new JSeparator(SwingConstants.VERTICAL));
+		toolsBar.add(new JSeparator(SwingConstants.VERTICAL));
 		toolsBar.add(ActionRegistry.getInstance().get(ZoomInAction.class));
 		toolsBar.add(ActionRegistry.getInstance().get(ZoomOutAction.class));
 		toolBar.add(toolsBar);

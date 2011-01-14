@@ -25,7 +25,6 @@ import javax.swing.table.TableColumn;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.EditPropertyAction;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ExceptionType;
@@ -77,7 +76,7 @@ public class InspectorPanel extends JPanel implements Observer {
 	public InspectorPanel() {
 		// register as observer
 		ViewRegistry.getInstance().addObserver(this);
-		
+
 		// caption
 		caption = new JLabel(I18N.getInstance().getString(
 				"View.InspectorPanel.NoSelection"));
@@ -86,9 +85,9 @@ public class InspectorPanel extends JPanel implements Observer {
 		// display
 		rowEditorModel = new RowEditorModel();
 		display = new JRowTable(new InspectorPanelTableModel(), rowEditorModel);
-		
-		//display.getColumnModel().getColumn(0).setPreferredWidth(64);
-		//display.getColumnModel().getColumn(1).setPreferredWidth(64);
+
+		// display.getColumnModel().getColumn(0).setPreferredWidth(64);
+		// display.getColumnModel().getColumn(1).setPreferredWidth(64);
 
 		display.addMouseListener(new MouseListener() {
 
@@ -126,10 +125,9 @@ public class InspectorPanel extends JPanel implements Observer {
 					if (row == -1) {
 						setHintText(inspecting.getDescription());
 					} else if (row == 0) {
-						setHintText(inspecting.getActiveTask());
+						setHintText(inspecting.getActiveTask().getDescription());
 					} else {
-						if (row >= inspecting.getActiveTask().getParameter()
-								.size()) {
+						if (row >= inspecting.getActiveTask().getParameters().length) {
 							ViewRegistry.showException(
 									this.getClass(),
 									ExceptionType.ABNORMAL_BEHAVIOR,
@@ -138,8 +136,8 @@ public class InspectorPanel extends JPanel implements Observer {
 													.getString(
 															"View.InspectorPanel.ParamCountException")));
 						}
-						setHintText(inspecting.getActiveTask().getParameter()
-								.get(row - 1));
+						setHintText(inspecting.getActiveTask().getParameters()[row - 1]
+								.getDescription());
 					}
 				}
 			}
@@ -167,26 +165,19 @@ public class InspectorPanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Sets the hint text for an XML object that has a description, and
-	 * therefore inherits from {@link XMLHasDescription}
+	 * Sets the hint text
 	 * 
-	 * @param xmlhd
+	 * @param hintText
+	 *            the hintText to set
 	 */
-	protected void setHintText(XMLHasDescription xmlhd) {
-		String hintText;
-		if (xmlhd != null) {
-			hintText = I18N.getInstance().getDescription(xmlhd);
-			if (hintText == null) {
-				hintText = I18N.getInstance().getString("View.InspectorPanel.NoDescription");
-			}
-		} else {
-			hintText = "";
+	protected void setHintText(String hintText) {
+		if (hintText.isEmpty()) {
+			hintText = I18N.getInstance().getString(
+					"View.InspectorPanel.NoDescription");
 		}
-		hintLabel.setText("<html><body><p>"
-				+ hintText
-				+ "</p></body></html>");
+		hintLabel.setText("<html><body><p>" + hintText + "</p></body></html>");
 	}
-	
+
 	@Override
 	public void update(Observable o, Object arg) {
 		if (inspecting != null) {
@@ -235,7 +226,7 @@ public class InspectorPanel extends JPanel implements Observer {
 			if (inspecting == null) {
 				return 0;
 			} else {
-				return 1 + inspecting.getActiveTask().getParameter().size();
+				return 1 + inspecting.getActiveTask().getParameters().length;
 			}
 		}
 
@@ -261,10 +252,10 @@ public class InspectorPanel extends JPanel implements Observer {
 			} else {
 				switch (column) {
 				case 0:
-					return inspecting.getActiveTask().getParameter().get(row)
+					return inspecting.getActiveTask().getParameters()[row]
 							.getFriendlyName();
 				default:
-					return inspecting.getActiveTask().getParameter().get(row)
+					return inspecting.getActiveTask().getParameters()[row]
 							.getValue();
 				}
 			}
@@ -273,8 +264,10 @@ public class InspectorPanel extends JPanel implements Observer {
 		@Override
 		public void setValueAt(Object aValue, int row, int column) {
 			if (inspecting != null) {
-				ActionEvent ae = new ActionEvent(inspecting, row, aValue.toString());
-				ActionRegistry.getInstance().get(EditPropertyAction.class).actionPerformed(ae);
+				ActionEvent ae = new ActionEvent(inspecting, row,
+						aValue.toString());
+				ActionRegistry.getInstance().get(EditPropertyAction.class)
+						.actionPerformed(ae);
 			}
 		}
 
