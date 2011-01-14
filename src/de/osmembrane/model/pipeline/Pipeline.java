@@ -178,10 +178,7 @@ public class Pipeline extends AbstractPipeline {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(o.hasChanged()) {
-			setChanged();
-		}
-		
+		setChanged();
 		notifyObservers(arg);
 	}
 }
