@@ -171,7 +171,7 @@ public class InspectorPanel extends JPanel implements Observer {
 	 *            the hintText to set
 	 */
 	protected void setHintText(String hintText) {
-		if (hintText.isEmpty()) {
+		if ((hintText == null) || (hintText.isEmpty())) {
 			hintText = I18N.getInstance().getString(
 					"View.InspectorPanel.NoDescription");
 		}

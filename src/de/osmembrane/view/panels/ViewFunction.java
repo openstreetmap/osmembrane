@@ -96,7 +96,7 @@ public class ViewFunction extends JPanel {
 				// show no hint
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
-				mf.getPipeline().setHint(null);
+				mf.getPipeline().setHint("");
 				highlighted = false;
 				repaint();
 			}
