@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class DeleteConnectionAction extends AbstractAction {
+public class SavePipelineAction extends AbstractAction {
 
-	public DeleteConnectionAction() {
-		putValue(Action.NAME, "Delete Connection");
+	public SavePipelineAction() {
+		putValue(Action.NAME, "Save Pipeline");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}

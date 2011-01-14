@@ -9,12 +9,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import de.osmembrane.view.IView;
-import de.osmembrane.view.dialogs.CommandLineDialog;
 import de.osmembrane.view.dialogs.ErrorDialog;
-import de.osmembrane.view.dialogs.ListSelectionDialog;
-import de.osmembrane.view.dialogs.MapSelectionDialog;
-import de.osmembrane.view.dialogs.SettingsDialog;
-import de.osmembrane.view.frames.HelpFrame;
 import de.osmembrane.view.frames.MainFrame;
 
 /**
@@ -24,7 +19,7 @@ import de.osmembrane.view.frames.MainFrame;
  * @author tobias_kuhn
  * 
  */
-public class ViewRegistry implements Observer {
+public class ViewRegistry extends Observable implements Observer {
 
 	/**
 	 * implements the error-handling dialog Note: This is important to be static
@@ -109,9 +104,9 @@ public class ViewRegistry implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO: forward update() for ViewRegistry
-		throw new UnsupportedOperationException();
-
+		// forward update() for Model classes
+		setChanged();
+		notifyObservers(arg);
 	}
 
 	/**

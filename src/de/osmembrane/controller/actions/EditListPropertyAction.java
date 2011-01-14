@@ -1,4 +1,4 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 

@@ -5,6 +5,7 @@ import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
@@ -14,43 +15,50 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import de.osmembrane.controller.ActionRegistry;
-import de.osmembrane.controller.ChangeSettingsAction;
-import de.osmembrane.controller.DeleteFunctionAction;
-import de.osmembrane.controller.DuplicateFunctionAction;
-import de.osmembrane.controller.ExecutePipelineAction;
-import de.osmembrane.controller.ExitAction;
-import de.osmembrane.controller.ExportPipelineAction;
-import de.osmembrane.controller.GeneratePipelineAction;
-import de.osmembrane.controller.ImportPipelineAction;
-import de.osmembrane.controller.LoadPipelineAction;
-import de.osmembrane.controller.NewPipelineAction;
-import de.osmembrane.controller.PreviewPipelineAction;
-import de.osmembrane.controller.RedoAction;
-import de.osmembrane.controller.SavePipelineAction;
-import de.osmembrane.controller.ShowHelpAction;
-import de.osmembrane.controller.UndoAction;
+import de.osmembrane.controller.actions.ChangeSettingsAction;
+import de.osmembrane.controller.actions.DeleteFunctionAction;
+import de.osmembrane.controller.actions.DuplicateFunctionAction;
+import de.osmembrane.controller.actions.ExecutePipelineAction;
+import de.osmembrane.controller.actions.ExitAction;
+import de.osmembrane.controller.actions.ExportPipelineAction;
+import de.osmembrane.controller.actions.GeneratePipelineAction;
+import de.osmembrane.controller.actions.ImportPipelineAction;
+import de.osmembrane.controller.actions.LoadPipelineAction;
+import de.osmembrane.controller.actions.NewPipelineAction;
+import de.osmembrane.controller.actions.PreviewPipelineAction;
+import de.osmembrane.controller.actions.RedoAction;
+import de.osmembrane.controller.actions.SavePipelineAction;
+import de.osmembrane.controller.actions.ShowHelpAction;
+import de.osmembrane.controller.actions.UndoAction;
 import de.osmembrane.model.AbstractFunctionGroup;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractFrame;
+import de.osmembrane.view.actions.StandardViewAction;
+import de.osmembrane.view.actions.ViewAllAction;
+import de.osmembrane.view.actions.ZoomInAction;
+import de.osmembrane.view.actions.ZoomOutAction;
 import de.osmembrane.view.panels.LibraryPanel;
 import de.osmembrane.view.panels.InspectorPanel;
 import de.osmembrane.view.panels.LibraryPanelGroup;
 import de.osmembrane.view.panels.PipelinePanel;
 
 /**
- * The Main window that is the center of OSMembrane and the first thing
- * you'll see after the splash screen.
+ * The Main window that is the center of OSMembrane and the first thing you'll
+ * see after the splash screen.
  * 
  * @author tobias_kuhn
- *
+ * 
  */
 public class MainFrame extends AbstractFrame {
-	
+
 	private String notification;
+	
+	private PipelinePanel pipelineView;
 
 	/**
 	 * Creates the main frame.
+	 * 
 	 * @see Spezifikation.pdf, chapter 2.1
 	 */
 	public MainFrame() {
@@ -91,10 +99,18 @@ public class MainFrame extends AbstractFrame {
 			
 		});
 		
+		/* register all actions that are specific for *this* view and not the data flow to
+		 * the model
+		 */
+		ActionRegistry.getInstance().register(new StandardViewAction());
+		ActionRegistry.getInstance().register(new ViewAllAction());
+		ActionRegistry.getInstance().register(new ZoomInAction());
+		ActionRegistry.getInstance().register(new ZoomOutAction());
+		
 		// menu bar
 		JMenuBar menuBar = new JMenuBar();
 		
-		JMenu fileMenu = new JMenu("File");
+		JMenu fileMenu = new JMenu(I18N.getInstance().getString("View.Menu.File"));
 		fileMenu.add(ActionRegistry.getInstance().get(NewPipelineAction.class));
 		fileMenu.add(ActionRegistry.getInstance().get(LoadPipelineAction.class));
 		fileMenu.add(ActionRegistry.getInstance().get(SavePipelineAction.class));
@@ -107,7 +123,7 @@ public class MainFrame extends AbstractFrame {
 		fileMenu.add(ActionRegistry.getInstance().get(ExitAction.class));
 		menuBar.add(fileMenu);
 		
-		JMenu editMenu = new JMenu("Edit");
+		JMenu editMenu = new JMenu(I18N.getInstance().getString("View.Menu.Edit"));
 		editMenu.add(ActionRegistry.getInstance().get(UndoAction.class));
 		editMenu.add(ActionRegistry.getInstance().get(RedoAction.class));
 		editMenu.add(new JSeparator());
@@ -115,20 +131,28 @@ public class MainFrame extends AbstractFrame {
 		editMenu.add(ActionRegistry.getInstance().get(DeleteFunctionAction.class));
 		menuBar.add(editMenu);
 		
-		JMenu pipelineMenu = new JMenu("Pipeline");
+		JMenu viewMenu = new JMenu(I18N.getInstance().getString("View.Menu.View"));
+		editMenu.add(ActionRegistry.getInstance().get(StandardViewAction.class));
+		editMenu.add(ActionRegistry.getInstance().get(ViewAllAction.class));
+		editMenu.add(new JSeparator());
+		editMenu.add(ActionRegistry.getInstance().get(ZoomInAction.class));
+		editMenu.add(ActionRegistry.getInstance().get(ZoomOutAction.class));
+		menuBar.add(viewMenu);
+		
+		JMenu pipelineMenu = new JMenu(I18N.getInstance().getString("View.Menu.Pipeline"));
 		pipelineMenu.add(ActionRegistry.getInstance().get(PreviewPipelineAction.class));
 		pipelineMenu.add(ActionRegistry.getInstance().get(GeneratePipelineAction.class));
 		pipelineMenu.add(ActionRegistry.getInstance().get(ExecutePipelineAction.class));
 		menuBar.add(pipelineMenu);
 		
-		JMenu aboutMenu = new JMenu("About");
+		JMenu aboutMenu = new JMenu(I18N.getInstance().getString("View.Menu.About"));
 		aboutMenu.add(ActionRegistry.getInstance().get(ShowHelpAction.class));
 		menuBar.add(aboutMenu);
 		
 		setJMenuBar(menuBar);
 			
-		// tool bar
-		JToolBar toolBar = new JToolBar("OSMembrane", JToolBar.HORIZONTAL);
+		// tool bar with actions
+		JToolBar toolBar = new JToolBar(I18N.getInstance().getString("osmembrane"), JToolBar.HORIZONTAL);
 		toolBar.add(ActionRegistry.getInstance().get(NewPipelineAction.class));
 		toolBar.add(ActionRegistry.getInstance().get(LoadPipelineAction.class));
 		toolBar.add(ActionRegistry.getInstance().get(SavePipelineAction.class));
@@ -146,6 +170,20 @@ public class MainFrame extends AbstractFrame {
 		toolBar.add(ActionRegistry.getInstance().get(ShowHelpAction.class));
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		
+		// tools bar with tools for editing the pipeline
+		JToolBar toolsBar = new JToolBar(I18N.getInstance().getString("osmembrane"), JToolBar.HORIZONTAL);
+		toolsBar.add(new JButton("Tool1"));
+		toolsBar.add(new JButton("Tool2"));
+		toolsBar.add(new JButton("Tool3"));
+		toolsBar.add(new JButton("Tool4"));
+		toolBar.add(new JSeparator(SwingConstants.VERTICAL));
+		toolsBar.add(ActionRegistry.getInstance().get(StandardViewAction.class));
+		toolsBar.add(ActionRegistry.getInstance().get(ViewAllAction.class));
+		toolBar.add(new JSeparator(SwingConstants.VERTICAL));
+		toolsBar.add(ActionRegistry.getInstance().get(ZoomInAction.class));
+		toolsBar.add(ActionRegistry.getInstance().get(ZoomOutAction.class));
+		toolBar.add(toolsBar);
+		
 		// function library	
 		LibraryPanel functionLibrary = new LibraryPanel();
 		for (AbstractFunctionGroup afg : ModelProxy.getInstance().accessFunctions().getFunctionGroups()) {
@@ -153,14 +191,14 @@ public class MainFrame extends AbstractFrame {
 			functionLibrary.addGroup(lpg);
 		}
 		JScrollPane paneLibrary = new JScrollPane(functionLibrary);			
-		
-		// pipeline view
-		PipelinePanel pipelineView = new PipelinePanel();
-		JScrollPane panePipeline = new JScrollPane(pipelineView);
-		
+					
 		// function inspector
 		InspectorPanel functionInspector = new InspectorPanel();
-		JScrollPane paneInspector = new JScrollPane(functionInspector);		
+		JScrollPane paneInspector = new JScrollPane(functionInspector);
+		
+		// pipeline view
+		pipelineView = new PipelinePanel(functionLibrary, functionInspector);
+		JScrollPane panePipeline = new JScrollPane(pipelineView);
 		
 		// split containers
 		JSplitPane splitLibAndView = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, paneLibrary, panePipeline);
@@ -175,12 +213,18 @@ public class MainFrame extends AbstractFrame {
 	}
 
 	/**
-	 * @param notification the notification to set
+	 * @param notification
+	 *            the notification to set
 	 */
 	public void setNotification(String notification) {
 		this.notification = notification;
 	}
-	
-	
-	
+
+	/**
+	 * @return the pipeline panel
+	 */
+	public PipelinePanel getPipeline() {
+		return pipelineView;
+	}
+
 }

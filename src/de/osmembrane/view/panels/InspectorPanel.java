@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import de.osmembrane.controller.ActionRegistry;
-import de.osmembrane.controller.EditPropertyAction;
+import de.osmembrane.controller.actions.EditPropertyAction;
 import de.osmembrane.model.AbstractFunction;
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.tools.I18N;
@@ -74,6 +74,9 @@ public class InspectorPanel extends JPanel implements Observer {
 	 * Initializes the inspector panel and display
 	 */
 	public InspectorPanel() {
+		// register as observer
+		ViewRegistry.getInstance().addObserver(this);
+		
 		// caption
 		caption = new JLabel(I18N.getInstance().getString(
 				"View.InspectorPanel.NoSelection"));

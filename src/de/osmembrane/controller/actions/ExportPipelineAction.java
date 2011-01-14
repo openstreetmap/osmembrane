@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class MoveFunctionAction extends AbstractAction {
+public class ExportPipelineAction extends AbstractAction {
 
-	public MoveFunctionAction() {
-		putValue(Action.NAME, "Move Function");
+	public ExportPipelineAction() {
+		putValue(Action.NAME, "Export Pipeline");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}

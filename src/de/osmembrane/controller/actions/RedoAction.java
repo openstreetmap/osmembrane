@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class ImportPipelineAction extends AbstractAction {
+public class RedoAction extends AbstractAction {
 
-	public ImportPipelineAction() {
-		putValue(Action.NAME, "Import Pipeline");
+	public RedoAction() {
+		putValue(Action.NAME, "Redo");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}

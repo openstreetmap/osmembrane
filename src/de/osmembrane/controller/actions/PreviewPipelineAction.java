@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class ChangeSettingsAction extends AbstractAction {
+public class PreviewPipelineAction extends AbstractAction {
 
-	public ChangeSettingsAction() {
-		putValue(Action.NAME, "Change Settings");
+	public PreviewPipelineAction() {
+		putValue(Action.NAME, "Preview Pipeline");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}

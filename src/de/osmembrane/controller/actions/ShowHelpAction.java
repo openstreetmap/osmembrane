@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class ExecutePipelineAction extends AbstractAction {
+public class ShowHelpAction extends AbstractAction {
 
-	public ExecutePipelineAction() {
-		putValue(Action.NAME, "Execute Pipeline");
+	public ShowHelpAction() {
+		putValue(Action.NAME, "Show Help");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}

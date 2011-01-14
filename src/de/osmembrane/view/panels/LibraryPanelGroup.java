@@ -1,8 +1,8 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,27 +74,10 @@ public class LibraryPanelGroup extends JPanel {
 		maxPreferredWidth = headerButton.getPreferredSize().width;
 		y += headerButton.getHeight() + 6;
 
-		headerButton.addMouseListener(new MouseListener() {
-
+		headerButton.addActionListener(new ActionListener() {
 			@Override
-			public void mouseReleased(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				lp.groupClicked(id);
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
 			}
 		});
 

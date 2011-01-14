@@ -19,7 +19,8 @@ import de.osmembrane.model.AbstractFunction;
 
 /**
  * The view function, i.e. the visual representation of a model function on the
- * View, in the {@link LibraryPanel} and on the {@link PipelinePanel}.
+ * View, in the {@link LibraryPanel} and the one being dragged on the {@link PipelinePanel}.
+ * Note, the actually drawn *in* the pipeline, are {@link PipelineFunction}.
  * 
  * @author tobias_kuhn
  * 
@@ -39,21 +40,21 @@ public class ViewFunction extends JPanel {
 	/**
 	 * The referenced model function
 	 */
-	private AbstractFunction modelFunction;
+	protected AbstractFunction modelFunctionPrototype;
 
 	/**
 	 * The image that will be displayed
 	 */
-	private Image display;
+	protected Image display;
 
 	/**
-	 * Initializes a new ViewFunction for the given model function
+	 * Initializes a new ViewFunction for the given model prototype function
 	 * 
-	 * @param modelFunction
-	 *            the model function this view function should represent
+	 * @param modelFunctionPrototype
+	 *            the model's prototype function this view function should represent
 	 */
-	public ViewFunction(AbstractFunction modelFunction) {
-		this.modelFunction = modelFunction;
+	public ViewFunction(AbstractFunction modelFunctionPrototype) {
+		this.modelFunctionPrototype = modelFunctionPrototype;
 		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
 				displayTemplate.getIconHeight()));
 		display = derivateDisplay(new Color(1.0f, 0.5f, 1.0f), null);
@@ -104,7 +105,7 @@ public class ViewFunction extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		g.drawImage(display, 0, 0, getWidth(), getHeight(), this);
-		printCenteredString(g, modelFunction.getFriendlyName(),
+		printCenteredString(g, modelFunctionPrototype.getFriendlyName(),
 				0.8 * getHeight());
 	}
 
@@ -122,7 +123,7 @@ public class ViewFunction extends JPanel {
 	private void printCenteredString(Graphics g, String str, double y) {
 		// get applicable font
 		g.setFont(g.getFont().deriveFont(Font.BOLD)
-				.deriveFont(getHeight() / 6.0f));
+				.deriveFont(g.getFont().getSize() * getHeight() / 90.0f));
 
 		// find out how large this is gonna be
 		FontMetrics fm = g.getFontMetrics();
@@ -165,6 +166,13 @@ public class ViewFunction extends JPanel {
 			g.drawString(line, (getWidth() - fm.stringWidth(line)) / 2, 
 					(int) y	- i * fontHeight);
 		}
+	}
+	
+	/**
+	 * @return the model function prototype associated with this view function
+	 */
+	public AbstractFunction getModelFunctionPrototype() {
+		return this.modelFunctionPrototype;
 	}
 
 }

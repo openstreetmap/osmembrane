@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class SavePipelineAction extends AbstractAction {
+public class DuplicateFunctionAction extends AbstractAction {
 
-	public SavePipelineAction() {
-		putValue(Action.NAME, "Save Pipeline");
+	public DuplicateFunctionAction() {
+		putValue(Action.NAME, "Duplicate Function");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}

@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class UndoAction extends AbstractAction {
+public class AddConnectionAction extends AbstractAction {
 
-	public UndoAction() {
-		putValue(Action.NAME, "Undo");
+	public AddConnectionAction() {
+		putValue(Action.NAME, "Add Connection");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}

@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class ShowHelpAction extends AbstractAction {
+public class UndoAction extends AbstractAction {
 
-	public ShowHelpAction() {
-		putValue(Action.NAME, "Show Help");
+	public UndoAction() {
+		putValue(Action.NAME, "Undo");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}

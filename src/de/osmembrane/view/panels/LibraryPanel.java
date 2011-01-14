@@ -258,4 +258,12 @@ public class LibraryPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Used for drag & drop functionality
+	 * @return the currently dragged ViewFunction, or null if no dragging
+	 */
+	public ViewFunction getDragging() {
+		return null;
+	}
+
 }

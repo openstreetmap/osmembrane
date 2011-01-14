@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class EditFilePropertyAction extends AbstractAction {
+public class ExecutePipelineAction extends AbstractAction {
 
-	public EditFilePropertyAction() {
-		putValue(Action.NAME, "Edit File Property");
+	public ExecutePipelineAction() {
+		putValue(Action.NAME, "Execute Pipeline");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}

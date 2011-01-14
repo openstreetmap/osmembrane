@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class DeleteFunctionAction extends AbstractAction {
+public class MoveFunctionAction extends AbstractAction {
 
-	public DeleteFunctionAction() {
-		putValue(Action.NAME, "Delete Function");
+	public MoveFunctionAction() {
+		putValue(Action.NAME, "Move Function");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}

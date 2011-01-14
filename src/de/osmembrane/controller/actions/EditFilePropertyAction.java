@@ -1,14 +1,14 @@
-package de.osmembrane.controller;
+package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class EditBoundingBoxPropertyAction extends AbstractAction {
+public class EditFilePropertyAction extends AbstractAction {
 
-	public EditBoundingBoxPropertyAction() {
-		putValue(Action.NAME, "Edit BBox Property");
+	public EditFilePropertyAction() {
+		putValue(Action.NAME, "Edit File Property");
 		//throw new UnsupportedOperationException();
 		// FIXME
 	}
