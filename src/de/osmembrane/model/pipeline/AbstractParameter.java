@@ -9,6 +9,10 @@ public abstract class AbstractParameter extends Observable implements Serializab
 
 	public abstract String getName();
 	
+	public abstract String getFriendlyName();
+	
+	public abstract String getDescription();
+	
 	public abstract ParameterType getType();
 	
 	public abstract AbstractEnumValue[] getEnumValue();
@@ -22,5 +26,4 @@ public abstract class AbstractParameter extends Observable implements Serializab
 	public abstract boolean isRequired();
 	
 	public abstract boolean isDefaulXMLParameter();
-	
 }

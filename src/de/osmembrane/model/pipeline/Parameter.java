@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.osmembrane.model.xml.XMLEnumValue;
 import de.osmembrane.model.xml.XMLParameter;
+import de.osmembrane.tools.I18N;
 
 public class Parameter extends AbstractParameter {
 
@@ -29,6 +30,16 @@ public class Parameter extends AbstractParameter {
 		return xmlParam.getValue();
 	}
 
+	@Override
+	public String getFriendlyName() {
+		return xmlParam.getFriendlyName();
+	}
+	
+	@Override
+	public String getDescription() {
+		return I18N.getInstance().getDescription(xmlParam);
+	}
+	
 	@Override
 	public ParameterType getType() {
 		return type;
