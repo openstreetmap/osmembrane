@@ -1,5 +1,6 @@
 package de.osmembrane.view.actions;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -13,7 +14,7 @@ public class StandardViewAction extends AbstractAction {
 	
 	public StandardViewAction() {
 		// TODO Auto-generated constructor stub
-		putValue(Action.NAME, "Reset View");
+		putValue(Action.NAME, "Reset View");		
 	}
 
 	@Override

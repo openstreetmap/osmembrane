@@ -6,6 +6,11 @@ package de.osmembrane.exceptions;
  * @author jakob_jarosch
  */
 public enum ExceptionSeverity {
+	
+	/**
+	 * don't use
+	 */
+	INVALID,
 
 	/**
 	 * a warning has occurred to inform the user for example about failed

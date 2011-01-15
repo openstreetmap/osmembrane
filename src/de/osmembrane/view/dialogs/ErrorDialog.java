@@ -1,7 +1,5 @@
 package de.osmembrane.view.dialogs;
 
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -126,13 +124,14 @@ public class ErrorDialog extends AbstractDialog {
 		JPanel buttons = new JPanel();
 		buttons.add(showTraceButton);
 		buttons.add(okButton);
-		if (showTraceButton.getPreferredSize().width > okButton.getPreferredSize().width) {
+		if (showTraceButton.getPreferredSize().width > okButton
+				.getPreferredSize().width) {
 			okButton.setPreferredSize(showTraceButton.getPreferredSize());
 		} else {
 			showTraceButton.setPreferredSize(okButton.getPreferredSize());
 		}
 		add(buttons, gbc);
-		
+
 		pack();
 		centerWindow();
 	}
@@ -169,6 +168,10 @@ public class ErrorDialog extends AbstractDialog {
 
 		if (causingObject == null) {
 			causingObject = t.getStackTrace()[0].getClass();
+		}
+
+		if (severity == null) {
+			severity = ExceptionSeverity.INVALID;
 		}
 
 		switch (severity) {

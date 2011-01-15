@@ -1,6 +1,7 @@
 package de.osmembrane.view.frames;
 
 import java.awt.Point;
+import java.awt.dnd.DragSource;
 
 import javax.swing.JComponent;
 
@@ -38,10 +39,14 @@ public class MainFrameGlassPane extends JComponent {
 	 */
 	protected void dragAndDrop(LibraryFunction libraryFunction, Point point) {
 		if (dragAndDrop == null) {
+			// add the display function
 			dragAndDrop = new LibraryFunction(
 					libraryFunction.getModelFunctionPrototype(), false);
+			
 			dragAndDrop.setSize(dragAndDrop.getPreferredSize());
 			dragAndDrop.forceHighlight(true);
+			dragAndDrop.setCursor(DragSource.DefaultCopyDrop);
+			
 			add(dragAndDrop);
 			setVisible(true);
 		}

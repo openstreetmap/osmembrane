@@ -1,13 +1,17 @@
 package de.osmembrane.view.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
@@ -66,13 +70,32 @@ public class MainFrame extends AbstractFrame {
 	private PipelinePanel pipelineView;
 
 	/**
+	 * The images, cursors and the selected item of the tools
+	 */
+	private ImageIcon[] toolsImages;
+	private Cursor[] toolsCursors;
+	private int selectedTool;
+
+	/**
+	 * Valid values for tools
+	 */
+	protected final static int DEFAULT_MAGIC_TOOL = 0;
+	protected final static int SELECTION_TOOL = 1;
+	protected final static int VIEW_TOOL = 2;
+	protected final static int CONNECTION_TOOL = 3;
+	// this has to be > the largest id
+	protected final static int TOOLS_COUNT = 4;
+
+	/**
 	 * Creates the main frame.
 	 * 
 	 * @see Spezifikation.pdf, chapter 2.1
 	 */
 	public MainFrame() {
+		// window title
 		setWindowTitle(I18N.getInstance().getString("osmembrane"));
 
+		// closing window listener
 		addWindowListener(new WindowListener() {
 
 			@Override
@@ -109,6 +132,26 @@ public class MainFrame extends AbstractFrame {
 
 		// set own glass pane used for drag & drop
 		setGlassPane(new MainFrameGlassPane());
+
+		// initialize tools
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		selectedTool = DEFAULT_MAGIC_TOOL;
+
+		toolsImages = new ImageIcon[TOOLS_COUNT];
+		toolsImages[DEFAULT_MAGIC_TOOL] = null;
+		toolsImages[SELECTION_TOOL] = new ImageIcon(getClass().getResource(
+				"/de/osmembrane/resources/cursors/cursor-select.png"));
+		toolsImages[VIEW_TOOL] = new ImageIcon(getClass().getResource(
+				"/de/osmembrane/resources/cursors/cursor-move.png"));
+		toolsImages[CONNECTION_TOOL] = new ImageIcon(getClass().getResource(
+				"/de/osmembrane/resources/cursors/cursor-connect.png"));
+
+		toolsCursors = new Cursor[TOOLS_COUNT];
+		toolsCursors[DEFAULT_MAGIC_TOOL] = Cursor.getDefaultCursor();
+		for (int i = DEFAULT_MAGIC_TOOL + 1; i < TOOLS_COUNT; i++) {
+			toolsCursors[i] = tk.createCustomCursor(toolsImages[i].getImage(),
+					new Point(1, 1), String.valueOf(i));
+		}
 
 		/*
 		 * register all actions that are specific for *this* view and not the

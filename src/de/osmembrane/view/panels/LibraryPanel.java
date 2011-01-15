@@ -9,8 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.Application;
-import de.osmembrane.exceptions.ControlledException;
-import de.osmembrane.exceptions.ExceptionSeverity;
 
 /**
  * The function library panel that lists all the function groups in a register
@@ -113,8 +111,7 @@ public class LibraryPanel extends JPanel {
 			try {
 				expandingThread.join();
 			} catch (InterruptedException e) {
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.UNEXPECTED_BEHAVIOR, e));	
+				Application.handleException(e);	
 			}
 		}
 

@@ -3,7 +3,7 @@ package de.osmembrane;
 
 /**
  * Class necessary to be instantiated when an EDT exception occurs to forward it
- * to the ViewRegistry.
+ * to the ErrorDialog.
  * 
  * @see java.awt.EventDispatchThread#handleException
  * 
