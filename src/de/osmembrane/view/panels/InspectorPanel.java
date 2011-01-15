@@ -65,6 +65,8 @@ public class InspectorPanel extends JPanel implements Observer {
 	private static final Color LIGHT_BLUE = new Color(0.9f, 0.9f, 1.0f);
 	private static final Color LIGHT_YELLOW = new Color(1.0f, 1.0f, 0.9f);
 
+	protected static final String VALID_EMPTY_HINT = " ";
+
 	/**
 	 * the reference to the abstract function which is currently inspected
 	 */

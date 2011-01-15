@@ -1,6 +1,7 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Dimension;
+import java.awt.GradientPaint;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -312,6 +313,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	 *            The new function to add
 	 */
 	public void draggedOnto(ViewFunction viewFunction, Point2D at) {
+		
 		// drag & drop functionality : add function
 		Action a = ActionRegistry.getInstance().get(AddFunctionAction.class);
 

@@ -11,6 +11,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
@@ -114,8 +115,9 @@ public class ViewFunction extends JPanel {
 				if (canDragAndDrop) {
 					IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 					MainFrame mf = (MainFrame) mainFrame;
+					mf.endDragAndDrop(); // necessary to make the glass pane go away
 
-					// subtract the offset when it got clicked
+					// subtract the offset where it got clicked
 					e.translatePoint(-dragOffset.x, -dragOffset.y);
 
 					// convert the mouse event into the mainFrame and
@@ -147,7 +149,7 @@ public class ViewFunction extends JPanel {
 				// show no hint
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
-				mf.getPipeline().setHint("");
+				mf.getPipeline().setHint(InspectorPanel.VALID_EMPTY_HINT);
 
 				if (canDragAndDrop) {
 					highlighted = false;
@@ -173,6 +175,35 @@ public class ViewFunction extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
+
+		// nice drag & drop animation
+		if (canDragAndDrop) {
+			addMouseMotionListener(new MouseMotionListener() {
+
+				@Override
+				public void mouseMoved(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseDragged(MouseEvent e) {
+					IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+					MainFrame mf = (MainFrame) mainFrame;
+
+					// subtract the offset where it got clicked
+					e.translatePoint(-dragOffset.x, -dragOffset.y);
+
+					// convert the mouse event into the mainFrame and
+					// pipeline panel components
+					MouseEvent mainFrameEvent = SwingUtilities
+							.convertMouseEvent(ViewFunction.this, e, mf.getGlassPane());
+
+					mf.paintDragAndDrop(ViewFunction.this,
+							mainFrameEvent.getPoint());
+				}
+			});
+		}
 	}
 
 	/**
@@ -219,14 +250,27 @@ public class ViewFunction extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		if (highlighted) {
-			g.drawImage(displayHighlight, 0, 0, getWidth(), getHeight(), this);
-		} else {
-			g.drawImage(display, 0, 0, getWidth(), getHeight(), this);
-		}
+		paintAt(g, new Point(0, 0));
+	}
 
-		printCenteredString(g, modelFunctionPrototype.getFriendlyName(),
-				0.8 * getHeight());
+	/**
+	 * Paints the component on g at position at
+	 * 
+	 * @param g
+	 *            the graphics to draw upon
+	 * @param at
+	 *            where to draw
+	 */
+	protected void paintAt(Graphics g, Point at) {
+		if (highlighted) {
+			g.drawImage(displayHighlight, at.x, at.y, getWidth(), getHeight(),
+					this);
+		} else {
+			g.drawImage(display, at.x, at.y, getWidth(), getHeight(), this);
+		}	
+
+		printCenteredString(g, modelFunctionPrototype.getFriendlyName(), at.x,
+				at.y + 0.8 * getHeight());
 	}
 
 	/**
@@ -237,10 +281,12 @@ public class ViewFunction extends JPanel {
 	 *            Graphics to draw upon
 	 * @param str
 	 *            String to display centered with line breaks
+	 * @param x
+	 *            the base x coordinate for the first character of the string
 	 * @param y
 	 *            the base y coordinate for the last line of the string
 	 */
-	private void printCenteredString(Graphics g, String str, double y) {
+	private void printCenteredString(Graphics g, String str, double x, double y) {
 		// get applicable font
 		g.setFont(g.getFont().deriveFont(Font.BOLD)
 				.deriveFont(g.getFont().getSize() * getHeight() / 90.0f));
@@ -283,8 +329,8 @@ public class ViewFunction extends JPanel {
 		// print the lines
 		for (int i = lines.size() - 1; i >= 0; i--) {
 			line = lines.get((lines.size() - 1) - i);
-			g.drawString(line, (getWidth() - fm.stringWidth(line)) / 2, (int) y
-					- i * fontHeight);
+			g.drawString(line, (int) x + (getWidth() - fm.stringWidth(line))
+					/ 2, (int) y - i * fontHeight);
 		}
 	}
 
@@ -300,6 +346,15 @@ public class ViewFunction extends JPanel {
 	 */
 	public boolean isDragging() {
 		return this.dragging;
+	}
+
+	/**
+	 * Forces the change of the highlight value.
+	 * @param highlight true, if highlighted, false otherwise
+	 */
+	public void forceHighlight(boolean highlight) {
+		this.highlighted = highlight;
+		repaint();
 	}
 
 }

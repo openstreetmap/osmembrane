@@ -111,7 +111,7 @@ public class LibraryPanelGroup extends JPanel {
 				// show no hint
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
-				mf.getPipeline().setHint("");
+				mf.getPipeline().setHint(InspectorPanel.VALID_EMPTY_HINT);
 			}
 			
 			@Override
@@ -201,7 +201,7 @@ public class LibraryPanelGroup extends JPanel {
 	
 	/**
 	 * Checks whether any of this group's functions is currently dragged
-	 * @return the dragged viewfunction, null if nothing is dragged
+	 * @return the dragged view function, null if nothing is dragged
 	 */
 	protected ViewFunction findDragging() {
 		for (ViewFunction vf : content) {
