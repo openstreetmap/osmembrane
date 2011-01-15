@@ -167,7 +167,7 @@ public class ErrorDialog extends AbstractDialog {
 		}
 
 		if (causingObject == null) {
-			causingObject = t.getStackTrace()[0].getClass();
+			causingObject = t.getStackTrace()[0];
 		}
 
 		if (severity == null) {
@@ -264,12 +264,8 @@ public class ErrorDialog extends AbstractDialog {
 		} else {
 			okButton.setText(I18N.getInstance().getString("View.OK"));
 		}
-		/*
-		 * if (severity == ExceptionSeverity.WARNING) {
-		 * getContentPane().remove(exceptionText);
-		 * showTraceButton.setVisible(true); } else { addExceptionText();
-		 * showTraceButton.setVisible(false); }
-		 */
+
+		// normally hide the stack trace
 		exceptionTextPane.setVisible(false);
 		showTraceButton.setVisible(true);
 		okButton.requestFocusInWindow();
