@@ -28,9 +28,7 @@ import de.osmembrane.controller.actions.RedoAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
 import de.osmembrane.controller.actions.UndoAction;
-import de.osmembrane.controller.exceptions.ControlledException;
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
-import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.exceptions.ExceptionSeverity;
 
 /**
  * The action registry implements the Broker pattern to organize the
@@ -118,20 +116,5 @@ public class ActionRegistry {
 	 */
 	public Action get(Class<? extends Action> clazz) {
 		return actions.get(clazz);
-	}
-	
-	/**
-	 * Called whenever there's an exception to catch.
-	 */
-	public static void handleException(Throwable t) {
-		// if it's one of our own, decode it
-		if (t instanceof ControlledException) {
-			ControlledException ce = (ControlledException) t;
-			
-			ViewRegistry.showException(ce.getCause(), ce.getKind(), ce.getCausingObject());
-		} else {
-			// else the view will handle it (e.g. finding out about error cause etc.)
-			ViewRegistry.showException(t, null, null);
-		}
 	}
 }

@@ -8,7 +8,8 @@ import java.util.Observer;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.dialogs.ErrorDialog;
 import de.osmembrane.view.frames.MainFrame;
@@ -55,8 +56,7 @@ public class ViewRegistry extends Observable implements Observer {
 			}
 		} catch (Exception e) {
 			// if setLookAndFeel() failed
-			ViewRegistry.showException(this.getClass(),
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
+			Application.handleException(e);
 		}
 
 	}
@@ -95,8 +95,7 @@ public class ViewRegistry extends Observable implements Observer {
 			try {
 				result = clazz.newInstance();
 			} catch (Exception e) {
-				showException(this.getClass(),
-						ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
+				Application.handleException(e);
 			}
 			views.put(clazz, result);
 		}

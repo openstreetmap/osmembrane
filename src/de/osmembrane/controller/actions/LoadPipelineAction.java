@@ -17,7 +17,6 @@ public class LoadPipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ViewRegistry.showException(null, null, null);
 		throw new UnsupportedOperationException();
 	}
 }

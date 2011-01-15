@@ -8,9 +8,11 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
+import de.osmembrane.Application;
 import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.controller.events.ContainingLocationEvent;
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.tools.I18N;
@@ -38,11 +40,9 @@ public class AddFunctionAction extends AbstractAction {
 			newFunc.setCoordinate(cle.getLocation());
 			ModelProxy.getInstance().accessPipeline().addFunction(newFunc);
 		} else {
-			ViewRegistry.showException(
-					this.getClass(),
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
-					new Exception(I18N.getInstance().getString(
-							"Controller.Actions.InvalidEvent")));
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N.getInstance()
+							.getString("Controller.Actions.InvalidEvent")));
 		}
 	}
 }

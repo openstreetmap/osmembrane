@@ -11,7 +11,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Observable;
 
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.view.ViewRegistry;

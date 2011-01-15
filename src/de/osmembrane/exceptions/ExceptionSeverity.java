@@ -1,4 +1,4 @@
-package de.osmembrane.controller.exceptions;
+package de.osmembrane.exceptions;
 
 /**
  * Enumeration for categorizing the severity an Exception.

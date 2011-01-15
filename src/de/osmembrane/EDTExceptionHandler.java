@@ -1,7 +1,5 @@
 package de.osmembrane;
 
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
-import de.osmembrane.view.ViewRegistry;
 
 /**
  * Class necessary to be instantiated when an EDT exception occurs to forward it
@@ -21,9 +19,7 @@ public class EDTExceptionHandler {
 	 *            the {@link Throwable} to catch
 	 */
 	public void handle(Throwable t) {
-		Exception e = new Exception(t);
-		ViewRegistry.showException(this.getClass(),
-				ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
+		Application.handleException(t);
 	}
 
 }

@@ -22,9 +22,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.EditPropertyAction;
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.tools.I18N;
@@ -85,7 +87,7 @@ public class InspectorPanel extends JPanel implements Observer {
 
 		// caption
 		caption = new JLabel(I18N.getInstance().getString(
-				"View.InspectorPanel.NoSelection"));
+				"View.Inspector.NoSelection"));
 		caption.setFont(caption.getFont().deriveFont(Font.BOLD));
 
 		// display
@@ -134,10 +136,10 @@ public class InspectorPanel extends JPanel implements Observer {
 						setHintText(inspecting.getActiveTask().getDescription());
 					} else {
 						if (row >= inspecting.getActiveTask().getParameters().length) {
-							ViewRegistry.showException(
-									this.getClass(),
-									ExceptionSeverity.UNEXPECTED_BEHAVIOR,
-									new Exception(
+							Application
+									.handleException(new ControlledException(
+											this,
+											ExceptionSeverity.UNEXPECTED_BEHAVIOR,
 											I18N.getInstance()
 													.getString(
 															"View.InspectorPanel.ParamCountException")));
@@ -179,7 +181,7 @@ public class InspectorPanel extends JPanel implements Observer {
 	protected void setHintText(String hintText) {
 		if ((hintText == null) || (hintText.isEmpty())) {
 			hintText = I18N.getInstance().getString(
-					"View.InspectorPanel.NoDescription");
+					"View.Inspector.NoHint");
 		}
 		hintLabel.setText("<html><body><p>" + hintText + "</p></body></html>");
 	}
@@ -191,7 +193,7 @@ public class InspectorPanel extends JPanel implements Observer {
 			setHintText(inspecting.getDescription());
 		} else {
 			caption.setText(I18N.getInstance().getString(
-					"View.InspectorPanel.NoSelection"));
+					"View.Inspector.NoSelection"));
 			hintLabel.setText("");
 		}
 		repaint();

@@ -16,13 +16,16 @@ import java.util.Observer;
 import javax.swing.Action;
 import javax.swing.JPanel;
 
+import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.AddFunctionAction;
 import de.osmembrane.controller.events.ContainingLocationEvent;
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 
 /**
@@ -140,8 +143,8 @@ public class PipelinePanel extends JPanel implements Observer {
 		try {
 			objectToWindow.inverseTransform(center, center);
 		} catch (NoninvertibleTransformException e) {
-			ViewRegistry.showException(this.getClass(),
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e));			
 		}
 		objectToWindow.setToIdentity();
 		objectToWindow.translate(center.x, center.y);
@@ -168,8 +171,8 @@ public class PipelinePanel extends JPanel implements Observer {
 		try {
 			objectToWindow.inverseTransform(center, center);
 		} catch (NoninvertibleTransformException e) {
-			ViewRegistry.showException(this.getClass(),
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e));	
 		}
 		objectToWindow.setToIdentity();
 		objectToWindow.translate(center.x, center.y);
@@ -324,8 +327,8 @@ public class PipelinePanel extends JPanel implements Observer {
 		try {
 			objectToWindow.inverseTransform(at, newPosition);
 		} catch (NoninvertibleTransformException e1) {
-			ViewRegistry.showException(this.getClass(),
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e1);
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e1));	
 		}
 
 		ContainingLocationEvent cle = new ContainingLocationEvent(this,

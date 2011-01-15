@@ -1,9 +1,12 @@
-package de.osmembrane.controller.exceptions;
+package de.osmembrane.exceptions;
 
 /**
  * The general exception class that can be invoked anywhere within the program
  * and is understood by the Controller to fit unto the View's error handling
  * dialog.
+ * 
+ * If you mean to create a separate ControlledException, please specify an
+ * exception message so users can figure out, what has happened.
  * 
  * @author tobias_kuhn
  * 
@@ -42,7 +45,11 @@ public class ControlledException extends Exception {
 	 *            the severity of the exception
 	 * @param cause
 	 *            the cause associated with the exception
+	 * @deprecated When only using the cause, it is not useful to create a
+	 *             separate ControlledException. Instead, <b>please give a
+	 *             describing message</b>!
 	 */
+	@Deprecated
 	public ControlledException(Object causingObject,
 			ExceptionSeverity severity, Throwable cause) {
 		super(cause);

@@ -21,8 +21,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;
@@ -116,7 +119,8 @@ public class LibraryFunction extends JPanel {
 				if (canDragAndDrop) {
 					IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 					MainFrame mf = (MainFrame) mainFrame;
-					mf.endDragAndDrop(); // necessary to make the glass pane go away
+					mf.endDragAndDrop(); // necessary to make the glass pane go
+											// away
 
 					// subtract the offset where it got clicked
 					e.translatePoint(-dragOffset.x, -dragOffset.y);
@@ -134,7 +138,10 @@ public class LibraryFunction extends JPanel {
 						mf.getPipeline().draggedOnto(LibraryFunction.this,
 								pipelineEvent.getPoint());
 					} else {
-						ViewRegistry.showException(this.getClass(), ExceptionSeverity.WARNING, null);
+						Application.handleException(new ControlledException(
+								this, ExceptionSeverity.WARNING,
+								I18N.getInstance().getString(
+										"View.Library.CannotDropFunction")));
 					}
 				}
 			}
@@ -200,7 +207,8 @@ public class LibraryFunction extends JPanel {
 					// convert the mouse event into the mainFrame and
 					// pipeline panel components
 					MouseEvent mainFrameEvent = SwingUtilities
-							.convertMouseEvent(LibraryFunction.this, e, mf.getGlassPane());
+							.convertMouseEvent(LibraryFunction.this, e,
+									mf.getGlassPane());
 
 					mf.paintDragAndDrop(LibraryFunction.this,
 							mainFrameEvent.getPoint());
@@ -270,7 +278,7 @@ public class LibraryFunction extends JPanel {
 					this);
 		} else {
 			g.drawImage(display, at.x, at.y, getWidth(), getHeight(), this);
-		}	
+		}
 
 		printCenteredString(g, modelFunctionPrototype.getFriendlyName(), at.x,
 				at.y + 0.8 * getHeight());
@@ -353,7 +361,9 @@ public class LibraryFunction extends JPanel {
 
 	/**
 	 * Forces the change of the highlight value.
-	 * @param highlight true, if highlighted, false otherwise
+	 * 
+	 * @param highlight
+	 *            true, if highlighted, false otherwise
 	 */
 	public void forceHighlight(boolean highlight) {
 		this.highlighted = highlight;

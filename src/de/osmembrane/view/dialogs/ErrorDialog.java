@@ -1,5 +1,7 @@
 package de.osmembrane.view.dialogs;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,12 +15,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
-import de.osmembrane.controller.ActionRegistry;
-import de.osmembrane.controller.exceptions.ControlledException;
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
-import de.osmembrane.view.ViewRegistry;
 
 /**
  * the error message dialog (the window you will see most of the time ;)
@@ -39,9 +39,10 @@ public class ErrorDialog extends AbstractDialog {
 	private JTextArea exceptionText;
 
 	/**
-	 * The Ok Button
+	 * The OK and Show Stacktrace Button
 	 */
 	private JButton okButton;
+	private JButton showTraceButton;
 
 	/**
 	 * Whether the exception was fatal and the application should exit now
@@ -79,6 +80,17 @@ public class ErrorDialog extends AbstractDialog {
 				}
 			}
 		});
+		
+		showTraceButton = new JButton(I18N.getInstance().getString("View.ShowStackTrace"));
+		showTraceButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showTraceButton.setVisible(false);
+				exceptionText.setPreferredSize(null);
+				pack();
+				centerWindow();
+			}
+		});
 
 		// grid bag layout
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -91,21 +103,27 @@ public class ErrorDialog extends AbstractDialog {
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.gridheight = 1;
+		gbc.gridwidth = 1;
 		add(captionLabel, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 1;
+		gbc.gridwidth = 1;
 		add(messageLabel, gbc);
 
 		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.weightx = 0.0;
+		gbc.gridy = 2;		
 		gbc.gridwidth = 2;
 		add(new JScrollPane(exceptionText), gbc);
-
-		gbc.gridx = 0;
+		
+		/*gbc.gridx = 1;
 		gbc.gridy = 3;
-		gbc.gridwidth = 2;
+		gbc.gridwidth = 1;
+		add(showTraceButton, gbc);*/
+		
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		gbc.gridwidth = 1;
 		add(okButton, gbc);
 
 		pack();
@@ -137,9 +155,14 @@ public class ErrorDialog extends AbstractDialog {
 	 */
 	public void showException(Throwable t, ExceptionSeverity severity,
 			Object causingObject) {
+		
+		if (t == null) {
+			Application.handleException(new NullPointerException());
+		}
+		
 		if (causingObject == null) {
 			causingObject = t.getStackTrace()[0].getClass();
-		}
+		}	
 
 		switch (severity) {
 		case WARNING:
@@ -154,7 +177,7 @@ public class ErrorDialog extends AbstractDialog {
 		default:
 			setWindowTitle("Exception");
 		}
-
+		
 		captionLabel.setText(I18N.getInstance().getString(
 				"View.ErrorDialog.In", t.getClass().getCanonicalName(),
 				causingObject.toString()));
@@ -217,16 +240,25 @@ public class ErrorDialog extends AbstractDialog {
 		// determine whether it was a fatal error
 		fatal = (severity == ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR)
 				|| (causeWasError);
-
-		if (fatal) {
-			messageIcon.setIcon(UIManager.getIcon("OptionPane.warningIcon"));
-			okButton.setText(I18N.getInstance().getString("View.Quit"));
-		} else {
-			okButton.setText(I18N.getInstance().getString("View.OK"));
-		}
+		
+		messageIcon.setIcon(UIManager.getIcon("OptionPane.warningIcon"));
 		if (fatal || (severity == null)) {
 			messageIcon.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
 		}
+
+		if (fatal) {
+			okButton.setText(I18N.getInstance().getString("View.Quit"));
+		} else {
+			okButton.setText(I18N.getInstance().getString("View.OK"));
+		}		
+		/*
+		if (severity == ExceptionSeverity.WARNING) {
+			getContentPane().remove(exceptionText);
+			showTraceButton.setVisible(true);
+		} else {
+			addExceptionText();
+			showTraceButton.setVisible(false);
+		}*/
 
 		pack();
 		centerWindow();

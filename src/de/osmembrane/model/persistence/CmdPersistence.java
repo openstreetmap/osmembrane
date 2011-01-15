@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
 
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.parser.CmdParser;
 import de.osmembrane.model.parser.ParseException;
 import de.osmembrane.model.parser.ParserFactory;

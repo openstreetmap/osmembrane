@@ -10,7 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
 
-import de.osmembrane.controller.exceptions.ExceptionSeverity;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.AbstractSettings;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.ObserverObject;
