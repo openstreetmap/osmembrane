@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
@@ -33,10 +34,11 @@ public class ErrorDialog extends AbstractDialog {
 	/**
 	 * The components that will describe the error
 	 */
-	private JLabel messageIcon;
-	private JLabel captionLabel;
-	private JLabel messageLabel;
+	private JLabel icon;
+	private JLabel caption;
+	private JLabel exceptionMessage;
 	private JTextArea exceptionText;
+	private JScrollPane exceptionTextPane;
 
 	/**
 	 * The OK and Show Stacktrace Button
@@ -62,12 +64,13 @@ public class ErrorDialog extends AbstractDialog {
 		// set the basics up
 		setLayout(new GridBagLayout());
 
-		messageIcon = new JLabel();
-		captionLabel = new JLabel();
-		captionLabel.setFont(captionLabel.getFont().deriveFont(Font.BOLD));
-		messageLabel = new JLabel();
+		icon = new JLabel();
+		caption = new JLabel();
+		caption.setFont(caption.getFont().deriveFont(Font.BOLD));
+		exceptionMessage = new JLabel();
 		exceptionText = new JTextArea();
 		exceptionText.setEditable(false);
+		exceptionTextPane = new JScrollPane(exceptionText);
 
 		okButton = new JButton();
 		okButton.addActionListener(new ActionListener() {
@@ -80,13 +83,14 @@ public class ErrorDialog extends AbstractDialog {
 				}
 			}
 		});
-		
-		showTraceButton = new JButton(I18N.getInstance().getString("View.ShowStackTrace"));
+
+		showTraceButton = new JButton(I18N.getInstance().getString(
+				"View.ShowStackTrace"));
 		showTraceButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				showTraceButton.setVisible(false);
-				exceptionText.setPreferredSize(null);
+				exceptionTextPane.setVisible(true);
 				pack();
 				centerWindow();
 			}
@@ -98,34 +102,37 @@ public class ErrorDialog extends AbstractDialog {
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.gridheight = 2;
-		add(messageIcon, gbc);
+		add(icon, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.gridheight = 1;
 		gbc.gridwidth = 1;
-		add(captionLabel, gbc);
+		add(caption, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		gbc.gridwidth = 1;
-		add(messageLabel, gbc);
+		add(exceptionMessage, gbc);
 
 		gbc.gridx = 0;
-		gbc.gridy = 2;		
+		gbc.gridy = 2;
 		gbc.gridwidth = 2;
-		add(new JScrollPane(exceptionText), gbc);
-		
-		/*gbc.gridx = 1;
-		gbc.gridy = 3;
-		gbc.gridwidth = 1;
-		add(showTraceButton, gbc);*/
-		
-		gbc.gridx = 1;
-		gbc.gridy = 3;
-		gbc.gridwidth = 1;
-		add(okButton, gbc);
+		add(exceptionTextPane, gbc);
 
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.gridwidth = 2;
+		JPanel buttons = new JPanel();
+		buttons.add(showTraceButton);
+		buttons.add(okButton);
+		if (showTraceButton.getPreferredSize().width > okButton.getPreferredSize().width) {
+			okButton.setPreferredSize(showTraceButton.getPreferredSize());
+		} else {
+			showTraceButton.setPreferredSize(okButton.getPreferredSize());
+		}
+		add(buttons, gbc);
+		
 		pack();
 		centerWindow();
 	}
@@ -155,32 +162,35 @@ public class ErrorDialog extends AbstractDialog {
 	 */
 	public void showException(Throwable t, ExceptionSeverity severity,
 			Object causingObject) {
-		
+
 		if (t == null) {
 			Application.handleException(new NullPointerException());
 		}
-		
+
 		if (causingObject == null) {
 			causingObject = t.getStackTrace()[0].getClass();
-		}	
+		}
 
 		switch (severity) {
 		case WARNING:
-			setWindowTitle("Warning");
+			setWindowTitle(I18N.getInstance().getString(
+					"View.ErrorDialog.Warning"));
 			break;
 		case UNEXPECTED_BEHAVIOR:
-			setWindowTitle("Unexpected exception");
+			setWindowTitle(I18N.getInstance().getString(
+					"View.ErrorDialog.UnexpectedException"));
 			break;
 		case CRITICAL_UNEXPECTED_BEHAVIOR:
-			setWindowTitle("Critical unexpected exception");
+			setWindowTitle(I18N.getInstance().getString(
+					"View.ErrorDialog.CriticalUnexpectedException"));
 			break;
 		default:
-			setWindowTitle("Exception");
+			setWindowTitle(I18N.getInstance().getString(
+					"View.ErrorDialog.Exception"));
 		}
-		
-		captionLabel.setText(I18N.getInstance().getString(
-				"View.ErrorDialog.In", t.getClass().getCanonicalName(),
-				causingObject.toString()));
+
+		caption.setText(I18N.getInstance().getString("View.ErrorDialog.In",
+				t.getClass().getCanonicalName(), causingObject.toString()));
 
 		// find a suitable description, if one exists
 		String message = t.getLocalizedMessage();
@@ -203,7 +213,7 @@ public class ErrorDialog extends AbstractDialog {
 			}
 
 		}
-		messageLabel.setText(message);
+		exceptionMessage.setText(message);
 
 		// general information
 		StringBuilder sb = new StringBuilder();
@@ -240,25 +250,26 @@ public class ErrorDialog extends AbstractDialog {
 		// determine whether it was a fatal error
 		fatal = (severity == ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR)
 				|| (causeWasError);
-		
-		messageIcon.setIcon(UIManager.getIcon("OptionPane.warningIcon"));
+
+		icon.setIcon(UIManager.getIcon("OptionPane.warningIcon"));
 		if (fatal || (severity == null)) {
-			messageIcon.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
+			icon.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
 		}
 
 		if (fatal) {
 			okButton.setText(I18N.getInstance().getString("View.Quit"));
 		} else {
 			okButton.setText(I18N.getInstance().getString("View.OK"));
-		}		
+		}
 		/*
-		if (severity == ExceptionSeverity.WARNING) {
-			getContentPane().remove(exceptionText);
-			showTraceButton.setVisible(true);
-		} else {
-			addExceptionText();
-			showTraceButton.setVisible(false);
-		}*/
+		 * if (severity == ExceptionSeverity.WARNING) {
+		 * getContentPane().remove(exceptionText);
+		 * showTraceButton.setVisible(true); } else { addExceptionText();
+		 * showTraceButton.setVisible(false); }
+		 */
+		exceptionTextPane.setVisible(false);
+		showTraceButton.setVisible(true);
+		okButton.requestFocusInWindow();
 
 		pack();
 		centerWindow();
