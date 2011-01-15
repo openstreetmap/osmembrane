@@ -10,12 +10,12 @@ import javax.swing.JOptionPane;
 
 import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.controller.events.ContainingLocationEvent;
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.tools.I18N;
-import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.panels.ViewFunction;
+import de.osmembrane.view.panels.LibraryFunction;
 
 public class AddFunctionAction extends AbstractAction {
 
@@ -40,7 +40,7 @@ public class AddFunctionAction extends AbstractAction {
 		} else {
 			ViewRegistry.showException(
 					this.getClass(),
-					ExceptionType.ABNORMAL_BEHAVIOR,
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
 					new Exception(I18N.getInstance().getString(
 							"Controller.Actions.InvalidEvent")));
 		}

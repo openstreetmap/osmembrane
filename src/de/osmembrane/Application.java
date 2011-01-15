@@ -1,8 +1,8 @@
 package de.osmembrane;
 
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Constants;
-import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 
@@ -23,7 +23,7 @@ public class Application {
 			System.setProperty("sun.awt.exception.handler",
 					EDTExceptionHandler.class.getName());
 		} catch(Exception e) {
-			ViewRegistry.showException(this.getClass(), ExceptionType.CRITICAL_ABNORMAL_BEHAVIOR, e);
+			ViewRegistry.showException(this.getClass(), ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e);
 		}
 	}
 
@@ -35,7 +35,7 @@ public class Application {
 			ModelProxy.getInstance().accessFunctions().initiate(Constants.XML_RESOURCE_PATH);
 			ModelProxy.getInstance().accessPipeline().truncate();
 		} catch(Exception e) {
-			ViewRegistry.showException(this.getClass(), ExceptionType.CRITICAL_ABNORMAL_BEHAVIOR, e);
+			ViewRegistry.showException(this.getClass(), ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e);
 		}
 	}
 	
@@ -48,7 +48,7 @@ public class Application {
 			IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 			mainFrame.showWindow();
 		} catch(Exception e) {
-			ViewRegistry.showException(this.getClass(), ExceptionType.CRITICAL_ABNORMAL_BEHAVIOR, e);
+			ViewRegistry.showException(this.getClass(), ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e);
 		}
 	}
 }

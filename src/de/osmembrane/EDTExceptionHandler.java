@@ -1,6 +1,6 @@
 package de.osmembrane;
 
-import de.osmembrane.view.ExceptionType;
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.view.ViewRegistry;
 
 /**
@@ -23,7 +23,7 @@ public class EDTExceptionHandler {
 	public void handle(Throwable t) {
 		Exception e = new Exception(t);
 		ViewRegistry.showException(this.getClass(),
-				ExceptionType.ABNORMAL_BEHAVIOR, e);
+				ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
 	}
 
 }

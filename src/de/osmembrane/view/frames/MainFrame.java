@@ -1,6 +1,7 @@
 package de.osmembrane.view.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.WindowEvent;
@@ -44,7 +45,7 @@ import de.osmembrane.view.panels.LibraryPanel;
 import de.osmembrane.view.panels.InspectorPanel;
 import de.osmembrane.view.panels.LibraryPanelGroup;
 import de.osmembrane.view.panels.PipelinePanel;
-import de.osmembrane.view.panels.ViewFunction;
+import de.osmembrane.view.panels.LibraryFunction;
 
 /**
  * The Main window that is the center of OSMembrane and the first thing you'll
@@ -252,6 +253,9 @@ public class MainFrame extends AbstractFrame {
 
 		// center, then maximize
 		pack();
+		pipelineView.setPreferredSize(new Dimension((int) (getWidth() * 0.7),
+				pipelineView.getPreferredSize().height));
+		pack();
 		centerWindow();
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
@@ -275,14 +279,14 @@ public class MainFrame extends AbstractFrame {
 	 * Draws a specific view function that is currently dragged & drop where the
 	 * cursor is
 	 * 
-	 * @param viewFunction
+	 * @param libraryFunction
 	 *            the view function to be drawn
 	 * @param point
 	 *            top left position of the view function to be drawn
 	 */
-	public void paintDragAndDrop(ViewFunction viewFunction, Point point) {
+	public void paintDragAndDrop(LibraryFunction libraryFunction, Point point) {
 		MainFrameGlassPane mfgp = (MainFrameGlassPane) getGlassPane();
-		mfgp.dragAndDrop(viewFunction, point);
+		mfgp.dragAndDrop(libraryFunction, point);
 	}
 
 	/**

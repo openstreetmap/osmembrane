@@ -11,9 +11,9 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Observable;
 
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;
 
 /**
@@ -27,7 +27,7 @@ public class OSMembranePersistence extends AbstractPersistence {
 	public void save(String file, Object data) throws FileException {
 		if (!(data instanceof List<?>)) {
 			ViewRegistry.showException(this.getClass(),
-					ExceptionType.ABNORMAL_BEHAVIOR,
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
 					new Exception("OSMembranePersistence#save() got a wrong"
 							+ " object, object is the following instance:\n"
 							+ data.getClass()));

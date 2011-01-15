@@ -24,10 +24,10 @@ import javax.swing.table.TableColumn;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.EditPropertyAction;
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.tools.I18N;
-import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.components.JRowTable;
 import de.osmembrane.view.components.RowEditorModel;
@@ -65,6 +65,10 @@ public class InspectorPanel extends JPanel implements Observer {
 	private static final Color LIGHT_BLUE = new Color(0.9f, 0.9f, 1.0f);
 	private static final Color LIGHT_YELLOW = new Color(1.0f, 1.0f, 0.9f);
 
+	/**
+	 * An empty hint that is actually valid. (The hint panel normally checks for
+	 * == null and .isEmpty())
+	 */
 	protected static final String VALID_EMPTY_HINT = " ";
 
 	/**
@@ -132,7 +136,7 @@ public class InspectorPanel extends JPanel implements Observer {
 						if (row >= inspecting.getActiveTask().getParameters().length) {
 							ViewRegistry.showException(
 									this.getClass(),
-									ExceptionType.ABNORMAL_BEHAVIOR,
+									ExceptionSeverity.UNEXPECTED_BEHAVIOR,
 									new Exception(
 											I18N.getInstance()
 													.getString(

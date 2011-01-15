@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
-import de.osmembrane.view.panels.ViewFunction;
+import de.osmembrane.view.panels.LibraryFunction;
 
 /**
  * Glass pane that improvises the drawing of the drag & drop
@@ -19,7 +19,7 @@ public class MainFrameGlassPane extends JComponent {
 	/**
 	 * the function that is currently dragged to store
 	 */
-	private ViewFunction dragAndDrop;
+	private LibraryFunction dragAndDrop;
 
 	/**
 	 * Initializer for new glass pane
@@ -31,15 +31,15 @@ public class MainFrameGlassPane extends JComponent {
 	 * Draws a specific view function that is currently dragged & drop where
 	 * the cursor is
 	 * 
-	 * @param viewFunction
+	 * @param libraryFunction
 	 *            the view function to be drawn
 	 * @param point
 	 *            top left position of the view function to be drawn
 	 */
-	protected void dragAndDrop(ViewFunction viewFunction, Point point) {
+	protected void dragAndDrop(LibraryFunction libraryFunction, Point point) {
 		if (dragAndDrop == null) {
-			dragAndDrop = new ViewFunction(
-					viewFunction.getModelFunctionPrototype(), false);
+			dragAndDrop = new LibraryFunction(
+					libraryFunction.getModelFunctionPrototype(), false);
 			dragAndDrop.setSize(dragAndDrop.getPreferredSize());
 			dragAndDrop.forceHighlight(true);
 			add(dragAndDrop);

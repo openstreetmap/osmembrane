@@ -54,7 +54,7 @@ public class LibraryPanelGroup extends JPanel {
 	/**
 	 * The contained objects
 	 */
-	private List<ViewFunction> content;
+	private List<LibraryFunction> content;
 
 	/**
 	 * Initializes a new LibraryPanelGroup
@@ -129,10 +129,10 @@ public class LibraryPanelGroup extends JPanel {
 
 		add(headerButton);
 
-		content = new ArrayList<ViewFunction>();
+		content = new ArrayList<LibraryFunction>();
 		// all functions available in the function group
 		for (AbstractFunction af : afg.getFunctions()) {
-			ViewFunction vf = new ViewFunction(af, true);
+			LibraryFunction vf = new LibraryFunction(af, true);
 
 			// determine the top
 			vf.setLocation(3, y);
@@ -194,7 +194,7 @@ public class LibraryPanelGroup extends JPanel {
 		headerButton.setSize(getWidth() - 6,
 				headerButton.getPreferredSize().height);
 		// center all the content view functions
-		for (ViewFunction vf : content) {
+		for (LibraryFunction vf : content) {
 			vf.setLocation((getWidth() - vf.getWidth()) / 2, vf.getLocation().y);
 		}
 	}
@@ -203,8 +203,8 @@ public class LibraryPanelGroup extends JPanel {
 	 * Checks whether any of this group's functions is currently dragged
 	 * @return the dragged view function, null if nothing is dragged
 	 */
-	protected ViewFunction findDragging() {
-		for (ViewFunction vf : content) {
+	protected LibraryFunction findDragging() {
+		for (LibraryFunction vf : content) {
 			if (vf.isDragging()) {
 				return vf;
 			}

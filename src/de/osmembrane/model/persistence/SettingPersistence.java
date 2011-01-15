@@ -10,11 +10,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
 
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.model.AbstractSettings;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.ObserverObject;
 import de.osmembrane.model.Settings;
-import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;
 
 /**
@@ -28,7 +28,7 @@ public class SettingPersistence extends AbstractPersistence {
 	public void save(String file, Object data) throws FileException {
 		if (!(data instanceof Settings)) {
 			ViewRegistry.showException(this.getClass(),
-					ExceptionType.ABNORMAL_BEHAVIOR,
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
 					new Exception("SettingsPersistence#save() got a wrong"
 							+ " object, object is the following instance:\n"
 							+ data.getClass()));
@@ -77,7 +77,7 @@ public class SettingPersistence extends AbstractPersistence {
 			} catch (FileException e) {
 				/* forward the exception to the view */
 				ViewRegistry.showException(this.getClass(),
-						ExceptionType.SAVE_SETTINGS_FAILED, e);
+						ExceptionSeverity.SAVE_SETTINGS_FAILED, e);
 			}
 		}
 	}

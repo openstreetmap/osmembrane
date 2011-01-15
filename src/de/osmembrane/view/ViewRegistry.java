@@ -8,6 +8,7 @@ import java.util.Observer;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.dialogs.ErrorDialog;
 import de.osmembrane.view.frames.MainFrame;
@@ -46,15 +47,16 @@ public class ViewRegistry extends Observable implements Observer {
 	private ViewRegistry() {
 		// try to set LnF to Nimbus, if available
 		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
 		} catch (Exception e) {
 			// if setLookAndFeel() failed
-		   ViewRegistry.showException(this.getClass(), ExceptionType.ABNORMAL_BEHAVIOR, e);
+			ViewRegistry.showException(this.getClass(),
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
 		}
 
 	}
@@ -93,8 +95,8 @@ public class ViewRegistry extends Observable implements Observer {
 			try {
 				result = clazz.newInstance();
 			} catch (Exception e) {
-				showException(this.getClass(), ExceptionType.ABNORMAL_BEHAVIOR,
-						e);
+				showException(this.getClass(),
+						ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
 			}
 			views.put(clazz, result);
 		}
@@ -121,22 +123,22 @@ public class ViewRegistry extends Observable implements Observer {
 	}
 
 	/**
-	 * Handles an occurring exception using the ExceptionDialog. A parameter
-	 * being null results automatically in a fatal error blaming the initial
-	 * caller.
+	 * Displays an occurred exception using the ExceptionDialog. This method
+	 * should not be called directly. Use the Controller's handleException()
+	 * method instead.
 	 * 
-	 * @param triggerClass
+	 * @param t
 	 *            class in which the Exception occurred
-	 * @param type
+	 * @param severity
 	 *            indicates what happened and how fatal it is
-	 * @param exception
-	 *            original Exception
+	 * @param causingObject
+	 *            object that caused the
 	 */
-	public static void showException(Class<?> triggerClass, ExceptionType type,
-			Exception exception) {
+	public static void showException(Throwable t, ExceptionSeverity severity,
+			Object causingObject) {
 		if (errorDialog == null) {
 			errorDialog = new ErrorDialog();
 		}
-		errorDialog.showException(triggerClass, type, exception);
+		errorDialog.showException(t, severity, causingObject);
 	}
 }

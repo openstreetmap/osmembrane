@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
 
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.model.parser.CmdParser;
 import de.osmembrane.model.parser.ParseException;
 import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;
 
 /**
@@ -31,7 +31,7 @@ public class CmdPersistence extends AbstractPersistence {
 	public void save(String filename, Object data) throws FileException {
 		if (!(data instanceof List<?>)) {
 			ViewRegistry.showException(this.getClass(),
-					ExceptionType.ABNORMAL_BEHAVIOR,
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
 					new Exception("CmdPersistence#save() got a wrong"
 							+ " object, object is the following instance:\n"
 							+ data.getClass()));

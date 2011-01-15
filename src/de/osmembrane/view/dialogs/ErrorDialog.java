@@ -13,9 +13,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
+import de.osmembrane.controller.ActionRegistry;
+import de.osmembrane.controller.exceptions.ControlledException;
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
-import de.osmembrane.view.ExceptionType;
 import de.osmembrane.view.ViewRegistry;
 
 /**
@@ -58,14 +60,14 @@ public class ErrorDialog extends AbstractDialog {
 
 		// set the basics up
 		setLayout(new GridBagLayout());
-		
-		messageIcon = new JLabel(); 
+
+		messageIcon = new JLabel();
 		captionLabel = new JLabel();
 		captionLabel.setFont(captionLabel.getFont().deriveFont(Font.BOLD));
 		messageLabel = new JLabel();
 		exceptionText = new JTextArea();
-		exceptionText.setEditable(false);		
-		
+		exceptionText.setEditable(false);
+
 		okButton = new JButton();
 		okButton.addActionListener(new ActionListener() {
 			@Override
@@ -79,13 +81,13 @@ public class ErrorDialog extends AbstractDialog {
 		});
 
 		// grid bag layout
-		GridBagConstraints gbc = new GridBagConstraints(); 
+		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(8, 8, 8, 8);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.gridheight = 2;
 		add(messageIcon, gbc);
-		
+
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.gridheight = 1;
@@ -98,7 +100,7 @@ public class ErrorDialog extends AbstractDialog {
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.weightx = 0.0;
-		gbc.gridwidth = 2;		
+		gbc.gridwidth = 2;
 		add(new JScrollPane(exceptionText), gbc);
 
 		gbc.gridx = 0;
@@ -124,43 +126,48 @@ public class ErrorDialog extends AbstractDialog {
 	}
 
 	/**
-	 * Handles an occurring exception using the ExceptionDialog. A parameter
-	 * being null results automatically in a fatal error blaming the initial
-	 * caller.
+	 * Displays an exception and handles the possibly necessary shutdown.
 	 * 
-	 * @param triggerClass
-	 *            class in which the Exception occurred
+	 * @param t
+	 *            the occurred exception
 	 * @param type
-	 *            indicates what happened and how fatal it is
-	 * @param exception
-	 *            original Exception
+	 *            the kind of the exception or null, if none known
+	 * @param causingObject
+	 *            the causing object or null, if none known
 	 */
-	public void showException(Class<?> triggerClass, ExceptionType type,
-			Exception exception) {
-		// if call is invalid, exit abruptly
-		if ((exception == null) || (type == null) || (triggerClass == null)) {
-			ViewRegistry.showException(
-					this.getClass(),
-					ExceptionType.CRITICAL_ABNORMAL_BEHAVIOR,
-					new NullPointerException(I18N.getInstance().getString(
-							"View.ErrorDialog.InvalidCall")));
+	public void showException(Throwable t, ExceptionSeverity severity,
+			Object causingObject) {
+		if (causingObject == null) {
+			causingObject = t.getStackTrace()[0].getClass();
 		}
 
-		setWindowTitle(exception.getClass().getCanonicalName());		
-		
+		switch (severity) {
+		case WARNING:
+			setWindowTitle("Warning");
+			break;
+		case UNEXPECTED_BEHAVIOR:
+			setWindowTitle("Unexpected exception");
+			break;
+		case CRITICAL_UNEXPECTED_BEHAVIOR:
+			setWindowTitle("Critical unexpected exception");
+			break;
+		default:
+			setWindowTitle("Exception");
+		}
+
 		captionLabel.setText(I18N.getInstance().getString(
-				"View.ErrorDialog.In", exception.getClass().getCanonicalName(),
-				triggerClass.getCanonicalName()));
+				"View.ErrorDialog.In", t.getClass().getCanonicalName(),
+				causingObject.toString()));
 
 		// find a suitable description, if one exists
-		String message = exception.getLocalizedMessage();
+		String message = t.getLocalizedMessage();
 		if (message == null) {
-			message = exception.getMessage();
+			message = t.getMessage();
 			if (message == null) {
-				if (exception.getCause() != null) {
-					message = exception.getCause().getLocalizedMessage();
+				if (t.getCause() != null) {
+					message = t.getCause().getLocalizedMessage();
 					if (message == null) {
-						message = exception.getCause().getMessage();
+						message = t.getCause().getMessage();
 						if (message == null) {
 							message = I18N.getInstance().getString(
 									"View.ErrorDialog.NoMessage");
@@ -178,9 +185,9 @@ public class ErrorDialog extends AbstractDialog {
 		// general information
 		StringBuilder sb = new StringBuilder();
 		sb.append(I18N.getInstance().getString("View.ErrorDialog.Caused",
-				triggerClass.getCanonicalName(), exception.toString())
+				causingObject.toString(), t.toString())
 				+ NL + NL);
-		for (StackTraceElement ste : exception.getStackTrace()) {
+		for (StackTraceElement ste : t.getStackTrace()) {
 			sb.append(printStackTraceElement(ste));
 		}
 
@@ -189,12 +196,12 @@ public class ErrorDialog extends AbstractDialog {
 		 * Error
 		 */
 		boolean causeWasError = false;
-		Throwable causedBy = exception.getCause();
+		Throwable causedBy = t.getCause();
 		while (causedBy != null) {
 			sb.append(I18N.getInstance().getString("View.ErrorDialog.CausedBy",
 					causedBy.toString())
 					+ NL);
-			for (StackTraceElement ste : exception.getStackTrace()) {
+			for (StackTraceElement ste : t.getStackTrace()) {
 				sb.append(printStackTraceElement(ste));
 			}
 
@@ -208,15 +215,17 @@ public class ErrorDialog extends AbstractDialog {
 		exceptionText.setText(sb.toString());
 
 		// determine whether it was a fatal error
-		fatal = (type == ExceptionType.CRITICAL_ABNORMAL_BEHAVIOR)
+		fatal = (severity == ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR)
 				|| (causeWasError);
 
 		if (fatal) {
-			messageIcon.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
+			messageIcon.setIcon(UIManager.getIcon("OptionPane.warningIcon"));
 			okButton.setText(I18N.getInstance().getString("View.Quit"));
 		} else {
-			messageIcon.setIcon(UIManager.getIcon("OptionPane.warningIcon"));
 			okButton.setText(I18N.getInstance().getString("View.OK"));
+		}
+		if (fatal || (severity == null)) {
+			messageIcon.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
 		}
 
 		pack();

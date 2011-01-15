@@ -1,7 +1,5 @@
 package de.osmembrane.view.panels;
 
-import java.awt.Dimension;
-import java.awt.GradientPaint;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,22 +14,16 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.Action;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.AddFunctionAction;
-import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.controller.events.ContainingLocationEvent;
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
-import de.osmembrane.model.xml.XMLHasDescription;
-import de.osmembrane.view.ExceptionType;
-import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.frames.MainFrame;
 
 /**
  * This is the pipeline view, i.e. the panel that shows the entire pipeline with
@@ -42,15 +34,18 @@ import de.osmembrane.view.frames.MainFrame;
  */
 public class PipelinePanel extends JPanel implements Observer {
 
+	private static final long serialVersionUID = 2544369818627179591L;
+
 	/**
 	 * list of functions currently being present on the panel
 	 */
 	private List<PipelineFunction> functions;
 
 	/**
-	 * The transformation to handle zooming
+	 * The transformation which transforms the object coordinates to window
+	 * coordinates, depending on the view port and the zooming level
 	 */
-	private AffineTransform zoom;
+	private AffineTransform objectToWindow;
 
 	/**
 	 * The links to the library and to the inspector used for communication
@@ -58,9 +53,10 @@ public class PipelinePanel extends JPanel implements Observer {
 	 */
 	private LibraryPanel functionLibrary;
 	private InspectorPanel functionInspector;
-	
+
 	/**
-	 * The currently selected object (either a PipelineFunction or a PipelineConnector)
+	 * The currently selected object (either a PipelineFunction or a
+	 * PipelineConnector)
 	 */
 	private Object selected;
 
@@ -72,7 +68,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	 */
 	public PipelinePanel(final LibraryPanel functionLibrary,
 			InspectorPanel functionInspector) {
-		
+
 		// best decision ever <- do not touch
 		setLayout(null);
 
@@ -80,10 +76,10 @@ public class PipelinePanel extends JPanel implements Observer {
 		this.functions = new ArrayList<PipelineFunction>();
 		this.functionLibrary = functionLibrary;
 		this.functionInspector = functionInspector;
-		
+
 		this.selected = null;
 
-		this.zoom = new AffineTransform(1.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+		this.objectToWindow = new AffineTransform(1.0, 0.0, 0.0, 1.0, 0.0, 0.0);
 
 		// register as observer
 		ViewRegistry.getInstance().addObserver(this);
@@ -124,11 +120,8 @@ public class PipelinePanel extends JPanel implements Observer {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
-		
-		// try to reserve some space		
-		setPreferredSize(new Dimension(400, 400));
 	}
-	
+
 	/**
 	 * Zooms in
 	 */
@@ -139,22 +132,24 @@ public class PipelinePanel extends JPanel implements Observer {
 	/**
 	 * Zooms in
 	 * 
-	 * @param center center of the zooming operation
+	 * @param center
+	 *            center of the zooming operation
 	 */
 	public void zoomIn(Point center) {
 		// translate the center
 		try {
-			zoom.inverseTransform(center, center);
+			objectToWindow.inverseTransform(center, center);
 		} catch (NoninvertibleTransformException e) {
 			ViewRegistry.showException(this.getClass(),
-					ExceptionType.ABNORMAL_BEHAVIOR, e);
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
 		}
-		zoom.setToIdentity();
-		zoom.translate(center.x, center.y);
-		zoom.scale(zoom.getScaleX() * 1.25, zoom.getScaleY() * 1.25);
+		objectToWindow.setToIdentity();
+		objectToWindow.translate(center.x, center.y);
+		objectToWindow.scale(objectToWindow.getScaleX() * 1.25,
+				objectToWindow.getScaleY() * 1.25);
 		arrange();
 	}
-	
+
 	/**
 	 * Zooms in
 	 */
@@ -165,19 +160,21 @@ public class PipelinePanel extends JPanel implements Observer {
 	/**
 	 * Zooms out
 	 * 
-	 * @param center center of the zooming operation
+	 * @param center
+	 *            center of the zooming operation
 	 */
 	public void zoomOut(Point center) {
 		// translate the center
 		try {
-			zoom.inverseTransform(center, center);
+			objectToWindow.inverseTransform(center, center);
 		} catch (NoninvertibleTransformException e) {
 			ViewRegistry.showException(this.getClass(),
-					ExceptionType.ABNORMAL_BEHAVIOR, e);
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
 		}
-		zoom.setToIdentity();
-		zoom.translate(center.x, center.y);
-		zoom.scale(zoom.getScaleX() * 0.80, zoom.getScaleY() * 0.80);
+		objectToWindow.setToIdentity();
+		objectToWindow.translate(center.x, center.y);
+		objectToWindow.scale(objectToWindow.getScaleX() * 0.80,
+				objectToWindow.getScaleY() * 0.80);
 		arrange();
 	}
 
@@ -193,7 +190,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * Resets the view to standard
 	 */
 	public void resetView() {
-		zoom.setToIdentity();
+		objectToWindow.setToIdentity();
 		arrange();
 
 	}
@@ -211,47 +208,51 @@ public class PipelinePanel extends JPanel implements Observer {
 		// check for notice from the pipeline model
 		if (arg instanceof PipelineObserverObject) {
 			PipelineObserverObject poo = (PipelineObserverObject) arg;
-			
+
 			switch (poo.getType()) {
-			
+
 			// new function was added
 			case ADD:
-				PipelineFunction pfAdd = new PipelineFunction(poo.getChangedFunction());				
+				PipelineFunction pfAdd = new PipelineFunction(
+						poo.getChangedFunction());
 				functions.add(pfAdd);
 				add(pfAdd);
 				arrange(pfAdd);
 				break;
-				
+
 			// properties of a function changed
 			case CHANGE:
 				for (PipelineFunction pfChange : functions) {
-					if (pfChange.getModelFunction().equals(poo.getChangedFunction())) {
+					if (pfChange.getModelFunction().equals(
+							poo.getChangedFunction())) {
 						arrange(pfChange);
 						repaint();
 					}
 				}
 				break;
-				
+
 			// a function got removed
 			case DELETE:
 				for (int i = 0; i < functions.size(); i++) {
 					PipelineFunction pfDelete = functions.get(i);
-					
-					if (pfDelete.getModelFunction().equals(poo.getChangedFunction())) {
+
+					if (pfDelete.getModelFunction().equals(
+							poo.getChangedFunction())) {
 						remove(pfDelete);
 						functions.remove(i);
 						break;
 					}
 				}
 				break;
-				
+
 			// the whole pipeline was exchanged
 			case FULLCHANGE:
 				functions.clear();
 				removeAll();
-				
-				for (AbstractFunction af : ModelProxy.getInstance().accessPipeline().getFunctions()) {
-					PipelineFunction pfFullChange = new PipelineFunction(af);				
+
+				for (AbstractFunction af : ModelProxy.getInstance()
+						.accessPipeline().getFunctions()) {
+					PipelineFunction pfFullChange = new PipelineFunction(af);
 					functions.add(pfFullChange);
 					add(pfFullChange);
 				}
@@ -269,28 +270,30 @@ public class PipelinePanel extends JPanel implements Observer {
 		double minX = Double.MAX_VALUE;
 		double minY = Double.MAX_VALUE;
 		// bottom right point coordinates
-		double maxX = Double.MIN_VALUE; 
+		double maxX = Double.MIN_VALUE;
 		double maxY = Double.MIN_VALUE;
-		
+
 		for (PipelineFunction pf : functions) {
 			arrange(pf);
 		}
 	}
-	
+
 	/**
 	 * Arrange a specific function after any change
-	 * @param pf the function to arrange
+	 * 
+	 * @param pf
+	 *            the function to arrange
 	 */
 	private void arrange(PipelineFunction pf) {
 		Point2D transformed = new Point();
 		// location
-		zoom.transform(pf.getModelLocation(), transformed);
+		objectToWindow.transform(pf.getModelLocation(), transformed);
 		pf.setLocation((int) transformed.getX(), (int) transformed.getY());
 
 		// size
 		transformed.setLocation(pf.getPreferredSize().width,
 				pf.getPreferredSize().height);
-		zoom.transform(transformed, transformed);
+		objectToWindow.transform(transformed, transformed);
 		pf.setSize((int) transformed.getX(), (int) transformed.getY());
 	}
 
@@ -309,24 +312,24 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * Is called when a ViewFunction that canDragAndDrop was dragged onto the
 	 * Pipeline panel
 	 * 
-	 * @param viewFunction
+	 * @param libraryFunction
 	 *            The new function to add
 	 */
-	public void draggedOnto(ViewFunction viewFunction, Point2D at) {
-		
+	public void draggedOnto(LibraryFunction libraryFunction, Point2D at) {
+
 		// drag & drop functionality : add function
 		Action a = ActionRegistry.getInstance().get(AddFunctionAction.class);
 
 		Point2D newPosition = new Point2D.Double();
 		try {
-			zoom.inverseTransform(at, newPosition);
+			objectToWindow.inverseTransform(at, newPosition);
 		} catch (NoninvertibleTransformException e1) {
 			ViewRegistry.showException(this.getClass(),
-					ExceptionType.ABNORMAL_BEHAVIOR, e1);
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e1);
 		}
 
 		ContainingLocationEvent cle = new ContainingLocationEvent(this,
-				viewFunction.getModelFunctionPrototype(), newPosition);
+				libraryFunction.getModelFunctionPrototype(), newPosition);
 		a.actionPerformed(cle);
 	}
 
@@ -339,6 +342,7 @@ public class PipelinePanel extends JPanel implements Observer {
 
 	/**
 	 * Called when a child object thinks it got selected
+	 * 
 	 * @param pipelineFunction
 	 */
 	public void selected(PipelineFunction pipelineFunction) {
@@ -346,7 +350,7 @@ public class PipelinePanel extends JPanel implements Observer {
 		for (PipelineFunction pf : functions) {
 			pf.repaint();
 		}
-		
+
 	}
 
 }

@@ -14,12 +14,12 @@ import de.osmembrane.view.frames.MainFrame;
  * The pipeline function, i.e. the visual representation of a model function
  * that is actually drawn in the pipeline. Note, the functions in the
  * {@link LibraryPanel} and the one being dragged on the {@link PipelinePanel}
- * are just {@link ViewFunction}.
+ * are just {@link LibraryFunction}.
  * 
  * @author tobias_kuhn
  * 
  */
-public class PipelineFunction extends ViewFunction {
+public class PipelineFunction extends LibraryFunction {
 
 	private static final long serialVersionUID = -7573627124702293974L;
 

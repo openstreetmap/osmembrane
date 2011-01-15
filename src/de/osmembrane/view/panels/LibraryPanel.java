@@ -8,7 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
-import de.osmembrane.view.ExceptionType;
+import de.osmembrane.controller.exceptions.ExceptionSeverity;
 import de.osmembrane.view.ViewRegistry;
 
 /**
@@ -113,7 +113,7 @@ public class LibraryPanel extends JPanel {
 				expandingThread.join();
 			} catch (InterruptedException e) {
 				ViewRegistry.showException(this.getClass(),
-						ExceptionType.ABNORMAL_BEHAVIOR, e);
+						ExceptionSeverity.UNEXPECTED_BEHAVIOR, e);
 			}
 		}
 
@@ -262,9 +262,9 @@ public class LibraryPanel extends JPanel {
 	 * Used for drag & drop functionality
 	 * @return the currently dragged ViewFunction, or null if no dragging
 	 */
-	public ViewFunction getDragging() {
+	public LibraryFunction getDragging() {
 		for (LibraryPanelGroup lpg : groups) {
-			ViewFunction dragged = lpg.findDragging();
+			LibraryFunction dragged = lpg.findDragging();
 			if (dragged != null) {
 				return dragged;
 			}
