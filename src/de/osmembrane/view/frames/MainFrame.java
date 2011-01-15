@@ -139,12 +139,15 @@ public class MainFrame extends AbstractFrame {
 
 		toolsImages = new ImageIcon[TOOLS_COUNT];
 		toolsImages[DEFAULT_MAGIC_TOOL] = null;
-		toolsImages[SELECTION_TOOL] = new ImageIcon(getClass().getResource(
-				"/de/osmembrane/resources/cursors/cursor-select.png"));
-		toolsImages[VIEW_TOOL] = new ImageIcon(getClass().getResource(
-				"/de/osmembrane/resources/cursors/cursor-move.png"));
-		toolsImages[CONNECTION_TOOL] = new ImageIcon(getClass().getResource(
-				"/de/osmembrane/resources/cursors/cursor-connect.png"));
+		toolsImages[SELECTION_TOOL] = new ImageIcon(
+				MainFrame.class
+						.getResource("/de/osmembrane/resources/cursors/cursor-select.png"));
+		toolsImages[VIEW_TOOL] = new ImageIcon(
+				MainFrame.class
+						.getResource("/de/osmembrane/resources/cursors/cursor-move.png"));
+		toolsImages[CONNECTION_TOOL] = new ImageIcon(
+				MainFrame.class
+						.getResource("/de/osmembrane/resources/cursors/cursor-connect.png"));
 
 		toolsCursors = new Cursor[TOOLS_COUNT];
 		toolsCursors[DEFAULT_MAGIC_TOOL] = Cursor.getDefaultCursor();
