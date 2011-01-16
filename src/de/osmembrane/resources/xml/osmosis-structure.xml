@@ -1237,7 +1237,7 @@
 
 		<function id="write-change" friendlyName="Write-Change Tasks">
 			<task name="write-xml-change" friendlyName="Write OSM XML change"
-				shortName="wx">
+				shortName="wxc">
 				<description lang="en">
 					<value>Writes changes to an OSM XML change file.</value>
 				</description>
@@ -1405,7 +1405,6 @@
         </value>
 					</description>
 				</parameter>
-				<parameter name="bbox" type="bbox" required="true" />
 			</task>
 
 			<task name="write-pgsql-change" shortName="wpc">
@@ -1768,7 +1767,7 @@
 		</function>
 
 		<function id="bpolygon-entity" friendlyName="BoundingPolygon - entity Stream">
-			<task name="bounding-polygon">
+			<task name="bounding-polygon" shortName="bp">
 				<description lang="en">
 					<value>
 						Extracts data within a polygon defined by series of lat/lon
@@ -1898,8 +1897,32 @@
 				<outputPipe type="entity" count="single" index="0" />
 				<parameter name="keyValueList" type="string">
 					<description lang="en">
-						<value>Comma-separated list of desired key.value
+						<value>
+							Comma-separated list of desired key.value
 							combinations.
+						</value>
+					</description>
+				</parameter>
+			</task>
+
+			<task name="tag-filter" shortName="tf">
+				<description lang="en">
+					<value>
+						Filters entities based on their type and optionally based on
+						their tags.
+						Can accept or reject entities that match the filter
+						specification.
+					</value>
+				</description>
+				<inputPipe type="entity" count="single" index="0" />
+				<outputPipe type="entity" count="single" index="0" />
+				<parameter name="keyValueList" type="string">
+					<description lang="en">
+						<value>
+							A two-field dash-separated string which specifies
+							accept/reject
+							behavior and the entity type on which this filter
+							operates.
 						</value>
 					</description>
 				</parameter>
@@ -2213,8 +2236,8 @@
 						sets to be sorted.
 					</value>
 				</description>
-				<inputPipe type="entity" count="single" index="0" />
-				<outputPipe type="entity" count="single" index="0" />
+				<inputPipe type="change" count="single" index="0" />
+				<outputPipe type="change" count="single" index="0" />
 				<parameter name="type" type="enum" defaultValue="streamable"
 					defaultParameter="true">
 					<description lang="en">
@@ -2390,8 +2413,7 @@
 		</function>
 	</functionGroup>
 
-	<functionGroup id="changeset"
-		friendlyName="Changeset Derivation and Merging">
+	<functionGroup id="changeset" friendlyName="Changeset Derivation and Merging">
 		<function id="apply-change" friendlyName="Apply change">
 			<task name="apply-change" shortName="ac">
 				<description lang="en">
@@ -2444,7 +2466,7 @@
 					<description lang="en">
 						<value>
 							The directory containing the state and config files.
-        </value>
+						</value>
 					</description>
 				</parameter>
 			</task>
@@ -2454,9 +2476,12 @@
 			<task name="read-change-interval-init" shortName="rcii">
 				<description lang="en">
 					<value>
-						Initialises a working directory to contain files necessary for use by the
-						--read-change-interval task. This task must be run once to create
-						the directory structure and the configuration file manually edited
+						Initialises a working directory to contain files necessary
+						for use by the
+						--read-change-interval task. This task must be run
+						once to create
+						the directory structure and the configuration file
+						manually edited
 						to contain the required settings.
 		</value>
 				</description>
@@ -2465,16 +2490,18 @@
 					<description lang="en">
 						<value>
 							The directory to populate with state and config files.
-        </value>
+						</value>
 					</description>
 				</parameter>
 				<parameter name="initialDate" type="instant">
 					<description lang="en">
 						<value>
-							The timestamp to begin replication from. Only changesets containing
-							data after this timestamp will be downloaded. Note that unlike
+							The timestamp to begin replication from. Only changesets
+							containing
+							data after this timestamp will be downloaded. Note that
+							unlike
 							most tasks accepting dates, this date is specified in UTC.
-        </value>
+						</value>
 					</description>
 				</parameter>
 			</task>
@@ -2498,7 +2525,7 @@
 					<description lang="en">
 						<value>
 							The directory to populate with state and config files.
-        </value>
+						</value>
 					</description>
 				</parameter>
 				<parameter name="initialDate" type="instant">
@@ -2533,7 +2560,7 @@
 					<description lang="en">
 						<value>
 							The directory to populate with state and config files.
-        </value>
+						</value>
 					</description>
 				</parameter>
 			</task>
@@ -2557,7 +2584,7 @@
 					<description lang="en">
 						<value>
 							The directory containing the state and config files.
-        </value>
+						</value>
 					</description>
 				</parameter>
 			</task>
@@ -2581,7 +2608,7 @@
 					<description lang="en">
 						<value>
 							The directory containing the state and config files.
-        </value>
+						</value>
 					</description>
 				</parameter>
 			</task>
@@ -2614,7 +2641,7 @@
 					<description lang="en">
 						<value>
 							The name of the file containing database login credentials.
-        </value>
+						</value>
 					</description>
 				</parameter>
 				<parameter name="host" defaultParameter="false" required="false"
@@ -2722,7 +2749,7 @@
 					<description lang="en">
 						<value>
 							The directory to populate with state and config files.
-        </value>
+						</value>
 					</description>
 				</parameter>
 				<parameter name="humanReadable" required="false" type="boolean"
@@ -2730,7 +2757,7 @@
 					<description lang="en">
 						<value>
 							print the replication lag in a human readable format
-        </value>
+						</value>
 					</description>
 				</parameter>
 			</task>
