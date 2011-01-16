@@ -6,9 +6,13 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -50,6 +54,7 @@ import de.osmembrane.view.panels.InspectorPanel;
 import de.osmembrane.view.panels.LibraryPanelGroup;
 import de.osmembrane.view.panels.PipelinePanel;
 import de.osmembrane.view.panels.LibraryFunction;
+import de.osmembrane.view.panels.Tool;
 
 /**
  * The Main window that is the center of OSMembrane and the first thing you'll
@@ -72,19 +77,8 @@ public class MainFrame extends AbstractFrame {
 	/**
 	 * The images, cursors and the selected item of the tools
 	 */
-	private ImageIcon[] toolsImages;
-	private Cursor[] toolsCursors;
-	private int selectedTool;
-
-	/**
-	 * Valid values for tools
-	 */
-	protected final static int DEFAULT_MAGIC_TOOL = 0;
-	protected final static int SELECTION_TOOL = 1;
-	protected final static int VIEW_TOOL = 2;
-	protected final static int CONNECTION_TOOL = 3;
-	// this has to be > the largest id
-	protected final static int TOOLS_COUNT = 4;
+	private Map<Tool, ImageIcon> toolsImages;
+	private Map<Tool, Cursor> toolsCursors;
 
 	/**
 	 * Creates the main frame.
@@ -135,25 +129,33 @@ public class MainFrame extends AbstractFrame {
 
 		// initialize tools
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		selectedTool = DEFAULT_MAGIC_TOOL;
+		toolsImages = new HashMap<Tool, ImageIcon>();
 
-		toolsImages = new ImageIcon[TOOLS_COUNT];
-		toolsImages[DEFAULT_MAGIC_TOOL] = null;
-		toolsImages[SELECTION_TOOL] = new ImageIcon(
-				MainFrame.class
-						.getResource("/de/osmembrane/resources/cursors/cursor-select.png"));
-		toolsImages[VIEW_TOOL] = new ImageIcon(
-				MainFrame.class
-						.getResource("/de/osmembrane/resources/cursors/cursor-move.png"));
-		toolsImages[CONNECTION_TOOL] = new ImageIcon(
-				MainFrame.class
-						.getResource("/de/osmembrane/resources/cursors/cursor-connect.png"));
+		toolsImages.put(Tool.DEFAULT_MAGIC_TOOL, null);
+		toolsImages
+				.put(Tool.SELECTION_TOOL,
+						new ImageIcon(
+								MainFrame.class
+										.getResource("/de/osmembrane/resources/cursors/cursor-select.png")));
+		toolsImages
+				.put(Tool.VIEW_TOOL,
+						new ImageIcon(
+								MainFrame.class
+										.getResource("/de/osmembrane/resources/cursors/cursor-move.png")));
+		toolsImages
+				.put(Tool.CONNECTION_TOOL,
+						new ImageIcon(
+								MainFrame.class
+										.getResource("/de/osmembrane/resources/cursors/cursor-connect.png")));
 
-		toolsCursors = new Cursor[TOOLS_COUNT];
-		toolsCursors[DEFAULT_MAGIC_TOOL] = Cursor.getDefaultCursor();
-		for (int i = DEFAULT_MAGIC_TOOL + 1; i < TOOLS_COUNT; i++) {
-			toolsCursors[i] = tk.createCustomCursor(toolsImages[i].getImage(),
-					new Point(1, 1), String.valueOf(i));
+		toolsCursors = new HashMap<Tool, Cursor>();
+		toolsCursors.put(Tool.DEFAULT_MAGIC_TOOL,
+				Cursor.getDefaultCursor());
+		for (Entry<Tool, ImageIcon> e : toolsImages.entrySet()) {
+			if (e.getKey() != Tool.DEFAULT_MAGIC_TOOL) {
+				toolsCursors.put(e.getKey(), tk.createCustomCursor(e.getValue()
+						.getImage(), new Point(0, 0), String.valueOf(e.getKey())));
+			}
 		}
 
 		/*
@@ -251,19 +253,47 @@ public class MainFrame extends AbstractFrame {
 		JToolBar toolsBar = new JToolBar(I18N.getInstance().getString(
 				"osmembrane"), JToolBar.HORIZONTAL);
 
-		ButtonGroup tools = new ButtonGroup();
-		JToggleButton magicTool = new JToggleButton("MagicTool", true);
+		ButtonGroup tools = new ButtonGroup();	
+		// will store the buttons later
+		final Map<JToggleButton, Tool> toolsButtons = new HashMap<JToggleButton, Tool>();
+		ActionListener toolsButtonsActionListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Tool t = toolsButtons.get(e.getSource());
+				pipelineView.setActiveTool(t, toolsCursors.get(t));
+			}
+		};
+		
+		JToggleButton magicTool = new JToggleButton(
+				toolsImages.get(Tool.DEFAULT_MAGIC_TOOL), true);
+		magicTool.addActionListener(toolsButtonsActionListener);
 		tools.add(magicTool);
 		toolsBar.add(magicTool);
-		JToggleButton selectTool = new JToggleButton("SelectTool");
+		
+		JToggleButton selectTool = new JToggleButton(
+				toolsImages.get(Tool.SELECTION_TOOL));
+		selectTool.addActionListener(toolsButtonsActionListener);
 		tools.add(selectTool);
 		toolsBar.add(selectTool);
-		JToggleButton viewTool = new JToggleButton("ViewTool");
+		
+		JToggleButton viewTool = new JToggleButton(
+				toolsImages.get(Tool.VIEW_TOOL));
+		viewTool.addActionListener(toolsButtonsActionListener);
 		tools.add(viewTool);
 		toolsBar.add(viewTool);
-		JToggleButton connectTool = new JToggleButton("ConnectTool");
+		
+		JToggleButton connectTool = new JToggleButton(
+				toolsImages.get(Tool.CONNECTION_TOOL));
+		connectTool.addActionListener(toolsButtonsActionListener);
 		tools.add(connectTool);
 		toolsBar.add(connectTool);
+		
+		toolsButtons.put(magicTool, Tool.DEFAULT_MAGIC_TOOL);
+		toolsButtons.put(selectTool, Tool.SELECTION_TOOL);
+		toolsButtons.put(viewTool, Tool.VIEW_TOOL);
+		toolsButtons.put(connectTool, Tool.CONNECTION_TOOL);
+		
 		toolsBar.add(new JSeparator(SwingConstants.VERTICAL));
 		toolsBar.add(ActionRegistry.getInstance().get(StandardViewAction.class));
 		toolsBar.add(ActionRegistry.getInstance().get(ViewAllAction.class));

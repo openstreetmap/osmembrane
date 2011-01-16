@@ -1,5 +1,6 @@
 package de.osmembrane.view.panels;
 
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -25,7 +26,6 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
-import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 
 /**
@@ -58,6 +58,11 @@ public class PipelinePanel extends JPanel implements Observer {
 	private InspectorPanel functionInspector;
 
 	/**
+	 * The currently selected tool. Must be one of the _TOOL constants.
+	 */
+	private Tool activeTool;
+
+	/**
 	 * The currently selected object (either a PipelineFunction or a
 	 * PipelineConnector)
 	 */
@@ -80,9 +85,10 @@ public class PipelinePanel extends JPanel implements Observer {
 		this.functionLibrary = functionLibrary;
 		this.functionInspector = functionInspector;
 
+		this.activeTool = Tool.DEFAULT_MAGIC_TOOL;
 		this.selected = null;
 
-		this.objectToWindow = new AffineTransform(1.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+		this.objectToWindow = new AffineTransform();
 
 		// register as observer
 		ViewRegistry.getInstance().addObserver(this);
@@ -144,7 +150,7 @@ public class PipelinePanel extends JPanel implements Observer {
 			objectToWindow.inverseTransform(center, center);
 		} catch (NoninvertibleTransformException e) {
 			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e));			
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e));
 		}
 		objectToWindow.setToIdentity();
 		objectToWindow.translate(center.x, center.y);
@@ -172,7 +178,7 @@ public class PipelinePanel extends JPanel implements Observer {
 			objectToWindow.inverseTransform(center, center);
 		} catch (NoninvertibleTransformException e) {
 			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e));	
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e));
 		}
 		objectToWindow.setToIdentity();
 		objectToWindow.translate(center.x, center.y);
@@ -328,7 +334,7 @@ public class PipelinePanel extends JPanel implements Observer {
 			objectToWindow.inverseTransform(at, newPosition);
 		} catch (NoninvertibleTransformException e1) {
 			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e1));	
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e1));
 		}
 
 		ContainingLocationEvent cle = new ContainingLocationEvent(this,
@@ -354,6 +360,26 @@ public class PipelinePanel extends JPanel implements Observer {
 			pf.repaint();
 		}
 
+	}
+
+	/**
+	 * @param activeTool
+	 *            the activeTool to set
+	 * @param newCursor
+	 *            the cursor associated with the new tool, or null if no change
+	 */
+	public void setActiveTool(Tool activeTool, Cursor newCursor) {
+		this.activeTool = activeTool;
+		if (newCursor != null) {
+			this.setCursor(newCursor);
+		}
+	}
+
+	/**
+	 * @return the activeTool
+	 */
+	public Tool getActiveTool() {
+		return activeTool;
 	}
 
 }
