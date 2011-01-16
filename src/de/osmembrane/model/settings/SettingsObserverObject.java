@@ -1,27 +1,27 @@
-package de.osmembrane.model;
+package de.osmembrane.model.settings;
 
 /**
  * The ObserverObject includes information about the reason of notifying.
  * 
  * @author jakob_jarosch
  */
-public class ObserverObject {
+public class SettingsObserverObject {
 
 	private Class<?> clazz;
 	private String string;
 	private Object object;
 
 	/**
-	 * @see ObserverObject#ObserverObject(Class, String, Object)
+	 * @see SettingsObserverObject#ObserverObject(Class, String, Object)
 	 */
-	public ObserverObject(Class<?> clazz) {
+	public SettingsObserverObject(Class<?> clazz) {
 		this(clazz, null, null);
 	}
 
 	/**
-	 * @see ObserverObject#ObserverObject(Class, String, Object)
+	 * @see SettingsObserverObject#ObserverObject(Class, String, Object)
 	 */
-	public ObserverObject(Class<?> clazz, String string) {
+	public SettingsObserverObject(Class<?> clazz, String string) {
 		this(clazz, string, null);
 	}
 
@@ -36,7 +36,7 @@ public class ObserverObject {
 	 *            a object with some extended information for the consuming
 	 *            Observer
 	 */
-	public ObserverObject(Class<?> clazz, String string, Object object) {
+	public SettingsObserverObject(Class<?> clazz, String string, Object object) {
 		this.clazz = clazz;
 		this.string = string;
 		this.object = object;

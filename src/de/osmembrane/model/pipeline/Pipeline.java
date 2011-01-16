@@ -1,10 +1,14 @@
 package de.osmembrane.model.pipeline;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
+import java.util.Set;
 import java.util.Stack;
 
+import de.osmembrane.model.LoopCheck;
+import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.AbstractPersistence;
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.FileType;
@@ -32,8 +36,11 @@ public class Pipeline extends AbstractPipeline {
 	 */
 	public Pipeline() {
 		this.functions = new ArrayList<AbstractFunction>();
+
+		/* register the Observer of Persistence to the Pipeline */
+		addObserver(PersistenceFactory.getInstance());
 	}
-	
+
 	@Override
 	public AbstractFunction[] getFunctions() {
 		AbstractFunction[] functions = new AbstractFunction[this.functions
@@ -64,7 +71,8 @@ public class Pipeline extends AbstractPipeline {
 
 		if (returnValue == true) {
 			/* notify the observers */
-			changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD, func));
+			changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD,
+					func));
 		}
 		return returnValue;
 	}
@@ -74,7 +82,8 @@ public class Pipeline extends AbstractPipeline {
 		this.functions.clear();
 
 		/* notify the observers */
-		changedNotifyObservers(new PipelineObserverObject(ChangeType.FULLCHANGE, null));
+		changedNotifyObservers(new PipelineObserverObject(
+				ChangeType.FULLCHANGE, null));
 	}
 
 	@Override
@@ -97,12 +106,13 @@ public class Pipeline extends AbstractPipeline {
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
 
 		this.functions = functions;
-		for(AbstractFunction function : functions) {
+		for (AbstractFunction function : functions) {
 			function.addObserver(function);
 		}
 
 		/* notify the observers */
-		changedNotifyObservers(new PipelineObserverObject(ChangeType.FULLCHANGE, null));
+		changedNotifyObservers(new PipelineObserverObject(
+				ChangeType.FULLCHANGE, null));
 	}
 
 	@Override
@@ -118,12 +128,13 @@ public class Pipeline extends AbstractPipeline {
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
 
 		this.functions = functions;
-		for(AbstractFunction function : functions) {
+		for (AbstractFunction function : functions) {
 			function.addObserver(function);
 		}
 
 		/* notify the observers */
-		changedNotifyObservers(new PipelineObserverObject(ChangeType.FULLCHANGE, null));
+		changedNotifyObservers(new PipelineObserverObject(
+				ChangeType.FULLCHANGE, null));
 	}
 
 	@Override
@@ -136,9 +147,19 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
-	public String generate(String filetype) {
-		// TODO Auto-generated method stub
-		return null;
+	public String generate(FileType filetype) {
+		return ParserFactory.getInstance().getParser(filetype.getParserClass()).parsePipeline(functions);
+	}
+
+	@Override
+	public boolean hasLoop() {
+		LoopCheck check = new LoopCheck(functions);
+		return check.hasLoop();
+	}
+
+	@Override
+	public void optimizePipeline() {
+		/* TODO not yet implemented */
 	}
 
 	@Override
@@ -166,19 +187,13 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
-	public boolean checkForLoops() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void optimizePipeline() {
-		/* TODO not yet implemented */
-	}
-
-	@Override
 	public void update(Observable o, Object arg) {
-		setChanged();
-		notifyObservers(arg);
+
+		if (arg instanceof PipelineObserverObject) {
+			((PipelineObserverObject) arg).setPipeline(this);
+
+			setChanged();
+			notifyObservers(arg);
+		}
 	}
 }

@@ -11,10 +11,14 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Observable;
 
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.model.pipeline.PipelineObserverObject;
+import de.osmembrane.resources.Constants;
+import de.osmembrane.tools.I18N;
 
 /**
  * Saves the OSMembrane Pipeline into a file.
@@ -26,9 +30,9 @@ public class OSMembranePersistence extends AbstractPersistence {
 	@Override
 	public void save(String file, Object data) throws FileException {
 		if (!(data instanceof List<?>)) {
-			ViewRegistry.showException(this.getClass(),
+			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
-					new Exception("OSMembranePersistence#save() got a wrong"
+					"OSMembranePersistence#save() got a wrong"
 							+ " object, object is the following instance:\n"
 							+ data.getClass()));
 		}
@@ -69,6 +73,18 @@ public class OSMembranePersistence extends AbstractPersistence {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		/* TODO implement automatic backup */
+		if (arg instanceof PipelineObserverObject) {
+			try {
+				((PipelineObserverObject) arg).getPipeline().savePipeline(Constants.DEFAULT_BACKUP_FILE);
+			} catch (FileException e) {
+				/* forward the exception to the view */
+				Application
+						.handleException(new ControlledException(this,
+								ExceptionSeverity.WARNING, e,
+								I18N.getInstance().getString(
+										"Exception.AutosavePipelineFailed")));
+
+			}
+		}
 	}
 }

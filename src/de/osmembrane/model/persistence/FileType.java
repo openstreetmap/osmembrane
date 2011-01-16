@@ -1,5 +1,10 @@
 package de.osmembrane.model.persistence;
 
+import de.osmembrane.model.parser.BashParser;
+import de.osmembrane.model.parser.CmdParser;
+import de.osmembrane.model.parser.IParser;
+import de.osmembrane.model.pipeline.AbstractPipeline;
+
 /**
  * Represents the different FileTypes.
  * 
@@ -10,12 +15,12 @@ public enum FileType {
 	/**
 	 * Bash normally used under UNIX systems.
 	 */
-	BASH(".sh", BashPersistence.class),
+	BASH(".sh", BashPersistence.class, BashParser.class),
 	
 	/**
 	 * CMD normally used under Windows systems.
 	 */
-	CMD(".bat", CmdPersistence.class);
+	CMD(".bat", CmdPersistence.class, CmdParser.class);
 	
 
 	/**
@@ -28,10 +33,16 @@ public enum FileType {
 	 */
 	private Class<? extends AbstractPersistence> persistenceClass;
 	
+	/**
+	 * Matching parser for the {@link FileType}.
+	 */
+	private Class<? extends IParser> parserClass;
 	
-	private FileType(String extension, Class<? extends AbstractPersistence> persistenceClass) {
+	
+	private FileType(String extension, Class<? extends AbstractPersistence> persistenceClass, Class<? extends IParser> parserClass) {
 		this.extension = extension;
 		this.persistenceClass = persistenceClass;
+		this.parserClass = parserClass;
 	}
 
 	/**
@@ -50,5 +61,14 @@ public enum FileType {
 	 */
 	public Class<? extends AbstractPersistence> getPersistenceClass() {
 		return persistenceClass;
+	}
+	
+	/**
+	 * Returns the matching {@link IParser} class for parsing a {@link AbstractPipeline}.
+	 * 
+	 * @return matching {@link IParser} class
+	 */
+	public Class<? extends IParser> getParserClass() {
+		return parserClass;
 	}
 }

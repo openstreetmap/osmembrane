@@ -8,6 +8,7 @@ import java.util.Set;
 
 import de.osmembrane.model.persistence.PersistenceFactory;
 import de.osmembrane.model.settings.AbstractSetting;
+import de.osmembrane.model.settings.SettingsObserverObject;
 
 /**
  * 
@@ -76,10 +77,6 @@ public class Settings extends AbstractSettings {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o.hasChanged()) {
-			setChanged();
-		}
-
-		notifyObservers(new ObserverObject(o.getClass(), settingsFilename, this));
+		notifyObservers(new SettingsObserverObject(o.getClass(), settingsFilename, this));
 	}
 }

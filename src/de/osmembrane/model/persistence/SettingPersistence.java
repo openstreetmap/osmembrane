@@ -10,12 +10,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
 
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.AbstractSettings;
 import de.osmembrane.model.persistence.FileException.Type;
-import de.osmembrane.model.ObserverObject;
+import de.osmembrane.model.settings.SettingsObserverObject;
 import de.osmembrane.model.Settings;
-import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.tools.I18N;
 
 /**
  * Saves the {@see AbstractSettings} in a file.
@@ -27,9 +29,9 @@ public class SettingPersistence extends AbstractPersistence {
 	@Override
 	public void save(String file, Object data) throws FileException {
 		if (!(data instanceof Settings)) {
-			ViewRegistry.showException(this.getClass(),
+			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
-					new Exception("SettingsPersistence#save() got a wrong"
+					"SettingPersistence#save() got a wrong"
 							+ " object, object is the following instance:\n"
 							+ data.getClass()));
 		}
@@ -52,10 +54,10 @@ public class SettingPersistence extends AbstractPersistence {
 			FileInputStream fis = new FileInputStream(file);
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			ObjectInputStream ois = new ObjectInputStream(bis);
-			
+
 			AbstractSettings object = (AbstractSettings) ois.readObject();
 			ois.close();
-			
+
 			return object;
 		} catch (FileNotFoundException e) {
 			throw new FileException(Type.NOT_FOUND, e);
@@ -68,16 +70,20 @@ public class SettingPersistence extends AbstractPersistence {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o instanceof Settings && arg instanceof ObserverObject) {
-			String file = ((ObserverObject) arg).getString();
-			Object data = ((ObserverObject) arg).getObject();
+		if (arg instanceof SettingsObserverObject) {
+			String file = ((SettingsObserverObject) arg).getString();
+			Object data = ((SettingsObserverObject) arg).getObject();
 
 			try {
 				save(file, data);
 			} catch (FileException e) {
 				/* forward the exception to the view */
-				ViewRegistry.showException(this.getClass(),
-						ExceptionSeverity.SAVE_SETTINGS_FAILED, e);
+				Application
+						.handleException(new ControlledException(this,
+								ExceptionSeverity.WARNING, e,
+								I18N.getInstance().getString(
+										"Exception.AutosaveSettingsFailed")));
+
 			}
 		}
 	}

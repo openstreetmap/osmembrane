@@ -115,19 +115,20 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	 * 
 	 * @param filetype should be created
 	 */
-	public abstract String generate(String filetype);
+	public abstract String generate(FileType filetype);
 	
 	/**
 	 * Checks is the pipeline contains any loops, what is not right.
 	 * 
 	 * @return true if pipeline contains a loop, otherwise false
 	 */
-	public abstract boolean checkForLoops();
+	public abstract boolean hasLoop();
 	
 	/**
 	 * Notifies all registered {@link Observer}s with pre-called {@link Observable#setChanged())}.
 	 */
 	protected void changedNotifyObservers(PipelineObserverObject poo) {
+		poo.setPipeline(this);
 		this.setChanged();
 		this.notifyObservers(poo);
 	}

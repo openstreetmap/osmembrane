@@ -6,7 +6,6 @@ import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
 import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.model.xml.XMLTask;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -187,7 +186,7 @@ public class Function extends AbstractFunction {
 						connectorOut.addConnection(connectorIn);
 						
 						/* now check loop freeness */
-						if (getPipeline().checkForLoops()) {
+						if (getPipeline().hasLoop()) {
 							/* remove 'cause that is not ok */
 							removeConnectionTo(function);
 							throw new ConnectorException(Type.LOOP_CREATED);

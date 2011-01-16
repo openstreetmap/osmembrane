@@ -69,10 +69,6 @@ public class PersistenceFactory extends Observable implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o.hasChanged()) {
-			setChanged();
-		}
-		
 		notifyObservers(o.getClass());
 	}
 }

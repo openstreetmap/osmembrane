@@ -3,6 +3,7 @@ package de.osmembrane.resources;
 import java.util.Locale;
 
 import de.osmembrane.model.AbstractFunctionPrototype;
+import de.osmembrane.model.pipeline.Pipeline;
 
 /**
  * Constants for OSMembrane.
@@ -25,4 +26,9 @@ public class Constants {
 	 * Path to the XML resource for {@link AbstractFunctionPrototype}.
 	 */
 	public static final String XML_RESOURCE_PATH = "src/de/osmembrane/resources/xml/osmosis-structure.xml";
+
+	/**
+	 * Default Backup filename (for {@link Pipeline}.
+	 */
+	public static final String DEFAULT_BACKUP_FILE = System.getProperty("user.home") + "/" + "backup.osmembrane";
 }

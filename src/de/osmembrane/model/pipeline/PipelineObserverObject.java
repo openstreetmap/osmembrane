@@ -11,6 +11,7 @@ public class PipelineObserverObject {
 	
 	private ChangeType type;
 	private AbstractFunction changedFunction;
+	private AbstractPipeline pipeline;
 	
 	public PipelineObserverObject(ChangeType type, AbstractFunction changedFunction) {
 		this.type = type;
@@ -23,5 +24,13 @@ public class PipelineObserverObject {
 	
 	public AbstractFunction getChangedFunction() {
 		return changedFunction;
+	}
+	
+	public void setPipeline(AbstractPipeline pipeline) {
+		this.pipeline = pipeline;
+	}
+	
+	public AbstractPipeline getPipeline() {
+		return pipeline;
 	}
 }

@@ -10,13 +10,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
 
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.parser.CmdParser;
 import de.osmembrane.model.parser.ParseException;
 import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.view.ViewRegistry;
 
 /**
  * Writes and Reads CMD-Files (normally used on Windows systems).
@@ -30,9 +31,9 @@ public class CmdPersistence extends AbstractPersistence {
 	@Override
 	public void save(String filename, Object data) throws FileException {
 		if (!(data instanceof List<?>)) {
-			ViewRegistry.showException(this.getClass(),
+			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
-					new Exception("CmdPersistence#save() got a wrong"
+					"CmdPersistence#save() got a wrong"
 							+ " object, object is the following instance:\n"
 							+ data.getClass()));
 		}
