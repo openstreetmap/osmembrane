@@ -51,6 +51,12 @@ public class PipelinePanel extends JPanel implements Observer {
 	private AffineTransform objectToWindow;
 
 	/**
+	 * A temporary transformation to be used after objectToWindow to represent
+	 * the current changes of the display (move dragging, zoom animation)
+	 */
+	private AffineTransform currentDisplay;
+
+	/**
 	 * The links to the library and to the inspector used for communication
 	 * between these components.
 	 */
@@ -89,6 +95,7 @@ public class PipelinePanel extends JPanel implements Observer {
 		this.selected = null;
 
 		this.objectToWindow = new AffineTransform();
+		this.currentDisplay = new AffineTransform();
 
 		// register as observer
 		ViewRegistry.getInstance().addObserver(this);
@@ -132,6 +139,60 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
+	 * Translates window coordinates to object coordinates
+	 * 
+	 * @param window
+	 *            window coordinates
+	 * @return window in object coordinates, null if there is an error with the
+	 *         transformations which should theoretically never be the case
+	 */
+	private Point2D windowToObj(Point window) {
+		Point2D result = new Point2D.Double();
+
+		try {
+			currentDisplay.inverseTransform(window, result);
+			objectToWindow.inverseTransform(result, result);
+		} catch (NoninvertibleTransformException e) {
+			Application.handleException(e);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Translates object coordinates to window coordinates
+	 * 
+	 * @param object
+	 *            object coordinates
+	 * @return object in window coordinates 
+	 */
+	private Point objToWindow(Point2D object) {
+		Point2D result = new Point2D.Double();;
+		
+		objectToWindow.transform(object, result);
+		currentDisplay.transform(result, result);
+		
+		return new Point((int) result.getX(), (int) result.getY());
+	}
+	
+	/**
+	 * Translates object delta coordinates to window delta coordinates.
+	 * Typical delta coordinates are object sizes.
+	 * 
+	 * @param objectDelta
+	 *            object delta coordinates
+	 * @return object in window delta coordinates 
+	 */
+	private Point objToWindowDelta(Point2D objectDelta) {
+		Point2D result = new Point2D.Double();
+		
+		objectToWindow.deltaTransform(objectDelta, result);
+		currentDisplay.deltaTransform(result, result);
+		
+		return new Point((int) result.getX(), (int) result.getY());
+	}
+
+	/**
 	 * Zooms in
 	 */
 	public void zoomIn() {
@@ -145,17 +206,10 @@ public class PipelinePanel extends JPanel implements Observer {
 	 *            center of the zooming operation
 	 */
 	public void zoomIn(Point center) {
-		// translate the center
-		try {
-			objectToWindow.inverseTransform(center, center);
-		} catch (NoninvertibleTransformException e) {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e));
-		}
-		objectToWindow.setToIdentity();
-		objectToWindow.translate(center.x, center.y);
-		objectToWindow.scale(objectToWindow.getScaleX() * 1.25,
-				objectToWindow.getScaleY() * 1.25);
+		Point2D objCenter = windowToObj(center);
+		objectToWindow.translate(+objCenter.getX(), +objCenter.getY());
+		objectToWindow.scale(1.25, 1.25);
+		objectToWindow.translate(-objCenter.getX(), -objCenter.getY());
 		arrange();
 	}
 
@@ -174,16 +228,10 @@ public class PipelinePanel extends JPanel implements Observer {
 	 */
 	public void zoomOut(Point center) {
 		// translate the center
-		try {
-			objectToWindow.inverseTransform(center, center);
-		} catch (NoninvertibleTransformException e) {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e));
-		}
-		objectToWindow.setToIdentity();
-		objectToWindow.translate(center.x, center.y);
-		objectToWindow.scale(objectToWindow.getScaleX() * 0.80,
-				objectToWindow.getScaleY() * 0.80);
+		Point2D objCenter = windowToObj(center);
+		objectToWindow.translate(+objCenter.getX(), +objCenter.getY());
+		objectToWindow.scale(0.80, 0.80);
+		objectToWindow.translate(-objCenter.getX(), -objCenter.getY());
 		arrange();
 	}
 
@@ -294,16 +342,12 @@ public class PipelinePanel extends JPanel implements Observer {
 	 *            the function to arrange
 	 */
 	private void arrange(PipelineFunction pf) {
-		Point2D transformed = new Point();
-		// location
-		objectToWindow.transform(pf.getModelLocation(), transformed);
-		pf.setLocation((int) transformed.getX(), (int) transformed.getY());
+		Point location = objToWindow(pf.getModelLocation());
+		pf.setLocation(location);
 
-		// size
-		transformed.setLocation(pf.getPreferredSize().width,
-				pf.getPreferredSize().height);
-		objectToWindow.transform(transformed, transformed);
-		pf.setSize((int) transformed.getX(), (int) transformed.getY());
+		Point size = new Point(pf.getPreferredSize().width, pf.getPreferredSize().height);		
+		size = objToWindowDelta(size);
+		pf.setSize(size.x, size.y);
 	}
 
 	/**
@@ -324,18 +368,11 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * @param libraryFunction
 	 *            The new function to add
 	 */
-	public void draggedOnto(LibraryFunction libraryFunction, Point2D at) {
+	public void draggedOnto(LibraryFunction libraryFunction, Point at) {
 
 		// drag & drop functionality : add function
 		Action a = ActionRegistry.getInstance().get(AddFunctionAction.class);
-
-		Point2D newPosition = new Point2D.Double();
-		try {
-			objectToWindow.inverseTransform(at, newPosition);
-		} catch (NoninvertibleTransformException e1) {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, e1));
-		}
+		Point2D newPosition = windowToObj(at);		
 
 		ContainingLocationEvent cle = new ContainingLocationEvent(this,
 				libraryFunction.getModelFunctionPrototype(), newPosition);
