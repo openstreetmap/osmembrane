@@ -38,44 +38,66 @@ public class PipelineFunction extends LibraryFunction {
 		// pretend this is a prototype
 		super(modelFunction, false);
 		this.modelFunction = modelFunction;
-		
+
+		/*
+		 * all functions are required to dispatch back to the pipeline,
+		 * depending on tool
+		 */
 		addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
-				//(mf.getTool()
-				mf.getPipeline().selected(PipelineFunction.this);				
+
+				switch (mf.getPipeline().getActiveTool()) {
+				case DEFAULT_MAGIC_TOOL:
+				case SELECTION_TOOL:
+					mf.getPipeline().selected(PipelineFunction.this);
+					break;
+				case VIEW_TOOL:
+					mf.getPipeline().dispatchEvent(e);
+					break;
+				case CONNECTION_TOOL:
+					break;
+				}
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
+				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+				MainFrame mf = (MainFrame) mainFrame;
+
+				switch (mf.getPipeline().getActiveTool()) {
+				case VIEW_TOOL:
+					mf.getPipeline().dispatchEvent(e);
+					break;
+				}
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
 	}
-	
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 		MainFrame mf = (MainFrame) mainFrame;
 		highlighted = this.equals(mf.getPipeline().getSelected());
-		
+
 		super.paintComponent(g);
 	}
-	
+
 	/**
 	 * @return the model function
 	 */

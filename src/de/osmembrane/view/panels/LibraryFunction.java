@@ -102,6 +102,7 @@ public class LibraryFunction extends JPanel {
 
 		Color color = new Color(1.0f, 0.5f, 0.7f);
 		Color highlightColor = new Color(1.0f, 0.7f, 0.9f);
+		this.setOpaque(false);
 
 		display = derivateDisplay(color, null);
 		displayHighlight = derivateDisplay(highlightColor, null);
