@@ -3,7 +3,10 @@ package de.osmembrane.view.panels;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
+
+import javax.swing.SwingUtilities;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.view.IView;
@@ -49,6 +52,8 @@ public class PipelineFunction extends LibraryFunction {
 			public void mouseReleased(MouseEvent e) {
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
+				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
+						PipelineFunction.this, e, mf.getGlassPane());
 
 				switch (mf.getPipeline().getActiveTool()) {
 				case DEFAULT_MAGIC_TOOL:
@@ -56,7 +61,7 @@ public class PipelineFunction extends LibraryFunction {
 					mf.getPipeline().selected(PipelineFunction.this);
 					break;
 				case VIEW_TOOL:
-					mf.getPipeline().dispatchEvent(e);
+					mf.getPipeline().dispatchEvent(mainFrameEvent);
 					break;
 				case CONNECTION_TOOL:
 					break;
@@ -67,10 +72,12 @@ public class PipelineFunction extends LibraryFunction {
 			public void mousePressed(MouseEvent e) {
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
+				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
+						PipelineFunction.this, e, mf.getGlassPane());
 
 				switch (mf.getPipeline().getActiveTool()) {
 				case VIEW_TOOL:
-					mf.getPipeline().dispatchEvent(e);
+					mf.getPipeline().dispatchEvent(mainFrameEvent);
 					break;
 				}
 			}
@@ -85,6 +92,28 @@ public class PipelineFunction extends LibraryFunction {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+			}
+		});
+
+		addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+				MainFrame mf = (MainFrame) mainFrame;
+				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
+						PipelineFunction.this, e, mf.getGlassPane());
+
+				switch (mf.getPipeline().getActiveTool()) {
+				case DEFAULT_MAGIC_TOOL:
+					break;
+				case VIEW_TOOL:
+					mf.getPipeline().dispatchEvent(mainFrameEvent);
+				}
 			}
 		});
 	}

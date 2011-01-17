@@ -4,6 +4,7 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
@@ -15,7 +16,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
@@ -55,6 +58,12 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * the current changes of the display (move dragging, zoom animation)
 	 */
 	private AffineTransform currentDisplay;
+
+	/**
+	 * Saves the point in object coordinates when a drag and drop action occurs
+	 * *inside* the pipeline panel (i.e. not from the library)
+	 */
+	private Point2D draggingFrom;
 
 	/**
 	 * The links to the library and to the inspector used for communication
@@ -118,10 +127,27 @@ public class PipelinePanel extends JPanel implements Observer {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				switch (activeTool) {
+				case DEFAULT_MAGIC_TOOL:
+				case VIEW_TOOL:
+					objectToWindow.preConcatenate(currentDisplay);				
+					currentDisplay.setToIdentity();
+					draggingFrom = null;
+					arrange();
+					break;
+				}
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				switch (activeTool) {
+				case DEFAULT_MAGIC_TOOL:
+				case VIEW_TOOL:
+					// start dragging
+					draggingFrom = windowToObj(e.getPoint());
+					currentDisplay.setToIdentity();
+					break;
+				}
 			}
 
 			@Override
@@ -134,6 +160,34 @@ public class PipelinePanel extends JPanel implements Observer {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+			}
+		});
+
+		addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				switch (activeTool) {
+				case DEFAULT_MAGIC_TOOL:
+				case VIEW_TOOL:
+					// find the dragging target
+					if (draggingFrom != null) {
+						Point2D draggingTo = windowToObjFixed(e.getPoint());
+						currentDisplay.setToTranslation(
+								objectToWindow.getScaleX()
+										* (draggingTo.getX() - draggingFrom
+												.getX()),
+								objectToWindow.getScaleY()
+										* (draggingTo.getY() - draggingFrom
+												.getY()));
+						arrange();
+					}
+					break;
+				}
 			}
 		});
 	}
@@ -160,35 +214,59 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
+	 * Translates window coordinates to object coordinates based on only the
+	 * object to window transformation, not the display transformation. This is
+	 * necessary for dragging operations to transform only by the part of the
+	 * transformation which is currently determined.
+	 * 
+	 * @param window
+	 *            window coordinates
+	 * @return window in object coordinates, only of basic transformation, null
+	 *         if there is an error with the transformations which should
+	 *         theoretically never be the case
+	 */
+	private Point2D windowToObjFixed(Point window) {
+		Point2D result = new Point2D.Double();
+
+		try {
+			objectToWindow.inverseTransform(window, result);
+		} catch (NoninvertibleTransformException e) {
+			Application.handleException(e);
+		}
+
+		return result;
+	}
+
+	/**
 	 * Translates object coordinates to window coordinates
 	 * 
 	 * @param object
 	 *            object coordinates
-	 * @return object in window coordinates 
+	 * @return object in window coordinates
 	 */
 	private Point objToWindow(Point2D object) {
-		Point2D result = new Point2D.Double();;
-		
+		Point2D result = new Point2D.Double();
+
 		objectToWindow.transform(object, result);
 		currentDisplay.transform(result, result);
-		
+
 		return new Point((int) result.getX(), (int) result.getY());
 	}
-	
+
 	/**
-	 * Translates object delta coordinates to window delta coordinates.
-	 * Typical delta coordinates are object sizes.
+	 * Translates object delta coordinates to window delta coordinates. Typical
+	 * delta coordinates are object sizes.
 	 * 
 	 * @param objectDelta
 	 *            object delta coordinates
-	 * @return object in window delta coordinates 
+	 * @return object in window delta coordinates
 	 */
 	private Point objToWindowDelta(Point2D objectDelta) {
 		Point2D result = new Point2D.Double();
-		
+
 		objectToWindow.deltaTransform(objectDelta, result);
 		currentDisplay.deltaTransform(result, result);
-		
+
 		return new Point((int) result.getX(), (int) result.getY());
 	}
 
@@ -233,14 +311,6 @@ public class PipelinePanel extends JPanel implements Observer {
 		objectToWindow.scale(0.80, 0.80);
 		objectToWindow.translate(-objCenter.getX(), -objCenter.getY());
 		arrange();
-	}
-
-	/**
-	 * Moves the view. Hope this is done by the damn scrollpane
-	 */
-	public void moveView() {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -345,7 +415,8 @@ public class PipelinePanel extends JPanel implements Observer {
 		Point location = objToWindow(pf.getModelLocation());
 		pf.setLocation(location);
 
-		Point size = new Point(pf.getPreferredSize().width, pf.getPreferredSize().height);		
+		Point size = new Point(pf.getPreferredSize().width,
+				pf.getPreferredSize().height);
 		size = objToWindowDelta(size);
 		pf.setSize(size.x, size.y);
 	}
@@ -372,7 +443,7 @@ public class PipelinePanel extends JPanel implements Observer {
 
 		// drag & drop functionality : add function
 		Action a = ActionRegistry.getInstance().get(AddFunctionAction.class);
-		Point2D newPosition = windowToObj(at);		
+		Point2D newPosition = windowToObj(at);
 
 		ContainingLocationEvent cle = new ContainingLocationEvent(this,
 				libraryFunction.getModelFunctionPrototype(), newPosition);
