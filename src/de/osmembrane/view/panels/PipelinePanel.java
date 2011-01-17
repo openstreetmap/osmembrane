@@ -16,9 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.Action;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
@@ -332,7 +330,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					ExceptionSeverity.WARNING, I18N.getInstance().getString(
 							"View.Pipeline.NoFunctionsForEntireView")));
 		}
-		
+
 		// find that what's named there
 		double left = Double.MAX_VALUE;
 		double top = Double.MAX_VALUE;
@@ -355,9 +353,9 @@ public class PipelinePanel extends JPanel implements Observer {
 		 */
 
 		objectToWindow.setToIdentity();
-		objectToWindow.translate(left, top);
 		objectToWindow.scale(getWidth() / (right - left), getHeight()
 				/ (bottom - top));
+		objectToWindow.translate(-left, -top);
 
 		arrange();
 	}
