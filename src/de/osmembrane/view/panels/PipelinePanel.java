@@ -65,6 +65,13 @@ public class PipelinePanel extends JPanel implements Observer {
 	private Point2D draggingFrom;
 
 	/**
+	 * The standard zoom values.
+	 */
+	private final static double STANDARD_ZOOM_IN = 1.25;
+	private final static double STANDARD_ZOOM_OUT = 0.80;
+	private final static double PIXEL_PER_ZOOM_LEVEL = 100.00;
+
+	/**
 	 * The links to the library and to the inspector used for communication
 	 * between these components.
 	 */
@@ -115,9 +122,9 @@ public class PipelinePanel extends JPanel implements Observer {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				// zoom with mouse wheel
 				if (e.getWheelRotation() < 0) {
-					zoomIn(e.getPoint());
+					zoom(e.getPoint(), STANDARD_ZOOM_IN);
 				} else {
-					zoomOut(e.getPoint());
+					zoom(e.getPoint(), STANDARD_ZOOM_OUT);
 				}
 			}
 		});
@@ -129,8 +136,15 @@ public class PipelinePanel extends JPanel implements Observer {
 				switch (activeTool) {
 				case DEFAULT_MAGIC_TOOL:
 				case VIEW_TOOL:
-					objectToWindow.preConcatenate(currentDisplay);
-					currentDisplay.setToIdentity();
+					if (e.isControlDown()) {
+						// zoom
+						objectToWindow.preConcatenate(currentDisplay);
+						currentDisplay.setToIdentity();
+					} else {
+						// move
+						objectToWindow.preConcatenate(currentDisplay);
+						currentDisplay.setToIdentity();
+					}
 					draggingFrom = null;
 					arrange();
 					break;
@@ -176,14 +190,28 @@ public class PipelinePanel extends JPanel implements Observer {
 					// find the dragging target
 					if (draggingFrom != null) {
 						Point2D draggingTo = windowToObjFixed(e.getPoint());
-						currentDisplay.setToTranslation(
-								objectToWindow.getScaleX()
-										* (draggingTo.getX() - draggingFrom
-												.getX()),
-								objectToWindow.getScaleY()
-										* (draggingTo.getY() - draggingFrom
-												.getY()));
-						arrange();
+
+						if (e.isControlDown()) {
+							// zoom
+							double winDist = objToWindow(draggingFrom)
+									.distance(e.getPoint())
+									* Math.signum(draggingFrom.getY()
+											- draggingTo.getY());
+							zoomTemp(
+									draggingFrom,
+									Math.exp(winDist * Math.log(2.0)
+											/ PIXEL_PER_ZOOM_LEVEL));
+						} else {
+							// move
+							currentDisplay.setToTranslation(
+									objectToWindow.getScaleX()
+											* (draggingTo.getX() - draggingFrom
+													.getX()),
+									objectToWindow.getScaleY()
+											* (draggingTo.getY() - draggingFrom
+													.getY()));
+							arrange();
+						}
 					}
 					break;
 				}
@@ -273,42 +301,49 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * Zooms in
 	 */
 	public void zoomIn() {
-		zoomIn(new Point(getWidth() / 2, getHeight() / 2));
-	}
-
-	/**
-	 * Zooms in
-	 * 
-	 * @param center
-	 *            center of the zooming operation
-	 */
-	public void zoomIn(Point center) {
-		Point2D objCenter = windowToObj(center);
-		objectToWindow.translate(+objCenter.getX(), +objCenter.getY());
-		objectToWindow.scale(1.25, 1.25);
-		objectToWindow.translate(-objCenter.getX(), -objCenter.getY());
-		arrange();
+		zoom(new Point(getWidth() / 2, getHeight() / 2), STANDARD_ZOOM_IN);
 	}
 
 	/**
 	 * Zooms in
 	 */
 	public void zoomOut() {
-		zoomOut(new Point(getWidth() / 2, getHeight() / 2));
+		zoom(new Point(getWidth() / 2, getHeight() / 2), STANDARD_ZOOM_OUT);
 	}
 
 	/**
-	 * Zooms out
+	 * Zooms.
 	 * 
-	 * @param center
-	 *            center of the zooming operation
+	 * @param winCenter
+	 *            center of the zooming operation in window space
+	 * @param factor
+	 *            zooming value. if < 1 zooms out, if > 1 zooms in
 	 */
-	public void zoomOut(Point center) {
+	public void zoom(Point winCenter, double factor) {
 		// translate the center
-		Point2D objCenter = windowToObj(center);
+		Point2D objCenter = windowToObj(winCenter);
+
 		objectToWindow.translate(+objCenter.getX(), +objCenter.getY());
-		objectToWindow.scale(0.80, 0.80);
+		objectToWindow.scale(factor, factor);
 		objectToWindow.translate(-objCenter.getX(), -objCenter.getY());
+
+		arrange();
+	}
+
+	/**
+	 * Zooms temporary.
+	 * 
+	 * @param objCenter
+	 *            center of the zooming operation in object space
+	 * @param factor
+	 *            zooming value. if < 1 zooms out, if > 1 zooms in
+	 */
+	public void zoomTemp(Point2D objCenter, double factor) {
+		currentDisplay.setToIdentity();
+		currentDisplay.translate(+objCenter.getX(), +objCenter.getY());
+		currentDisplay.scale(factor, factor);
+		currentDisplay.translate(-objCenter.getX(), -objCenter.getY());
+
 		arrange();
 	}
 
