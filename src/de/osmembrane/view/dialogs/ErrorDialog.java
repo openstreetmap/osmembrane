@@ -162,17 +162,25 @@ public class ErrorDialog extends AbstractDialog {
 	public void showException(Throwable t, ExceptionSeverity severity,
 			Object causingObject) {
 
+		// ensure valid pointers
 		if (t == null) {
 			Application.handleException(new NullPointerException());
 		}
 
 		if (causingObject == null) {
-			causingObject = t.getStackTrace()[0];
+			if (t.getStackTrace().length > 0) {
+				causingObject = t.getStackTrace()[0];
+			} else {
+				// empty stack traces are some sort of exception cause
+				causingObject = t.getStackTrace();
+			}
 		}
 
 		if (severity == null) {
 			severity = ExceptionSeverity.INVALID;
 		}
+		
+		// set icon
 
 		switch (severity) {
 		case WARNING:
@@ -265,9 +273,10 @@ public class ErrorDialog extends AbstractDialog {
 			okButton.setText(I18N.getInstance().getString("View.OK"));
 		}
 
-		// normally hide the stack trace
+		// normally hide the stack trace, for warnings hide most of the dialog
 		exceptionTextPane.setVisible(false);
-		showTraceButton.setVisible(true);
+		showTraceButton.setVisible(severity != ExceptionSeverity.WARNING);
+		caption.setVisible(severity != ExceptionSeverity.WARNING);
 		okButton.requestFocusInWindow();
 
 		pack();

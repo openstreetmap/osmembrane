@@ -29,6 +29,7 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 
 /**
@@ -130,7 +131,7 @@ public class PipelinePanel extends JPanel implements Observer {
 				switch (activeTool) {
 				case DEFAULT_MAGIC_TOOL:
 				case VIEW_TOOL:
-					objectToWindow.preConcatenate(currentDisplay);				
+					objectToWindow.preConcatenate(currentDisplay);
 					currentDisplay.setToIdentity();
 					draggingFrom = null;
 					arrange();
@@ -326,7 +327,38 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * Shows the entire pipeline
 	 */
 	public void showEntireView() {
-		// TODO Auto-generated method stub
+		if (functions.size() < 1) {
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.WARNING, I18N.getInstance().getString(
+							"View.Pipeline.NoFunctionsForEntireView")));
+		}
+		
+		// find that what's named there
+		double left = Double.MAX_VALUE;
+		double top = Double.MAX_VALUE;
+		double right = Double.MIN_VALUE;
+		double bottom = Double.MIN_VALUE;
+
+		for (PipelineFunction pf : functions) {
+			double thisX = pf.getModelLocation().getX();
+			double thisY = pf.getModelLocation().getY();
+
+			left = Math.min(left, thisX);
+			top = Math.min(top, thisY);
+			right = Math.max(right, thisX + pf.getPreferredSize().width);
+			bottom = Math.max(bottom, thisY + pf.getPreferredSize().height);
+		}
+
+		/*
+		 * Construct an affine transformation so that (left,top) |-> (0,0) and
+		 * (right, bottom) |-> (getWidth(),getHeight())
+		 */
+
+		objectToWindow.setToIdentity();
+		objectToWindow.translate(left, top);
+		objectToWindow.scale(getWidth() / (right - left), getHeight()
+				/ (bottom - top));
+
 		arrange();
 	}
 
@@ -393,13 +425,6 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * Arranges all the functions after a move/zoom change
 	 */
 	private void arrange() {
-		// left top point coordinates
-		double minX = Double.MAX_VALUE;
-		double minY = Double.MAX_VALUE;
-		// bottom right point coordinates
-		double maxX = Double.MIN_VALUE;
-		double maxY = Double.MIN_VALUE;
-
 		for (PipelineFunction pf : functions) {
 			arrange(pf);
 		}
