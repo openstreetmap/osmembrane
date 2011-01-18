@@ -37,4 +37,10 @@ public class Constants {
 	 * The default color for a function-group with a non parsable color.
 	 */
 	public static final Color DEFAULT_FUNCTIONGROUP_COLOR = new Color(0.8f, 0.8f, 0.8f);
+	
+	
+	/**
+	 * Icons default folder.
+	 */
+	public static final String ICONS_PATH = "src/de/osmembrane/resources/images/icons/";
 }

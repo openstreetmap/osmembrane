@@ -1,29 +1,31 @@
 package de.osmembrane.controller.actions;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.geom.Point2D;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
 
 import de.osmembrane.Application;
-import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.controller.events.ContainingLocationEvent;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
-import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.panels.LibraryFunction;
+import de.osmembrane.tools.IconLoader;
+import de.osmembrane.tools.IconLoader.Size;
 
 public class AddFunctionAction extends AbstractAction {
 
 	public AddFunctionAction() {
 		putValue(Action.NAME, "Add Function");
-		// throw new UnsupportedOperationException();
+		putValue(Action.SMALL_ICON, new IconLoader("add_function.png",
+				Size.SMALL).get());
+		putValue(Action.LARGE_ICON_KEY, new IconLoader("add_function.png",
+				Size.NORMAL).get());
 		// FIXME
 	}
 
