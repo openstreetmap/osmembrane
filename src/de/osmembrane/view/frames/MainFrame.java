@@ -18,6 +18,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
@@ -321,7 +323,10 @@ public class MainFrame extends AbstractFrame {
 
 		// pipeline view
 		pipelineView = new PipelinePanel(functionInspector);
-		JScrollPane panePipeline = new JScrollPane(pipelineView);
+		JPanel panePipeline = new JPanel(new BorderLayout());
+		panePipeline.add(pipelineView, BorderLayout.CENTER);
+		panePipeline.add(pipelineView.getVerticalScroll(), BorderLayout.EAST);
+		panePipeline.add(pipelineView.getHorizontalScroll(), BorderLayout.SOUTH);
 
 		// split containers
 		JSplitPane splitLibAndView = new JSplitPane(
