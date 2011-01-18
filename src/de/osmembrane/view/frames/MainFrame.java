@@ -30,7 +30,7 @@ import javax.swing.SwingConstants;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.ChangeSettingsAction;
-import de.osmembrane.controller.actions.DeleteFunctionAction;
+import de.osmembrane.controller.actions.DeleteSelectionAction;
 import de.osmembrane.controller.actions.DuplicateFunctionAction;
 import de.osmembrane.controller.actions.ExecutePipelineAction;
 import de.osmembrane.controller.actions.ExitAction;
@@ -198,16 +198,16 @@ public class MainFrame extends AbstractFrame {
 		editMenu.add(ActionRegistry.getInstance().get(
 				DuplicateFunctionAction.class));
 		editMenu.add(ActionRegistry.getInstance().get(
-				DeleteFunctionAction.class));
+				DeleteSelectionAction.class));
 		menuBar.add(editMenu);
 
 		JMenu viewMenu = new JMenu(I18N.getInstance().getString(
 				"View.Menu.View"));
-		editMenu.add(ActionRegistry.getInstance().get(StandardViewAction.class));
-		editMenu.add(ActionRegistry.getInstance().get(ViewAllAction.class));
-		editMenu.add(new JSeparator());
-		editMenu.add(ActionRegistry.getInstance().get(ZoomInAction.class));
-		editMenu.add(ActionRegistry.getInstance().get(ZoomOutAction.class));
+		viewMenu.add(ActionRegistry.getInstance().get(StandardViewAction.class));
+		viewMenu.add(ActionRegistry.getInstance().get(ViewAllAction.class));
+		viewMenu.add(new JSeparator());
+		viewMenu.add(ActionRegistry.getInstance().get(ZoomInAction.class));
+		viewMenu.add(ActionRegistry.getInstance().get(ZoomOutAction.class));
 		menuBar.add(viewMenu);
 
 		JMenu pipelineMenu = new JMenu(I18N.getInstance().getString(

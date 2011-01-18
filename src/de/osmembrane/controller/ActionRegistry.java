@@ -8,8 +8,7 @@ import javax.swing.Action;
 import de.osmembrane.controller.actions.AddConnectionAction;
 import de.osmembrane.controller.actions.AddFunctionAction;
 import de.osmembrane.controller.actions.ChangeSettingsAction;
-import de.osmembrane.controller.actions.DeleteConnectionAction;
-import de.osmembrane.controller.actions.DeleteFunctionAction;
+import de.osmembrane.controller.actions.DeleteSelectionAction;
 import de.osmembrane.controller.actions.DuplicateFunctionAction;
 import de.osmembrane.controller.actions.EditBoundingBoxPropertyAction;
 import de.osmembrane.controller.actions.EditFilePropertyAction;
@@ -28,7 +27,6 @@ import de.osmembrane.controller.actions.RedoAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
 import de.osmembrane.controller.actions.UndoAction;
-import de.osmembrane.exceptions.ExceptionSeverity;
 
 /**
  * The action registry implements the Broker pattern to organize the
@@ -67,11 +65,10 @@ public class ActionRegistry {
 		register(new AddFunctionAction());
 		register(new MoveFunctionAction());
 		register(new DuplicateFunctionAction());
-		register(new DeleteFunctionAction());
+		register(new DeleteSelectionAction());
 
 		// connection actions
 		register(new AddConnectionAction());
-		register(new DeleteConnectionAction());
 
 		// property actions
 		register(new EditPropertyAction());

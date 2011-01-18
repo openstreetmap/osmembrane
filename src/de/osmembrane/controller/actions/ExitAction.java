@@ -24,7 +24,7 @@ public class ExitAction extends AbstractAction {
 				Size.SMALL).get());
 		putValue(Action.LARGE_ICON_KEY, new IconLoader("exit.png",
 				Size.NORMAL).get());
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_AT,
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q,
 					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		putValue(Action.SHORT_DESCRIPTION, "Shut up");
 	}

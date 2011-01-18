@@ -24,6 +24,8 @@ import javax.swing.JScrollBar;
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.AddFunctionAction;
+import de.osmembrane.controller.actions.DeleteSelectionAction;
+import de.osmembrane.controller.actions.DuplicateFunctionAction;
 import de.osmembrane.controller.actions.MoveFunctionAction;
 import de.osmembrane.controller.events.ContainingLocationEvent;
 import de.osmembrane.exceptions.ControlledException;
@@ -699,7 +701,14 @@ public class PipelinePanel extends JPanel implements Observer {
 		for (PipelineFunction pf : functions) {
 			pf.repaint();
 		}
-
+		ActionRegistry.getInstance().get(DeleteSelectionAction.class)
+				.setEnabled(selected != null);
+		ActionRegistry
+				.getInstance()
+				.get(DuplicateFunctionAction.class)
+				.setEnabled(
+						(selected != null)
+								&& (selected instanceof PipelineFunction));
 	}
 
 	/**
