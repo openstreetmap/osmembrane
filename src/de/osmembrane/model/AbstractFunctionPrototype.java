@@ -1,5 +1,6 @@
 package de.osmembrane.model;
 
+import java.io.Serializable;
 import java.util.Observable;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
@@ -41,4 +42,11 @@ public abstract class AbstractFunctionPrototype extends Observable {
 	 * @return a copy with default values of the requested function
 	 */
 	public abstract AbstractFunction getFunction(AbstractFunction function);
+	
+	/**
+	 * Duplicates a {@link Serializable} object.
+	 * 
+	 * @return duplicated {@link Serializable} object
+	 */
+	public abstract Object duplicate(Serializable object);
 }

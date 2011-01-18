@@ -79,6 +79,11 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 		return null;
 	}
 
+	@Override
+	public Object duplicate(Serializable object) {
+		return deepCopy(object);
+	}
+	
 	/**
 	 * Creates a full copy of a given element (group,function,task).
 	 * 
