@@ -68,9 +68,9 @@ public class FunctionGroup extends AbstractFunctionGroup {
 		
 		int r, g, b;
 		try {
-			r = Integer.parseInt(color[0]);
-			g = Integer.parseInt(color[1]);
-			b = Integer.parseInt(color[2]);
+			r = Integer.parseInt(color[0].trim());
+			g = Integer.parseInt(color[1].trim());
+			b = Integer.parseInt(color[2].trim());
 		} catch (NumberFormatException e) {
 			return null;
 		}
