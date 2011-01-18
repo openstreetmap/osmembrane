@@ -1,5 +1,6 @@
 package de.osmembrane.resources;
 
+import java.awt.Color;
 import java.util.Locale;
 
 import de.osmembrane.model.AbstractFunctionPrototype;
@@ -31,4 +32,9 @@ public class Constants {
 	 * Default Backup filename (for {@link Pipeline}.
 	 */
 	public static final String DEFAULT_BACKUP_FILE = System.getProperty("user.home") + "/" + "backup.osmembrane";
+	
+	/**
+	 * The default color for a function-group with a non parsable color.
+	 */
+	public static final Color DEFAULT_FUNCTIONGROUP_COLOR = new Color(0.8f, 0.8f, 0.8f);
 }

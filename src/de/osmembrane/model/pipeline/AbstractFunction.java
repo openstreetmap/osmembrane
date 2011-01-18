@@ -18,9 +18,9 @@ public abstract class AbstractFunction extends Observable implements
 	private static final long serialVersionUID = 2010123022230001L;
 
 	/**
-	 * Returns the parent of the current Function.
+	 * Returns the parent {@link AbstractFunctionGroup} of the current Function.
 	 * 
-	 * @return parent of the current Function
+	 * @return parent-group of the current Function
 	 */
 	public abstract AbstractFunctionGroup getParent();
 

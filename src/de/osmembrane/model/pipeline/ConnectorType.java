@@ -2,6 +2,8 @@ package de.osmembrane.model.pipeline;
 
 import java.awt.Color;
 
+import de.osmembrane.model.ModelProxy;
+
 public enum ConnectorType {
 	CHANGE ("Change", -1, new Color(255,0,0)),
 	ENTITY ("Entity", -1, new Color(0,255,0)),

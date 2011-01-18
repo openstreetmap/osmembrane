@@ -14,7 +14,7 @@
   <annotation>
     <appinfo>
       <jaxb:globalBindings generateIsSetMethod="true">
-        <xjc:serializable uid="2011010722410001"/>
+        <xjc:serializable uid="2011011810070001"/>
       </jaxb:globalBindings>
     </appinfo>
   </annotation>
@@ -368,6 +368,11 @@
             <documentation>The human-readable name of this group.</documentation>
           </annotation>
         </attribute>
+        <attribute name="icon" type="string">
+          <annotation>
+            <documentation>A path to an icon for this function.</documentation>
+          </annotation>
+        </attribute>
       </extension>
     </complexContent>
   </complexType>
@@ -396,6 +401,12 @@
         <attribute name="friendlyName" type="string">
           <annotation>
             <documentation>The human-readable name of this group.</documentation>
+          </annotation>
+        </attribute>
+        <attribute name="color" type="string" use="required">
+          <annotation>
+            <documentation>The color of this group (should be unique). Usage: "r,g,b"
+            Example: "0,255,0" for green</documentation>
           </annotation>
         </attribute>
       </extension>

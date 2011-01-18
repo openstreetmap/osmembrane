@@ -1,5 +1,6 @@
 package de.osmembrane.model.pipeline;
 
+import java.awt.Color;
 import java.io.Serializable;
 
 /**
@@ -31,6 +32,13 @@ public abstract class AbstractFunctionGroup implements Serializable {
 	 * @return list of Descriptions in the available languages.
 	 */
 	public abstract String getDescription();
+	
+	/**
+	 * Returns the color of the FunctionGroup.
+	 * 
+	 * @return color of the FunctionGroup
+	 */
+	public abstract Color getColor();
 
 	/**
 	 * Returns the Functions inherited by this FunctionGroup.

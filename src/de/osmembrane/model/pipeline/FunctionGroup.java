@@ -1,5 +1,6 @@
 package de.osmembrane.model.pipeline;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,31 @@ public class FunctionGroup extends AbstractFunctionGroup {
 	@Override
 	public String getDescription() {
 		return I18N.getInstance().getDescription(xmlGroup);
+	}
+	
+	@Override
+	public Color getColor() {
+		String colorString = xmlGroup.getColor();
+		String[] color = colorString.split(",");
+		
+		if(color.length != 3) {
+			return null;
+		}
+		
+		int r, g, b;
+		try {
+			r = Integer.parseInt(color[0]);
+			g = Integer.parseInt(color[1]);
+			b = Integer.parseInt(color[2]);
+		} catch (NumberFormatException e) {
+			return null;
+		}
+		
+		if ((r < 0 || r > 255) && (g < 0 || g > 255) && (b < 0 || b > 255)) {
+			return null;
+		}
+		
+		return new Color(r, g, b);
 	}
 
 	@Override
