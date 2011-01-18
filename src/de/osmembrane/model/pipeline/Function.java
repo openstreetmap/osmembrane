@@ -51,9 +51,9 @@ public class Function extends AbstractFunction {
 	private boolean triedLoadIcon = false;
 
 	/**
-	 * Icon
+	 * Icon of the function.
 	 */
-	private BufferedImage icon;
+	private BufferedImage icon = null;;
 
 	/**
 	 * Creates a new Function with given parent and XMLFunction.
@@ -117,7 +117,9 @@ public class Function extends AbstractFunction {
 	public BufferedImage getIcon() {
 		if (triedLoadIcon == false) {
 			try {
-				icon = ImageIO.read(new File(xmlFunction.getIcon()));
+				if(xmlFunction.getIcon() != null) {
+					icon = ImageIO.read(new File(xmlFunction.getIcon()));
+				}
 			} catch (IOException e) {
 				icon = null;
 			}
