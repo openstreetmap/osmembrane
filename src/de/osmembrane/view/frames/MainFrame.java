@@ -313,6 +313,7 @@ public class MainFrame extends AbstractFrame {
 		JScrollPane paneLibrary = new JScrollPane(functionLibrary);
 		paneLibrary
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		paneLibrary.getVerticalScrollBar().setUnitIncrement(10);
 
 		// function inspector
 		InspectorPanel functionInspector = new InspectorPanel();

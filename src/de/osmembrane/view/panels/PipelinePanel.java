@@ -155,8 +155,12 @@ public class PipelinePanel extends JPanel implements Observer {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				switch (activeTool) {
+				case SELECTION_TOOL:
+					selected(null);
+					break;
 				case DEFAULT_MAGIC_TOOL:
 				case VIEW_TOOL:
+					selected(null);
 					// start dragging
 					draggingFrom = windowToObj(e.getPoint());
 					currentDisplay.setToIdentity();
@@ -225,10 +229,10 @@ public class PipelinePanel extends JPanel implements Observer {
 				switch (activeTool) {
 				case DEFAULT_MAGIC_TOOL:
 				case SELECTION_TOOL:
-					/*if (selected != null) {
-						e.getPoint() - draggingFrom
-						selected.setLocation(e.getP)
-					}*/
+					if (selected != null) {
+						//e.getPoint() - draggingFrom
+						selected.setLocation(e.getPoint());
+					}
 				}
 				
 			} /* mouseDragged */

@@ -53,7 +53,7 @@ public class PipelineFunction extends LibraryFunction {
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
 				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
-						PipelineFunction.this, e, mf.getGlassPane());
+						PipelineFunction.this, e, mf.getPipeline());
 
 				switch (mf.getPipeline().getActiveTool()) {				
 				case VIEW_TOOL:
@@ -69,13 +69,12 @@ public class PipelineFunction extends LibraryFunction {
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
 				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
-						PipelineFunction.this, e, mf.getGlassPane());
+						PipelineFunction.this, e, mf.getPipeline());
 
 				switch (mf.getPipeline().getActiveTool()) {
 				case DEFAULT_MAGIC_TOOL:
 				case SELECTION_TOOL:
 					mf.getPipeline().selected(PipelineFunction.this);
-					mf.getPipeline().dispatchEvent(mainFrameEvent);
 					break;
 				case VIEW_TOOL:
 					mf.getPipeline().dispatchEvent(mainFrameEvent);
@@ -108,7 +107,7 @@ public class PipelineFunction extends LibraryFunction {
 				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 				MainFrame mf = (MainFrame) mainFrame;
 				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
-						PipelineFunction.this, e, mf.getGlassPane());
+						PipelineFunction.this, e, mf.getPipeline());
 
 				switch (mf.getPipeline().getActiveTool()) {
 				case DEFAULT_MAGIC_TOOL:
