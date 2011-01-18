@@ -23,6 +23,7 @@ import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
 import de.osmembrane.controller.ActionRegistry;
@@ -149,12 +150,12 @@ public class MainFrame extends AbstractFrame {
 										.getResource("/de/osmembrane/resources/cursors/cursor-connect.png")));
 
 		toolsCursors = new HashMap<Tool, Cursor>();
-		toolsCursors.put(Tool.DEFAULT_MAGIC_TOOL,
-				Cursor.getDefaultCursor());
+		toolsCursors.put(Tool.DEFAULT_MAGIC_TOOL, Cursor.getDefaultCursor());
 		for (Entry<Tool, ImageIcon> e : toolsImages.entrySet()) {
 			if (e.getKey() != Tool.DEFAULT_MAGIC_TOOL) {
 				toolsCursors.put(e.getKey(), tk.createCustomCursor(e.getValue()
-						.getImage(), new Point(0, 0), String.valueOf(e.getKey())));
+						.getImage(), new Point(0, 0),
+						String.valueOf(e.getKey())));
 			}
 		}
 
@@ -253,47 +254,47 @@ public class MainFrame extends AbstractFrame {
 		JToolBar toolsBar = new JToolBar(I18N.getInstance().getString(
 				"osmembrane"), JToolBar.HORIZONTAL);
 
-		ButtonGroup tools = new ButtonGroup();	
+		ButtonGroup tools = new ButtonGroup();
 		// will store the buttons later
 		final Map<JToggleButton, Tool> toolsButtons = new HashMap<JToggleButton, Tool>();
 		ActionListener toolsButtonsActionListener = new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Tool t = toolsButtons.get(e.getSource());
 				pipelineView.setActiveTool(t, toolsCursors.get(t));
 			}
 		};
-		
+
 		JToggleButton magicTool = new JToggleButton(
 				toolsImages.get(Tool.DEFAULT_MAGIC_TOOL), true);
 		magicTool.addActionListener(toolsButtonsActionListener);
 		tools.add(magicTool);
 		toolsBar.add(magicTool);
-		
+
 		JToggleButton selectTool = new JToggleButton(
 				toolsImages.get(Tool.SELECTION_TOOL));
 		selectTool.addActionListener(toolsButtonsActionListener);
 		tools.add(selectTool);
 		toolsBar.add(selectTool);
-		
+
 		JToggleButton viewTool = new JToggleButton(
 				toolsImages.get(Tool.VIEW_TOOL));
 		viewTool.addActionListener(toolsButtonsActionListener);
 		tools.add(viewTool);
 		toolsBar.add(viewTool);
-		
+
 		JToggleButton connectTool = new JToggleButton(
 				toolsImages.get(Tool.CONNECTION_TOOL));
 		connectTool.addActionListener(toolsButtonsActionListener);
 		tools.add(connectTool);
 		toolsBar.add(connectTool);
-		
+
 		toolsButtons.put(magicTool, Tool.DEFAULT_MAGIC_TOOL);
 		toolsButtons.put(selectTool, Tool.SELECTION_TOOL);
 		toolsButtons.put(viewTool, Tool.VIEW_TOOL);
 		toolsButtons.put(connectTool, Tool.CONNECTION_TOOL);
-		
+
 		toolsBar.add(new JSeparator(SwingConstants.VERTICAL));
 		toolsBar.add(ActionRegistry.getInstance().get(StandardViewAction.class));
 		toolsBar.add(ActionRegistry.getInstance().get(ViewAllAction.class));
@@ -310,6 +311,8 @@ public class MainFrame extends AbstractFrame {
 			functionLibrary.addGroup(lpg);
 		}
 		JScrollPane paneLibrary = new JScrollPane(functionLibrary);
+		paneLibrary
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		// function inspector
 		InspectorPanel functionInspector = new InspectorPanel();
