@@ -63,6 +63,7 @@ public class Pipeline extends AbstractPipeline {
 		for (AbstractFunction function : functions) {
 			if (function == func) {
 				returnValue = functions.remove(function);
+				break;
 			}
 		}
 
