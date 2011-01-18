@@ -48,7 +48,7 @@ public class Function extends AbstractFunction {
 	/**
 	 * State of the icon load sequence.
 	 */
-	private boolean triedLoadIcon;
+	private boolean triedLoadIcon = false;
 
 	/**
 	 * Icon
@@ -115,7 +115,7 @@ public class Function extends AbstractFunction {
 
 	@Override
 	public BufferedImage getIcon() {
-		if (triedLoadIcon = false) {
+		if (triedLoadIcon == false) {
 			try {
 				icon = ImageIO.read(new File(xmlFunction.getIcon()));
 			} catch (IOException e) {
