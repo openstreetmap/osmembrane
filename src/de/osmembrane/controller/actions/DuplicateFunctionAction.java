@@ -40,7 +40,7 @@ public class DuplicateFunctionAction extends AbstractAction {
 			if (selected instanceof PipelineFunction) {
 				PipelineFunction pf = (PipelineFunction) selected;
 
-				AbstractFunction duplicate = pf.getModelFunction().clone();
+				AbstractFunction duplicate = ModelProxy.getInstance().accessFunctions().getFunction(pf.getModelFunction());
 				Point2D duplLoc = duplicate.getCoordinate();
 				duplicate.setCoordinate(new Point2D.Double(duplLoc.getX() + 0.3
 						* pf.getPreferredSize().width, duplLoc.getY() + 1.1
