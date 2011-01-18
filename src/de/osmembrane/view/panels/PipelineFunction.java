@@ -55,8 +55,10 @@ public class PipelineFunction extends LibraryFunction {
 				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
 						PipelineFunction.this, e, mf.getPipeline());
 
-				switch (mf.getPipeline().getActiveTool()) {				
+				switch (mf.getPipeline().getActiveTool()) {		
+				case DEFAULT_MAGIC_TOOL:
 				case VIEW_TOOL:
+				case SELECTION_TOOL:
 					mf.getPipeline().dispatchEvent(mainFrameEvent);
 					break;
 				case CONNECTION_TOOL:
@@ -75,6 +77,7 @@ public class PipelineFunction extends LibraryFunction {
 				case DEFAULT_MAGIC_TOOL:
 				case SELECTION_TOOL:
 					mf.getPipeline().selected(PipelineFunction.this);
+					mf.getPipeline().setDraggingFrom(mainFrameEvent.getPoint());
 					break;
 				case VIEW_TOOL:
 					mf.getPipeline().dispatchEvent(mainFrameEvent);
@@ -141,14 +144,6 @@ public class PipelineFunction extends LibraryFunction {
 	 */
 	public Point2D getModelLocation() {
 		return this.modelFunction.getCoordinate();
-	}
-	
-	/**
-	 * 
-	 * @param location the model location to set
-	 */
-	public void setModelLocation(Point2D location) {		
-		this.modelFunction.setCoordinate(location);
 	}
 
 }

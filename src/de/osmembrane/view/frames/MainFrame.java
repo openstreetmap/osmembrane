@@ -320,7 +320,7 @@ public class MainFrame extends AbstractFrame {
 		JScrollPane paneInspector = new JScrollPane(functionInspector);
 
 		// pipeline view
-		pipelineView = new PipelinePanel(functionLibrary, functionInspector);
+		pipelineView = new PipelinePanel(functionInspector);
 		JScrollPane panePipeline = new JScrollPane(pipelineView);
 
 		// split containers

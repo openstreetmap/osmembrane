@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.AddFunctionAction;
+import de.osmembrane.controller.actions.MoveFunctionAction;
 import de.osmembrane.controller.events.ContainingLocationEvent;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
@@ -73,10 +74,9 @@ public class PipelinePanel extends JPanel implements Observer {
 	private final static double PIXEL_PER_ZOOM_LEVEL = 100.00;
 
 	/**
-	 * The links to the library and to the inspector used for communication
-	 * between these components.
+	 * The links to the inspector used for communication between these two
+	 * components.
 	 */
-	private LibraryPanel functionLibrary;
 	private InspectorPanel functionInspector;
 
 	/**
@@ -96,15 +96,13 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * @param functionLibrary
 	 * @param functionInspector
 	 */
-	public PipelinePanel(final LibraryPanel functionLibrary,
-			InspectorPanel functionInspector) {
+	public PipelinePanel(InspectorPanel functionInspector) {
 
 		// best decision ever <- do not touch
 		setLayout(null);
 
 		// internal values
 		this.functions = new ArrayList<PipelineFunction>();
-		this.functionLibrary = functionLibrary;
 		this.functionInspector = functionInspector;
 
 		this.activeTool = Tool.DEFAULT_MAGIC_TOOL;
@@ -134,8 +132,12 @@ public class PipelinePanel extends JPanel implements Observer {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				// view tool and magic
 				switch (activeTool) {
 				case DEFAULT_MAGIC_TOOL:
+					if (selected != null) {
+						break;
+					}
 				case VIEW_TOOL:
 					if (e.isControlDown()) {
 						// zoom
@@ -146,10 +148,40 @@ public class PipelinePanel extends JPanel implements Observer {
 						objectToWindow.preConcatenate(currentDisplay);
 						currentDisplay.setToIdentity();
 					}
-					draggingFrom = null;
 					arrange();
 					break;
 				}
+
+				// select tool and magic
+				switch (activeTool) {
+				case DEFAULT_MAGIC_TOOL:
+				case SELECTION_TOOL:
+					if ((selected != null)
+							&& (selected instanceof PipelineFunction)
+							&& (draggingFrom != null)) {
+						PipelineFunction pf = (PipelineFunction) selected;
+
+						// getCoordinate - draggingFrom
+						Point2D objOffset = new Point2D.Double(pf
+								.getModelLocation().getX()
+								- draggingFrom.getX(), pf.getModelLocation()
+								.getY() - draggingFrom.getY());
+
+						Point2D objPosition = windowToObj(e.getPoint());
+
+						Point2D newObjPosition = new Point2D.Double(
+								objPosition.getX() + objOffset.getX(),
+								objPosition.getY() + objOffset.getY());
+
+						// set position
+						Action a = ActionRegistry.getInstance().get(
+								MoveFunctionAction.class);
+						ContainingLocationEvent cle = new ContainingLocationEvent(
+								this, pf.getModelFunction(), newObjPosition);
+						a.actionPerformed(cle);
+					}
+				}
+				draggingFrom = null;
 			}
 
 			@Override
@@ -165,7 +197,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					draggingFrom = windowToObj(e.getPoint());
 					currentDisplay.setToIdentity();
 					break;
-				}				
+				}
 			}
 
 			@Override
@@ -189,8 +221,8 @@ public class PipelinePanel extends JPanel implements Observer {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				
-				// view tool and magic				
+
+				// view tool and magic
 				switch (activeTool) {
 				case DEFAULT_MAGIC_TOOL:
 					if (selected != null) {
@@ -224,17 +256,29 @@ public class PipelinePanel extends JPanel implements Observer {
 					}
 					break;
 				}
-				
+
 				// selection tool and magic
 				switch (activeTool) {
 				case DEFAULT_MAGIC_TOOL:
 				case SELECTION_TOOL:
-					if (selected != null) {
-						//e.getPoint() - draggingFrom
+					if ((selected != null)
+							&& (selected instanceof PipelineFunction)
+							&& (draggingFrom != null)) {
+						PipelineFunction pf = (PipelineFunction) selected;
+
+						// getCoordinate - draggingFrom
+						Point2D objOffset = new Point2D.Double(pf
+								.getModelLocation().getX()
+								- draggingFrom.getX(), pf.getModelLocation()
+								.getY() - draggingFrom.getY());
+						Point winOffset = objToWindowDelta(objOffset);
+
+						// translate
+						e.translatePoint(winOffset.x, winOffset.y);
 						selected.setLocation(e.getPoint());
 					}
 				}
-				
+
 			} /* mouseDragged */
 		});
 	}
@@ -567,6 +611,18 @@ public class PipelinePanel extends JPanel implements Observer {
 	 */
 	public Tool getActiveTool() {
 		return activeTool;
+	}
+
+	/**
+	 * Sets the dragging point manually for objects that catch the MouseEvents.
+	 * MouseListeners should be forwarded though. (Forwarding mouse events here
+	 * would cause a deselection of the dragged object)
+	 * 
+	 * @param draggingFrom
+	 *            point dragging started from (window space) to set
+	 */
+	public void setDraggingFrom(Point winDraggingFrom) {
+		this.draggingFrom = windowToObj(winDraggingFrom);
 	}
 
 }
