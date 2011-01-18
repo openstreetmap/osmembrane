@@ -3,6 +3,7 @@ package de.osmembrane.model.pipeline;
 import de.osmembrane.model.xml.XMLHasDescription;
 
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
@@ -59,6 +60,13 @@ public abstract class AbstractFunction extends Observable implements
 	 * @return a {@link XMLHasDescription} object
 	 */
 	public abstract String getDescription();
+	
+	/**
+	 * Returns the icon of the {@link AbstractFunction}.
+	 * 
+	 * @return icon of the {@link AbstractFunction}
+	 */
+	public abstract BufferedImage getIcon();
 
 	/**
 	 * Returns the available XMLTasks for the current Function.

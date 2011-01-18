@@ -7,9 +7,14 @@ import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.model.xml.XMLTask;
 
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+
+import javax.imageio.ImageIO;
 
 import de.osmembrane.model.xml.XMLFunction;
 import de.osmembrane.tools.I18N;
@@ -39,6 +44,16 @@ public class Function extends AbstractFunction {
 	private final String comparator;
 	
 	private Pipeline pipeline;
+
+	/**
+	 * State of the icon load sequence.
+	 */
+	private boolean triedLoadIcon;
+
+	/**
+	 * Icon
+	 */
+	private BufferedImage icon;
 
 	/**
 	 * Creates a new Function with given parent and XMLFunction.
@@ -98,6 +113,20 @@ public class Function extends AbstractFunction {
 		return I18N.getInstance().getDescription(xmlFunction);
 	}
 
+	@Override
+	public BufferedImage getIcon() {
+		if (triedLoadIcon = false) {
+			try {
+				icon = ImageIO.read(new File(xmlFunction.getIcon()));
+			} catch (IOException e) {
+				icon = null;
+			}
+			triedLoadIcon = true;
+		}
+		
+		return icon;
+	}
+	
 	@Override
 	public Task[] getAvailableTasks() {
 		Task[] returnTasks = new Task[tasks.size()];
