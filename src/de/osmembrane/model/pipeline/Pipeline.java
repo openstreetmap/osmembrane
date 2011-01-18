@@ -69,7 +69,7 @@ public class Pipeline extends AbstractPipeline {
 
 		if (returnValue == true) {
 			/* notify the observers */
-			changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD,
+			changedNotifyObservers(new PipelineObserverObject(ChangeType.DELETE,
 					func));
 		}
 		return returnValue;
