@@ -7,19 +7,41 @@ import de.osmembrane.model.xml.XMLEnumValue;
 import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.tools.I18N;
 
+/**
+ * Implemenation of {@link AbstractParameter}.
+ * 
+ * @author jakob_jarosch
+ */
 public class Parameter extends AbstractParameter {
 
+	private static final long serialVersionUID = 2011011821310001L;
+
+	/**
+	 * The XML counterpart of the parameter.
+	 */
 	private XMLParameter xmlParam;
 	
+	/**
+	 * The enum values for the parameter (if {@link Parameter#type} is {@link ParameterType#ENUM}).
+	 */
 	private List<EnumValue> enumValues = new ArrayList<EnumValue>();
 	
+	/**
+	 * Type of the parameter.
+	 */
 	private ParameterType type;
 	
+	/**
+	 * Constructor for a new {@link Parameter}.
+	 * 
+	 * @param xmlParam XML counterpart which should be represented by the {@link Parameter}.
+	 */
 	public Parameter(XMLParameter xmlParam) {
 		this.xmlParam = xmlParam;
 		
 		this.type = ParameterType.parseString(xmlParam.getType());
 		
+		/* create enum values */
 		for(XMLEnumValue xmlEnum : xmlParam.getEnumValue()) {
 			enumValues.add(new EnumValue(xmlEnum));
 		}
@@ -63,7 +85,7 @@ public class Parameter extends AbstractParameter {
 
 	@Override
 	public boolean setValue(String value) {
-		// TODO check Type-Match
+		// TODO check the type match for parameter values
 		xmlParam.setValue(value);
 		
 		setChanged();

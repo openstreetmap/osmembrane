@@ -1,4 +1,4 @@
-package de.osmembrane.model;
+package de.osmembrane.model.pipeline;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,15 +6,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import de.osmembrane.model.pipeline.AbstractConnector;
-import de.osmembrane.model.pipeline.AbstractFunction;
 
 /**
  * Checks if functions does create a loop.
  * 
  * @author jakob_jarosch
  */
-public class LoopCheck {
+public class TarjanAlgorithm {
 	
 	/**
 	 * External function-list.
@@ -41,7 +39,7 @@ public class LoopCheck {
 	 * 
 	 * @param functions fist of functions
 	 */
-	public LoopCheck(List<AbstractFunction> functions) {
+	public TarjanAlgorithm(List<AbstractFunction> functions) {
 		this.functions = functions;
 	}
 

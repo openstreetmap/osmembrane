@@ -2,7 +2,6 @@ package de.osmembrane.model.pipeline;
 
 import java.io.Serializable;
 
-import de.osmembrane.model.xml.XMLPipe;
 
 /**
  * Represents a {@link AbstractConnector} of a {@link AbstractFunction}.
@@ -21,11 +20,20 @@ public abstract class AbstractConnector implements Serializable {
 	 */
 	public abstract AbstractFunction getParent();
 	
+	/**
+	 * Returns the localized description of the {@link AbstractConnector}.
+	 * 
+	 * @return localized description
+	 */
 	public abstract String getDescription();
 	
+	/**
+	 * Returns the {@link ConnectorType} of the {@link AbstractConnector}.
+	 * 
+	 * @return type of the connector
+	 */
 	public abstract ConnectorType getType();
 	
-
 	/**
 	 * Returns the maximum connections of this connector.
 	 * 

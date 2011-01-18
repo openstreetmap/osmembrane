@@ -9,12 +9,30 @@ import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.model.xml.XMLTask;
 import de.osmembrane.tools.I18N;
 
+/**
+ * Implementation of {@link AbstractTask}.
+ * 
+ * @author jakob_jarosch
+ */
 public class Task extends AbstractTask {
 
+	private static final long serialVersionUID = 2011011821570001L;
+
+	/**
+	 * The {@link XMLTask} which is represented by this instance.
+	 */
 	private XMLTask xmlTask;
 	
+	/**
+	 * Parameters which are bound to this Task.
+	 */
 	private List<Parameter> parameters = new ArrayList<Parameter>();
 	
+	/**
+	 * Creates a new Task.
+	 * 
+	 * @param xmlTask {@link XMLTask} which will be represented by this instance.
+	 */
 	public Task(XMLTask xmlTask) {
 		this.xmlTask = xmlTask;
 		

@@ -4,6 +4,11 @@ import java.util.List;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
 
+/**
+ * Implementation of {@link IParser} for the bash (unix) command line.
+ * 
+ * @author jakob_jarosch
+ */
 public class BashParser implements IParser {
 
 	@Override

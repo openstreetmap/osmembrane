@@ -4,6 +4,11 @@ import java.util.List;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
 
+/**
+ * Implementation of {@link IParser} for the cmd (windows) command line.
+ * 
+ * @author jakob_jarosch
+ */
 public class CmdParser implements IParser {
 
 	@Override

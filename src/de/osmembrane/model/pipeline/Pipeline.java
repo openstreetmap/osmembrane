@@ -1,13 +1,10 @@
 package de.osmembrane.model.pipeline;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
-import java.util.Set;
 import java.util.Stack;
 
-import de.osmembrane.model.LoopCheck;
 import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.AbstractPersistence;
 import de.osmembrane.model.persistence.FileException;
@@ -153,42 +150,43 @@ public class Pipeline extends AbstractPipeline {
 
 	@Override
 	public boolean hasLoop() {
-		LoopCheck check = new LoopCheck(functions);
+		TarjanAlgorithm check = new TarjanAlgorithm(functions);
 		return check.hasLoop();
 	}
 
 	@Override
 	public void optimizePipeline() {
-		/* TODO not yet implemented */
+		/* TODO Implement a graph optimize algorithm */
 	}
 
 	@Override
 	public boolean undo() {
-		/* TODO not yet implemented */
+		/* TODO Implement the undo/redo features */
 		return false;
 	}
 
 	@Override
 	public boolean undoAvailable() {
-		/* TODO not yet implemented */
+		/* TODO Implement the undo/redo features */
 		return false;
 	}
 
 	@Override
 	public boolean redo() {
-		/* TODO not yet implemented */
+		/* TODO Implement the undo/redo features */
 		return false;
 	}
 
 	@Override
 	public boolean redoAvailable() {
-		/* TODO not yet implemented */
+		/* TODO Implement the undo/redo features */
 		return false;
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 
+		/* only PipelineObserverObjects will be passed through */
 		if (arg instanceof PipelineObserverObject) {
 			((PipelineObserverObject) arg).setPipeline(this);
 

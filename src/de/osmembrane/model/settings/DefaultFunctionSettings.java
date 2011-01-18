@@ -1,8 +1,13 @@
 package de.osmembrane.model.settings;
 
-import java.util.ArrayList;
-import de.osmembrane.model.settings.DefaultFunctionSetting;
-
+/**
+ * List of {@link DefaultFunctionSetting}s.
+ * 
+ * @author jakob_jarosch
+ */
 public class DefaultFunctionSettings extends AbstractSetting {
-	public ArrayList<DefaultFunctionSetting> unnamed_DefaultFunctionSetting_ = new ArrayList<DefaultFunctionSetting>();
+
+	private static final long serialVersionUID = 2011011822040001L;
+	
+	// TODO Implement DefaultFunctionSettings
 }
