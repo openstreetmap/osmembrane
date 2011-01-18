@@ -199,17 +199,4 @@ public class LibraryPanelGroup extends JPanel {
 		}
 	}
 	
-	/**
-	 * Checks whether any of this group's functions is currently dragged
-	 * @return the dragged view function, null if nothing is dragged
-	 */
-	protected LibraryFunction findDragging() {
-		for (LibraryFunction vf : content) {
-			if (vf.isDragging()) {
-				return vf;
-			}
-		}
-		return null;
-	}
-
 }

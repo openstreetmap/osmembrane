@@ -256,19 +256,4 @@ public class LibraryPanel extends JPanel {
 		}
 	}
 
-	/**
-	 * Used for drag & drop functionality
-	 * @return the currently dragged ViewFunction, or null if no dragging
-	 */
-	public LibraryFunction getDragging() {
-		for (LibraryPanelGroup lpg : groups) {
-			LibraryFunction dragged = lpg.findDragging();
-			if (dragged != null) {
-				return dragged;
-			}
-		}
-		
-		return null;
-	}
-
 }

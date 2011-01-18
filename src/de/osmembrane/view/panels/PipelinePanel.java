@@ -32,7 +32,8 @@ import de.osmembrane.view.ViewRegistry;
 
 /**
  * This is the pipeline view, i.e. the panel that shows the entire pipeline with
- * all functions and connectors.
+ * all functions and connectors. It contains some really fancy zoom & move
+ * stuff.
  * 
  * @author tobias_kuhn
  * 
@@ -184,10 +185,14 @@ public class PipelinePanel extends JPanel implements Observer {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
+				
+				// view tool and magic				
 				switch (activeTool) {
 				case DEFAULT_MAGIC_TOOL:
+					if (selected != null) {
+						break;
+					}
 				case VIEW_TOOL:
-					// find the dragging target
 					if (draggingFrom != null) {
 						Point2D draggingTo = windowToObjFixed(e.getPoint());
 
@@ -215,6 +220,8 @@ public class PipelinePanel extends JPanel implements Observer {
 					}
 					break;
 				}
+				
+				
 			}
 		});
 	}
@@ -242,9 +249,10 @@ public class PipelinePanel extends JPanel implements Observer {
 
 	/**
 	 * Translates window coordinates to object coordinates based on only the
-	 * object to window transformation, not the display transformation. This is
-	 * necessary for dragging operations to transform only by the part of the
-	 * transformation which is currently determined.
+	 * object to window transformation, not the temporary display
+	 * transformation. This is necessary for dragging operations to transform
+	 * only by the part of the transformation which is currently newly
+	 * determined.
 	 * 
 	 * @param window
 	 *            window coordinates
@@ -312,7 +320,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Zooms.
+	 * Zooms (in the object space to window space transformation).
 	 * 
 	 * @param winCenter
 	 *            center of the zooming operation in window space
@@ -331,7 +339,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Zooms temporary.
+	 * Zooms temporary (in the current display transformation).
 	 * 
 	 * @param objCenter
 	 *            center of the zooming operation in object space

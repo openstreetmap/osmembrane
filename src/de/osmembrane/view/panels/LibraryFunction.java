@@ -25,6 +25,7 @@ import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
@@ -77,7 +78,7 @@ public class LibraryFunction extends JPanel {
 	protected boolean dragging;
 
 	/**
-	 * Where the starting click of the drag happened
+	 * Where the starting click of the drag happened, if canDragAndDrop
 	 */
 	protected Point dragOffset;
 
@@ -100,12 +101,19 @@ public class LibraryFunction extends JPanel {
 		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
 				displayTemplate.getIconHeight()));
 
-		Color color = new Color(1.0f, 0.5f, 0.7f);
-		Color highlightColor = new Color(1.0f, 0.7f, 0.9f);
+		Color color = modelFunctionPrototype.getParent().getColor();
+		if (color == null) {
+			color = Constants.DEFAULT_FUNCTIONGROUP_COLOR;
+		}
+		float[] colorRGB = color.getComponents(null);
+		Color highlightColor = new Color(Math.min(1.0f, colorRGB[0] + 0.2f),
+				Math.min(1.0f, colorRGB[1] + 0.2f), Math.min(1.0f,
+						colorRGB[2] + 0.2f));
 		this.setOpaque(false);
 
-		display = derivateDisplay(color, null);
-		displayHighlight = derivateDisplay(highlightColor, null);
+		display = derivateDisplay(color, modelFunctionPrototype.getIcon());
+		displayHighlight = derivateDisplay(highlightColor,
+				modelFunctionPrototype.getIcon());
 		highlighted = false;
 		dragging = false;
 
@@ -247,15 +255,19 @@ public class LibraryFunction extends JPanel {
 			r.getPixels(0, y, result.getWidth() - 1, 1, pixelRow);
 
 			for (int x = 0; x < result.getWidth(); x++) {
-				pixelRow[4 * x + 1] *= colorRGB[2];
-				pixelRow[4 * x + 2] *= colorRGB[1];
-				pixelRow[4 * x + 3] *= colorRGB[0];
+				pixelRow[4 * x + 0] *= colorRGB[2];
+				pixelRow[4 * x + 1] *= colorRGB[1];
+				pixelRow[4 * x + 2] *= colorRGB[0];
 			}
 
 			r.setPixels(0, y, result.getWidth() - 1, 1, pixelRow);
 		}
 
 		// place the icon
+		if (icon != null) {
+			g.drawImage(icon, getWidth() - (icon.getWidth(this) / 2),
+					getHeight() - (icon.getHeight(this) / 2), this);
+		}
 
 		return result;
 	}
