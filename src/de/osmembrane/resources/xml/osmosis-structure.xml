@@ -2,7 +2,7 @@
 <XMLOsmosisStructure xmlns="http://osmembrane.de/model/xml"
 	formatVersion="1.0.0" osmosisVersion="0.37">
 
-	<functionGroup id="input-output" friendlyName="In-/Output" color="165, 42, 42">
+	<functionGroup id="input-output" friendlyName="In-/Output" color="255, 239, 0">
 		<function id="read" friendlyName="Read Tasks">
 			<task name="read-xml" friendlyName="Read OSM XML" shortName="rx">
 				<description lang="en">
@@ -1644,7 +1644,7 @@
 		</function>
 	</functionGroup>
 
-	<functionGroup id="area-filtering" friendlyName="Area Filtering" color="100, 149, 237">
+	<functionGroup id="area-filtering" friendlyName="Area Filtering" color="100,255,100">
 		<function id="bbox-entity" friendlyName="BoundingBox - entity Stream">
 			<task name="bounding-box" shortName="bb">
 				<description lang="en">
@@ -1855,7 +1855,7 @@
 	</functionGroup>
 
 	<functionGroup id="data-manipulation"
-		friendlyName="Data Manipulation" color="0, 100, 0">
+		friendlyName="Data Manipulation" color="188,212,230">
 		<function id="node" friendlyName="Node-Changes">
 			<task name="node-key" shortName="nk">
 				<description lang="en">
@@ -1998,7 +1998,7 @@
 	</functionGroup>
 
 	<functionGroup id="flow-control" friendlyName="Flow Control"
-		color="255, 140, 0">
+		color="254,60,191">
 		<function id="dataset-dump" friendlyName="Dataset Dump">
 			<task name="dataset-dump" shortName="dd">
 				<description lang="en">
@@ -2101,7 +2101,7 @@
 		</function>
 	</functionGroup>
 
-	<functionGroup id="report" friendlyName="Report" color="169, 169, 169">
+	<functionGroup id="report" friendlyName="Report" color="255,175,25">
 		<function id="report-entity" friendlyName="Report (entity)">
 			<task name="report-entity" shortName="re">
 				<description lang="en">
@@ -2191,7 +2191,7 @@
 		</function>
 	</functionGroup>
 
-	<functionGroup id="set" friendlyName="Set" color="43, 36, 178">
+	<functionGroup id="set" friendlyName="Set" color="95,135,255">
 		<function id="sort" friendlyName="Sort (entity)">
 			<task name="sort" shortName="s">
 				<description lang="en">
@@ -2402,7 +2402,7 @@
 	</functionGroup>
 
 	<functionGroup id="changeset"
-		friendlyName="Changeset Derivation and Merging" color="160, 66, 237">
+		friendlyName="Changeset Derivation and Merging" color="211,155,250">
 		<function id="apply-change" friendlyName="Apply change">
 			<task name="apply-change" shortName="ac">
 				<description lang="en">
