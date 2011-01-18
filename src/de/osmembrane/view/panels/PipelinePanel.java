@@ -88,7 +88,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * The currently selected object (either a PipelineFunction or a
 	 * PipelineConnector)
 	 */
-	private Object selected;
+	private JPanel selected;
 
 	/**
 	 * Initializes a new pipeline view
@@ -161,7 +161,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					draggingFrom = windowToObj(e.getPoint());
 					currentDisplay.setToIdentity();
 					break;
-				}
+				}				
 			}
 
 			@Override
@@ -221,8 +221,17 @@ public class PipelinePanel extends JPanel implements Observer {
 					break;
 				}
 				
+				// selection tool and magic
+				switch (activeTool) {
+				case DEFAULT_MAGIC_TOOL:
+				case SELECTION_TOOL:
+					/*if (selected != null) {
+						e.getPoint() - draggingFrom
+						selected.setLocation(e.getP)
+					}*/
+				}
 				
-			}
+			} /* mouseDragged */
 		});
 	}
 

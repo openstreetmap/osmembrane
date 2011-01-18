@@ -255,9 +255,9 @@ public class LibraryFunction extends JPanel {
 			r.getPixels(0, y, result.getWidth() - 1, 1, pixelRow);
 
 			for (int x = 0; x < result.getWidth(); x++) {
-				pixelRow[4 * x + 0] *= colorRGB[2];
+				pixelRow[4 * x + 0] *= colorRGB[0];
 				pixelRow[4 * x + 1] *= colorRGB[1];
-				pixelRow[4 * x + 2] *= colorRGB[0];
+				pixelRow[4 * x + 2] *= colorRGB[2];
 			}
 
 			r.setPixels(0, y, result.getWidth() - 1, 1, pixelRow);

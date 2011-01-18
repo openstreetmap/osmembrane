@@ -1,5 +1,6 @@
 package de.osmembrane.view.panels;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;
@@ -80,6 +82,11 @@ public class LibraryPanelGroup extends JPanel {
 		// header button
 		headerButton = new JButton();
 		headerButton.setText(afg.getFriendlyName());
+		Color color = afg.getColor();
+		if (color == null) {
+			color = Constants.DEFAULT_FUNCTIONGROUP_COLOR;
+		}
+		headerButton.setBackground(color);		
 
 		// determine size, etc.
 		headerButton.setLocation(3, y);
