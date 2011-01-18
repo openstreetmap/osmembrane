@@ -551,6 +551,7 @@ public class PipelinePanel extends JPanel implements Observer {
 							poo.getChangedFunction())) {
 						remove(pfDelete);
 						functions.remove(i);
+						repaint();
 						break;
 					}
 				}
