@@ -55,6 +55,11 @@ public class FunctionGroup extends AbstractFunctionGroup {
 	@Override
 	public Color getColor() {
 		String colorString = xmlGroup.getColor();
+		
+		if(colorString == null) {
+			return null;
+		}
+		
 		String[] color = colorString.split(",");
 		
 		if(color.length != 3) {
