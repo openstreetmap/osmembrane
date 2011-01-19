@@ -347,7 +347,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * @return window in object coordinates, null if there is an error with the
 	 *         transformations which should theoretically never be the case
 	 */
-	private Point2D windowToObj(Point window) {
+	protected Point2D windowToObj(Point window) {
 		Point2D result = new Point2D.Double();
 
 		try {
@@ -373,7 +373,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	 *         if there is an error with the transformations which should
 	 *         theoretically never be the case
 	 */
-	private Point2D windowToObjFixed(Point window) {
+	protected Point2D windowToObjFixed(Point window) {
 		Point2D result = new Point2D.Double();
 
 		try {
@@ -392,7 +392,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	 *            object coordinates
 	 * @return object in window coordinates
 	 */
-	private Point objToWindow(Point2D object) {
+	protected Point objToWindow(Point2D object) {
 		Point2D result = new Point2D.Double();
 
 		objectToWindow.transform(object, result);
@@ -409,7 +409,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	 *            object delta coordinates
 	 * @return object in window delta coordinates
 	 */
-	private Point objToWindowDelta(Point2D objectDelta) {
+	protected Point objToWindowDelta(Point2D objectDelta) {
 		Point2D result = new Point2D.Double();
 
 		objectToWindow.deltaTransform(objectDelta, result);
@@ -527,7 +527,12 @@ public class PipelinePanel extends JPanel implements Observer {
 				PipelineFunction pfAdd = new PipelineFunction(
 						poo.getChangedFunction(), this);
 				functions.add(pfAdd);
+
 				add(pfAdd);
+				for (PipelineConnector pc : pfAdd.getConnectors()) {
+					add(pc);
+				}
+
 				arrange(pfAdd);
 				break;
 
@@ -549,7 +554,12 @@ public class PipelinePanel extends JPanel implements Observer {
 
 					if (pfDelete.getModelFunction().equals(
 							poo.getChangedFunction())) {
+
 						remove(pfDelete);
+						for (PipelineConnector pc : pfDelete.getConnectors()) {
+							remove(pc);
+						}
+
 						functions.remove(i);
 						repaint();
 						break;
@@ -564,9 +574,15 @@ public class PipelinePanel extends JPanel implements Observer {
 
 				for (AbstractFunction af : ModelProxy.getInstance()
 						.accessPipeline().getFunctions()) {
-					PipelineFunction pfFullChange = new PipelineFunction(af, this);
+					PipelineFunction pfFullChange = new PipelineFunction(af,
+							this);
+					
 					functions.add(pfFullChange);
+					
 					add(pfFullChange);
+					for (PipelineConnector pc : pfFullChange.getConnectors()) {
+						add(pc);
+					}
 				}
 				arrange();
 				break;
@@ -654,6 +670,8 @@ public class PipelinePanel extends JPanel implements Observer {
 				pf.getPreferredSize().height);
 		size = objToWindowDelta(size);
 		pf.setSize(size.x, size.y);
+
+		pf.arrangeConnectors();
 	}
 
 	/**

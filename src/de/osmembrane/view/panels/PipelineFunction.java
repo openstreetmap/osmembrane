@@ -1,6 +1,7 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -152,14 +153,29 @@ public class PipelineFunction extends LibraryFunction {
 			connectors.add(pc);
 		}
 	}
-	
+
 	/**
 	 * Arranges the connectors, if necessary
 	 */
 	public void arrangeConnectors() {
-		
+		Point2D funcTopLeft = pipeline.windowToObj(this.getLocation());
+
 		for (PipelineConnector pc : connectors) {
-			
+			Point2D offset = pipeline.windowToObjFixed(new Point(
+					-pc.getWidth() / 2, -pc.getHeight() / 2));
+			Point2D size = pipeline.windowToObjFixed(new Point(pc.getWidth(),
+					pc.getHeight()));
+
+			Point2D newPosition = pipeline
+					.windowToObjFixed(new Point(0, (int) (((getHeight() - pc
+							.getAmount() * size.getY()) / 2) + pc.getId()
+							* size.getY())));
+			pc.setLocation(
+					(int) (funcTopLeft.getX() + newPosition.getX() + offset
+							.getX()),
+					(int) (funcTopLeft.getY() + newPosition.getY() + offset
+							.getY()));
+			pc.setSize((int) size.getX(), (int) size.getY());
 		}
 	}
 
