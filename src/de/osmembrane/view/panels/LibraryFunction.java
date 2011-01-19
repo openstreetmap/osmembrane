@@ -6,19 +6,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import de.osmembrane.Application;
@@ -37,10 +33,13 @@ import de.osmembrane.view.frames.MainFrame;
  * {@link PipelinePanel}. Note, the actually drawn *in* the pipeline, are
  * {@link PipelineFunction}.
  * 
+ * Unfortunately, this class has a strong dependency with {@link MainFrame} and
+ * {@link MainFrameGlassPane} as well.
+ * 
  * @author tobias_kuhn
  * 
  */
-public class LibraryFunction extends JPanel {
+public class LibraryFunction extends DisplayTemplatePanel {
 
 	private static final long serialVersionUID = 1663933392202927614L;
 
@@ -48,7 +47,7 @@ public class LibraryFunction extends JPanel {
 	 * The image resource that keeps an image template used to prerender the
 	 * actual image that will be drawn on this function
 	 */
-	private static ImageIcon displayTemplate = new ImageIcon(
+	protected static ImageIcon displayTemplate = new ImageIcon(
 			LibraryFunction.class
 					.getResource("/de/osmembrane/resources/images/function.png"));
 
@@ -111,8 +110,9 @@ public class LibraryFunction extends JPanel {
 						colorRGB[2] + 0.2f));
 		this.setOpaque(false);
 
-		display = derivateDisplay(color, modelFunctionPrototype.getIcon());
-		displayHighlight = derivateDisplay(highlightColor,
+		display = derivateDisplay(displayTemplate, color,
+				modelFunctionPrototype.getIcon());
+		displayHighlight = derivateDisplay(displayTemplate, highlightColor,
 				modelFunctionPrototype.getIcon());
 		highlighted = false;
 		dragging = false;
@@ -224,52 +224,6 @@ public class LibraryFunction extends JPanel {
 				}
 			});
 		}
-	}
-
-	/**
-	 * Derivates the correct pre-rendered display image from displayTemplate in
-	 * the given color and with the given icon.
-	 * 
-	 * @param color
-	 *            The color this function shall display
-	 * @param icon
-	 *            The icon this function shall display
-	 * @return the pre-rendered image in the color and with the icon
-	 */
-	private Image derivateDisplay(Color color, Image icon) {
-		// copy displayTemplate to a BufferedImage
-		BufferedImage result = new BufferedImage(
-				displayTemplate.getIconWidth(),
-				displayTemplate.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-
-		Graphics2D g = result.createGraphics();
-		g.drawImage(displayTemplate.getImage(), 0, 0, this);
-
-		WritableRaster r = result.getRaster();
-
-		// Scan the lines with a float multiplication
-		float[] colorRGB = color.getColorComponents(null);
-		float[] pixelRow = new float[4 * result.getWidth()];
-
-		for (int y = 0; y < result.getHeight(); y++) {
-			r.getPixels(0, y, result.getWidth() - 1, 1, pixelRow);
-
-			for (int x = 0; x < result.getWidth(); x++) {
-				pixelRow[4 * x + 0] *= colorRGB[0];
-				pixelRow[4 * x + 1] *= colorRGB[1];
-				pixelRow[4 * x + 2] *= colorRGB[2];
-			}
-
-			r.setPixels(0, y, result.getWidth() - 1, 1, pixelRow);
-		}
-
-		// place the icon
-		if (icon != null) {
-			g.drawImage(icon, getWidth() - (icon.getWidth(this) / 2),
-					getHeight() - (icon.getHeight(this) / 2), this);
-		}
-
-		return result;
 	}
 
 	@Override

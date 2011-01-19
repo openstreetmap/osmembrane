@@ -331,7 +331,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * @param translateX
 	 * @param translateY
 	 */
-	protected void moveTo(double translateX, double translateY) {
+	private void moveTo(double translateX, double translateY) {
 		double translatedX = objectToWindow.getTranslateX();
 		double translatedY = objectToWindow.getTranslateY();
 		objectToWindow.translate(translateX - translatedX, translateY
@@ -525,7 +525,7 @@ public class PipelinePanel extends JPanel implements Observer {
 			// new function was added
 			case ADD:
 				PipelineFunction pfAdd = new PipelineFunction(
-						poo.getChangedFunction());
+						poo.getChangedFunction(), this);
 				functions.add(pfAdd);
 				add(pfAdd);
 				arrange(pfAdd);
@@ -564,7 +564,7 @@ public class PipelinePanel extends JPanel implements Observer {
 
 				for (AbstractFunction af : ModelProxy.getInstance()
 						.accessPipeline().getFunctions()) {
-					PipelineFunction pfFullChange = new PipelineFunction(af);
+					PipelineFunction pfFullChange = new PipelineFunction(af, this);
 					functions.add(pfFullChange);
 					add(pfFullChange);
 				}

@@ -5,13 +5,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.view.IView;
-import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.frames.MainFrame;
 
 /**
  * The pipeline function, i.e. the visual representation of a model function
@@ -32,15 +32,33 @@ public class PipelineFunction extends LibraryFunction {
 	private AbstractFunction modelFunction;
 
 	/**
+	 * Pipeline to add this to
+	 */
+	private PipelinePanel pipeline;
+
+	/**
+	 * List of connectors this functions has
+	 */
+	private List<PipelineConnector> connectors;
+
+	/**
 	 * Creates a new pipeline function from an AbstractFunction out of the model
 	 * 
 	 * @param modelFunction
 	 *            the function out of the model
+	 * @param pipeline
+	 *            the pipeline panel to add it to
 	 */
-	public PipelineFunction(AbstractFunction modelFunction) {
+	public PipelineFunction(AbstractFunction modelFunction,
+			final PipelinePanel pipeline) {
 		// pretend this is a prototype
 		super(modelFunction, false);
 		this.modelFunction = modelFunction;
+		this.pipeline = pipeline;
+		this.connectors = new ArrayList<PipelineConnector>();
+
+		createConnectors(modelFunction.getInConnectors(), false);
+		createConnectors(modelFunction.getOutConnectors(), true);
 
 		/*
 		 * all functions are required to dispatch back to the pipeline,
@@ -50,39 +68,35 @@ public class PipelineFunction extends LibraryFunction {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-				MainFrame mf = (MainFrame) mainFrame;
 				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
-						PipelineFunction.this, e, mf.getPipeline());
+						PipelineFunction.this, e, pipeline);
 
-				switch (mf.getPipeline().getActiveTool()) {		
+				switch (pipeline.getActiveTool()) {
 				case DEFAULT_MAGIC_TOOL:
 				case VIEW_TOOL:
 				case SELECTION_TOOL:
-					mf.getPipeline().dispatchEvent(mainFrameEvent);
+					pipeline.dispatchEvent(mainFrameEvent);
 					break;
 				case CONNECTION_TOOL:
 					break;
 				}
-			}			
+			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-				MainFrame mf = (MainFrame) mainFrame;
 				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
-						PipelineFunction.this, e, mf.getPipeline());
+						PipelineFunction.this, e, pipeline);
 
-				switch (mf.getPipeline().getActiveTool()) {
+				switch (pipeline.getActiveTool()) {
 				case DEFAULT_MAGIC_TOOL:
 				case SELECTION_TOOL:
-					mf.getPipeline().selected(PipelineFunction.this);
-					mf.getPipeline().setDraggingFrom(mainFrameEvent.getPoint());
+					pipeline.selected(PipelineFunction.this);
+					pipeline.setDraggingFrom(mainFrameEvent.getPoint());
 					break;
 				case VIEW_TOOL:
-					mf.getPipeline().dispatchEvent(mainFrameEvent);
+					pipeline.dispatchEvent(mainFrameEvent);
 					break;
-				
+
 				}
 			}
 
@@ -107,27 +121,51 @@ public class PipelineFunction extends LibraryFunction {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-				MainFrame mf = (MainFrame) mainFrame;
 				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
-						PipelineFunction.this, e, mf.getPipeline());
+						PipelineFunction.this, e, pipeline);
 
-				switch (mf.getPipeline().getActiveTool()) {
+				switch (pipeline.getActiveTool()) {
 				case DEFAULT_MAGIC_TOOL:
 				case VIEW_TOOL:
 				case SELECTION_TOOL:
-					mf.getPipeline().dispatchEvent(mainFrameEvent);
+					pipeline.dispatchEvent(mainFrameEvent);
 					break;
 				}
 			}
 		});
 	}
 
+	/**
+	 * Creates & adds connectors from connectorList for this function
+	 * 
+	 * @param connectorList
+	 *            all the connectors that shall be created & added
+	 * @param areOut
+	 *            whether the connectors are out or in pipes
+	 */
+	private void createConnectors(AbstractConnector[] connectorList,
+			boolean areOut) {
+		int size = connectorList.length;
+		for (int i = 0; i < size; i++) {
+			PipelineConnector pc = new PipelineConnector(connectorList[i],
+					pipeline, areOut, i, size);
+			connectors.add(pc);
+		}
+	}
+	
+	/**
+	 * Arranges the connectors, if necessary
+	 */
+	public void arrangeConnectors() {
+		
+		for (PipelineConnector pc : connectors) {
+			
+		}
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
-		IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-		MainFrame mf = (MainFrame) mainFrame;
-		highlighted = this.equals(mf.getPipeline().getSelected());
+		highlighted = this.equals(pipeline.getSelected());
 
 		super.paintComponent(g);
 	}
@@ -144,6 +182,13 @@ public class PipelineFunction extends LibraryFunction {
 	 */
 	public Point2D getModelLocation() {
 		return this.modelFunction.getCoordinate();
+	}
+
+	/**
+	 * @return the connectors this function has
+	 */
+	public List<PipelineConnector> getConnectors() {
+		return connectors;
 	}
 
 }
