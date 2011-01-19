@@ -7,6 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
+import de.osmembrane.controller.events.ContainingFunctionChangeParameterEvent;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.resources.Constants;
@@ -28,6 +29,18 @@ public class EditPropertyAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		ContainingFunctionChangeParameterEvent cfcpe = (ContainingFunctionChangeParameterEvent) e;
+		AbstractFunction af = (AbstractFunction) cfcpe.getContained();
 
+		// set new parameter
+		if (cfcpe.wasNewParameterSet()) {
+			af.getActiveTask().getParameters()[cfcpe.getChangedParameter()]
+					.setValue(cfcpe.getNewParameterValue());
+		}
+
+		// set new task
+		if (cfcpe.wasNewTaskSet()) {
+			af.setActiveTask(cfcpe.getNewTask());
+		}
 	}
 }
