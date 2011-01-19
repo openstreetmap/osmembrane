@@ -12,6 +12,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
@@ -29,6 +33,7 @@ import de.osmembrane.controller.events.ContainingFunctionChangeParameterEvent;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractTask;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
@@ -56,6 +61,11 @@ public class InspectorPanel extends JPanel implements Observer {
 	private JRowTable propertyTable;
 	private InspectorPanelTableModel propertyTableModel;
 	private RowEditorModel rowEditorModel;
+
+	/**
+	 * the model for the combo box to chose the tasks
+	 */
+	private InspectorPanelTableTaskComboBoxModel taskComboModel;
 
 	/**
 	 * the panel and label that displays the context-sensitive help
@@ -95,7 +105,11 @@ public class InspectorPanel extends JPanel implements Observer {
 		functionName.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		// display
+		taskComboModel = new InspectorPanelTableTaskComboBoxModel();
+
 		rowEditorModel = new RowEditorModel();
+		rowEditorModel.addEditorRow(0, new DefaultCellEditor(new JComboBox(
+				taskComboModel)));
 		propertyTableModel = new InspectorPanelTableModel();
 		propertyTable = new JRowTable(propertyTableModel, rowEditorModel);
 
@@ -319,21 +333,80 @@ public class InspectorPanel extends JPanel implements Observer {
 			if (inspecting != null) {
 				ContainingFunctionChangeParameterEvent cfcpe = new ContainingFunctionChangeParameterEvent(
 						this, inspecting);
-				
-				if (row == 0) {
-					// TODO
-					cfcpe.setNewTask(null);
-				} else {
+
+				if (row > 0) {
 					cfcpe.setChangedParameter(row - 1);
 					cfcpe.setNewParameterValue(aValue.toString());
-				}
-				
-				ActionRegistry.getInstance().get(EditPropertyAction.class)
-						.actionPerformed(cfcpe);
 
+					ActionRegistry.getInstance().get(EditPropertyAction.class)
+							.actionPerformed(cfcpe);
+				}
 			}
 		}
 	} /* InspectorPanelTableModel */
+
+	/**
+	 * Model for the combo box of the inspector panel's table. Is in a contest
+	 * with {@link ContainingFunctionChangeParameterEvent} for the longest name
+	 * in the project.
+	 * 
+	 * @author tobias_kuhn
+	 * 
+	 */
+	class InspectorPanelTableTaskComboBoxModel extends DefaultComboBoxModel {
+
+		private static final long serialVersionUID = 5611487798519928339L;
+
+		@Override
+		public int getSize() {
+			if (inspecting == null) {
+				return 0;
+			} else {
+				return inspecting.getAvailableTasks().length;
+			}
+		}
+
+		@Override
+		public Object getElementAt(int index) {
+			if (inspecting == null) {
+				return null;
+			} else {
+				return inspecting.getAvailableTasks()[index].getFriendlyName();
+			}
+		}
+
+		@Override
+		public Object getSelectedItem() {
+			if (inspecting == null) {
+				return null;
+			} else {
+				// here we pray, Java uses .equals()
+				return inspecting.getActiveTask().getFriendlyName();
+			}
+		}
+
+		@Override
+		public void setSelectedItem(Object anObject) {
+			if ((inspecting != null) && (anObject != null)) {
+				ContainingFunctionChangeParameterEvent cfcpe = new ContainingFunctionChangeParameterEvent(
+						this, inspecting);
+
+				for (AbstractTask at : inspecting.getAvailableTasks()) {
+					if (anObject.equals(at.getFriendlyName())
+							&& !at.equals(inspecting.getActiveTask())) {
+						cfcpe.setNewTask(at);
+
+						ActionRegistry.getInstance()
+								.get(EditPropertyAction.class)
+								.actionPerformed(cfcpe);
+
+						break;
+					}
+				}
+			}
+		} /* setSelectedItem */
+
+	}
 
 	/**
 	 * The custom cell renderer for the display table of the inspector panel.
