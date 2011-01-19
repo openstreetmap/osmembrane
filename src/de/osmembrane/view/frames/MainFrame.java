@@ -307,6 +307,7 @@ public class MainFrame extends AbstractFrame {
 
 		// function library
 		LibraryPanel functionLibrary = new LibraryPanel();
+		
 		for (AbstractFunctionGroup afg : ModelProxy.getInstance()
 				.accessFunctions().getFunctionGroups()) {
 			LibraryPanelGroup lpg = new LibraryPanelGroup(functionLibrary, afg);

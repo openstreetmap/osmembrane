@@ -228,8 +228,6 @@ public class LibraryPanel extends JPanel {
 		
 		// update for the scroll bar
 		setPreferredSize(new Dimension(this.getPreferredSize().width, y));
-		setSize(getWidth(), getPreferredSize().height);
-		// NB: does not call setSize(Dimension), so no death recursion loop
 	}
 
 	/**
