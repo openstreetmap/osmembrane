@@ -3,7 +3,9 @@ package de.osmembrane.view.panels;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,16 +13,23 @@ import java.awt.event.MouseMotionListener;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+
+import sun.awt.VerticalBagLayout;
+
+import com.sun.org.apache.xerces.internal.impl.dv.xs.IDDV;
 
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
@@ -28,7 +37,8 @@ import de.osmembrane.controller.actions.EditPropertyAction;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.model.xml.XMLHasDescription;
+import de.osmembrane.model.pipeline.PipelineObserverObject;
+import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.components.JRowTable;
@@ -47,19 +57,20 @@ public class InspectorPanel extends JPanel implements Observer {
 	/**
 	 * the label that shows the function name
 	 */
-	private JLabel caption;
+	private JLabel functionName;
 
 	/**
 	 * the table that displays the data of the function
 	 */
-	private JRowTable display;
+	private JRowTable propertyTable;
+	private InspectorPanelTableModel propertyTableModel;
 	private RowEditorModel rowEditorModel;
 
 	/**
 	 * the panel and label that displays the context-sensitive help
 	 */
 	private JPanel hint;
-	private JLabel hintLabel;
+	private JTextArea hintLabel;
 
 	/**
 	 * Useful color definitions
@@ -86,18 +97,21 @@ public class InspectorPanel extends JPanel implements Observer {
 		ViewRegistry.getInstance().addObserver(this);
 
 		// caption
-		caption = new JLabel(I18N.getInstance().getString(
+		functionName = new JLabel(I18N.getInstance().getString(
 				"View.Inspector.NoSelection"));
-		caption.setFont(caption.getFont().deriveFont(Font.BOLD));
+		functionName.setFont(functionName.getFont().deriveFont(Font.BOLD,
+				1.2f * functionName.getFont().getSize()));
+		functionName.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		// display
 		rowEditorModel = new RowEditorModel();
-		display = new JRowTable(new InspectorPanelTableModel(), rowEditorModel);
+		propertyTableModel = new InspectorPanelTableModel();
+		propertyTable = new JRowTable(propertyTableModel, rowEditorModel);
 
-		// display.getColumnModel().getColumn(0).setPreferredWidth(64);
-		// display.getColumnModel().getColumn(1).setPreferredWidth(64);
+		propertyTable.getColumnModel().getColumn(0).setPreferredWidth(64);
+		propertyTable.getColumnModel().getColumn(1).setPreferredWidth(64);
 
-		display.addMouseListener(new MouseListener() {
+		propertyTable.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -106,8 +120,8 @@ public class InspectorPanel extends JPanel implements Observer {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// ensure clicking results in an edit
-				int row = display.rowAtPoint(e.getPoint());
-				display.editCellAt(row, 1);
+				int row = propertyTable.rowAtPoint(e.getPoint());
+				propertyTable.editCellAt(row, 1);
 			}
 
 			@Override
@@ -123,31 +137,32 @@ public class InspectorPanel extends JPanel implements Observer {
 			}
 		});
 
-		display.addMouseMotionListener(new MouseMotionListener() {
+		propertyTable.addMouseMotionListener(new MouseMotionListener() {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				// show applicable hint
 				if (inspecting != null) {
-					int row = display.rowAtPoint(e.getPoint());
+					int row = propertyTable.rowAtPoint(e.getPoint());
+
 					if (row == -1) {
 						setHintText(inspecting.getDescription());
 					} else if (row == 0) {
 						setHintText(inspecting.getActiveTask().getDescription());
 					} else {
-						if (row >= inspecting.getActiveTask().getParameters().length) {
+						if (row > inspecting.getActiveTask().getParameters().length) {
 							Application
 									.handleException(new ControlledException(
 											this,
 											ExceptionSeverity.UNEXPECTED_BEHAVIOR,
 											I18N.getInstance()
 													.getString(
-															"View.InspectorPanel.ParamCountException")));
+															"View.Inspector.ParamCountException")));
 						}
 						setHintText(inspecting.getActiveTask().getParameters()[row - 1]
 								.getDescription());
 					}
-				}
+				} /* inspecting != null */
 			}
 
 			@Override
@@ -155,21 +170,32 @@ public class InspectorPanel extends JPanel implements Observer {
 			}
 		});
 
-		display.setDefaultRenderer(String.class,
+		propertyTable.setDefaultRenderer(String.class,
 				new InspectorPanelTableRenderer());
 
 		// hint
 		hint = new JPanel();
 		hint.setBackground(InspectorPanel.LIGHT_YELLOW);
+		hint.setLayout(new GridLayout(1, 1));
 
-		hintLabel = new JLabel();
+		hintLabel = new JTextArea();
+		hintLabel.setEditable(false);
+		hintLabel.setOpaque(false);
+		hintLabel.setBorder(null);
+		hintLabel.setWrapStyleWord(true);
+		hintLabel.setLineWrap(true);
+		hintLabel.setAlignmentX(Component.CENTER_ALIGNMENT);		
 		hint.add(hintLabel);
 
 		// align this to look good
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(caption);
-		add(new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, new JScrollPane(
-				display), hint));
+		add(functionName);
+
+		JSplitPane propertiesAndHints = new JSplitPane(
+				JSplitPane.VERTICAL_SPLIT, true,
+				new JScrollPane(propertyTable), (hint));
+		propertiesAndHints.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(propertiesAndHints);
 	}
 
 	/**
@@ -180,23 +206,33 @@ public class InspectorPanel extends JPanel implements Observer {
 	 */
 	protected void setHintText(String hintText) {
 		if ((hintText == null) || (hintText.isEmpty())) {
-			hintText = I18N.getInstance().getString(
-					"View.Inspector.NoHint");
+			hintText = I18N.getInstance().getString("View.Inspector.NoHint");
 		}
-		hintLabel.setText("<html><body><p>" + hintText + "</p></body></html>");
+		hintLabel.setText("<html><center><br /><p>" + hintText + "</p></center></html>");
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (inspecting != null) {
-			caption.setText(inspecting.getFriendlyName());
-			setHintText(inspecting.getDescription());
-		} else {
-			caption.setText(I18N.getInstance().getString(
-					"View.Inspector.NoSelection"));
-			hintLabel.setText("");
+		if ((inspecting != null) && (arg instanceof PipelineObserverObject)) {
+			PipelineObserverObject poo = (PipelineObserverObject) arg;
+
+			switch (poo.getType()) {
+			case ADD:
+			case CHANGE:
+				if (poo.getChangedFunction().equals(inspecting)) {
+					inspect(inspecting);
+					repaint();
+				}
+				break;
+			case DELETE:
+				if (!poo.getChangedFunction().equals(inspecting)) {
+					break;
+				}
+			case FULLCHANGE:
+				inspect(null);
+				break;
+			}
 		}
-		repaint();
 	}
 
 	/**
@@ -205,6 +241,15 @@ public class InspectorPanel extends JPanel implements Observer {
 	 */
 	public void inspect(AbstractFunction inspect) {
 		this.inspecting = inspect;
+
+		if (inspect == null) {
+			functionName.setText(I18N.getInstance().getString(
+					"View.Inspector.NoSelection"));
+		} else {
+			functionName.setText(inspect.getFriendlyName());
+		}
+
+		propertyTableModel.fireTableDataChanged();
 	}
 
 	/**
@@ -260,22 +305,33 @@ public class InspectorPanel extends JPanel implements Observer {
 			} else {
 				switch (column) {
 				case 0:
-					return inspecting.getActiveTask().getParameters()[row]
-							.getFriendlyName();
+					if (row > 0) {
+						return inspecting.getActiveTask().getParameters()[row - 1]
+								.getFriendlyName();
+					} else {
+						return I18N.getInstance().getString("View.Task");
+					}
 				default:
-					return inspecting.getActiveTask().getParameters()[row]
-							.getValue();
+					if (row > 0) {
+						return inspecting.getActiveTask().getParameters()[row - 1]
+								.getValue();
+					} else {
+						return inspecting.getActiveTask().getFriendlyName();
+					}
 				}
-			}
+			} /* else */
 		}
 
 		@Override
 		public void setValueAt(Object aValue, int row, int column) {
-			if (inspecting != null) {
-				ActionEvent ae = new ActionEvent(inspecting, row,
-						aValue.toString());
-				ActionRegistry.getInstance().get(EditPropertyAction.class)
-						.actionPerformed(ae);
+			if (inspecting != null) {/*
+									 * ActionEvent ae = new
+									 * ActionEvent(inspecting, row,
+									 * aValue.toString());
+									 * ActionRegistry.getInstance
+									 * ().get(EditPropertyAction.class)
+									 * .actionPerformed(ae);
+									 */
 			}
 		}
 
@@ -307,7 +363,7 @@ public class InspectorPanel extends JPanel implements Observer {
 
 			c.setForeground(Color.BLACK);
 
-			// suppress borders
+			// suppress "selected" borders
 			// does not work for edited cells (in Metal LnF at least)
 			if (c instanceof JComponent) {
 				JComponent jc = (JComponent) c;

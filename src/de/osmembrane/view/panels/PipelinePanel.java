@@ -717,17 +717,27 @@ public class PipelinePanel extends JPanel implements Observer {
 	 */
 	public void selected(PipelineFunction pipelineFunction) {
 		selected = pipelineFunction;
-		for (PipelineFunction pf : functions) {
-			pf.repaint();
+		
+		if (selected != null) {
+			for (PipelineFunction pf : functions) {
+				pf.repaint();
+			}
+			
+			// enable deleting & duplicating
+			ActionRegistry.getInstance().get(DeleteSelectionAction.class)
+					.setEnabled(selected != null);
+			ActionRegistry
+					.getInstance()
+					.get(DuplicateFunctionAction.class)
+					.setEnabled(
+							(selected != null)
+									&& (selected instanceof PipelineFunction));
+			
+			// edit in inspector panel
+			functionInspector.inspect(pipelineFunction.getModelFunction());
+		} else {
+			functionInspector.inspect(null);
 		}
-		ActionRegistry.getInstance().get(DeleteSelectionAction.class)
-				.setEnabled(selected != null);
-		ActionRegistry
-				.getInstance()
-				.get(DuplicateFunctionAction.class)
-				.setEnabled(
-						(selected != null)
-								&& (selected instanceof PipelineFunction));
 	}
 
 	/**
