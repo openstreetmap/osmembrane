@@ -139,7 +139,7 @@ public class LibraryFunction extends DisplayTemplatePanel {
 									mf.getPipeline());
 
 					Component c = mf.findComponentAt(mainFrameEvent.getPoint());
-					if (mf.getPipeline().equals(c)) {
+					if (mf.getPipeline().getLayeredPane().equals(c)) {
 						mf.getPipeline().draggedOnto(LibraryFunction.this,
 								pipelineEvent.getPoint());
 					} else {
