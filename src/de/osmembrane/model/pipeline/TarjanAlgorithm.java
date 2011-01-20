@@ -1,6 +1,7 @@
 package de.osmembrane.model.pipeline;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class TarjanAlgorithm {
 	/**
 	 * Internal store for functions.
 	 */
-	private Set<AbstractFunction> notYetVisistedFunctions;
+	private Set<AbstractFunction> notYetVisistedFunctions = new HashSet<AbstractFunction>();
 	
 	/**
 	 * Set to check duplicate visited functions.
