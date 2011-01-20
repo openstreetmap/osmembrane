@@ -49,7 +49,7 @@ public class Parameter extends AbstractParameter {
 
 	@Override
 	public String getName() {
-		return xmlParam.getValue();
+		return xmlParam.getName();
 	}
 
 	@Override

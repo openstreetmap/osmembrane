@@ -65,12 +65,12 @@ public abstract class AbstractTask extends Observable implements Observer,
 	 * 
 	 * @return input pipes of the {@link XMLTask}
 	 */
-	protected abstract List<XMLPipe> getInputXMLPipe();
+	protected abstract List<XMLPipe> getInputPipe();
 
 	/**
 	 * Returns the output pipes for the {@link XMLTask} (required for {@link AbstractFunction}).
 	 * 
 	 * @return output pipes of the {@link XMLTask}
 	 */
-	protected abstract List<XMLPipe> getOutputXMLPipe();
+	protected abstract List<XMLPipe> getOutputPipe();
 }

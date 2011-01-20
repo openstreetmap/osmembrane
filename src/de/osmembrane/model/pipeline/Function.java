@@ -31,6 +31,8 @@ public class Function extends AbstractFunction {
 
 	private FunctionGroup parent;
 	
+	transient private Pipeline pipeline;
+	
 	private XMLFunction xmlFunction;
 	
 	private Point2D coordinate = new Point2D.Double();
@@ -42,8 +44,6 @@ public class Function extends AbstractFunction {
 	private Task activeTask;
 
 	private final String comparator;
-	
-	private Pipeline pipeline;
 
 	/**
 	 * State of the icon load sequence.
@@ -152,6 +152,7 @@ public class Function extends AbstractFunction {
 				 */
 				for (AbstractParameter oldParam : activeTask.getParameters()) {
 					for (AbstractParameter newParam : task.getParameters()) {
+						System.out.println(oldParam.getName() + " " + newParam.getName());
 						if (oldParam.getName().equals(newParam.getName())
 								&& oldParam.getType()
 										.equals(newParam.getType())) {
@@ -263,12 +264,12 @@ public class Function extends AbstractFunction {
 	 */
 	private void createConnectors() {
 		/* In-Connectors */
-		for (XMLPipe pipe : activeTask.getInputXMLPipe()) {
+		for (XMLPipe pipe : activeTask.getInputPipe()) {
 			inConnectors.add(new Connector(this, pipe));
 		}
 
 		/* Out-Connectors */
-		for (XMLPipe pipe : activeTask.getOutputXMLPipe()) {
+		for (XMLPipe pipe : activeTask.getOutputPipe()) {
 			outConnectors.add(new Connector(this, pipe));
 		}
 	}

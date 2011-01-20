@@ -75,13 +75,13 @@ public class Task extends AbstractTask {
 	}
 	
 	@Override
-	protected List<XMLPipe> getInputXMLPipe() {
-		return xmlTask.getInputXMLPipe();
+	protected List<XMLPipe> getInputPipe() {
+		return xmlTask.getInputPipe();
 	}
 
 	@Override
-	protected List<XMLPipe> getOutputXMLPipe() {
-		return xmlTask.getOutputXMLPipe();
+	protected List<XMLPipe> getOutputPipe() {
+		return xmlTask.getOutputPipe();
 	}
 
 	@Override
