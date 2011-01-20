@@ -32,6 +32,11 @@ public class Parameter extends AbstractParameter {
 	private ParameterType type;
 	
 	/**
+	 * Value of the Parameter.
+	 */
+	private String value;
+	
+	/**
 	 * Constructor for a new {@link Parameter}.
 	 * 
 	 * @param xmlParam XML counterpart which should be represented by the {@link Parameter}.
@@ -40,6 +45,7 @@ public class Parameter extends AbstractParameter {
 		this.xmlParam = xmlParam;
 		
 		this.type = ParameterType.parseString(xmlParam.getType());
+		this.value = xmlParam.getDefaultValue();
 		
 		/* create enum values */
 		for(XMLEnumValue xmlEnum : xmlParam.getEnumValue()) {
@@ -54,6 +60,11 @@ public class Parameter extends AbstractParameter {
 
 	@Override
 	public String getFriendlyName() {
+		/* fallback when friendlyName is not available */
+		if(xmlParam.getFriendlyName() == null) {
+			return getName();
+		}
+		
 		return xmlParam.getFriendlyName();
 	}
 	
@@ -80,13 +91,13 @@ public class Parameter extends AbstractParameter {
 
 	@Override
 	public String getValue() {
-		return xmlParam.getValue();
+		return value;
 	}
 
 	@Override
 	public boolean setValue(String value) {
 		// TODO check the type match for parameter values
-		xmlParam.setValue(value);
+		this.value = value;
 		
 		setChanged();
 		notifyObservers();
