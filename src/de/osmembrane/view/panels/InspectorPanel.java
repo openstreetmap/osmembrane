@@ -313,7 +313,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				case 0:
 					if (row > 0) {
 						return inspecting.getActiveTask().getParameters()[row - 1]
-								.getName();
+								.getFriendlyName();
 					} else {
 						return I18N.getInstance().getString("View.Task");
 					}
@@ -322,7 +322,7 @@ public class InspectorPanel extends JPanel implements Observer {
 						return inspecting.getActiveTask().getParameters()[row - 1]
 								.getValue();
 					} else {
-						return inspecting.getActiveTask().getName();
+						return inspecting.getActiveTask().getFriendlyName();
 					}
 				}
 			} /* else */
@@ -371,7 +371,7 @@ public class InspectorPanel extends JPanel implements Observer {
 			if (inspecting == null) {
 				return null;
 			} else {
-				return inspecting.getAvailableTasks()[index].getName();
+				return inspecting.getAvailableTasks()[index].getFriendlyName();
 			}
 		}
 
@@ -381,7 +381,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				return null;
 			} else {
 				// here we pray, Java uses .equals()
-				return inspecting.getActiveTask().getName();
+				return inspecting.getActiveTask().getFriendlyName();
 			}
 		}
 
@@ -392,7 +392,7 @@ public class InspectorPanel extends JPanel implements Observer {
 						this, inspecting);
 
 				for (AbstractTask at : inspecting.getAvailableTasks()) {
-					if (anObject.equals(at.getName())
+					if (anObject.equals(at.getFriendlyName())
 							&& !at.equals(inspecting.getActiveTask())) {
 						cfcpe.setNewTask(at);
 
