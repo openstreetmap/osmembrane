@@ -21,7 +21,6 @@ import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
@@ -101,9 +100,6 @@ public class LibraryFunction extends DisplayTemplatePanel {
 				displayTemplate.getIconHeight()));
 
 		Color color = modelFunctionPrototype.getParent().getColor();
-		if (color == null) {
-			color = Constants.DEFAULT_FUNCTIONGROUP_COLOR;
-		}
 		float[] colorRGB = color.getComponents(null);
 		Color highlightColor = new Color(Math.min(1.0f, colorRGB[0] + 0.2f),
 				Math.min(1.0f, colorRGB[1] + 0.2f), Math.min(1.0f,
