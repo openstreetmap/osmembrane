@@ -26,7 +26,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 * actual image that will be drawn on this connector
 	 */
 	protected static ImageIcon displayTemplate = new ImageIcon(
-			LibraryFunction.class
+			PipelineConnector.class
 					.getResource("/de/osmembrane/resources/images/connector.png"));
 
 	/**

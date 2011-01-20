@@ -158,24 +158,26 @@ public class PipelineFunction extends LibraryFunction {
 	 * Arranges the connectors, if necessary
 	 */
 	public void arrangeConnectors() {
-		Point2D funcTopLeft = pipeline.windowToObj(this.getLocation());
+		Point funcTopLeft = this.getLocation();
 
 		for (PipelineConnector pc : connectors) {
-			Point2D offset = pipeline.windowToObjFixed(new Point(
-					-pc.getWidth() / 2, -pc.getHeight() / 2));
-			Point2D size = pipeline.windowToObjFixed(new Point(pc.getWidth(),
-					pc.getHeight()));
+			// standard stuff per connector
+			Point offset = pipeline.objToWindowDelta(new Point2D.Double(-pc
+					.getPreferredSize().width / 2.0, 0));
+			Point size = pipeline.objToWindowDelta(new Point(pc
+					.getPreferredSize().width, pc.getPreferredSize().height));
 
-			Point2D newPosition = pipeline
-					.windowToObjFixed(new Point(0, (int) (((getHeight() - pc
-							.getAmount() * size.getY()) / 2) + pc.getId()
-							* size.getY())));
-			pc.setLocation(
-					(int) (funcTopLeft.getX() + newPosition.getX() + offset
-							.getX()),
-					(int) (funcTopLeft.getY() + newPosition.getY() + offset
-							.getY()));
-			pc.setSize((int) size.getX(), (int) size.getY());
+			// actual new position
+			int newX = pc.isOutpipes() ? getWidth() : 0;
+			double startY = ((getHeight() - pc.getAmount() * size.y) / 2.0);
+			double offsetThisY = (pc.getId() * size.y);
+
+			Point newPosition = new Point(newX, (int) (startY + offsetThisY));
+			pc.setLocation(funcTopLeft.x + newPosition.x + offset.x,
+					funcTopLeft.y + newPosition.y + offset.y);
+			pc.setSize(size.x, size.y);
+
+			pc.repaint();
 		}
 	}
 

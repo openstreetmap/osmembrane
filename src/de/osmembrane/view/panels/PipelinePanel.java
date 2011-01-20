@@ -317,7 +317,8 @@ public class PipelinePanel extends JPanel implements Observer {
 
 						// translate
 						e.translatePoint(winOffset.x, winOffset.y);
-						selected.setLocation(e.getPoint());
+						pf.setLocation(e.getPoint());
+						pf.arrangeConnectors();
 					}
 				}
 
