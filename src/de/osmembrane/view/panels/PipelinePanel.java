@@ -13,7 +13,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -23,14 +25,17 @@ import javax.swing.JScrollBar;
 
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
+import de.osmembrane.controller.actions.AddConnectionAction;
 import de.osmembrane.controller.actions.AddFunctionAction;
 import de.osmembrane.controller.actions.DeleteSelectionAction;
 import de.osmembrane.controller.actions.DuplicateFunctionAction;
 import de.osmembrane.controller.actions.MoveFunctionAction;
+import de.osmembrane.controller.events.ConnectingFunctionsEvent;
 import de.osmembrane.controller.events.ContainingLocationEvent;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.tools.I18N;
@@ -52,6 +57,11 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * list of functions currently being present on the panel
 	 */
 	private List<PipelineFunction> functions;
+
+	/**
+	 * map of connectors currently being present on the panel
+	 */
+	private Map<AbstractConnector, PipelineConnector> connectors;
 
 	/**
 	 * The transformation which transforms the object coordinates to window
@@ -110,6 +120,11 @@ public class PipelinePanel extends JPanel implements Observer {
 	private JPanel selected;
 
 	/**
+	 * 
+	 */
+	private PipelineFunction connectionStart;
+
+	/**
 	 * Initializes a new pipeline view
 	 * 
 	 * @param functionLibrary
@@ -122,6 +137,7 @@ public class PipelinePanel extends JPanel implements Observer {
 
 		// internal values
 		this.functions = new ArrayList<PipelineFunction>();
+		this.connectors = new HashMap<AbstractConnector, PipelineConnector>();
 		this.functionInspector = functionInspector;
 
 		this.verticalScroll = new JScrollBar(JScrollBar.VERTICAL, 0, 0, 0, 0);
@@ -149,6 +165,7 @@ public class PipelinePanel extends JPanel implements Observer {
 
 		this.activeTool = Tool.DEFAULT_MAGIC_TOOL;
 		this.selected = null;
+		this.connectionStart = null;
 
 		this.objectToWindow = new AffineTransform();
 		this.currentDisplay = new AffineTransform();
@@ -531,6 +548,7 @@ public class PipelinePanel extends JPanel implements Observer {
 
 				add(pfAdd);
 				for (PipelineConnector pc : pfAdd.getConnectors()) {
+					connectors.put(pc.getModelConnector(), pc);
 					add(pc);
 				}
 
@@ -558,6 +576,7 @@ public class PipelinePanel extends JPanel implements Observer {
 
 						remove(pfDelete);
 						for (PipelineConnector pc : pfDelete.getConnectors()) {
+							connectors.remove(pc.getModelConnector());
 							remove(pc);
 						}
 
@@ -577,11 +596,12 @@ public class PipelinePanel extends JPanel implements Observer {
 						.accessPipeline().getFunctions()) {
 					PipelineFunction pfFullChange = new PipelineFunction(af,
 							this);
-					
+
 					functions.add(pfFullChange);
-					
+
 					add(pfFullChange);
 					for (PipelineConnector pc : pfFullChange.getConnectors()) {
+						connectors.put(pc.getModelConnector(), pc);
 						add(pc);
 					}
 				}
@@ -718,12 +738,12 @@ public class PipelinePanel extends JPanel implements Observer {
 	 */
 	public void selected(PipelineFunction pipelineFunction) {
 		selected = pipelineFunction;
-		
+
 		if (selected != null) {
 			for (PipelineFunction pf : functions) {
 				pf.repaint();
 			}
-			
+
 			// enable deleting & duplicating
 			ActionRegistry.getInstance().get(DeleteSelectionAction.class)
 					.setEnabled(selected != null);
@@ -733,7 +753,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					.setEnabled(
 							(selected != null)
 									&& (selected instanceof PipelineFunction));
-			
+
 			// edit in inspector panel
 			functionInspector.inspect(pipelineFunction.getModelFunction());
 		} else {
@@ -785,6 +805,35 @@ public class PipelinePanel extends JPanel implements Observer {
 	 */
 	public JScrollBar getHorizontalScroll() {
 		return horizontalScroll;
+	}
+
+	/**
+	 * @param lookFor
+	 *            model connector to look for
+	 * @return the pipeline, i.e. view, connector associated with that model
+	 *         connector, null if none is found
+	 */
+	protected PipelineConnector findConnector(AbstractConnector lookFor) {
+		return connectors.get(lookFor);
+	}
+
+	/**
+	 * Adds the connectionPoint as an endpoint to the current connection (with
+	 * at most 2 points). This means: First call - start of connection. Second
+	 * call - end of connection.
+	 * 
+	 * @param connectionPoint
+	 *            point in the connection
+	 */
+	public void connect(PipelineFunction connectionPoint) {
+		if (this.connectionStart == null) {
+			this.connectionStart = connectionPoint;
+		} else {
+			ConnectingFunctionsEvent cfe = new ConnectingFunctionsEvent(this,
+					connectionStart.getModelFunction(),
+					connectionPoint.getModelFunction());
+			ActionRegistry.getInstance().get(AddConnectionAction.class).actionPerformed(cfe);
+		}
 	}
 
 }

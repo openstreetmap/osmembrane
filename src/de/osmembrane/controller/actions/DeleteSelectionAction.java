@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
@@ -43,7 +44,10 @@ public class DeleteSelectionAction extends AbstractAction {
 				PipelineFunction pf = (PipelineFunction) selected;
 				ModelProxy.getInstance().accessPipeline()
 						.deleteFunction(pf.getModelFunction());
+				
+			} else if (selected instanceof AbstractConnector) {
+				// OH CRAP!
 			}
-		}
-	}
+		} 
+	} /* actionPerformed */
 }

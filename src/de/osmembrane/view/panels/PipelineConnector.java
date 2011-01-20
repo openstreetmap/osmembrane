@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
@@ -118,6 +119,16 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		g.drawImage(display, 0, 0, getWidth(), getHeight(), this);
+
+		if (isOutpipes) {
+			for (AbstractConnector ac : modelConnector.getConnections()) {
+				PipelineConnector target = pipeline.findConnector(ac);
+
+				Graphics g2 = pipeline.getGraphics();
+				g2.drawLine(this.getLocation().x, this.getLocation().y,
+						target.getLocation().x, target.getLocation().y);
+			}
+		}
 	}
 
 	/**
@@ -135,7 +146,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	}
 
 	/**
-	 * @return unique id for a group of connectors
+	 * @return unique id in a group of connectors
 	 */
 	public int getId() {
 		return this.id;

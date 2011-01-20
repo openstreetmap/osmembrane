@@ -97,7 +97,9 @@ public class PipelineFunction extends LibraryFunction {
 				case VIEW_TOOL:
 					pipeline.dispatchEvent(mainFrameEvent);
 					break;
-
+				case CONNECTION_TOOL:
+					pipeline.connect(PipelineFunction.this);
+					break;
 				}
 			}
 
