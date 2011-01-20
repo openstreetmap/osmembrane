@@ -91,6 +91,18 @@ public class PipelineObserverObject {
 		this.changedFunction = changedFunction;
 	}
 
+	/**
+	 * Creates a new {@link PipelineObserverObject}.
+	 * 
+	 * @param type
+	 *            type of the observer notification.<br/>
+	 *            Should be here {@link ChangeType#ADD_CONNECTION} or
+	 *            {@link ChangeType#DELETE_CONNECTION}.
+	 * @param outConnector
+	 *            connector where the connection begins
+	 * @param inConnector
+	 *            connector where the connection ends
+	 */
 	public PipelineObserverObject(ChangeType type,
 			AbstractConnector outConnector, AbstractConnector inConnector) {
 		this.type = type;
@@ -125,7 +137,8 @@ public class PipelineObserverObject {
 	 *         first one is out connector, second one in connector.
 	 */
 	public AbstractConnector[] getChangedConnectors() {
-		AbstractConnector[] connectors = {changedInConnector, changedOutConnector};
+		AbstractConnector[] connectors = { changedInConnector,
+				changedOutConnector };
 		return connectors;
 	}
 

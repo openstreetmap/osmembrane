@@ -10,7 +10,7 @@ public class ConnectorException extends Exception {
 
 	private static final long serialVersionUID = 2011010722360001L;
 
-	enum Type {
+	public enum Type {
 		NO_MATCH, FULL, LOOP_CREATED
 	}
 
