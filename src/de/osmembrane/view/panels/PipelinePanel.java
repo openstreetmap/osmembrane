@@ -541,7 +541,7 @@ public class PipelinePanel extends JPanel implements Observer {
 			switch (poo.getType()) {
 
 			// new function was added
-			case ADD:
+			case ADD_FUNCTION:
 				PipelineFunction pfAdd = new PipelineFunction(
 						poo.getChangedFunction(), this);
 				functions.add(pfAdd);
@@ -556,7 +556,7 @@ public class PipelinePanel extends JPanel implements Observer {
 				break;
 
 			// properties of a function changed
-			case CHANGE:
+			case CHANGE_FUNCTION:
 				for (PipelineFunction pfChange : functions) {
 					if (pfChange.getModelFunction().equals(
 							poo.getChangedFunction())) {
@@ -567,7 +567,7 @@ public class PipelinePanel extends JPanel implements Observer {
 				break;
 
 			// a function got removed
-			case DELETE:
+			case DELETE_FUNCTION:
 				for (int i = 0; i < functions.size(); i++) {
 					PipelineFunction pfDelete = functions.get(i);
 

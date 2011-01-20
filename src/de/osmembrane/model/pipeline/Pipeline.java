@@ -53,7 +53,7 @@ public class Pipeline extends AbstractPipeline {
 		func.addObserver(this);
 
 		/* notify the observers */
-		changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD, func));
+		changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD_FUNCTION, func));
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class Pipeline extends AbstractPipeline {
 
 		if (returnValue == true) {
 			/* notify the observers */
-			changedNotifyObservers(new PipelineObserverObject(ChangeType.DELETE,
+			changedNotifyObservers(new PipelineObserverObject(ChangeType.DELETE_FUNCTION,
 					func));
 		}
 		return returnValue;

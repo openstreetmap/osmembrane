@@ -68,7 +68,7 @@ public class Connector extends AbstractConnector {
 	}
 
 	@Override
-	public boolean addConnection(AbstractConnector connector) {
+	protected boolean addConnection(AbstractConnector connector) {
 		/*
 		 * check if the connector is not full and both connector-types does
 		 * equal.
@@ -82,7 +82,7 @@ public class Connector extends AbstractConnector {
 	}
 
 	@Override
-	public boolean removeConnection(AbstractConnector connector) {
+	protected boolean removeConnection(AbstractConnector connector) {
 		return connectors.remove(connectors);
 	}
 }

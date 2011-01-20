@@ -64,7 +64,7 @@ public abstract class AbstractConnector implements Serializable {
 	 * 
 	 * @return true if a connection could be created, otherwise false
 	 */
-	public abstract boolean addConnection(AbstractConnector connector);
+	protected abstract boolean addConnection(AbstractConnector connector);
 
 	/**
 	 * Removes a connection to another connector.
@@ -73,5 +73,5 @@ public abstract class AbstractConnector implements Serializable {
 	 * 
 	 * @return true if there was a connection
 	 */
-	public abstract boolean removeConnection(AbstractConnector connector);
+	protected abstract boolean removeConnection(AbstractConnector connector);
 }

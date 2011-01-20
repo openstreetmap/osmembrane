@@ -180,7 +180,7 @@ public class Function extends AbstractFunction {
 	@Override
 	public void setCoordinate(Point2D coordinate) {
 		this.coordinate = coordinate;
-		changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE, this));
+		changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE_FUNCTION, this));
 	}
 
 	@Override
@@ -228,7 +228,8 @@ public class Function extends AbstractFunction {
 							throw new ConnectorException(Type.LOOP_CREATED);
 						}
 						
-						changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE, this));
+						
+						changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD_CONNECTION, connectorOut, connectorIn));
 						
 						return;
 					} else {
@@ -249,7 +250,7 @@ public class Function extends AbstractFunction {
 					/* found equal Connectors, remove connection */
 					if(connectorIn.removeConnection(connectorOut) && connectorOut
 							.removeConnection(connectorIn)) {
-						changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE, this));
+						changedNotifyObservers(new PipelineObserverObject(ChangeType.DELETE_CONNECTION, connectorOut, connectorIn));
 						return true;
 					}
 				}
@@ -281,6 +282,6 @@ public class Function extends AbstractFunction {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		/* get Updates from a Task (changed anything) */
-		changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE, this));
+		changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE_FUNCTION, this));
 	}
 }

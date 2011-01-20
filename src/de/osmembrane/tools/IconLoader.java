@@ -98,7 +98,7 @@ public class IconLoader {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N
 							.getInstance().getString(
-									"Exception.CanReadIconFile", fileObject)));
+									"Exception.CantReadIconFile", fileObject)));
 		}
 	}
 

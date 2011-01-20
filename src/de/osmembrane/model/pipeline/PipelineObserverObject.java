@@ -1,5 +1,10 @@
 package de.osmembrane.model.pipeline;
 
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
+import de.osmembrane.tools.I18N;
+
 /**
  * Object which is passed through by the {@link AbstractPipeline}.
  * 
@@ -16,17 +21,27 @@ public class PipelineObserverObject {
 		/**
 		 * A new function has been added.
 		 */
-		ADD,
+		ADD_FUNCTION,
 
 		/**
 		 * A function has been changed (modified parameters, moved, ...).
 		 */
-		CHANGE,
+		CHANGE_FUNCTION,
 
 		/**
 		 * A function has been deleted.
 		 */
-		DELETE,
+		DELETE_FUNCTION,
+
+		/**
+		 * A connection has been created.
+		 */
+		ADD_CONNECTION,
+
+		/**
+		 * A connection has been removed.
+		 */
+		DELETE_CONNECTION,
 
 		/**
 		 * A full change of the pipeline.
@@ -40,10 +55,21 @@ public class PipelineObserverObject {
 	private ChangeType type;
 
 	/**
-	 * Function which has been changed (when type is {@link ChangeType#ADD},
-	 * {@link ChangeType#CHANGE} or {@link ChangeType#DELETE}).
+	 * Function which has been changed.<br/>
+	 * Type must be {@link ChangeType#ADD_FUNCTION},
+	 * {@link ChangeType#CHANGE_FUNCTION} or {@link ChangeType#DELETE_FUNCTION}.
 	 */
 	private AbstractFunction changedFunction = null;
+
+	/**
+	 * Connectors which has been changed (added, removed connection between
+	 * both).<br/>
+	 * Type must be {@link ChangeType#ADD_CONNECTION} or
+	 * {@link ChangeType#DELETE_CONNECTION}.
+	 */
+	private AbstractConnector changedOutConnector;
+
+	private AbstractConnector changedInConnector;
 
 	/**
 	 * Pipeline on which the event occurred.
@@ -63,6 +89,13 @@ public class PipelineObserverObject {
 			AbstractFunction changedFunction) {
 		this.type = type;
 		this.changedFunction = changedFunction;
+	}
+
+	public PipelineObserverObject(ChangeType type,
+			AbstractConnector outConnector, AbstractConnector inConnector) {
+		this.type = type;
+		this.changedOutConnector = outConnector;
+		this.changedInConnector = inConnector;
 	}
 
 	/**
@@ -85,7 +118,20 @@ public class PipelineObserverObject {
 	}
 
 	/**
+	 * Returns the changed {@link AbstractConnector}s. ({@see
+	 * PipelineObserverObject#changedConnectors})
+	 * 
+	 * @return changed connectors, array-length is always 2.<br/>
+	 *         first one is out connector, second one in connector.
+	 */
+	public AbstractConnector[] getChangedConnectors() {
+		AbstractConnector[] connectors = {changedInConnector, changedOutConnector};
+		return connectors;
+	}
+
+	/**
 	 * Sets the used {@link AbstractPipeline} at a later point.
+	 * 
 	 * @param pipeline
 	 */
 	public void setPipeline(AbstractPipeline pipeline) {

@@ -223,14 +223,14 @@ public class InspectorPanel extends JPanel implements Observer {
 			PipelineObserverObject poo = (PipelineObserverObject) arg;
 
 			switch (poo.getType()) {
-			case ADD:
-			case CHANGE:
+			case ADD_FUNCTION:
+			case CHANGE_FUNCTION:
 				if (poo.getChangedFunction().equals(inspecting)) {
 					inspect(inspecting);
 					repaint();
 				}
 				break;
-			case DELETE:
+			case DELETE_FUNCTION:
 				if (!poo.getChangedFunction().equals(inspecting)) {
 					break;
 				}
