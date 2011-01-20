@@ -101,9 +101,9 @@ public class LibraryFunction extends DisplayTemplatePanel {
 
 		Color color = modelFunctionPrototype.getParent().getColor();
 		float[] colorRGB = color.getComponents(null);
-		Color highlightColor = new Color(Math.min(1.0f, colorRGB[0] + 0.2f),
-				Math.min(1.0f, colorRGB[1] + 0.2f), Math.min(1.0f,
-						colorRGB[2] + 0.2f));
+		Color highlightColor = new Color(Math.min(1.0f, colorRGB[0] + 0.25f),
+				Math.min(1.0f, colorRGB[1] + 0.25f), Math.min(1.0f,
+						colorRGB[2] + 0.25f));
 		this.setOpaque(false);
 
 		display = derivateDisplay(displayTemplate, color,

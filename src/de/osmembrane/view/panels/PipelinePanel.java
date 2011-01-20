@@ -270,6 +270,7 @@ public class PipelinePanel extends JPanel implements Observer {
 				switch (activeTool) {
 				case SELECTION_TOOL:
 					selected(null);
+					repaint();
 					break;
 				case DEFAULT_MAGIC_TOOL:
 				case VIEW_TOOL:
