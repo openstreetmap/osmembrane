@@ -105,6 +105,11 @@ public class Function extends AbstractFunction {
 
 	@Override
 	public String getFriendlyName() {
+		/* fallback if friendlyName is not available */
+		if (xmlFunction.getFriendlyName() == null) {
+			return getId();
+		}
+		
 		return xmlFunction.getFriendlyName();
 	}
 
@@ -152,7 +157,6 @@ public class Function extends AbstractFunction {
 				 */
 				for (AbstractParameter oldParam : activeTask.getParameters()) {
 					for (AbstractParameter newParam : task.getParameters()) {
-						System.out.println(oldParam.getName() + " " + newParam.getName());
 						if (oldParam.getName().equals(newParam.getName())
 								&& oldParam.getType()
 										.equals(newParam.getType())) {

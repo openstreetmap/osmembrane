@@ -65,6 +65,11 @@ public class Task extends AbstractTask {
 
 	@Override
 	public String getFriendlyName() {
+		/* fallback if friendlyName is not available */
+		if (xmlTask.getFriendlyName() == null) {
+			return getName();
+		}
+		
 		return xmlTask.getFriendlyName();
 	}
 	

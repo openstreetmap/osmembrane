@@ -7,6 +7,7 @@ import java.util.List;
 import de.osmembrane.model.pipeline.Function;
 import de.osmembrane.model.xml.XMLFunction;
 import de.osmembrane.model.xml.XMLFunctionGroup;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 
 /**
@@ -44,6 +45,11 @@ public class FunctionGroup extends AbstractFunctionGroup {
 
 	@Override
 	public String getFriendlyName() {
+		/* fallback if friendlyName is not available */
+		if (xmlGroup.getFriendlyName() == null) {
+			return getId();
+		}
+		
 		return xmlGroup.getFriendlyName();
 	}
 
@@ -57,13 +63,13 @@ public class FunctionGroup extends AbstractFunctionGroup {
 		String colorString = xmlGroup.getColor();
 		
 		if(colorString == null) {
-			return null;
+			return Constants.DEFAULT_FUNCTIONGROUP_COLOR;
 		}
 		
 		String[] color = colorString.split(",");
 		
 		if(color.length != 3) {
-			return null;
+			return Constants.DEFAULT_FUNCTIONGROUP_COLOR;
 		}
 		
 		int r, g, b;
@@ -72,11 +78,11 @@ public class FunctionGroup extends AbstractFunctionGroup {
 			g = Integer.parseInt(color[1].trim());
 			b = Integer.parseInt(color[2].trim());
 		} catch (NumberFormatException e) {
-			return null;
+			return Constants.DEFAULT_FUNCTIONGROUP_COLOR;
 		}
 		
 		if ((r < 0 || r > 255) && (g < 0 || g > 255) && (b < 0 || b > 255)) {
-			return null;
+			return Constants.DEFAULT_FUNCTIONGROUP_COLOR;
 		}
 		
 		return new Color(r, g, b);
