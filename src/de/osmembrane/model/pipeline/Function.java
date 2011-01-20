@@ -30,16 +30,16 @@ public class Function extends AbstractFunction {
 	private static final long serialVersionUID = 2010123022380001L;
 
 	private FunctionGroup parent;
-	
+
 	transient private Pipeline pipeline;
-	
+
 	private XMLFunction xmlFunction;
-	
+
 	private Point2D coordinate = new Point2D.Double();
-	
+
 	private List<Connector> inConnectors = new ArrayList<Connector>();
 	private List<Connector> outConnectors = new ArrayList<Connector>();
-	
+
 	private List<Task> tasks = new ArrayList<Task>();
 	private Task activeTask;
 
@@ -66,7 +66,7 @@ public class Function extends AbstractFunction {
 	public Function(FunctionGroup parent, XMLFunction xmlFunction) {
 		this.xmlFunction = xmlFunction;
 		this.parent = parent;
-		
+
 		for (XMLTask xmlTask : xmlFunction.getTask()) {
 			Task task = new Task(xmlTask);
 			task.addObserver(this);
@@ -109,7 +109,7 @@ public class Function extends AbstractFunction {
 		if (xmlFunction.getFriendlyName() == null) {
 			return getId();
 		}
-		
+
 		return xmlFunction.getFriendlyName();
 	}
 
@@ -122,7 +122,7 @@ public class Function extends AbstractFunction {
 	public BufferedImage getIcon() {
 		if (triedLoadIcon == false) {
 			try {
-				if(xmlFunction.getIcon() != null) {
+				if (xmlFunction.getIcon() != null) {
 					icon = ImageIO.read(new File(xmlFunction.getIcon()));
 				}
 			} catch (IOException e) {
@@ -130,10 +130,10 @@ public class Function extends AbstractFunction {
 			}
 			triedLoadIcon = true;
 		}
-		
+
 		return icon;
 	}
-	
+
 	@Override
 	public Task[] getAvailableTasks() {
 		Task[] returnTasks = new Task[tasks.size()];
@@ -164,7 +164,7 @@ public class Function extends AbstractFunction {
 							newParam.setValue(oldParam.getValue());
 						}
 					}
-					
+
 				}
 				activeTask = task;
 				return;
@@ -176,23 +176,24 @@ public class Function extends AbstractFunction {
 	public Point2D getCoordinate() {
 		return coordinate;
 	}
-	
+
 	@Override
 	public void setCoordinate(Point2D coordinate) {
 		this.coordinate = coordinate;
-		changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE_FUNCTION, this));
+		changedNotifyObservers(new PipelineObserverObject(
+				ChangeType.CHANGE_FUNCTION, this));
 	}
 
 	@Override
 	public Connector[] getInConnectors() {
-		Connector[] inConnectors = new Connector[this.inConnectors.size()]; 
+		Connector[] inConnectors = new Connector[this.inConnectors.size()];
 		inConnectors = this.inConnectors.toArray(inConnectors);
 		return inConnectors;
 	}
 
 	@Override
 	public Connector[] getOutConnectors() {
-		Connector[] outConnectors = new Connector[this.outConnectors.size()]; 
+		Connector[] outConnectors = new Connector[this.outConnectors.size()];
 		outConnectors = this.outConnectors.toArray(outConnectors);
 		return outConnectors;
 	}
@@ -216,21 +217,22 @@ public class Function extends AbstractFunction {
 				if (connectorOut.getType() == connectorIn.getType()) {
 					/* found equal Connectors */
 					if (!connectorOut.isFull() && !connectorIn.isFull()) {
-						
+
 						/* first, add connections */
 						connectorIn.addConnection(connectorOut);
 						connectorOut.addConnection(connectorIn);
-						
+
 						/* now check loop freeness */
 						if (getPipeline().hasLoop()) {
 							/* remove 'cause that is not ok */
 							removeConnectionTo(function);
 							throw new ConnectorException(Type.LOOP_CREATED);
 						}
-						
-						
-						changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD_CONNECTION, connectorOut, connectorIn));
-						
+
+						changedNotifyObservers(new PipelineObserverObject(
+								ChangeType.ADD_CONNECTION, connectorOut,
+								connectorIn));
+
 						return;
 					} else {
 						throw new ConnectorException(Type.FULL);
@@ -238,7 +240,7 @@ public class Function extends AbstractFunction {
 				}
 			}
 		}
-		
+
 		throw new ConnectorException(Type.NO_MATCH);
 	}
 
@@ -248,8 +250,9 @@ public class Function extends AbstractFunction {
 			for (AbstractConnector connectorIn : function.getInConnectors()) {
 				if (connectorOut.getType() == connectorIn.getType()) {
 					/* found equal Connectors, remove connection */
-					if(connectorIn.removeConnection(connectorOut) && connectorOut
-							.removeConnection(connectorIn)) {
+					boolean inRemove = connectorIn.removeConnection(connectorOut);
+					boolean outRemove = connectorOut.removeConnection(connectorIn);
+					if(inRemove && outRemove) {
 						changedNotifyObservers(new PipelineObserverObject(ChangeType.DELETE_CONNECTION, connectorOut, connectorIn));
 						return true;
 					}
@@ -282,6 +285,7 @@ public class Function extends AbstractFunction {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		/* get Updates from a Task (changed anything) */
-		changedNotifyObservers(new PipelineObserverObject(ChangeType.CHANGE_FUNCTION, this));
+		changedNotifyObservers(new PipelineObserverObject(
+				ChangeType.CHANGE_FUNCTION, this));
 	}
 }

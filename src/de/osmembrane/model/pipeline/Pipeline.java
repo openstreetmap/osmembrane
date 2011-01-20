@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.AbstractPersistence;
 import de.osmembrane.model.persistence.FileException;
@@ -152,7 +154,9 @@ public class Pipeline extends AbstractPipeline {
 	@Override
 	public boolean hasLoop() {
 		TarjanAlgorithm check = new TarjanAlgorithm(functions);
-		return check.hasLoop();
+		check.run();
+		/* check for SCCs greater than 1 */
+		return (check.getSCC(2).size() > 0);
 	}
 
 	@Override

@@ -83,6 +83,6 @@ public class Connector extends AbstractConnector {
 
 	@Override
 	protected boolean removeConnection(AbstractConnector connector) {
-		return connectors.remove(connectors);
+		return connectors.remove(connector);
 	}
 }
