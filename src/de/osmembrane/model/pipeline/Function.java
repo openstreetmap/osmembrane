@@ -159,8 +159,8 @@ public class Function extends AbstractFunction {
 							newParam.setValue(oldParam.getValue());
 						}
 					}
+					
 				}
-
 				activeTask = task;
 				return;
 			}

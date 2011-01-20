@@ -134,7 +134,11 @@ public class MainFrame extends AbstractFrame {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		toolsImages = new HashMap<Tool, ImageIcon>();
 
-		toolsImages.put(Tool.DEFAULT_MAGIC_TOOL, null);
+		toolsImages
+				.put(Tool.DEFAULT_MAGIC_TOOL,
+						new ImageIcon(
+								MainFrame.class
+										.getResource("/de/osmembrane/resources/cursors/cursor-magic.png")));
 		toolsImages
 				.put(Tool.SELECTION_TOOL,
 						new ImageIcon(
@@ -307,7 +311,7 @@ public class MainFrame extends AbstractFrame {
 
 		// function library
 		LibraryPanel functionLibrary = new LibraryPanel();
-		
+
 		for (AbstractFunctionGroup afg : ModelProxy.getInstance()
 				.accessFunctions().getFunctionGroups()) {
 			LibraryPanelGroup lpg = new LibraryPanelGroup(functionLibrary, afg);
@@ -327,7 +331,8 @@ public class MainFrame extends AbstractFrame {
 		JPanel panePipeline = new JPanel(new BorderLayout());
 		panePipeline.add(pipelineView, BorderLayout.CENTER);
 		panePipeline.add(pipelineView.getVerticalScroll(), BorderLayout.EAST);
-		panePipeline.add(pipelineView.getHorizontalScroll(), BorderLayout.SOUTH);
+		panePipeline
+				.add(pipelineView.getHorizontalScroll(), BorderLayout.SOUTH);
 
 		// split containers
 		JSplitPane splitLibAndView = new JSplitPane(
