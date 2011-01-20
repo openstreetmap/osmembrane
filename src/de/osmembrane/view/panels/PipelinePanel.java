@@ -857,6 +857,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					connectionStart.getModelFunction(),
 					connectionPoint.getModelFunction());
 			ActionRegistry.getInstance().get(AddConnectionAction.class).actionPerformed(cfe);
+			this.connectionStart = null;
 		}
 	}
 
