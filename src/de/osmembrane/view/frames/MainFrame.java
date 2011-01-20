@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -341,6 +342,12 @@ public class MainFrame extends AbstractFrame {
 		JSplitPane splitMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				true, splitLibAndView, paneInspector);
 		getContentPane().add(splitMain);
+
+		// set the application icon
+		Image icon = getToolkit().getImage(
+				getClass().getResource(
+						"/de/osmembrane/resources/images/icon.png"));
+		setIconImage(icon);
 
 		// center, then maximize
 		pack();

@@ -21,9 +21,13 @@ public class Application {
 	 */
 	public void initiate() {
 		try {
+			// connect model and view
 			ModelProxy.getInstance().addObserver(ViewRegistry.getInstance());
+			
+			// set the EDT Exception handler
 			System.setProperty("sun.awt.exception.handler",
 					EDTExceptionHandler.class.getName());
+			
 		} catch (Exception e) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
