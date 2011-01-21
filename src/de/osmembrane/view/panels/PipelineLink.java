@@ -129,12 +129,12 @@ public class PipelineLink extends JPanel {
 			// arrow goes like <-----
 			if (linkSource.getY() < linkDestination.getY()) {
 				// right top to left bottom
-				right = new Point2D.Double(getWidth() - offset.x, getHeight() - offset.y);
-				left = new Point2D.Double(offset.x, offset.y);
-			} else {
-				// right bottom to left top			
 				right = new Point2D.Double(getWidth() - offset.x, offset.y);
 				left = new Point2D.Double(offset.x, getHeight() - offset.y);
+			} else {
+				// right bottom to left top			
+				right = new Point2D.Double(getWidth() - offset.x, getHeight() - offset.y);
+				left = new Point2D.Double(offset.x, offset.y);
 			}
 		}
 
