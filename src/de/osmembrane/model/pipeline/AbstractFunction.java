@@ -147,6 +147,11 @@ public abstract class AbstractFunction extends Observable implements
 	public abstract boolean removeConnectionTo(AbstractFunction function);
 
 	/**
+	 * Removes all connections to other connectors.
+	 */
+	protected abstract void unlinkConnectors();
+	
+	/**
 	 * Compares the Function with another Function.
 	 * 
 	 * @param function

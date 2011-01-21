@@ -85,4 +85,16 @@ public class Connector extends AbstractConnector {
 	protected boolean removeConnection(AbstractConnector connector) {
 		return connectors.remove(connector);
 	}
+	
+	@Override
+	protected void unlink(boolean isOutConnector) {
+		for(AbstractConnector connector : getConnections()) {
+			AbstractFunction targetFunction = connector.getParent();
+			if (isOutConnector) {
+				this.getParent().removeConnectionTo(targetFunction);
+			} else {
+				targetFunction.removeConnectionTo(this.getParent());
+			}
+		}
+	}
 }

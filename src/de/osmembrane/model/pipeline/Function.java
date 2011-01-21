@@ -269,6 +269,16 @@ public class Function extends AbstractFunction {
 
 		return false;
 	}
+	
+	@Override
+	protected void unlinkConnectors() {
+		for(AbstractConnector outConnector : getOutConnectors()) {
+			outConnector.unlink(true);
+		}
+		for(AbstractConnector inConnector : getInConnectors()) {
+			inConnector.unlink(false);
+		}
+	}
 
 	protected String getComparatorString() {
 		return comparator;

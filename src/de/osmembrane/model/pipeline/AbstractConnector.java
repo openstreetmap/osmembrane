@@ -74,4 +74,11 @@ public abstract class AbstractConnector implements Serializable {
 	 * @return true if there was a connection
 	 */
 	protected abstract boolean removeConnection(AbstractConnector connector);
+	
+	/**
+	 * Removes all connections (in both directions).
+	 * 
+	 * @param isOutConnector true if the connector is an out connector
+	 */
+	protected abstract void unlink(boolean isOutConnector);
 }

@@ -66,6 +66,7 @@ public class Pipeline extends AbstractPipeline {
 
 		for (AbstractFunction function : functions) {
 			if (function == func) {
+				function.unlinkConnectors();
 				returnValue = functions.remove(function);
 				break;
 			}
@@ -172,8 +173,6 @@ public class Pipeline extends AbstractPipeline {
 
 		/* check the SCCs */
 		List<List<AbstractFunction>> sccs = check.getSCC();
-		
-		System.out.println(sccs);
 		
 		for (List<AbstractFunction> scc : sccs) {
 			if (scc.size() == 1) {
