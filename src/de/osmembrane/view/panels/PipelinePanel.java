@@ -593,6 +593,15 @@ public class PipelinePanel extends JPanel implements Observer {
 					if (pfChange.getModelFunction().equals(
 							poo.getChangedFunction())) {
 						arrange(pfChange);
+						
+						// in case this thing was moved, move all in-going links with it
+						for (PipelineConnector pc : pfChange.getConnectors()) {
+							if (!pc.isOutpipes()) {
+								for (PipelineLink pl : pc.getLinks()) {
+									pl.getLinkSource().arrangeLinks();
+								}
+							}
+						}
 						repaint();
 					}
 				}
@@ -647,6 +656,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					}
 				}
 				arrange();
+				repaint();
 				break;
 
 			// new connection added
@@ -660,6 +670,7 @@ public class PipelinePanel extends JPanel implements Observer {
 				// necessary to let the arrange() methods perform the correct
 				// size of the new, deeply nested link
 				arrange();
+				repaint();
 				break;
 
 			// connection deleted

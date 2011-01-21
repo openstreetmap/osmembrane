@@ -147,15 +147,15 @@ public class PipelineConnector extends DisplayTemplatePanel {
 			} else {
 				// arrow goes like <-----
 				if (this.getY() < dest.getY()) {
-					// right bottom to left top
-					pl.setLocation(dest.getX(), dest.getY());
-					pl.setSize(this.getWidth() + this.getX() - dest.getX(),
-							this.getHeight() + this.getY() - dest.getY());
-				} else {
 					// right top to left bottom
 					pl.setLocation(dest.getX(), this.getY());
 					pl.setSize(this.getWidth() + this.getX() - dest.getX(),
 							dest.getHeight() + dest.getY() - this.getY());
+				} else {
+					// right bottom to left top
+					pl.setLocation(dest.getX(), dest.getY());
+					pl.setSize(this.getWidth() + this.getX() - dest.getX(),
+							this.getHeight() + this.getY() - dest.getY());
 				}
 			}
 
