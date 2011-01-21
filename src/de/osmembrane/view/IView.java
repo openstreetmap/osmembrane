@@ -27,4 +27,15 @@ public interface IView {
 	 *            the new title
 	 */
 	public void setWindowTitle(String viewTitle);
+	
+	/**
+	 * Centers this particular frame on the screen.
+	 */
+	public void centerWindow();
+		
+	/**
+	 * Brings this window to the front.
+	 */
+	public void bringToFront();
+	
 }

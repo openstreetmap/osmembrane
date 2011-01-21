@@ -24,6 +24,7 @@ import javax.swing.Action;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
+import javax.swing.SwingUtilities;
 
 import org.w3c.dom.stylesheets.LinkStyle;
 
@@ -88,9 +89,9 @@ public class PipelinePanel extends JPanel implements Observer {
 	/**
 	 * The constants applicable for the layeredPane.
 	 */
-	private static final Integer FUNCTION_LAYER = new Integer(1);
-	private static final Integer CONNECTOR_LAYER = new Integer(2);
-	private static final Integer LINK_LAYER = new Integer(3);
+	private static final Integer FUNCTION_LAYER = new Integer(3);
+	private static final Integer CONNECTOR_LAYER = new Integer(1);
+	private static final Integer LINK_LAYER = new Integer(2);
 
 	/**
 	 * Saves the point in object coordinates when a drag and drop action occurs
@@ -491,6 +492,7 @@ public class PipelinePanel extends JPanel implements Observer {
 		objectToWindow.translate(-objCenter.getX(), -objCenter.getY());
 
 		arrange();
+		repaint();
 	}
 
 	/**
@@ -508,6 +510,7 @@ public class PipelinePanel extends JPanel implements Observer {
 		currentDisplay.translate(-objCenter.getX(), -objCenter.getY());
 
 		arrange();
+		repaint();
 	}
 
 	/**
@@ -594,14 +597,6 @@ public class PipelinePanel extends JPanel implements Observer {
 							poo.getChangedFunction())) {
 						arrange(pfChange);
 						
-						// in case this thing was moved, move all in-going links with it
-						for (PipelineConnector pc : pfChange.getConnectors()) {
-							if (!pc.isOutpipes()) {
-								for (PipelineLink pl : pc.getLinks()) {
-									pl.getLinkSource().arrangeLinks();
-								}
-							}
-						}
 						repaint();
 					}
 				}
@@ -819,23 +814,14 @@ public class PipelinePanel extends JPanel implements Observer {
 
 		if (selected != null) {
 			if (selected instanceof PipelineFunction) {
-				// redraw all functions
-				for (PipelineFunction pf : functions) {
-					pf.repaint();
-				}
-
+				repaint();
+				
 				// edit in inspector panel
 				PipelineFunction pf = (PipelineFunction) childObject;
 				functionInspector.inspect(pf.getModelFunction());
 
 			} else if (selected instanceof PipelineLink) {
-				// redraw all links
-				for (PipelineFunction pf : functions) {
-					for (PipelineLink pl : pf.getAllOutLinks()) {
-						pl.repaint();
-					}
-				}
-
+				repaint();
 			}
 		} else {
 			functionInspector.inspect(null);

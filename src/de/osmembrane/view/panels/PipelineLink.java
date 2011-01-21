@@ -1,9 +1,9 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
@@ -115,38 +115,67 @@ public class PipelineLink extends JPanel {
 				linkSource.getHeight() / 2);
 
 		if (linkSource.getX() < linkDestination.getX()) {
-			// arrow goes like ----->
+			// arrow goes like left -----> right
 			if (linkSource.getY() < linkDestination.getY()) {
 				// left top to right bottom
 				left = new Point2D.Double(offset.x, offset.y);
-				right = new Point2D.Double(getWidth() - offset.x, getHeight() - offset.y);
+				right = new Point2D.Double(getWidth() - offset.x, getHeight()
+						- offset.y);
 			} else {
 				// left bottom to right top
 				left = new Point2D.Double(offset.x, getHeight() - offset.y);
 				right = new Point2D.Double(getWidth() - offset.x, offset.y);
 			}
 		} else {
-			// arrow goes like <-----
+			// arrow goes like left <----- right
 			if (linkSource.getY() < linkDestination.getY()) {
 				// right top to left bottom
-				right = new Point2D.Double(getWidth() - offset.x, offset.y);
 				left = new Point2D.Double(offset.x, getHeight() - offset.y);
+				right = new Point2D.Double(getWidth() - offset.x, offset.y);
 			} else {
-				// right bottom to left top			
-				right = new Point2D.Double(getWidth() - offset.x, getHeight() - offset.y);
+				// right bottom to left top
 				left = new Point2D.Double(offset.x, offset.y);
+				right = new Point2D.Double(getWidth() - offset.x, getHeight()
+						- offset.y);
 			}
 		}
 
 		line.setLine(left, right);
+		repaint();
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		g.setColor(color);
 
-		g.drawLine((int) line.getX1(), (int) line.getY1(), (int) line.getX2(),
-				(int) line.getY2());
+		Polygon p = new Polygon();
+		int drawWidth = pipeline.objToWindowDelta(new Point2D.Double(0.0,
+				LINE_DRAWING_WIDTH)).y;
+		
+		// use the dot product, luke
+		double deltaX = line.getX2() - line.getX1();
+		double deltaY = line.getY2() - line.getY1(); 
+		double length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+		double alpha = Math.acos(-1.0 * (line.getX2() - line.getX1()) / length);
+		
+		// if alpha too large to get returned by acos
+		if (line.getY2() > line.getY1()) {
+			alpha = 2.0 * Math.PI - alpha;
+		}
+		
+		// y = sin(alpha), x = cos(alpha)
+
+		p.addPoint((int) (line.getX1() + (Math.cos(alpha - 0.25 * Math.PI) * drawWidth)),
+				   (int) (line.getY1() + (Math.sin(alpha - 0.25 * Math.PI) * drawWidth)));
+		p.addPoint((int) (line.getX1() + (Math.cos(alpha + 0.25 * Math.PI) * drawWidth)),
+				   (int) (line.getY1() + (Math.sin(alpha + 0.25 * Math.PI) * drawWidth)));
+
+		p.addPoint((int) (line.getX2() + (Math.cos(alpha + 0.25 * Math.PI) * drawWidth)),
+				   (int) (line.getY2() + (Math.sin(alpha + 0.25 * Math.PI) * drawWidth)));
+		p.addPoint((int) (line.getX2() + (Math.cos(alpha - 0.25 * Math.PI) * drawWidth)),
+				   (int) (line.getY2() + (Math.sin(alpha - 0.25 * Math.PI) * drawWidth)));
+
+		g.fillPolygon(p);
 
 		if (linkSource.getX() < linkDestination.getX()) {
 			// arrow goes like ----->

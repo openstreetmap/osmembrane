@@ -38,14 +38,17 @@ public abstract class AbstractDialog extends JDialog implements IView {
 		setTitle(title);
 	}
 	
-	/**
-	 * Centers this particular dialog on the screen.
-	 */
+	@Override
 	public void centerWindow() {		
 		Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
 		Point edgeLeftTop = new Point(screenCenter.x - (getWidth() / 2),
 									  screenCenter.y - (getHeight() / 2));
 		setLocation(edgeLeftTop.x, edgeLeftTop.y);
+	}
+	
+	@Override
+	public void bringToFront() {
+		toFront();
 	}
 
 }

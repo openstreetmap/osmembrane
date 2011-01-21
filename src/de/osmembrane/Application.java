@@ -60,6 +60,7 @@ public class Application {
 		try {
 			IView mainFrame = ViewRegistry.getInstance().getMainFrame();
 			mainFrame.showWindow();
+			mainFrame.bringToFront();
 		} catch (Exception e) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N

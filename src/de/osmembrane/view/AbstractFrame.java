@@ -36,14 +36,17 @@ public abstract class AbstractFrame extends JFrame implements IView {
 		setTitle(title);
 	}
 	
-	/**
-	 * Centers this particular frame on the screen.
-	 */
+	@Override
 	public void centerWindow() {		
 		Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
 		Point edgeLeftTop = new Point(screenCenter.x - (getWidth() / 2),
 									  screenCenter.y - (getHeight() / 2));
 		setLocation(edgeLeftTop.x, edgeLeftTop.y);
+	}
+	
+	@Override
+	public void bringToFront() {
+		toFront();
 	}
 
 }
