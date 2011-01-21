@@ -1,10 +1,5 @@
 package de.osmembrane.model.pipeline;
 
-import de.osmembrane.Application;
-import de.osmembrane.exceptions.ControlledException;
-import de.osmembrane.exceptions.ExceptionSeverity;
-import de.osmembrane.tools.I18N;
-
 /**
  * Object which is passed through by the {@link AbstractPipeline}.
  * 

@@ -41,8 +41,8 @@ public class NewPipelineAction extends AbstractAction {
 			int result = JOptionPane.showConfirmDialog(null, I18N.getInstance()
 					.getString("Controller.Actions.NewPipeline.NotSaved"),
 					"Controller.Actions.NewPipeline.NotSaved.Title",
-					JOptionPane.OK_CANCEL_OPTION);
-			if (result == JOptionPane.CANCEL_OPTION) {
+					JOptionPane.YES_NO_OPTION);
+			if (result == JOptionPane.NO_OPTION) {
 				return;
 			}
 		}

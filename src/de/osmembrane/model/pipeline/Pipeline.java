@@ -169,8 +169,28 @@ public class Pipeline extends AbstractPipeline {
 	public boolean hasLoop() {
 		TarjanAlgorithm check = new TarjanAlgorithm(functions);
 		check.run();
-		/* check for SCCs greater than 1 */
-		return (check.getSCC(2).size() > 0);
+
+		/* check the SCCs */
+		List<List<AbstractFunction>> sccs = check.getSCC();
+		for (List<AbstractFunction> scc : sccs) {
+			if (scc.size() == 1) {
+				/*
+				 * check if the scc with size 1 links to itself or is just
+				 * standing alone
+				 */
+				for (AbstractConnector outConnector : scc.get(0)
+						.getOutConnectors()) {
+					if (outConnector.getParent() == scc.get(0)) {
+						/* found a connection to the function itself */
+						return true;
+					}
+				}
+			} else if (scc.size() > 1) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	@Override
