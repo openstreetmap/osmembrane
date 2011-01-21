@@ -179,6 +179,7 @@ public class PipelineFunction extends LibraryFunction {
 					funcTopLeft.y + newPosition.y + offset.y);
 			pc.setSize(size.x, size.y);
 
+			pc.arrangeLinks();
 			pc.repaint();
 		}
 	}
@@ -209,6 +210,19 @@ public class PipelineFunction extends LibraryFunction {
 	 */
 	public List<PipelineConnector> getConnectors() {
 		return connectors;
+	}
+	
+	/**
+	 * @return all the outgoing links from all the connectors 
+	 */
+	public List<PipelineLink> getAllOutLinks() {
+		ArrayList<PipelineLink> result = new ArrayList<PipelineLink>();
+		
+		for (PipelineConnector pc : connectors) {
+			result.addAll(pc.getLinks());
+		}
+		
+		return result;
 	}
 
 }

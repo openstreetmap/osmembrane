@@ -1,7 +1,6 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.AdjustmentEvent;
@@ -22,7 +21,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.Action;
-import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
@@ -78,12 +76,13 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * the current changes of the display (move dragging, zoom animation)
 	 */
 	private AffineTransform currentDisplay;
-	
+
 	/**
-	 * The layered pane to show functions, connectors, links (in this particular order)
+	 * The layered pane to show functions, connectors, links (in this particular
+	 * order)
 	 */
 	private JLayeredPane layeredPane;
-	
+
 	/**
 	 * The constants applicable for the layeredPane.
 	 */
@@ -186,12 +185,12 @@ public class PipelinePanel extends JPanel implements Observer {
 
 		this.objectToWindow = new AffineTransform();
 		this.currentDisplay = new AffineTransform();
-		
+
 		this.layeredPane = new JLayeredPane();
 		this.layeredPane.setVisible(true);
 		this.layeredPane.setOpaque(true);
 		add(this.layeredPane);
-		
+
 		// register as observer
 		ViewRegistry.getInstance().addObserver(this);
 
@@ -365,7 +364,7 @@ public class PipelinePanel extends JPanel implements Observer {
 			} /* mouseDragged */
 		});
 	}
-	
+
 	/**
 	 * Makes object to window exactly the translation to a point
 	 * 
@@ -555,6 +554,9 @@ public class PipelinePanel extends JPanel implements Observer {
 		arrange();
 	}
 
+	/**
+	 * All addition and removal of objects must be done here.
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		// check for notice from the pipeline model
@@ -573,6 +575,10 @@ public class PipelinePanel extends JPanel implements Observer {
 				for (PipelineConnector pc : pfAdd.getConnectors()) {
 					connectors.put(pc.getModelConnector(), pc);
 					layeredPane.add(pc, CONNECTOR_LAYER);
+
+					for (PipelineLink pl : pc.getLinks()) {
+						layeredPane.add(pl, LINK_LAYER);
+					}
 				}
 
 				arrange(pfAdd);
@@ -602,6 +608,10 @@ public class PipelinePanel extends JPanel implements Observer {
 						for (PipelineConnector pc : pfDelete.getConnectors()) {
 							connectors.remove(pc.getModelConnector());
 							layeredPane.remove(pc);
+
+							for (PipelineLink pl : pc.getLinks()) {
+								layeredPane.remove(pl);
+							}
 						}
 
 						functions.remove(i);
@@ -627,9 +637,33 @@ public class PipelinePanel extends JPanel implements Observer {
 					for (PipelineConnector pc : pfFullChange.getConnectors()) {
 						connectors.put(pc.getModelConnector(), pc);
 						layeredPane.add(pc, CONNECTOR_LAYER);
+
+						for (PipelineLink pl : pc.getLinks()) {
+							layeredPane.add(pl, LINK_LAYER);
+						}
 					}
 				}
 				arrange();
+				break;
+
+			// new connection added
+			case ADD_CONNECTION:
+				PipelineConnector sourceAdd = findConnector(poo
+						.getChangedConnectors()[0]);
+				PipelineLink plAdd = sourceAdd.addLinkTo(findConnector(poo
+						.getChangedConnectors()[1]));
+				layeredPane.add(plAdd, LINK_LAYER);
+				break;
+
+			// connection deleted
+			case DELETE_CONNECTION:
+				PipelineConnector sourceDel = findConnector(poo
+						.getChangedConnectors()[0]);
+				PipelineLink plDel = sourceDel.removeLinkTo(findConnector(poo
+						.getChangedConnectors()[1]));
+				if (plDel != null) {
+					layeredPane.remove(plDel);
+				}
 				break;
 			}
 		}
@@ -856,7 +890,8 @@ public class PipelinePanel extends JPanel implements Observer {
 			ConnectingFunctionsEvent cfe = new ConnectingFunctionsEvent(this,
 					connectionStart.getModelFunction(),
 					connectionPoint.getModelFunction());
-			ActionRegistry.getInstance().get(AddConnectionAction.class).actionPerformed(cfe);
+			ActionRegistry.getInstance().get(AddConnectionAction.class)
+					.actionPerformed(cfe);
 			this.connectionStart = null;
 		}
 	}

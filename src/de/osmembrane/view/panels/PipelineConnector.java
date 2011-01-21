@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -63,6 +64,11 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	private int amount;
 
 	/**
+	 * list of links going from this connector to other connectors
+	 */
+	private List<PipelineLink> links;
+
+	/**
 	 * Creates a new connector for a model connector on a pipeline function.
 	 * 
 	 * @param modelConnector
@@ -84,15 +90,44 @@ public class PipelineConnector extends DisplayTemplatePanel {
 		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
 				displayTemplate.getIconHeight()));
 		this.pipeline = pipeline;
+
 		this.isOutpipes = isOutpipes;
 		this.id = id;
 		this.amount = amount;
+
+		this.links = new ArrayList<PipelineLink>();
 
 		// find right color
 		Color color = getConnectionColor(modelConnector.getType());
 		this.setOpaque(false);
 
 		display = derivateDisplay(displayTemplate, color, null);
+
+		// create links
+		if (isOutpipes) {
+			createLinks();
+		}
+	}
+
+	/**
+	 * Creates all the outflowing links from this connector.
+	 */
+	private void createLinks() {
+		for (AbstractConnector ac : modelConnector.getConnections()) {
+			PipelineLink pl = new PipelineLink(pipeline, this,
+					pipeline.findConnector(ac),
+					getConnectionColor(modelConnector.getType()));
+
+			links.add(pl);
+		}
+	}
+
+	/**
+	 * Arranges all links to conform to the connector
+	 */
+	public void arrangeLinks() {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -157,6 +192,47 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 */
 	public int getAmount() {
 		return this.amount;
+	}
+
+	/**
+	 * @return the list of links flowing out from this connector
+	 */
+	public List<PipelineLink> getLinks() {
+		return this.links;
+	}
+
+	/**
+	 * Creates a new link to toConnector and returns it.
+	 * 
+	 * @param toConnector
+	 *            the target of the connection from here
+	 * @return the newly created link
+	 */
+	public PipelineLink addLinkTo(PipelineConnector toConnector) {
+		PipelineLink pl = new PipelineLink(pipeline, this, toConnector,
+				getConnectionColor(modelConnector.getType()));
+		links.add(pl);
+		return pl;
+	}
+
+	/**
+	 * Removes the link to toConnector and returns it.
+	 * 
+	 * @param toConnector
+	 *            the target of the connection from here
+	 * @return the removed link, or null if none found
+	 */
+	public PipelineLink removeLinkTo(PipelineConnector toConnector) {
+		for (int i = 0; i < links.size(); i++) {
+			PipelineLink pl = links.get(i);
+
+			if (pl.links(this, toConnector)) {
+				links.remove(i);
+				return pl;
+			}
+		}
+
+		return null;
 	}
 
 }
