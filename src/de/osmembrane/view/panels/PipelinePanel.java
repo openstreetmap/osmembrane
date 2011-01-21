@@ -24,9 +24,6 @@ import javax.swing.Action;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.SwingUtilities;
-
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
@@ -89,9 +86,9 @@ public class PipelinePanel extends JPanel implements Observer {
 	/**
 	 * The constants applicable for the layeredPane.
 	 */
-	private static final Integer FUNCTION_LAYER = new Integer(3);
-	private static final Integer CONNECTOR_LAYER = new Integer(1);
-	private static final Integer LINK_LAYER = new Integer(2);
+	private static final Integer FUNCTION_LAYER = new Integer(1);
+	private static final Integer CONNECTOR_LAYER = new Integer(2);
+	private static final Integer LINK_LAYER = new Integer(3);
 
 	/**
 	 * Saves the point in object coordinates when a drag and drop action occurs

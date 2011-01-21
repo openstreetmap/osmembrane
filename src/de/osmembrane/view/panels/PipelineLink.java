@@ -152,7 +152,7 @@ public class PipelineLink extends JPanel {
 		int drawWidth = pipeline.objToWindowDelta(new Point2D.Double(0.0,
 				LINE_DRAWING_WIDTH)).y;
 		
-		// use the dot product, luke
+		// use the dot product, Luke
 		double deltaX = line.getX2() - line.getX1();
 		double deltaY = line.getY2() - line.getY1(); 
 		double length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -163,6 +163,7 @@ public class PipelineLink extends JPanel {
 			alpha = 2.0 * Math.PI - alpha;
 		}
 		
+		// alpha = the clockwise counted angle from the x-axis to the left		
 		// y = sin(alpha), x = cos(alpha)
 
 		p.addPoint((int) (line.getX1() + (Math.cos(alpha - 0.25 * Math.PI) * drawWidth)),
@@ -176,19 +177,43 @@ public class PipelineLink extends JPanel {
 				   (int) (line.getY2() + (Math.sin(alpha - 0.25 * Math.PI) * drawWidth)));
 
 		g.fillPolygon(p);
+		
+		// some radius, some tip
+		double arrowRadius = getLinkDestination().getWidth() / 2.0;
 
-		if (linkSource.getX() < linkDestination.getX()) {
-			// arrow goes like ----->
-
+		Polygon arrowHead = new Polygon();
+		if (linkSource.getX() < linkDestination.getX()) {						
+			// arrow goes like left -----> right
+			double tipLength = (length - arrowRadius) / length;
+			Point2D arrowTip = new Point2D.Double(line.getX1() + (line.getX2() - line.getX1()) * tipLength,
+					line.getY1() + (line.getY2() - line.getY1()) * tipLength);
+			
+			arrowHead.addPoint((int) (arrowTip.getX() + arrowRadius * Math.cos(alpha - 0.25 * Math.PI)),
+					(int) (arrowTip.getY() + arrowRadius * Math.sin(alpha - 0.25 * Math.PI)));			
+			arrowHead.addPoint((int) arrowTip.getX(), (int) arrowTip.getY());			
+			arrowHead.addPoint((int) (arrowTip.getX() + arrowRadius * Math.cos(alpha + 0.25 * Math.PI)),
+					(int) (arrowTip.getY() + arrowRadius * Math.sin(alpha + 0.25 * Math.PI)));
+			
 		} else {
-			// arrow goes like <-----
-
+			// arrow goes like left <----- right
+			double tipLength = arrowRadius / length;
+			Point2D arrowTip = new Point2D.Double(line.getX1() + (line.getX2() - line.getX1()) * tipLength,
+					line.getY1() + (line.getY2() - line.getY1()) * tipLength);
+			
+			arrowHead.addPoint((int) (arrowTip.getX() + arrowRadius * Math.cos(alpha - 0.75 * Math.PI)),
+					(int) (arrowTip.getY() + arrowRadius * Math.sin(alpha - 0.75 * Math.PI)));			
+			arrowHead.addPoint((int) arrowTip.getX(), (int) arrowTip.getY());			
+			arrowHead.addPoint((int) (arrowTip.getX() + arrowRadius * Math.cos(alpha + 0.75 * Math.PI)),
+					(int) (arrowTip.getY() + arrowRadius * Math.sin(alpha + 0.75 * Math.PI)));
+			
 		}
+		
+		g.fillPolygon(arrowHead);		
 	}
 
 	@Override
 	public boolean contains(int x, int y) {
-		return line.ptLineDist(x, y) <= LINE_SELECTION_WIDTH;
+		return line.ptSegDist(x, y) <= LINE_SELECTION_WIDTH;
 	}
 
 	/**
