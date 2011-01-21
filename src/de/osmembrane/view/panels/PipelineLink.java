@@ -10,6 +10,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * The visual (and selectable) component which displays the links between
@@ -77,15 +78,23 @@ public class PipelineLink extends JPanel {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
+						PipelineLink.this, e, pipeline);
+				pipeline.dispatchEvent(pipelineEvent);
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
+						PipelineLink.this, e, pipeline);
+
 				switch (pipeline.getActiveTool()) {
 				case DEFAULT_MAGIC_TOOL:
 				case SELECTION_TOOL:
 					pipeline.selected(PipelineLink.this);
 					break;
+				default:
+					pipeline.dispatchEvent(pipelineEvent);
 				}
 			}
 
@@ -145,70 +154,96 @@ public class PipelineLink extends JPanel {
 	}
 
 	@Override
-	protected void paintComponent(Graphics g) {
-		g.setColor(color);
+	protected void paintComponent(Graphics g) {		
+		if (this.equals(pipeline.getSelected())) {
+			float[] colorRGB = color.getComponents(null);
+			Color highlightColor = new Color(Math.min(1.0f, colorRGB[0] + 0.25f),
+					Math.min(1.0f, colorRGB[1] + 0.25f), Math.min(1.0f,
+							colorRGB[2] + 0.25f));
+			g.setColor(highlightColor);
+		} else {
+			g.setColor(color);
+		}
 
 		Polygon p = new Polygon();
 		int drawWidth = pipeline.objToWindowDelta(new Point2D.Double(0.0,
 				LINE_DRAWING_WIDTH)).y;
-		
+
 		// use the dot product, Luke
 		double deltaX = line.getX2() - line.getX1();
-		double deltaY = line.getY2() - line.getY1(); 
+		double deltaY = line.getY2() - line.getY1();
 		double length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 		double alpha = Math.acos(-1.0 * (line.getX2() - line.getX1()) / length);
-		
+
 		// if alpha too large to get returned by acos
 		if (line.getY2() > line.getY1()) {
 			alpha = 2.0 * Math.PI - alpha;
 		}
-		
-		// alpha = the clockwise counted angle from the x-axis to the left		
+
+		// alpha = the clockwise counted angle from the x-axis to the left
 		// y = sin(alpha), x = cos(alpha)
 
-		p.addPoint((int) (line.getX1() + (Math.cos(alpha - 0.25 * Math.PI) * drawWidth)),
-				   (int) (line.getY1() + (Math.sin(alpha - 0.25 * Math.PI) * drawWidth)));
-		p.addPoint((int) (line.getX1() + (Math.cos(alpha + 0.25 * Math.PI) * drawWidth)),
-				   (int) (line.getY1() + (Math.sin(alpha + 0.25 * Math.PI) * drawWidth)));
+		p.addPoint(
+				(int) (line.getX1() + (Math.cos(alpha - 0.25 * Math.PI) * drawWidth)),
+				(int) (line.getY1() + (Math.sin(alpha - 0.25 * Math.PI) * drawWidth)));
+		p.addPoint(
+				(int) (line.getX1() + (Math.cos(alpha + 0.25 * Math.PI) * drawWidth)),
+				(int) (line.getY1() + (Math.sin(alpha + 0.25 * Math.PI) * drawWidth)));
 
-		p.addPoint((int) (line.getX2() + (Math.cos(alpha + 0.25 * Math.PI) * drawWidth)),
-				   (int) (line.getY2() + (Math.sin(alpha + 0.25 * Math.PI) * drawWidth)));
-		p.addPoint((int) (line.getX2() + (Math.cos(alpha - 0.25 * Math.PI) * drawWidth)),
-				   (int) (line.getY2() + (Math.sin(alpha - 0.25 * Math.PI) * drawWidth)));
+		p.addPoint(
+				(int) (line.getX2() + (Math.cos(alpha + 0.25 * Math.PI) * drawWidth)),
+				(int) (line.getY2() + (Math.sin(alpha + 0.25 * Math.PI) * drawWidth)));
+		p.addPoint(
+				(int) (line.getX2() + (Math.cos(alpha - 0.25 * Math.PI) * drawWidth)),
+				(int) (line.getY2() + (Math.sin(alpha - 0.25 * Math.PI) * drawWidth)));
 
 		g.fillPolygon(p);
-		
+
 		// some radius, some tip
 		double arrowRadius = getLinkDestination().getWidth() / 2.0;
 
 		Polygon arrowHead = new Polygon();
-		if (linkSource.getX() < linkDestination.getX()) {						
+		if (linkSource.getX() < linkDestination.getX()) {
 			// arrow goes like left -----> right
 			double tipLength = (length - arrowRadius) / length;
-			Point2D arrowTip = new Point2D.Double(line.getX1() + (line.getX2() - line.getX1()) * tipLength,
-					line.getY1() + (line.getY2() - line.getY1()) * tipLength);
-			
-			arrowHead.addPoint((int) (arrowTip.getX() + arrowRadius * Math.cos(alpha - 0.25 * Math.PI)),
-					(int) (arrowTip.getY() + arrowRadius * Math.sin(alpha - 0.25 * Math.PI)));			
-			arrowHead.addPoint((int) arrowTip.getX(), (int) arrowTip.getY());			
-			arrowHead.addPoint((int) (arrowTip.getX() + arrowRadius * Math.cos(alpha + 0.25 * Math.PI)),
-					(int) (arrowTip.getY() + arrowRadius * Math.sin(alpha + 0.25 * Math.PI)));
-			
+			Point2D arrowTip = new Point2D.Double(line.getX1()
+					+ (line.getX2() - line.getX1()) * tipLength, line.getY1()
+					+ (line.getY2() - line.getY1()) * tipLength);
+
+			arrowHead.addPoint(
+					(int) (arrowTip.getX() + arrowRadius
+							* Math.cos(alpha - 0.25 * Math.PI)),
+					(int) (arrowTip.getY() + arrowRadius
+							* Math.sin(alpha - 0.25 * Math.PI)));
+			arrowHead.addPoint((int) arrowTip.getX(), (int) arrowTip.getY());
+			arrowHead.addPoint(
+					(int) (arrowTip.getX() + arrowRadius
+							* Math.cos(alpha + 0.25 * Math.PI)),
+					(int) (arrowTip.getY() + arrowRadius
+							* Math.sin(alpha + 0.25 * Math.PI)));
+
 		} else {
 			// arrow goes like left <----- right
 			double tipLength = arrowRadius / length;
-			Point2D arrowTip = new Point2D.Double(line.getX1() + (line.getX2() - line.getX1()) * tipLength,
-					line.getY1() + (line.getY2() - line.getY1()) * tipLength);
-			
-			arrowHead.addPoint((int) (arrowTip.getX() + arrowRadius * Math.cos(alpha - 0.75 * Math.PI)),
-					(int) (arrowTip.getY() + arrowRadius * Math.sin(alpha - 0.75 * Math.PI)));			
-			arrowHead.addPoint((int) arrowTip.getX(), (int) arrowTip.getY());			
-			arrowHead.addPoint((int) (arrowTip.getX() + arrowRadius * Math.cos(alpha + 0.75 * Math.PI)),
-					(int) (arrowTip.getY() + arrowRadius * Math.sin(alpha + 0.75 * Math.PI)));
-			
+			Point2D arrowTip = new Point2D.Double(line.getX1()
+					+ (line.getX2() - line.getX1()) * tipLength, line.getY1()
+					+ (line.getY2() - line.getY1()) * tipLength);
+
+			arrowHead.addPoint(
+					(int) (arrowTip.getX() + arrowRadius
+							* Math.cos(alpha - 0.75 * Math.PI)),
+					(int) (arrowTip.getY() + arrowRadius
+							* Math.sin(alpha - 0.75 * Math.PI)));
+			arrowHead.addPoint((int) arrowTip.getX(), (int) arrowTip.getY());
+			arrowHead.addPoint(
+					(int) (arrowTip.getX() + arrowRadius
+							* Math.cos(alpha + 0.75 * Math.PI)),
+					(int) (arrowTip.getY() + arrowRadius
+							* Math.sin(alpha + 0.75 * Math.PI)));
+
 		}
-		
-		g.fillPolygon(arrowHead);		
+
+		g.fillPolygon(arrowHead);
 	}
 
 	@Override

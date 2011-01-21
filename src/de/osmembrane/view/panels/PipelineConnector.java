@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.geom.Point2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.ConnectorType;
@@ -36,6 +38,11 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 * The model-connector associated with this connector
 	 */
 	private AbstractConnector modelConnector;
+
+	/**
+	 * The parent pipeline function associated with this connector
+	 */
+	private PipelineFunction parentFunction;
 
 	/**
 	 * Pipeline this connector is drawn on.
@@ -74,6 +81,8 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 * 
 	 * @param modelConnector
 	 *            connector in the model which is represented
+	 * @param parentFunction
+	 *            the function this connector belongs to
 	 * @param pipeline
 	 *            Pipeline this connector is drawn on
 	 * @param isOutpipes
@@ -86,17 +95,53 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 *            specific function they are created for
 	 */
 	public PipelineConnector(AbstractConnector modelConnector,
-			PipelinePanel pipeline, boolean isOutpipes, int id, int amount) {
+			final PipelineFunction parentFunction,
+			final PipelinePanel pipeline, boolean isOutpipes, int id, int amount) {
 		this.modelConnector = modelConnector;
 		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
 				displayTemplate.getIconHeight()));
 		this.pipeline = pipeline;
+		this.parentFunction = parentFunction;
 
 		this.isOutpipes = isOutpipes;
 		this.id = id;
 		this.amount = amount;
 
 		this.links = new ArrayList<PipelineLink>();
+
+		this.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
+						PipelineConnector.this, e, pipeline);
+				pipeline.dispatchEvent(pipelineEvent);
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
+						PipelineConnector.this, e, pipeline);
+
+				if (pipeline.getActiveTool() == Tool.DEFAULT_MAGIC_TOOL) {
+					pipeline.connect(parentFunction);
+				} else {
+					pipeline.dispatchEvent(pipelineEvent);
+				}
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 
 		// find right color
 		Color color = getConnectionColor(modelConnector.getType());
@@ -257,6 +302,13 @@ public class PipelineConnector extends DisplayTemplatePanel {
 		}
 
 		return null;
+	}
+
+	/**
+	 * @return the parent function this connector belongs to
+	 */
+	public PipelineFunction getParentFunction() {
+		return this.parentFunction;
 	}
 
 }

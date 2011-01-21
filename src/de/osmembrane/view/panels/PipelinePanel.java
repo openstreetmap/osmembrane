@@ -593,7 +593,20 @@ public class PipelinePanel extends JPanel implements Observer {
 					if (pfChange.getModelFunction().equals(
 							poo.getChangedFunction())) {
 						arrange(pfChange);
-						
+
+						// TODO FIXME:: THIS IS A workaround
+						// if this function has links to its in-connectors,
+						// arrange those functions too
+						// (this will arrange the links to here)
+						for (PipelineFunction pf : functions) {
+							for (PipelineLink pl : pf.getAllOutLinks()) {
+								if (pl.getLinkDestination().getParentFunction()
+										.equals(pfChange)) {
+									arrange(pf);
+								}
+							}
+						}
+
 						repaint();
 					}
 				}
@@ -674,6 +687,9 @@ public class PipelinePanel extends JPanel implements Observer {
 				if (plDel != null) {
 					layeredPane.remove(plDel);
 				}
+				
+				arrange();
+				repaint();
 				break;
 			}
 		}
@@ -812,7 +828,7 @@ public class PipelinePanel extends JPanel implements Observer {
 		if (selected != null) {
 			if (selected instanceof PipelineFunction) {
 				repaint();
-				
+
 				// edit in inspector panel
 				PipelineFunction pf = (PipelineFunction) childObject;
 				functionInspector.inspect(pf.getModelFunction());

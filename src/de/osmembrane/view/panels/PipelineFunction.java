@@ -69,14 +69,14 @@ public class PipelineFunction extends LibraryFunction {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
 						PipelineFunction.this, e, pipeline);
 
 				switch (pipeline.getActiveTool()) {
 				case DEFAULT_MAGIC_TOOL:
 				case VIEW_TOOL:
 				case SELECTION_TOOL:
-					pipeline.dispatchEvent(mainFrameEvent);
+					pipeline.dispatchEvent(pipelineEvent);
 					break;
 				case CONNECTION_TOOL:
 					break;
@@ -85,17 +85,17 @@ public class PipelineFunction extends LibraryFunction {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
 						PipelineFunction.this, e, pipeline);
 
 				switch (pipeline.getActiveTool()) {
 				case DEFAULT_MAGIC_TOOL:
 				case SELECTION_TOOL:
 					pipeline.selected(PipelineFunction.this);
-					pipeline.setDraggingFrom(mainFrameEvent.getPoint());
+					pipeline.setDraggingFrom(pipelineEvent.getPoint());
 					break;
 				case VIEW_TOOL:
-					pipeline.dispatchEvent(mainFrameEvent);
+					pipeline.dispatchEvent(pipelineEvent);
 					break;
 				case CONNECTION_TOOL:
 					pipeline.connect(PipelineFunction.this);
@@ -124,14 +124,14 @@ public class PipelineFunction extends LibraryFunction {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				MouseEvent mainFrameEvent = SwingUtilities.convertMouseEvent(
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
 						PipelineFunction.this, e, pipeline);
 
 				switch (pipeline.getActiveTool()) {
 				case DEFAULT_MAGIC_TOOL:
 				case VIEW_TOOL:
 				case SELECTION_TOOL:
-					pipeline.dispatchEvent(mainFrameEvent);
+					pipeline.dispatchEvent(pipelineEvent);
 					break;
 				}
 			}
@@ -150,7 +150,7 @@ public class PipelineFunction extends LibraryFunction {
 			boolean areOut) {
 		int size = connectorList.length;
 		for (int i = 0; i < size; i++) {
-			PipelineConnector pc = new PipelineConnector(connectorList[i],
+			PipelineConnector pc = new PipelineConnector(connectorList[i], this,
 					pipeline, areOut, i, size);
 			connectors.add(pc);
 		}
