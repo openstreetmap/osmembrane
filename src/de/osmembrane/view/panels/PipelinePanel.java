@@ -25,6 +25,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
+import org.w3c.dom.stylesheets.LinkStyle;
+
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.AddConnectionAction;
@@ -129,10 +131,10 @@ public class PipelinePanel extends JPanel implements Observer {
 	private Tool activeTool;
 
 	/**
-	 * The currently selected object (either a PipelineFunction or a
-	 * PipelineConnector)
+	 * The currently selected object (either a {@link PipelineFunction} or a
+	 * {@link PipelineLink})
 	 */
-	private JPanel selected;
+	private Object selected;
 
 	/**
 	 * The temporary saving slot for creating a two point connection.
@@ -623,6 +625,7 @@ public class PipelinePanel extends JPanel implements Observer {
 
 			// the whole pipeline was exchanged
 			case FULLCHANGE:
+				// let's pray for the GC to get this right
 				functions.clear();
 				layeredPane.removeAll();
 
@@ -653,6 +656,10 @@ public class PipelinePanel extends JPanel implements Observer {
 				PipelineLink plAdd = sourceAdd.addLinkTo(findConnector(poo
 						.getChangedConnectors()[1]));
 				layeredPane.add(plAdd, LINK_LAYER);
+
+				// necessary to let the arrange() methods perform the correct
+				// size of the new, deeply nested link
+				arrange();
 				break;
 
 			// connection deleted
@@ -790,33 +797,48 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Called when a child object thinks it got selected
+	 * Called when a child object thinks it got selected. Only defined for
+	 * {@link PipelineFunction} and {@link PipelineLink}.
 	 * 
-	 * @param pipelineFunction
+	 * @param childObject
+	 *            child function to be selected
 	 */
-	public void selected(PipelineFunction pipelineFunction) {
-		selected = pipelineFunction;
+	public void selected(Object childObject) {
+		selected = childObject;
 
 		if (selected != null) {
-			for (PipelineFunction pf : functions) {
-				pf.repaint();
+			if (selected instanceof PipelineFunction) {
+				// redraw all functions
+				for (PipelineFunction pf : functions) {
+					pf.repaint();
+				}
+
+				// edit in inspector panel
+				PipelineFunction pf = (PipelineFunction) childObject;
+				functionInspector.inspect(pf.getModelFunction());
+
+			} else if (selected instanceof PipelineLink) {
+				// redraw all links
+				for (PipelineFunction pf : functions) {
+					for (PipelineLink pl : pf.getAllOutLinks()) {
+						pl.repaint();
+					}
+				}
+
 			}
-
-			// enable deleting & duplicating
-			ActionRegistry.getInstance().get(DeleteSelectionAction.class)
-					.setEnabled(selected != null);
-			ActionRegistry
-					.getInstance()
-					.get(DuplicateFunctionAction.class)
-					.setEnabled(
-							(selected != null)
-									&& (selected instanceof PipelineFunction));
-
-			// edit in inspector panel
-			functionInspector.inspect(pipelineFunction.getModelFunction());
 		} else {
 			functionInspector.inspect(null);
 		}
+
+		// enable deleting & duplicating
+		ActionRegistry.getInstance().get(DeleteSelectionAction.class)
+				.setEnabled(selected != null);
+		ActionRegistry
+				.getInstance()
+				.get(DuplicateFunctionAction.class)
+				.setEnabled(
+						(selected != null)
+								&& (selected instanceof PipelineFunction));
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,7 +127,40 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 * Arranges all links to conform to the connector
 	 */
 	public void arrangeLinks() {
-		// TODO Auto-generated method stub
+		for (PipelineLink pl : links) {
+			PipelineConnector dest = pl.getLinkDestination();
+
+			/* set size, set location */
+			if (this.getX() < dest.getX()) {
+				// arrow goes like ----->
+				if (this.getY() < dest.getY()) {
+					// left top to right bottom
+					pl.setLocation(this.getX(), this.getY());
+					pl.setSize(dest.getWidth() + dest.getX() - this.getX(),
+							dest.getHeight() + dest.getY() - this.getY());
+				} else {
+					// left bottom to right top
+					pl.setLocation(this.getX(), dest.getY());
+					pl.setSize(dest.getWidth() + dest.getX() - this.getX(),
+							this.getHeight() + this.getY() - dest.getY());
+				}
+			} else {
+				// arrow goes like <-----
+				if (this.getY() < dest.getY()) {
+					// right bottom to left top
+					pl.setLocation(dest.getX(), dest.getY());
+					pl.setSize(this.getWidth() + this.getX() - dest.getX(),
+							this.getHeight() + this.getY() - dest.getY());
+				} else {
+					// right top to left bottom
+					pl.setLocation(dest.getX(), this.getY());
+					pl.setSize(this.getWidth() + this.getX() - dest.getX(),
+							dest.getHeight() + dest.getY() - this.getY());
+				}
+			}
+
+			pl.regenerateLine();
+		}
 
 	}
 
@@ -154,16 +188,6 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		g.drawImage(display, 0, 0, getWidth(), getHeight(), this);
-
-		if (isOutpipes) {
-			for (AbstractConnector ac : modelConnector.getConnections()) {
-				PipelineConnector target = pipeline.findConnector(ac);
-
-				Graphics g2 = pipeline.getGraphics();
-				g2.drawLine(this.getLocation().x, this.getLocation().y,
-						target.getLocation().x, target.getLocation().y);
-			}
-		}
 	}
 
 	/**

@@ -1,7 +1,13 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
@@ -27,6 +33,17 @@ public class PipelineLink extends JPanel {
 	private Color color;
 
 	/**
+	 * The coordinates of the line to draw
+	 */
+	private Line2D line;
+
+	/**
+	 * The specific widths of the actual line in object coordinates
+	 */
+	private static final double LINE_DRAWING_WIDTH = 5.0;
+	private static final double LINE_SELECTION_WIDTH = 15.0;
+
+	/**
 	 * Pipeline this connector is drawn on.
 	 */
 	private PipelinePanel pipeline;
@@ -45,25 +62,104 @@ public class PipelineLink extends JPanel {
 	 * @param color
 	 *            the link will be drawn in
 	 */
-	public PipelineLink(PipelinePanel pipeline, PipelineConnector linkSource,
-			PipelineConnector linkDestination, Color color) {
+	public PipelineLink(final PipelinePanel pipeline,
+			PipelineConnector linkSource, PipelineConnector linkDestination,
+			Color color) {
 		this.pipeline = pipeline;
 		this.linkSource = linkSource;
 		this.linkDestination = linkDestination;
 		this.color = color;
+		this.line = new Line2D.Double();
+
 		this.setOpaque(false);
+
+		this.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				switch (pipeline.getActiveTool()) {
+				case DEFAULT_MAGIC_TOOL:
+				case SELECTION_TOOL:
+					pipeline.selected(PipelineLink.this);
+					break;
+				}
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+	}
+
+	/**
+	 * Regenerates the line to be drawn, if one or more connectors have moved.
+	 * It is assumed the link's size and location is already correctly set.
+	 */
+	public void regenerateLine() {
+		Point2D left;
+		Point2D right;
+
+		Point offset = new Point(linkSource.getWidth() / 2,
+				linkSource.getHeight() / 2);
+
+		if (linkSource.getX() < linkDestination.getX()) {
+			// arrow goes like ----->
+			if (linkSource.getY() < linkDestination.getY()) {
+				// left top to right bottom
+				left = new Point2D.Double(offset.x, offset.y);
+				right = new Point2D.Double(getWidth() - offset.x, getHeight() - offset.y);
+			} else {
+				// left bottom to right top
+				left = new Point2D.Double(offset.x, getHeight() - offset.y);
+				right = new Point2D.Double(getWidth() - offset.x, offset.y);
+			}
+		} else {
+			// arrow goes like <-----
+			if (linkSource.getY() < linkDestination.getY()) {
+				// right bottom to left top
+				right = new Point2D.Double(getWidth() - offset.x, getHeight() - offset.y);
+				left = new Point2D.Double(offset.x, offset.y);
+			} else {
+				// right top to left bottom				
+				right = new Point2D.Double(getWidth() - offset.x, offset.y);
+				left = new Point2D.Double(offset.x, getHeight() - offset.y);
+			}
+		}
+
+		line.setLine(left, right);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		// TODO Auto-generated method stub
-		super.paintComponent(g);
+		g.setColor(color);
+
+		g.drawLine((int) line.getX1(), (int) line.getY1(), (int) line.getX2(),
+				(int) line.getY2());
+
+		if (linkSource.getX() < linkDestination.getX()) {
+			// arrow goes like ----->
+
+		} else {
+			// arrow goes like <-----
+
+		}
 	}
 
 	@Override
 	public boolean contains(int x, int y) {
-		// TODO Auto-generated method stub
-		return super.contains(x, y);
+		return line.ptLineDist(x, y) <= LINE_SELECTION_WIDTH;
 	}
 
 	/**
@@ -81,6 +177,20 @@ public class PipelineLink extends JPanel {
 		return (linkSource.equals(questFrom) && linkDestination.equals(questTo))
 				|| (linkSource.equals(questTo) && linkDestination
 						.equals(questFrom));
+	}
+
+	/**
+	 * @return the link source connector (i.e. an out connector)
+	 */
+	public PipelineConnector getLinkSource() {
+		return this.linkSource;
+	}
+
+	/**
+	 * @return the link destination connector (i.e. an in connector)
+	 */
+	public PipelineConnector getLinkDestination() {
+		return this.linkDestination;
 	}
 
 }

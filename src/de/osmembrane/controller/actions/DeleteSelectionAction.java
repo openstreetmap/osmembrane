@@ -18,6 +18,7 @@ import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;
 import de.osmembrane.view.panels.PipelineFunction;
+import de.osmembrane.view.panels.PipelineLink;
 
 public class DeleteSelectionAction extends AbstractAction {
 
@@ -44,10 +45,16 @@ public class DeleteSelectionAction extends AbstractAction {
 				PipelineFunction pf = (PipelineFunction) selected;
 				ModelProxy.getInstance().accessPipeline()
 						.deleteFunction(pf.getModelFunction());
-				
-			} else if (selected instanceof AbstractConnector) {
-				// OH CRAP!
+
+			} else if (selected instanceof PipelineLink) {
+				PipelineLink pl = (PipelineLink) selected;
+				pl.getLinkSource()
+						.getModelConnector()
+						.getParent()
+						.removeConnectionTo(
+								pl.getLinkDestination().getModelConnector()
+										.getParent());
 			}
-		} 
+		}
 	} /* actionPerformed */
 }
