@@ -468,7 +468,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Zooms in
+	 * Zooms out
 	 */
 	public void zoomOut() {
 		zoom(new Point(getWidth() / 2, getHeight() / 2), STANDARD_ZOOM_OUT);

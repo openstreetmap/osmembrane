@@ -75,7 +75,7 @@ public class OSMembranePersistence extends AbstractPersistence {
 	public void update(Observable o, Object arg) {
 		if (arg instanceof PipelineObserverObject) {
 			try {
-				((PipelineObserverObject) arg).getPipeline().savePipeline(Constants.DEFAULT_BACKUP_FILE);
+				((PipelineObserverObject) arg).getPipeline().backupPipeline();
 			} catch (FileException e) {
 				/* forward the exception to the view */
 				Application

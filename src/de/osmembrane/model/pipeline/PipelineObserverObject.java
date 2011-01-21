@@ -137,8 +137,8 @@ public class PipelineObserverObject {
 	 *         first one is out connector, second one in connector.
 	 */
 	public AbstractConnector[] getChangedConnectors() {
-		AbstractConnector[] connectors = { changedInConnector,
-				changedOutConnector };
+		AbstractConnector[] connectors = { changedOutConnector,
+				changedInConnector };
 		return connectors;
 	}
 

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.AbstractPersistence;
 import de.osmembrane.model.persistence.FileException;
@@ -14,6 +12,7 @@ import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.model.persistence.OSMembranePersistence;
 import de.osmembrane.model.persistence.PersistenceFactory;
 import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
+import de.osmembrane.resources.Constants;
 
 /**
  * Implementation of {@link AbstractPipeline}.
@@ -29,6 +28,8 @@ public class Pipeline extends AbstractPipeline {
 	private Stack<Pipeline> redoStack;
 
 	private List<AbstractFunction> functions;
+
+	private boolean savedState = true;
 
 	/**
 	 * Constructor for {@link Pipeline}.
@@ -55,7 +56,8 @@ public class Pipeline extends AbstractPipeline {
 		func.addObserver(this);
 
 		/* notify the observers */
-		changedNotifyObservers(new PipelineObserverObject(ChangeType.ADD_FUNCTION, func));
+		changedNotifyObservers(new PipelineObserverObject(
+				ChangeType.ADD_FUNCTION, func));
 	}
 
 	@Override
@@ -71,14 +73,14 @@ public class Pipeline extends AbstractPipeline {
 
 		if (returnValue == true) {
 			/* notify the observers */
-			changedNotifyObservers(new PipelineObserverObject(ChangeType.DELETE_FUNCTION,
-					func));
+			changedNotifyObservers(new PipelineObserverObject(
+					ChangeType.DELETE_FUNCTION, func));
 		}
 		return returnValue;
 	}
 
 	@Override
-	public void truncate() {
+	public void clear() {
 		this.functions.clear();
 
 		/* notify the observers */
@@ -92,6 +94,17 @@ public class Pipeline extends AbstractPipeline {
 				.getPersistence(OSMembranePersistence.class);
 
 		persistence.save(filename, functions);
+
+		/* Saved successfully (persistence has not thrown a FileException */
+		savedState = true;
+	}
+
+	@Override
+	public void backupPipeline() throws FileException {
+		AbstractPersistence persistence = PersistenceFactory.getInstance()
+				.getPersistence(OSMembranePersistence.class);
+
+		persistence.save(Constants.DEFAULT_BACKUP_FILE, functions);
 	}
 
 	@Override
@@ -148,7 +161,8 @@ public class Pipeline extends AbstractPipeline {
 
 	@Override
 	public String generate(FileType filetype) {
-		return ParserFactory.getInstance().getParser(filetype.getParserClass()).parsePipeline(functions);
+		return ParserFactory.getInstance().getParser(filetype.getParserClass())
+				.parsePipeline(functions);
 	}
 
 	@Override
@@ -157,6 +171,11 @@ public class Pipeline extends AbstractPipeline {
 		check.run();
 		/* check for SCCs greater than 1 */
 		return (check.getSCC(2).size() > 0);
+	}
+
+	@Override
+	public boolean isSaved() {
+		return savedState;
 	}
 
 	@Override
@@ -193,10 +212,17 @@ public class Pipeline extends AbstractPipeline {
 
 		/* only PipelineObserverObjects will be passed through */
 		if (arg instanceof PipelineObserverObject) {
-			((PipelineObserverObject) arg).setPipeline(this);
-
-			setChanged();
-			notifyObservers(arg);
+			changedNotifyObservers((PipelineObserverObject) arg);
 		}
+	}
+
+	@Override
+	protected void changedNotifyObservers(PipelineObserverObject poo) {
+		poo.setPipeline(this);
+		this.setChanged();
+		this.notifyObservers(poo);
+
+		/* any changes made, set savedState to false */
+		savedState = false;
 	}
 }

@@ -43,7 +43,7 @@ public class Application {
 		try {
 			ModelProxy.getInstance().accessFunctions()
 					.initiate(Constants.XML_RESOURCE_PATH);
-			ModelProxy.getInstance().accessPipeline().truncate();
+			ModelProxy.getInstance().accessPipeline().clear();
 		} catch (Exception e) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N

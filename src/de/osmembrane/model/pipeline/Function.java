@@ -218,6 +218,13 @@ public class Function extends AbstractFunction {
 					/* found equal Connectors */
 					if (!connectorOut.isFull() && !connectorIn.isFull()) {
 
+						/* check if already a connection between these two function exists */
+						for(AbstractConnector con : connectorOut.getConnections()) {
+							if (con == connectorIn) {
+								throw new ConnectorException(Type.CONNECTION_ALREADY_EXISTS);
+							}
+						}
+						
 						/* first, add connections */
 						connectorIn.addConnection(connectorOut);
 						connectorOut.addConnection(connectorIn);

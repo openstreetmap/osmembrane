@@ -75,6 +75,13 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	 * @throws FileException when something with the IO went wrong
 	 */
 	public abstract void savePipeline(String filename) throws FileException;
+	
+	/**
+	 * Saves the pipeline to the default backup file.
+	 * 
+	 * @throws FileException when something with the IO went wrong
+	 */
+	public abstract void backupPipeline() throws FileException;
 
 	/**
 	 * Loads a pipeline from a OSMembrane file.
@@ -108,7 +115,7 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	/**
 	 * Creates an empty pipeline.
 	 */
-	public abstract void truncate();
+	public abstract void clear();
 
 	/**
 	 * Creates a String-representation for the current pipeline.
@@ -125,11 +132,14 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	public abstract boolean hasLoop();
 	
 	/**
+	 * Returns the save-state of the pipeline.
+	 * 
+	 * @return true when pipline is saved
+	 */
+	public abstract boolean isSaved();
+	
+	/**
 	 * Notifies all registered {@link Observer}s with pre-called {@link Observable#setChanged())}.
 	 */
-	protected void changedNotifyObservers(PipelineObserverObject poo) {
-		poo.setPipeline(this);
-		this.setChanged();
-		this.notifyObservers(poo);
-	}
+	protected abstract void changedNotifyObservers(PipelineObserverObject poo);
 }
