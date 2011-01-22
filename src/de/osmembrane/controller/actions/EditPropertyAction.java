@@ -34,8 +34,7 @@ public class EditPropertyAction extends AbstractAction {
 
 		// set new parameter
 		if (cfcpe.wasNewParameterSet()) {
-			af.getActiveTask().getParameters()[cfcpe.getChangedParameter()]
-					.setValue(cfcpe.getNewParameterValue());
+			cfcpe.getChangedParameter().setValue(cfcpe.getNewParameterValue());
 		}
 
 		// set new task

@@ -1,6 +1,7 @@
 package de.osmembrane.controller.events;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.pipeline.AbstractTask;
 
 /**
@@ -16,9 +17,9 @@ public class ContainingFunctionChangeParameterEvent extends ContainingEvent {
 	private static final long serialVersionUID = 9051024945589013774L;
 
 	/**
-	 * index of the parameter that was changed
+	 * the parameter that was changed
 	 */
-	private int changedParameter;
+	private AbstractParameter changedParameter;
 
 	/**
 	 * the new value of the parameter with index changedParameter
@@ -40,23 +41,23 @@ public class ContainingFunctionChangeParameterEvent extends ContainingEvent {
 	public ContainingFunctionChangeParameterEvent(Object source,
 			AbstractFunction contained) {
 		super(source, contained);
-		changedParameter = -1;
+		changedParameter = null;
 		newParameterValue = null;
 		newTask = null;
 	}
 
 	/**
-	 * @param changedParameter
+	 * @param param
 	 *            the changedParameter to set
 	 */
-	public void setChangedParameter(int changedParameter) {
-		this.changedParameter = changedParameter;
+	public void setChangedParameter(AbstractParameter param) {
+		this.changedParameter = param;
 	}
 
 	/**
 	 * @return the changedParameter
 	 */
-	public int getChangedParameter() {
+	public AbstractParameter getChangedParameter() {
 		return changedParameter;
 	}
 
@@ -79,7 +80,7 @@ public class ContainingFunctionChangeParameterEvent extends ContainingEvent {
 	 * @return whether a newParameter was set
 	 */
 	public boolean wasNewParameterSet() {
-		return (changedParameter > -1) && (newParameterValue != null);
+		return (changedParameter != null) && (newParameterValue != null);
 	}
 
 	/**

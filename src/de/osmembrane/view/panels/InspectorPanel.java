@@ -32,8 +32,11 @@ import de.osmembrane.controller.actions.EditPropertyAction;
 import de.osmembrane.controller.events.ContainingFunctionChangeParameterEvent;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
+import de.osmembrane.model.pipeline.AbstractEnumValue;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.pipeline.AbstractTask;
+import de.osmembrane.model.pipeline.ParameterType;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
@@ -108,13 +111,8 @@ public class InspectorPanel extends JPanel implements Observer {
 		taskComboModel = new InspectorPanelTableTaskComboBoxModel();
 
 		rowEditorModel = new RowEditorModel();
-		rowEditorModel.addEditorRow(0, new DefaultCellEditor(new JComboBox(
-				taskComboModel)));
 		propertyTableModel = new InspectorPanelTableModel();
 		propertyTable = new JRowTable(propertyTableModel, rowEditorModel);
-
-		propertyTable.getColumnModel().getColumn(0).setPreferredWidth(64);
-		propertyTable.getColumnModel().getColumn(1).setPreferredWidth(64);
 
 		propertyTable.addMouseListener(new MouseListener() {
 
@@ -246,6 +244,8 @@ public class InspectorPanel extends JPanel implements Observer {
 	 *            the inspected function to set
 	 */
 	public void inspect(AbstractFunction inspect) {
+		rowEditorModel.clear();
+
 		this.inspecting = inspect;
 
 		if (inspect == null) {
@@ -253,6 +253,21 @@ public class InspectorPanel extends JPanel implements Observer {
 					"View.Inspector.NoSelection"));
 		} else {
 			functionName.setText(inspect.getFriendlyName());
+
+			rowEditorModel.setEditorRow(0, new DefaultCellEditor(new JComboBox(
+					taskComboModel)));
+			for (int i = 0; i < inspect.getActiveTask().getParameters().length; i++) {
+				AbstractParameter ap = inspect.getActiveTask().getParameters()[i];
+				if (ap.getType() == ParameterType.ENUM) {
+					rowEditorModel
+							.setEditorRow(
+									i + 1,
+									new DefaultCellEditor(
+											new JComboBox(
+													new InspectorPanelTableCustomEnumComboBoxModel(
+															ap))));
+				}
+			}
 		}
 
 		propertyTableModel.fireTableDataChanged();
@@ -335,7 +350,8 @@ public class InspectorPanel extends JPanel implements Observer {
 						this, inspecting);
 
 				if (row > 0) {
-					cfcpe.setChangedParameter(row - 1);
+					cfcpe.setChangedParameter(inspecting.getActiveTask()
+							.getParameters()[row - 1]);
 					cfcpe.setNewParameterValue(aValue.toString());
 
 					ActionRegistry.getInstance().get(EditPropertyAction.class)
@@ -346,8 +362,9 @@ public class InspectorPanel extends JPanel implements Observer {
 	} /* InspectorPanelTableModel */
 
 	/**
-	 * Model for the combo box of the inspector panel's table. Is in a contest
-	 * with {@link ContainingFunctionChangeParameterEvent} for the longest name
+	 * Model for the task's combo box of the inspector panel's table. Is in a
+	 * contest with {@link ContainingFunctionChangeParameterEvent} and
+	 * {@link InspectorPanelTableCustomEnumComboBoxModel} for the longest name
 	 * in the project.
 	 * 
 	 * @author tobias_kuhn
@@ -405,6 +422,65 @@ public class InspectorPanel extends JPanel implements Observer {
 				}
 			}
 		} /* setSelectedItem */
+
+	}
+
+	/**
+	 * Model for an enum property of the combo box of the inspector panel's
+	 * table. Is in a contest with
+	 * {@link ContainingFunctionChangeParameterEvent} and
+	 * {@link InspectorPanelTableTaskComboBoxModel} for the longest name in the
+	 * project.
+	 */
+	class InspectorPanelTableCustomEnumComboBoxModel extends
+			DefaultComboBoxModel {
+
+		private static final long serialVersionUID = 5695998035505672596L;
+
+		/**
+		 * the parameter with enum to be edited
+		 */
+		private AbstractParameter param;
+
+		/**
+		 * Creates a new {@link InspectorPanelTableCustomEnumComboBoxModel}
+		 * 
+		 * @param param
+		 *            the enum parameter to be edited
+		 */
+		public InspectorPanelTableCustomEnumComboBoxModel(
+				AbstractParameter param) {
+			this.param = param;
+		}
+
+		@Override
+		public int getSize() {
+			return param.getEnumValue().length;
+		}
+
+		@Override
+		public Object getElementAt(int index) {
+			return param.getEnumValue()[index].getValue();
+		}
+
+		@Override
+		public Object getSelectedItem() {
+			return param.getValue();
+		}
+
+		@Override
+		public void setSelectedItem(Object anObject) {
+			if ((anObject != null) && (anObject instanceof String)) {
+				ContainingFunctionChangeParameterEvent cfcpe = new ContainingFunctionChangeParameterEvent(
+						this, inspecting);
+
+				cfcpe.setChangedParameter(param);
+				cfcpe.setNewParameterValue((String) anObject);
+
+				ActionRegistry.getInstance().get(EditPropertyAction.class)
+						.actionPerformed(cfcpe);
+			}
+		}
 
 	}
 

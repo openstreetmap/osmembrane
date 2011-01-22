@@ -23,11 +23,11 @@ public class RowEditorModel {
 	}
 
 	/**
-	 * adds a TableCellEditor for a specific row
+	 * sets a TableCellEditor for a specific row
 	 * @param row the row of the TableCellEditor
-	 * @param tce the TableCellEditor to add
+	 * @param tce the TableCellEditor to set
 	 */
-	public void addEditorRow(int row, TableCellEditor tce) {
+	public void setEditorRow(int row, TableCellEditor tce) {
 		rowEditors.put(row, tce);
 	}
 	
@@ -46,6 +46,13 @@ public class RowEditorModel {
 	 */
 	public TableCellEditor getEditorRow(int row) {
 		return rowEditors.get(row);
+	}
+
+	/**
+	 * clears the model
+	 */
+	public void clear() {
+		rowEditors.clear();		
 	}
 
 }

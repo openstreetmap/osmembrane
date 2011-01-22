@@ -70,7 +70,7 @@ public class Task extends AbstractTask {
 			return getName();
 		}
 		
-		return xmlTask.getFriendlyName();
+		return getName() + " (" + xmlTask.getFriendlyName() + ")";
 	}
 	
 	@Override
