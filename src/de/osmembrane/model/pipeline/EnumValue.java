@@ -41,4 +41,10 @@ public class EnumValue extends AbstractEnumValue {
 		return xmlEnum.getValue();
 	}
 
+	@Override
+	public String getIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

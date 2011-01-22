@@ -87,4 +87,14 @@ public abstract class AbstractParameter extends Observable implements
 	 * the processing is undefined.
 	 */
 	public abstract boolean isDefaulXMLParameter();
+	
+	/**
+	 * Copies the parameter.
+	 */
+	public abstract AbstractParameter copy(CopyType type);
+	
+	/**
+	 * Get identifier.
+	 */
+	public abstract String getIdentifier();
 }

@@ -96,4 +96,22 @@ public class Task extends AbstractTask {
 		notifyObservers();
 	}
 
+	@Override
+	public Task copy(CopyType type) {
+		Task newTask = new Task(this.xmlTask);
+		
+		/* copy the parameters */
+		newTask.parameters.clear();
+		for(Parameter param : this.parameters) {
+			newTask.parameters.add(param.copy(type));
+		}
+		
+		return newTask;
+	}
+
+	@Override
+	public String getIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

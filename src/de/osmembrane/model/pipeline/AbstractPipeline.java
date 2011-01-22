@@ -139,6 +139,11 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	public abstract boolean isSaved();
 	
 	/**
+	 * Get identifier.
+	 */
+	public abstract String getIdentifier();
+	
+	/**
 	 * Notifies all registered {@link Observer}s with pre-called {@link Observable#setChanged())}.
 	 */
 	protected abstract void changedNotifyObservers(PipelineObserverObject poo);

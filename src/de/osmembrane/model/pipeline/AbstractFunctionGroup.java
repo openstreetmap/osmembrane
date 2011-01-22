@@ -56,4 +56,14 @@ public abstract class AbstractFunctionGroup implements Serializable {
 	 *         false if they do not equal.
 	 */
 	public abstract boolean same(AbstractFunctionGroup group);
+	
+	/**
+	 * Copies the function group.
+	 */
+	public abstract AbstractFunctionGroup copy(CopyType type);
+	
+	/**
+	 * Get identifier.
+	 */
+	public abstract String getIdentifier();
 }

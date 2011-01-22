@@ -30,11 +30,14 @@ public class Function extends AbstractFunction {
 
 	private static final long serialVersionUID = 2010123022380001L;
 
-	private FunctionGroup parent;
+	private AbstractFunctionGroup parent;
+	private String parentIdentifier;
 
 	transient private Pipeline pipeline;
+	private String pipelineIdentifier;
 
 	private XMLFunction xmlFunction;
+	private String xmlFunctionIdentifier;
 
 	private Point2D coordinate = new Point2D.Double();
 
@@ -44,8 +47,6 @@ public class Function extends AbstractFunction {
 	private List<Task> tasks = new ArrayList<Task>();
 	private Task activeTask;
 
-	private final String comparator;
-
 	/**
 	 * State of the icon load sequence.
 	 */
@@ -54,7 +55,7 @@ public class Function extends AbstractFunction {
 	/**
 	 * Icon of the function.
 	 */
-	private BufferedImage icon = null;;
+	private BufferedImage icon = null;
 
 	/**
 	 * Creates a new Function with given parent and XMLFunction.
@@ -64,7 +65,7 @@ public class Function extends AbstractFunction {
 	 * @param xmlFunction
 	 *            XMLFunction belongs to this Function
 	 */
-	public Function(FunctionGroup parent, XMLFunction xmlFunction) {
+	public Function(AbstractFunctionGroup parent, XMLFunction xmlFunction) {
 		this.xmlFunction = xmlFunction;
 		this.parent = parent;
 
@@ -79,13 +80,10 @@ public class Function extends AbstractFunction {
 
 		/* create the connectors */
 		createConnectors();
-
-		/* create a simple comparator */
-		comparator = this.xmlFunction.getId();
 	}
 
 	@Override
-	public FunctionGroup getParent() {
+	public AbstractFunctionGroup getParent() {
 		return parent;
 	}
 
@@ -203,8 +201,8 @@ public class Function extends AbstractFunction {
 	public boolean same(AbstractFunction function) {
 		if (function instanceof Function) {
 			Function oFG = (Function) function;
-			return (oFG.getComparatorString()
-					.equals(this.getComparatorString()));
+			return (oFG.getIdentifier()
+					.equals(this.getIdentifier()));
 		}
 
 		return false;
@@ -214,20 +212,25 @@ public class Function extends AbstractFunction {
 	public void addConnectionTo(AbstractFunction function)
 			throws ConnectorException {
 		boolean foundFullOne = false;
-		
+
 		for (AbstractConnector connectorOut : getOutConnectors()) {
 			for (AbstractConnector connectorIn : function.getInConnectors()) {
 				if (connectorOut.getType() == connectorIn.getType()) {
 					/* found equal Connectors */
 					if (!connectorOut.isFull() && !connectorIn.isFull()) {
 
-						/* check if already a connection between these two function exists */
-						for(AbstractConnector con : connectorOut.getConnections()) {
+						/*
+						 * check if already a connection between these two
+						 * function exists
+						 */
+						for (AbstractConnector con : connectorOut
+								.getConnections()) {
 							if (con == connectorIn) {
-								throw new ConnectorException(Type.CONNECTION_ALREADY_EXISTS);
+								throw new ConnectorException(
+										Type.CONNECTION_ALREADY_EXISTS);
 							}
 						}
-						
+
 						/* first, add connections */
 						connectorIn.addConnection(connectorOut);
 						connectorOut.addConnection(connectorIn);
@@ -264,10 +267,14 @@ public class Function extends AbstractFunction {
 			for (AbstractConnector connectorIn : function.getInConnectors()) {
 				if (connectorOut.getType() == connectorIn.getType()) {
 					/* found equal Connectors, remove connection */
-					boolean inRemove = connectorIn.removeConnection(connectorOut);
-					boolean outRemove = connectorOut.removeConnection(connectorIn);
-					if(inRemove && outRemove) {
-						changedNotifyObservers(new PipelineObserverObject(ChangeType.DELETE_CONNECTION, connectorOut, connectorIn));
+					boolean inRemove = connectorIn
+							.removeConnection(connectorOut);
+					boolean outRemove = connectorOut
+							.removeConnection(connectorIn);
+					if (inRemove && outRemove) {
+						changedNotifyObservers(new PipelineObserverObject(
+								ChangeType.DELETE_CONNECTION, connectorOut,
+								connectorIn));
 						return true;
 					}
 				}
@@ -276,21 +283,21 @@ public class Function extends AbstractFunction {
 
 		return false;
 	}
-	
+
 	@Override
 	protected void unlinkConnectors() {
-		for(AbstractConnector outConnector : getOutConnectors()) {
+		for (AbstractConnector outConnector : getOutConnectors()) {
 			outConnector.unlink(true);
 		}
-		for(AbstractConnector inConnector : getInConnectors()) {
+		for (AbstractConnector inConnector : getInConnectors()) {
 			inConnector.unlink(false);
 		}
 	}
 
-	protected String getComparatorString() {
-		return comparator;
+	public String getIdentifier() {
+		return this.xmlFunction.getId();
 	}
-
+	
 	/**
 	 * Creates the connectors for the active XMLTask.
 	 */
@@ -302,7 +309,18 @@ public class Function extends AbstractFunction {
 
 		/* Out-Connectors */
 		for (XMLPipe pipe : activeTask.getOutputPipe()) {
-			outConnectors.add(new Connector(this , ConnectorPosition.OUT, pipe));
+			outConnectors.add(new Connector(this, ConnectorPosition.OUT, pipe));
+		}
+	}
+
+	@Override
+	protected void changedNotifyObservers(PipelineObserverObject poo) {
+		this.setChanged();
+		this.notifyObservers(poo);
+
+		/* now we have to notify the observer of the pipeline */
+		if (getPipeline() != null) {
+			getPipeline().changedNotifyObservers(poo);
 		}
 	}
 
@@ -311,5 +329,46 @@ public class Function extends AbstractFunction {
 		/* get Updates from a Task (changed anything) */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.CHANGE_FUNCTION, this));
+	}
+	
+	@Override
+	public Function copy(CopyType type) {
+		return copy(type, null);
+	}
+	
+	@Override
+	public Function copy(CopyType type, AbstractFunctionGroup parent) {
+		Function newFunction = new Function(this.parent, this.xmlFunction);
+		
+		newFunction.pipeline = this.pipeline;
+		newFunction.coordinate = this.coordinate;
+		
+		/* copy the parent if it is a new one */
+		if(parent != null) {
+			newFunction.parent = parent;
+		}
+		
+		/* copy the tasks */
+		newFunction.tasks.clear();
+		for(Task task : this.tasks) {
+			Task newTask = task.copy(type);
+			newFunction.tasks.add(newTask);
+			
+			if (task == activeTask && type.copyValues()) {
+				newFunction.activeTask = newTask;
+			}
+		}
+		
+		/* coyp the connectors */
+		newFunction.inConnectors.clear();
+		for (Connector inCon : inConnectors) {
+			newFunction.inConnectors.add(inCon.copy(type, newFunction));
+		}
+		newFunction.outConnectors.clear();
+		for (Connector outCon : outConnectors) {
+			newFunction.outConnectors.add(outCon.copy(type, newFunction));
+		}
+		
+		return newFunction;
 	}
 }

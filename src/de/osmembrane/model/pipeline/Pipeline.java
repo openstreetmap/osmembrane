@@ -249,4 +249,10 @@ public class Pipeline extends AbstractPipeline {
 		/* any changes made, set savedState to false */
 		savedState = false;
 	}
+
+	@Override
+	public String getIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

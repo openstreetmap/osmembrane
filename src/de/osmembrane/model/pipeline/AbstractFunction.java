@@ -165,13 +165,20 @@ public abstract class AbstractFunction extends Observable implements
 	 * Notifies all registered {@link Observer}s with pre-called
 	 * {@link Observable#setChanged())}.
 	 */
-	protected void changedNotifyObservers(PipelineObserverObject poo) {
-		this.setChanged();
-		this.notifyObservers(poo);
-
-		/* now we have to notify the observer of the pipeline */
-		if (getPipeline() != null) {
-			getPipeline().changedNotifyObservers(poo);
-		}
-	}
+	protected abstract void changedNotifyObservers(PipelineObserverObject poo);
+	
+	/**
+	 * Copies the function.
+	 */
+	public abstract AbstractFunction copy(CopyType type);
+	
+	/**
+	 * Copies the function.
+	 */
+	public abstract AbstractFunction copy(CopyType type, AbstractFunctionGroup parent);
+	
+	/**
+	 * Get identifier.
+	 */
+	public abstract String getIdentifier();
 }

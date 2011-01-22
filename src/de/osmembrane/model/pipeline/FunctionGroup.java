@@ -108,4 +108,24 @@ public class FunctionGroup extends AbstractFunctionGroup {
 	protected String getComparatorString() {
 		return comparator;
 	}
+	
+	@Override
+	public FunctionGroup copy(CopyType type) {
+		FunctionGroup newFG = new FunctionGroup(this.xmlGroup);
+		
+		/* copy the functions */
+		newFG.functions.clear();
+		for(Function function : functions) {
+			Function newFunction = function.copy(type, newFG);
+			newFG.functions.add(newFunction);
+		}
+		
+		return newFG;
+	}
+
+	@Override
+	public String getIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

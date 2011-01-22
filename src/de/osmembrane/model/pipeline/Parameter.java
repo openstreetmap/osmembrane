@@ -115,4 +115,21 @@ public class Parameter extends AbstractParameter {
 		return xmlParam.isDefaulXMLParameter();
 	}
 
+	@Override
+	public Parameter copy(CopyType type) {
+		Parameter newParam = new Parameter(this.xmlParam);
+		
+		/* copy the param-value */
+		if(type.copyValues()) {
+			newParam.value = this.value;
+		}
+		
+		return newParam;
+	}
+
+	@Override
+	public String getIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

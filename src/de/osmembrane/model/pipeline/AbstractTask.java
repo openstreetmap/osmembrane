@@ -73,4 +73,14 @@ public abstract class AbstractTask extends Observable implements Observer,
 	 * @return output pipes of the {@link XMLTask}
 	 */
 	protected abstract List<XMLPipe> getOutputPipe();
+	
+	/**
+	 * Copies the task.
+	 */
+	public abstract AbstractTask copy(CopyType type);
+	
+	/**
+	 * Get identifier.
+	 */
+	public abstract String getIdentifier();
 }

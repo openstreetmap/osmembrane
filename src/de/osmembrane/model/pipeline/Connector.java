@@ -18,7 +18,7 @@ public class Connector extends AbstractConnector {
 	private List<AbstractConnector> connectors = new ArrayList<AbstractConnector>();
 	private ConnectorType type;
 	private ConnectorPosition position;
-	
+
 	private XMLPipe xmlPipe;
 	private AbstractFunction parent;
 
@@ -29,8 +29,9 @@ public class Connector extends AbstractConnector {
 	 * @param pipe
 	 * @param parent
 	 */
-	public Connector(AbstractFunction parent, ConnectorPosition position, XMLPipe pipe) {
-		this.xmlPipe = pipe;
+	public Connector(AbstractFunction parent, ConnectorPosition position,
+			XMLPipe xmlPipe) {
+		this.xmlPipe = xmlPipe;
 		this.parent = parent;
 		this.position = position;
 
@@ -91,10 +92,10 @@ public class Connector extends AbstractConnector {
 	protected boolean removeConnection(AbstractConnector connector) {
 		return connectors.remove(connector);
 	}
-	
+
 	@Override
 	protected void unlink(boolean isOutConnector) {
-		for(AbstractConnector connector : getConnections()) {
+		for (AbstractConnector connector : getConnections()) {
 			AbstractFunction targetFunction = connector.getParent();
 			if (isOutConnector) {
 				this.getParent().removeConnectionTo(targetFunction);
@@ -102,5 +103,35 @@ public class Connector extends AbstractConnector {
 				targetFunction.removeConnectionTo(this.getParent());
 			}
 		}
+	}
+
+	@Override
+	public Connector copy(CopyType type) {
+		return copy(type, null);
+	}
+
+	@Override
+	public Connector copy(CopyType type, AbstractFunction parent) {
+		Connector newConnector = new Connector(this.parent, this.position, this.xmlPipe);
+		
+		if (parent != null) {
+			newConnector.parent = parent;
+		}
+		
+		if(type.copyConnections()) {
+			newConnector.connectors.clear();
+			for(AbstractConnector connector : this.connectors) {
+				// TODO is here a copy to do or not?
+				newConnector.connectors.add(connector);
+			}
+		}
+		
+		return newConnector;
+	}
+
+	@Override
+	public String getIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
