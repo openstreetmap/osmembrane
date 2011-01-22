@@ -37,8 +37,8 @@ public abstract class AbstractConnector implements Serializable {
 	/**
 	 * Returns the maximum connections of this connector.
 	 * 
-	 * @return a int smaller then 0 if the connections are not limited,
-	 *         otherwise a value greater then 0.
+	 * @return an int smaller than 0 if the connections are not limited,
+	 *         otherwise a value greater than 0.
 	 */
 	public abstract int getMaxConnections();
 
