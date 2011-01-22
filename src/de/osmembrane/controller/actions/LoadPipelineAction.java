@@ -3,20 +3,27 @@ package de.osmembrane.controller.actions;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
-import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
-import de.osmembrane.view.ViewRegistry;
 
+/**
+ * Action to load a OSMembrane pipeline stored in a file.
+ * 
+ * @author tobias_kuhn
+ * 
+ */
 public class LoadPipelineAction extends AbstractAction {
 
+	private static final long serialVersionUID = -5491327014988511548L;
+
+	/**
+	 * Creates a new {@link LoadPipelineAction}
+	 */
 	public LoadPipelineAction() {
 		putValue(Action.NAME, "Load Pipeline");
 		putValue(Action.SMALL_ICON, new IconLoader("load_pipeline.png",
@@ -25,11 +32,11 @@ public class LoadPipelineAction extends AbstractAction {
 				Size.NORMAL).get());
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		// FIXME
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// TODO implement
 		throw new UnsupportedOperationException();
 	}
 }

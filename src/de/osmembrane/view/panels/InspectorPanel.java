@@ -46,6 +46,8 @@ import de.osmembrane.view.components.RowEditorModel;
 /**
  * The inspector panel component to realize the function inspector.
  * 
+ * @see Spezifikation.pdf, chapter 2.1.6
+ * 
  * @author tobias_kuhn
  * 
  */
@@ -54,30 +56,33 @@ public class InspectorPanel extends JPanel implements Observer {
 	private static final long serialVersionUID = -4331036066478472018L;
 
 	/**
-	 * the label that shows the function name
+	 * the {@link JLabel} that shows the function name
 	 */
 	private JLabel functionName;
 
 	/**
-	 * the table that displays the data of the function
+	 * the {@link JRowTable} that displays the data of the function along with
+	 * its {@link InspectorPanelTableModel} and {@link RowEditorModel}.
 	 */
 	private JRowTable propertyTable;
 	private InspectorPanelTableModel propertyTableModel;
 	private RowEditorModel rowEditorModel;
 
 	/**
-	 * the model for the combo box to chose the tasks
+	 * the {@link InspectorPanelTableTaskComboBoxModel} for the combo box to
+	 * choose the tasks
 	 */
 	private InspectorPanelTableTaskComboBoxModel taskComboModel;
 
 	/**
-	 * the panel and label that displays the context-sensitive help
+	 * the {@link JPanel} and {@link JLabel} that display the context-sensitive
+	 * help
 	 */
 	private JPanel hint;
 	private JTextArea hintLabel;
 
 	/**
-	 * Useful color definitions
+	 * Useful {@link Color} definitions
 	 */
 	private static final Color LIGHT_BLUE = new Color(0.9f, 0.9f, 1.0f);
 	private static final Color LIGHT_YELLOW = new Color(1.0f, 1.0f, 0.9f);
@@ -89,12 +94,13 @@ public class InspectorPanel extends JPanel implements Observer {
 	protected static final String VALID_EMPTY_HINT = " ";
 
 	/**
-	 * the reference to the abstract function which is currently inspected
+	 * the reference to the {@link AbstractFunction} which is currently
+	 * inspected
 	 */
 	private AbstractFunction inspecting = null;
 
 	/**
-	 * Initializes the inspector panel and display
+	 * Initializes the {@link InspectorPanel} and display
 	 */
 	public InspectorPanel() {
 		// register as observer
@@ -245,6 +251,7 @@ public class InspectorPanel extends JPanel implements Observer {
 	 */
 	public void inspect(AbstractFunction inspect) {
 		rowEditorModel.clear();
+		propertyTable.setEditingRow(-1);
 
 		this.inspecting = inspect;
 
@@ -256,6 +263,8 @@ public class InspectorPanel extends JPanel implements Observer {
 
 			rowEditorModel.setEditorRow(0, new DefaultCellEditor(new JComboBox(
 					taskComboModel)));
+
+			// find the apropriate RowEditors for the parameters
 			for (int i = 0; i < inspect.getActiveTask().getParameters().length; i++) {
 				AbstractParameter ap = inspect.getActiveTask().getParameters()[i];
 				if (ap.getType() == ParameterType.ENUM) {
@@ -274,7 +283,7 @@ public class InspectorPanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * The table model of the display table of the inspector panel.
+	 * The table model of the display table of the {@link InspectorPanel}.
 	 * 
 	 * @author tobias_kuhn
 	 * 
@@ -285,6 +294,9 @@ public class InspectorPanel extends JPanel implements Observer {
 
 		private String[] columns = new String[2];
 
+		/**
+		 * Creates a new {@link InspectorPanelTableModel	
+		 */
 		public InspectorPanelTableModel() {
 			columns[0] = I18N.getInstance().getString("View.Parameter");
 			columns[1] = I18N.getInstance().getString("View.Value");
@@ -362,8 +374,8 @@ public class InspectorPanel extends JPanel implements Observer {
 	} /* InspectorPanelTableModel */
 
 	/**
-	 * Model for the task's combo box of the inspector panel's table. Is in a
-	 * contest with {@link ContainingFunctionChangeParameterEvent} and
+	 * Model for the task's combo box of the {@link InspectorPanel}'s table. Is
+	 * in a contest with {@link ContainingFunctionChangeParameterEvent} and
 	 * {@link InspectorPanelTableCustomEnumComboBoxModel} for the longest name
 	 * in the project.
 	 * 
@@ -419,14 +431,14 @@ public class InspectorPanel extends JPanel implements Observer {
 
 						break;
 					}
-				}
+				} /* for tasks */
 			}
-		} /* setSelectedItem */
+		} 
 
-	}
+	} /* InspectorPanelTableTaskComboBoxModel */
 
 	/**
-	 * Model for an enum property of the combo box of the inspector panel's
+	 * Model for an enum property of the combo box of the {@link InspectorPanel}'s
 	 * table. Is in a contest with
 	 * {@link ContainingFunctionChangeParameterEvent} and
 	 * {@link InspectorPanelTableTaskComboBoxModel} for the longest name in the
@@ -482,10 +494,10 @@ public class InspectorPanel extends JPanel implements Observer {
 			}
 		}
 
-	}
+	} /* InspectorPanelTableCustomEnumComboBoxModel */
 
 	/**
-	 * The custom cell renderer for the display table of the inspector panel.
+	 * The custom cell renderer for the display table of the {@link InspectorPanel}.
 	 * 
 	 * @author tobias_kuhn
 	 * 

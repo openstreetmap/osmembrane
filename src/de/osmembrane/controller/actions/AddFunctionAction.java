@@ -1,11 +1,8 @@
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ImageIcon;
 
 import de.osmembrane.Application;
 import de.osmembrane.controller.events.ContainingLocationEvent;
@@ -13,20 +10,24 @@ import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
-import de.osmembrane.tools.IconLoader;
-import de.osmembrane.tools.IconLoader.Size;
 
+/**
+ * Action to add a function to the pipeline. Receives a
+ * {@link ContainingLocationEvent}. Only invoked from the view, should never be
+ * visible.
+ * 
+ * @author tobias_kuhn
+ * 
+ */
 public class AddFunctionAction extends AbstractAction {
 
+	private static final long serialVersionUID = 6264271045174747984L;
+
+	/**
+	 * Creates a new {@link AddFunctionAction}
+	 */
 	public AddFunctionAction() {
-		putValue(Action.NAME, "Add Function");
-		putValue(Action.SMALL_ICON, new IconLoader("add_function.png",
-				Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY, new IconLoader("add_function.png",
-				Size.NORMAL).get());
-		// FIXME
 	}
 
 	@Override
@@ -34,11 +35,12 @@ public class AddFunctionAction extends AbstractAction {
 		ContainingLocationEvent cle = (ContainingLocationEvent) e;
 		if (cle.getContained() instanceof AbstractFunction) {
 
-			// add the function
+			// get the copy from the prototypes
 			AbstractFunction prototype = (AbstractFunction) cle.getContained();
 			AbstractFunction newFunc = ModelProxy.getInstance()
 					.accessFunctions().getFunction(prototype);
 
+			// add the function at the location
 			newFunc.setCoordinate(cle.getLocation());
 			ModelProxy.getInstance().accessPipeline().addFunction(newFunc);
 		} else {

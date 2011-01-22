@@ -20,17 +20,17 @@ import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
 
 /**
- * the error message dialog (the window you will see most of the time ;)
+ * the exception message dialog (the window you will see most of the time ;)
  * 
  * @author tobias_kuhn
  * 
  */
-public class ErrorDialog extends AbstractDialog {
+public class ExceptionDialog extends AbstractDialog {
 
 	private static final long serialVersionUID = 3750775593370584501L;
 
 	/**
-	 * The components that will describe the error
+	 * The components that will describe the exception occured
 	 */
 	private JLabel icon;
 	private JLabel caption;
@@ -39,7 +39,7 @@ public class ErrorDialog extends AbstractDialog {
 	private JScrollPane exceptionTextPane;
 
 	/**
-	 * The OK and Show Stacktrace Button
+	 * The OK and "Show stack trace" Button
 	 */
 	private JButton okButton;
 	private JButton showTraceButton;
@@ -55,9 +55,9 @@ public class ErrorDialog extends AbstractDialog {
 	private final String NL = System.getProperty("line.separator");
 
 	/**
-	 * Initializes the error dialog
+	 * Initializes the {@link ExceptionDialog}
 	 */
-	public ErrorDialog() {
+	public ExceptionDialog() {
 
 		// set the basics up
 		setLayout(new GridBagLayout());
@@ -139,7 +139,7 @@ public class ErrorDialog extends AbstractDialog {
 	/**
 	 * 
 	 * @param ste
-	 *            the stack trace element to print into a string
+	 *            the {@link StackTraceElement} to print into a string
 	 * @return the human readable string representation of the stack trace
 	 *         element
 	 */
@@ -150,10 +150,10 @@ public class ErrorDialog extends AbstractDialog {
 	}
 
 	/**
-	 * Displays an exception and handles the possibly necessary shutdown.
+	 * Displays a {@link Throwable} and handles the possibly necessary shutdown.
 	 * 
 	 * @param t
-	 *            the occurred exception
+	 *            the occurred {@link Throwable}
 	 * @param type
 	 *            the kind of the exception or null, if none known
 	 * @param causingObject

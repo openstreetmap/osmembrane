@@ -39,14 +39,45 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 
 /**
  * This is the pipeline view, i.e. the panel that shows the entire pipeline with
- * all functions and connectors. It contains some really fancy zoom & move
- * stuff.
+ * all {@link PipelineFunction}s, {@link PipelineConnector}s, and
+ * {@link PipelineLink}s.
+ * 
+ * <b>Note</b>: In order to work with all the fancy zoom and move stuff, the
+ * {@link PipelinePanel} defines 2 specific coordinate systems:
+ * <ol>
+ * <li>The window space - int window coordinates as defined in Swing.</li>
+ * <li>The object space - double coordinates that are stored in the model.</li>
+ * </ol>
+ * Therefore it might be a good idea to always specify when coordinates or
+ * points occur whether they are treated as object and window space.
+ * 
+ * The object space is defined as follows: a length of 1 window coordinate = a
+ * length of 1.0 object coordinate in the initial view, window axes = object
+ * axes.
+ * 
+ * In order to produce the viewable output you have to apply
+ * {@link AffineTransform}ations from the object space to the window space. In
+ * order to translate locations from the window to the object space, you have to
+ * do the same vice versa.
+ * 
+ * There should never be a direct access to perform the transformations. Various
+ * winToObj and objToWin transforming functions are provided for this matter.
+ * 
+ * Additionally, currently happening transformation changes should only change
+ * the currentDisplay transformation and, when final, "pre-apply" it (multiply
+ * from the left side) to the objectToWindow transformation.
+ * 
+ * @see Spezifikation.pdf, chapter 2.1.5
+ * 
+ * @see your Math reference book, sections "Linear Algebra", "Matrices",
+ *      "Linear Transformations"
  * 
  * @author tobias_kuhn
  * 
@@ -56,12 +87,13 @@ public class PipelinePanel extends JPanel implements Observer {
 	private static final long serialVersionUID = 2544369818627179591L;
 
 	/**
-	 * list of functions currently being present on the panel
+	 * list of {@link PipelineFunction} currently being present on the panel
 	 */
 	private List<PipelineFunction> functions;
 
 	/**
-	 * map of connectors currently being present on the panel
+	 * map of {@link PipelineConnector} for the {@link Connector}s in the model,
+	 * which currently being present on the panel
 	 */
 	private Map<AbstractConnector, PipelineConnector> connectors;
 
@@ -78,8 +110,9 @@ public class PipelinePanel extends JPanel implements Observer {
 	private AffineTransform currentDisplay;
 
 	/**
-	 * The layered pane to show functions, connectors, links (in this particular
-	 * order)
+	 * The layered pane to show {@link PipelineFunction}s,
+	 * {@link PipelineConnector}s, {@link PipelineLink}s (in the particular
+	 * order defined by FUNCTION_LAYER, CONNECTOR_LAYER and LINK_LAYER)
 	 */
 	private JLayeredPane layeredPane;
 
@@ -91,8 +124,9 @@ public class PipelinePanel extends JPanel implements Observer {
 	private static final Integer LINK_LAYER = new Integer(1);
 
 	/**
-	 * Saves the point in object coordinates when a drag and drop action occurs
-	 * *inside* the pipeline panel (i.e. not from the library)
+	 * Saves the point (in object coordinates) when a drag and drop action
+	 * occurs *inside* the {@link PipelinePanel} (i.e. not from the
+	 * {@link LibraryPanel})
 	 */
 	private Point2D draggingFrom;
 
@@ -104,14 +138,14 @@ public class PipelinePanel extends JPanel implements Observer {
 	private final static double PIXEL_PER_ZOOM_LEVEL = 100.00;
 
 	/**
-	 * The links to the inspector used for communication between these two
-	 * components.
+	 * The links to the {@link InspectorPanel} used for communication between
+	 * these two components.
 	 */
 	private InspectorPanel functionInspector;
 
 	/**
-	 * The vertical and horizontal scroll bar that can be used for moving the
-	 * view.
+	 * The vertical and horizontal {@link JScrollBar} that can be used for
+	 * moving the view.
 	 */
 	private JScrollBar verticalScroll;
 	private JScrollBar horizontalScroll;
@@ -124,7 +158,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	private Point2D objBottomRight;
 
 	/**
-	 * The currently selected tool. Must be one of the _TOOL constants.
+	 * The currently selected {@link Tool}.
 	 */
 	private Tool activeTool;
 
@@ -135,20 +169,19 @@ public class PipelinePanel extends JPanel implements Observer {
 	private Object selected;
 
 	/**
-	 * The temporary saving slot for creating a two point connection.
+	 * The temporary saving slot for creating a two point {@link PipelineLink}.
 	 */
 	private PipelineFunction connectionStart;
 
 	/**
-	 * Initializes a new pipeline view
+	 * Initializes a new {@link PipelinePanel}
 	 * 
-	 * @param functionLibrary
 	 * @param functionInspector
+	 *            the {@link InspectorPanel} to handle the edits for the
+	 *            selected objects
 	 */
 	public PipelinePanel(InspectorPanel functionInspector) {
 
-		// do note, this needs a layout manager now, since the
-		// layered pane has none.
 		setLayout(new GridLayout(1, 1));
 
 		// internal values
@@ -366,7 +399,8 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Makes object to window exactly the translation to a point
+	 * Makes objectToWindow exactly the translation to the point (translateX,
+	 * translateY) independently from its previous translation.
 	 * 
 	 * @param translateX
 	 * @param translateY
@@ -380,7 +414,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Translates window coordinates to object coordinates
+	 * Fully translates window coordinates to object coordinates.
 	 * 
 	 * @param window
 	 *            window coordinates
@@ -402,10 +436,9 @@ public class PipelinePanel extends JPanel implements Observer {
 
 	/**
 	 * Translates window coordinates to object coordinates based on only the
-	 * object to window transformation, not the temporary display
-	 * transformation. This is necessary for dragging operations to transform
-	 * only by the part of the transformation which is currently newly
-	 * determined.
+	 * objectToWindow transformation, not the temporary display transformation.
+	 * This is necessary for dragging operations to transform only by the part
+	 * of the transformation which is currently newly determined.
 	 * 
 	 * @param window
 	 *            window coordinates
@@ -426,7 +459,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Translates object coordinates to window coordinates
+	 * Fully translates object coordinates to window coordinates.
 	 * 
 	 * @param object
 	 *            object coordinates
@@ -473,7 +506,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Zooms (in the object space to window space transformation).
+	 * Zooms (in the objectToWindow transformation).
 	 * 
 	 * @param winCenter
 	 *            center of the zooming operation in window space
@@ -557,7 +590,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * All addition and removal of objects must be done here.
+	 * <b>Note:</b> All addition and removal of objects must be done here.
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
@@ -594,7 +627,7 @@ public class PipelinePanel extends JPanel implements Observer {
 							poo.getChangedFunction())) {
 						arrange(pfChange);
 
-						// TODO FIXME:: THIS IS A workaround
+						// TODO - THIS IS just a workaround for now
 						// if this function has links to its in-connectors,
 						// arrange those functions too
 						// (this will arrange the links to here)
@@ -687,7 +720,7 @@ public class PipelinePanel extends JPanel implements Observer {
 				if (plDel != null) {
 					layeredPane.remove(plDel);
 				}
-				
+
 				arrange();
 				repaint();
 				break;
@@ -752,7 +785,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Arranges all the functions after a move/zoom change
+	 * Arranges all the {@link PipelineFunction}s after a move/zoom change
 	 */
 	private void arrange() {
 		for (PipelineFunction pf : functions) {
@@ -762,10 +795,10 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Arrange a specific function after any change
+	 * Arrange a specific {@link PipelineFunction} after any change
 	 * 
 	 * @param pf
-	 *            the function to arrange
+	 *            the {@link PipelineFunction} to arrange
 	 */
 	private void arrange(PipelineFunction pf) {
 		Point location = objToWindow(pf.getModelLocation());
@@ -780,8 +813,8 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Forwards hint display from functions and library under the cursor to the
-	 * inspector.
+	 * Forwards hint display from {@link PipelineFunction}s and
+	 * {@link LibraryPanel} under the cursor to the {@link InspectorPanel}.
 	 * 
 	 * @param hintText
 	 *            the hint to display
@@ -791,8 +824,8 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Is called when a ViewFunction that canDragAndDrop was dragged onto the
-	 * Pipeline panel
+	 * Is called when a {@link LibraryFunction} that canDragAndDrop was dragged
+	 * onto the {@link PipelinePanel}
 	 * 
 	 * @param libraryFunction
 	 *            The new function to add
@@ -809,7 +842,8 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * @return the currently selected object
+	 * @return the currently selected object ({@link PipelineFunction} or
+	 *         {@link PipelineLink})
 	 */
 	public Object getSelected() {
 		return selected;
@@ -835,6 +869,12 @@ public class PipelinePanel extends JPanel implements Observer {
 
 			} else if (selected instanceof PipelineLink) {
 				repaint();
+			} else {
+				Application.handleException(new ControlledException(this,
+						ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N
+								.getInstance().getString(
+										"View.Pipeline.IllegalSelection",
+										selected.toString())));
 			}
 		} else {
 			functionInspector.inspect(null);
@@ -853,7 +893,7 @@ public class PipelinePanel extends JPanel implements Observer {
 
 	/**
 	 * @param activeTool
-	 *            the activeTool to set
+	 *            the active {@link Tool} to set
 	 * @param newCursor
 	 *            the cursor associated with the new tool, or null if no change
 	 */
@@ -872,9 +912,10 @@ public class PipelinePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Sets the dragging point manually for objects that catch the MouseEvents.
-	 * MouseListeners should be forwarded though. (Forwarding mouse events here
-	 * would cause a deselection of the dragged object)
+	 * Sets the dragging point manually for objects that need to catch the
+	 * {@link MouseEvent} to get dragged around. (Typically,
+	 * {@link MouseListener}s should be forwarded though. But forwarding mouse
+	 * events in this case would cause a deselection of the dragged object)
 	 * 
 	 * @param draggingFrom
 	 *            point dragging started from (window space) to set
@@ -899,18 +940,18 @@ public class PipelinePanel extends JPanel implements Observer {
 
 	/**
 	 * @param lookFor
-	 *            model connector to look for
-	 * @return the pipeline, i.e. view, connector associated with that model
-	 *         connector, null if none is found
+	 *            model {@link Connector} to look for
+	 * @return the pipeline, i.e. {@link PipelineConnector} associated with that
+	 *         model {@link Connector}, null if none is found
 	 */
 	protected PipelineConnector findConnector(AbstractConnector lookFor) {
 		return connectors.get(lookFor);
 	}
 
 	/**
-	 * Adds the connectionPoint as an endpoint to the current connection (with
-	 * at most 2 points). This means: First call - start of connection. Second
-	 * call - end of connection.
+	 * Adds the connectionPoint as an end point to the current connection (which
+	 * has at most 2 points). This means: First call - start of new connection.
+	 * Second call - end of new connection.
 	 * 
 	 * @param connectionPoint
 	 *            point in the connection

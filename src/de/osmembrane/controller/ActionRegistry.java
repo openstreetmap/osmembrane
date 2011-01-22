@@ -47,8 +47,8 @@ public class ActionRegistry {
 	public Map<Class<? extends Action>, Action> actions = new HashMap<Class<? extends Action>, Action>();
 
 	/**
-	 * initializes the action registry with all the actions this controller
-	 * component has
+	 * initializes the {@link ActionRegistry} with all the actions this
+	 * controller component has
 	 */
 	private ActionRegistry() {
 		// pipeline actions
@@ -88,14 +88,14 @@ public class ActionRegistry {
 
 	/**
 	 * 
-	 * @return the one and only instance of ActionRegistry
+	 * @return the one and only instance of {@link ActionRegistry}
 	 */
 	public static ActionRegistry getInstance() {
 		return instance;
 	}
 
 	/**
-	 * Adds an action to the registry
+	 * Adds an {@link Action} to the registry
 	 * 
 	 * @param action
 	 *            Action to add
@@ -105,7 +105,7 @@ public class ActionRegistry {
 	}
 
 	/**
-	 * Returns an action from the registry
+	 * Returns an {@link Action} from the registry
 	 * 
 	 * @param clazz
 	 *            desired class to return

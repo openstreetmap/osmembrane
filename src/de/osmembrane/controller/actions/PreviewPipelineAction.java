@@ -1,29 +1,43 @@
 package de.osmembrane.controller.actions;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.io.File;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
 
-import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 
+/**
+ * Action to preview the generated pipeline. Like {@link ExecutePipelineAction},
+ * only faster and with direct display.
+ * 
+ * @author tobias_kuhn
+ * 
+ */
 public class PreviewPipelineAction extends AbstractAction {
 
+	private static final long serialVersionUID = 8099091858953447990L;
+
+	/**
+	 * Creates a new {@link PreviewPipelineAction}
+	 */
 	public PreviewPipelineAction() {
 		putValue(Action.NAME, "Preview Pipeline");
 		putValue(Action.SMALL_ICON, new IconLoader("preview_pipeline.png",
 				Size.SMALL).get());
 		putValue(Action.LARGE_ICON_KEY, new IconLoader("preview_pipeline.png",
 				Size.NORMAL).get());
-		// FIXME
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// TODO implement
 		throw new UnsupportedOperationException();
 	}
 }

@@ -13,12 +13,14 @@ import javax.swing.SwingUtilities;
 
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.Connector;
+import de.osmembrane.model.pipeline.Function;
 
 /**
- * The pipeline function, i.e. the visual representation of a model function
- * that is actually drawn in the pipeline. Note, the functions in the
- * {@link LibraryPanel} and the one being dragged on the {@link PipelinePanel}
- * are just {@link LibraryFunction}.
+ * The pipeline function, i.e. the visual representation of a model
+ * {@link Function} that is actually drawn in the pipeline. Note, the functions
+ * in the {@link LibraryPanel} and the one being dragged on the
+ * {@link PipelinePanel} are just {@link LibraryFunction}.
  * 
  * @author tobias_kuhn
  * 
@@ -28,27 +30,29 @@ public class PipelineFunction extends LibraryFunction {
 	private static final long serialVersionUID = -7573627124702293974L;
 
 	/**
-	 * The function in the model that is represented by this pipeline function
+	 * The {@link Function} in the model that is represented by this
+	 * {@link PipelineFunction}
 	 */
 	private AbstractFunction modelFunction;
 
 	/**
-	 * Pipeline to add this to
+	 * {@link PipelinePanel} to add this to
 	 */
 	private PipelinePanel pipeline;
 
 	/**
-	 * List of connectors this functions has
+	 * List of {@link PipelineConnector}s this functions has
 	 */
 	private List<PipelineConnector> connectors;
 
 	/**
-	 * Creates a new pipeline function from an AbstractFunction out of the model
+	 * Creates a new {@link PipelineFunction} from an {@link AbstractFunction}
+	 * out of the model
 	 * 
 	 * @param modelFunction
 	 *            the function out of the model
 	 * @param pipeline
-	 *            the pipeline panel to add it to
+	 *            the {@link PipelinePanel} to add it to
 	 */
 	public PipelineFunction(AbstractFunction modelFunction,
 			final PipelinePanel pipeline) {
@@ -139,10 +143,11 @@ public class PipelineFunction extends LibraryFunction {
 	}
 
 	/**
-	 * Creates & adds connectors from connectorList for this function
+	 * Creates & adds {@link PipelineConnector}s from connectorList for this
+	 * function
 	 * 
 	 * @param connectorList
-	 *            all the connectors that shall be created & added
+	 *            all the {@link Connector}s that shall be created & added
 	 * @param areOut
 	 *            whether the connectors are out or in pipes
 	 */
@@ -150,14 +155,14 @@ public class PipelineFunction extends LibraryFunction {
 			boolean areOut) {
 		int size = connectorList.length;
 		for (int i = 0; i < size; i++) {
-			PipelineConnector pc = new PipelineConnector(connectorList[i], this,
-					pipeline, areOut, i, size);
+			PipelineConnector pc = new PipelineConnector(connectorList[i],
+					this, pipeline, areOut, i, size);
 			connectors.add(pc);
 		}
 	}
 
 	/**
-	 * Arranges the connectors, if necessary
+	 * Arranges the {@link PipelineConnector}s, if necessary
 	 */
 	public void arrangeConnectors() {
 		Point funcTopLeft = this.getLocation();
@@ -192,36 +197,38 @@ public class PipelineFunction extends LibraryFunction {
 	}
 
 	/**
-	 * @return the model function
+	 * @return the model {@link Function}
 	 */
 	public AbstractFunction getModelFunction() {
 		return this.modelFunction;
 	}
 
 	/**
-	 * @return the location this function's model function has saved
+	 * @return the location this {@link PipelineFunction}'s model
+	 *         {@link Function} has saved
 	 */
 	public Point2D getModelLocation() {
 		return this.modelFunction.getCoordinate();
 	}
 
 	/**
-	 * @return the connectors this function has
+	 * @return the {@link PipelineConnector}s this function has
 	 */
 	public List<PipelineConnector> getConnectors() {
 		return connectors;
 	}
-	
+
 	/**
-	 * @return all the outgoing links from all the connectors 
+	 * @return all the outgoing {@link PipelineLink}s from all the
+	 *         {@link PipelineConnector}s
 	 */
 	public List<PipelineLink> getAllOutLinks() {
 		ArrayList<PipelineLink> result = new ArrayList<PipelineLink>();
-		
+
 		for (PipelineConnector pc : connectors) {
 			result.addAll(pc.getLinks());
 		}
-		
+
 		return result;
 	}
 

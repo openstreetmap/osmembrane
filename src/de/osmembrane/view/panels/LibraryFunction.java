@@ -21,6 +21,7 @@ import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.Function;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
@@ -43,15 +44,15 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	private static final long serialVersionUID = 1663933392202927614L;
 
 	/**
-	 * The image resource that keeps an image template used to prerender the
-	 * actual image that will be drawn on this function
+	 * The {@link ImageIcon} resource that keeps an image template used to
+	 * prerender the actual image that will be drawn on this function
 	 */
 	protected static ImageIcon displayTemplate = new ImageIcon(
 			LibraryFunction.class
 					.getResource("/de/osmembrane/resources/images/function.png"));
 
 	/**
-	 * The referenced model function
+	 * The referenced model {@link Function}
 	 */
 	protected AbstractFunction modelFunctionPrototype;
 
@@ -81,17 +82,18 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	protected Point dragOffset;
 
 	/**
-	 * Initializes a new ViewFunction for the given model prototype function
+	 * Initializes a new {@link LibraryFunction} for the given model prototype
+	 * function
 	 * 
 	 * @param modelFunctionPrototype
-	 *            the model's prototype function this view function should
-	 *            represent
+	 *            the model's prototype {@link Function} this
+	 *            {@link LibraryFunction} should represent
 	 * @param canDragAndDrop
-	 *            whether this view function is in the library and can be
-	 *            dragged onto the pipeline panel to create a new
-	 *            {@link PipelineFunction}. Additionally, it gets highlighted
-	 *            when the mouse cursor moves over it. All non-library
-	 *            descendants are recommended to set this to false.
+	 *            whether this {@link LibraryFunction} is in the
+	 *            {@link LibraryPanel} and can be dragged onto the pipeline
+	 *            panel to create a new {@link PipelineFunction}. Additionally,
+	 *            it gets highlighted when the mouse cursor moves over it. All
+	 *            non-library descendants are recommended to set this to false.
 	 */
 	public LibraryFunction(final AbstractFunction modelFunctionPrototype,
 			final boolean canDragAndDrop) {
@@ -231,7 +233,7 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	 * Paints the component on g at position at
 	 * 
 	 * @param g
-	 *            the graphics to draw upon
+	 *            the {@link Graphics} to draw upon
 	 * @param at
 	 *            where to draw
 	 */
@@ -249,7 +251,7 @@ public class LibraryFunction extends DisplayTemplatePanel {
 
 	/**
 	 * Prints a string centered and with line breaks at spaces fitting into
-	 * Graphics g with y coordinate y
+	 * {@link Graphics} g with y coordinate y
 	 * 
 	 * @param g
 	 *            Graphics to draw upon
@@ -309,14 +311,16 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	}
 
 	/**
-	 * @return the model function prototype associated with this view function
+	 * @return the model {@link Function} prototype associated with this
+	 *         {@link LibraryFunction}
 	 */
 	public AbstractFunction getModelFunctionPrototype() {
 		return this.modelFunctionPrototype;
 	}
 
 	/**
-	 * @return true, if this function is currently dragged, false otherwise
+	 * @return true, if this {@link LibraryFunction} is currently dragged, false
+	 *         otherwise
 	 */
 	public boolean isDragging() {
 		return this.dragging;

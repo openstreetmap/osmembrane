@@ -18,19 +18,19 @@ public class MainFrameGlassPane extends JComponent {
 	private static final long serialVersionUID = -997512362081326789L;
 
 	/**
-	 * the function that is currently dragged to store
+	 * the {@link LibraryFunction} that is currently dragged to store
 	 */
 	private LibraryFunction dragAndDrop;
 
 	/**
-	 * Initializer for new glass pane
+	 * Initializer for new {@link MainFrameGlassPane}
 	 */
 	public MainFrameGlassPane() {
 	}
 
 	/**
-	 * Draws a specific view function that is currently dragged & drop where
-	 * the cursor is
+	 * Draws a specific {@link LibraryFunction} that is currently dragged & drop
+	 * where the cursor is
 	 * 
 	 * @param libraryFunction
 	 *            the view function to be drawn
@@ -42,20 +42,19 @@ public class MainFrameGlassPane extends JComponent {
 			// add the display function
 			dragAndDrop = new LibraryFunction(
 					libraryFunction.getModelFunctionPrototype(), false);
-			
+
 			dragAndDrop.setSize(dragAndDrop.getPreferredSize());
 			dragAndDrop.forceHighlight(true);
 			dragAndDrop.setCursor(DragSource.DefaultCopyDrop);
-			
+
 			add(dragAndDrop);
 			setVisible(true);
 		}
 		dragAndDrop.setLocation(point);
 	}
-	
+
 	/**
-	 * Ends the current drag and drop functionality and restores
-	 * normal behavior
+	 * Ends the current drag and drop functionality and restores normal behavior
 	 */
 	protected void endDragAndDrop() {
 		if (dragAndDrop != null) {

@@ -9,8 +9,8 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 /**
- * Implements a variant of the JTable that does select the TableCellEditors
- * based on rows instead of columns.
+ * Implements a variant of the {@link JTable} that does select the
+ * {@link TableCellEditor}s based on rows instead of columns.
  * 
  * @author tobias_kuhn
  * 
@@ -74,7 +74,7 @@ public class JRowTable extends JTable {
 	}
 
 	/**
-	 * Initializes a new JRowTable with a row editor model
+	 * Initializes a new {@link JRowTable} with a row editor model
 	 * 
 	 * @param tm
 	 *            classic TableModel, see {@link JTable#JTable}

@@ -18,7 +18,9 @@ import de.osmembrane.view.AbstractDialog;
 
 /**
  * Simple dialog to display the generated command line, export it, or copy it to
- * clipboard.
+ * the clipboard.
+ * 
+ * @see Spezifikation.pdf, chapter 2.6
  * 
  * @author tobias_kuhn
  * 
@@ -28,12 +30,12 @@ public class CommandLineDialog extends AbstractDialog {
 	private static final long serialVersionUID = -904804959704267472L;
 	
 	/**
-	 * The component to display the command line
+	 * the component to display the command line
 	 */
 	private JTextArea commandline;
 
 	/**
-	 * Creates a new CommandLineDialog
+	 * Creates a new {@link CommandLineDialog}
 	 */
 	public CommandLineDialog() {
 		// set the basics up

@@ -10,12 +10,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 /**
- * A {@link JPanel} component with the ability to create colored images with
- * icons from a private static ImageIcon displayTemplate (that every descendant
- * should implement).
+ * A {@link JPanel} component with the ability to create colored {@link Image}s
+ * with icons from an {@link ImageIcon} display template.
  * 
- * To create a displayable image, just call derivateDisplay with the desired
- * color and icon.
+ * To create a displayable {@link Image}, just call
+ * {@link DisplayTemplatePanel#derivateDisplay} with the desired {@link Color}
+ * and icon.
  * 
  * @author tobias_kuhn
  * 
@@ -29,17 +29,16 @@ public abstract class DisplayTemplatePanel extends JPanel {
 	 * given color and with the given icon.
 	 * 
 	 * @param template
-	 *            the image to colorize and iconify
+	 *            the {@link ImageIcon} to colorize and iconify
 	 * @param color
-	 *            The color this image shall display in
+	 *            The {@link Color} this image shall display in
 	 * @param icon
 	 *            The icon this image shall display
-	 * @return the pre-rendered image in the color and with the icon
+	 * @return the pre-rendered {@link Image} in the color and with the icon
 	 */
 	protected Image derivateDisplay(ImageIcon template, Color color, Image icon) {
 		// copy displayTemplate to a BufferedImage
-		BufferedImage result = new BufferedImage(
-				template.getIconWidth(),
+		BufferedImage result = new BufferedImage(template.getIconWidth(),
 				template.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 
 		Graphics2D g = result.createGraphics();

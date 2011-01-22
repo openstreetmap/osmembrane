@@ -9,7 +9,7 @@ import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 
 /**
- * The one OO instance of the main program
+ * The one and only OO instance of the main program
  * 
  * @author tobias_kuhn
  * 
@@ -17,7 +17,7 @@ import de.osmembrane.view.ViewRegistry;
 public class Application {
 
 	/**
-	 * Connects the most basic stuff of the MVC architecture,
+	 * Connects the most basic stuff of the MVC architecture
 	 */
 	public void initiate() {
 		try {
@@ -54,7 +54,7 @@ public class Application {
 
 	/**
 	 * Shows the main window after application startup. Is guaranteed to be
-	 * invoked by a different Runnable
+	 * invoked by a different {@link Runnable}
 	 */
 	public void showMainFrame() {
 		try {
@@ -70,7 +70,7 @@ public class Application {
 	}
 
 	/**
-	 * Called whenever there's an exception to catch.
+	 * Called whenever there's a {@link Throwable} to catch.
 	 */
 	public static void handleException(Throwable t) {
 		// if it's one of our own, decode it

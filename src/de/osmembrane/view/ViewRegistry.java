@@ -11,7 +11,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.view.IView;
-import de.osmembrane.view.dialogs.ErrorDialog;
+import de.osmembrane.view.dialogs.ExceptionDialog;
 import de.osmembrane.view.frames.MainFrame;
 
 /**
@@ -25,12 +25,12 @@ public class ViewRegistry extends Observable implements Observer {
 
 	/**
 	 * implements the error-handling dialog Note: This is important to be static
-	 * and external to the ViewRegistry instance, because anyway else occurring
-	 * exceptions during anything static would cause an
-	 * ExceptionInInitializerError because the error handling would require the
-	 * ViewRegistry instance to be available.
+	 * and external to the {@link ViewRegistry} instance, because anyway else
+	 * occurring exceptions during anything static would cause an
+	 * {@link ExceptionInInitializerError} because the error handling would
+	 * require the ViewRegistry instance to be available.
 	 */
-	private static ErrorDialog errorDialog;
+	private static ExceptionDialog exceptionDialog;
 
 	/**
 	 * implements the Singleton pattern
@@ -63,7 +63,7 @@ public class ViewRegistry extends Observable implements Observer {
 
 	/**
 	 * 
-	 * @return the one and only instance of ViewRegistry
+	 * @return the one and only instance of {@link ViewRegistry}
 	 */
 	public static ViewRegistry getInstance() {
 		return instance;
@@ -111,23 +111,23 @@ public class ViewRegistry extends Observable implements Observer {
 	}
 
 	/**
-	 * Note: The view registry can be exchanged along with all view components,
-	 * so it has to identify its main window for the purpose of showing this
-	 * window at startup.
+	 * Note: The {@link ViewRegistry} can be exchanged along with all view
+	 * components, so it has to identify its main window for the purpose of
+	 * showing this window at startup.
 	 * 
-	 * @return the main frame of this view component
+	 * @return the {@link MainFrame} of this view component
 	 */
 	public IView getMainFrame() {
 		return get(MainFrame.class);
 	}
 
 	/**
-	 * Displays an occurred exception using the ExceptionDialog. This method
-	 * should not be called directly. Use the Controller's handleException()
-	 * method instead.
+	 * Displays an occurred exception using the {@link ExceptionDialog}. This method
+	 * should not be called directly. Use the
+	 * {@link Application#handleException} method instead.
 	 * 
 	 * @param t
-	 *            class in which the Exception occurred
+	 *            {@link Throwable} that caused the exception
 	 * @param severity
 	 *            indicates what happened and how fatal it is
 	 * @param causingObject
@@ -135,9 +135,9 @@ public class ViewRegistry extends Observable implements Observer {
 	 */
 	public static void showException(Throwable t, ExceptionSeverity severity,
 			Object causingObject) {
-		if (errorDialog == null) {
-			errorDialog = new ErrorDialog();
+		if (exceptionDialog == null) {
+			exceptionDialog = new ExceptionDialog();
 		}
-		errorDialog.showException(t, severity, causingObject);
+		exceptionDialog.showException(t, severity, causingObject);
 	}
 }

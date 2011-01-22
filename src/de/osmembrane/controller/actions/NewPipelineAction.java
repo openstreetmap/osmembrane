@@ -3,35 +3,38 @@ package de.osmembrane.controller.actions;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
-import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
-import de.osmembrane.view.ViewRegistry;
 
+/**
+ * Action to create a completely empty, new pipeline.
+ * 
+ * @author tobias_kuhn
+ * 
+ */
 public class NewPipelineAction extends AbstractAction {
 
+	private static final long serialVersionUID = -8713011583509026047L;
+
+	/**
+	 * Creates a new {@link NewPipelineAction}
+	 */
 	public NewPipelineAction() {
-		// throw new UnsupportedOperationException();
-		// FIXME
 		putValue(Action.NAME, "New Pipeline");
 		putValue(Action.SMALL_ICON, new IconLoader("new_pipeline.png",
 				Size.SMALL).get());
 		putValue(Action.LARGE_ICON_KEY, new IconLoader("new_pipeline.png",
 				Size.NORMAL).get());
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-				KeyEvent.VK_INSERT, Toolkit.getDefaultToolkit()
-						.getMenuShortcutKeyMask()));
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		putValue(Action.SHORT_DESCRIPTION, "News an add pipeline item.");
 	}
 

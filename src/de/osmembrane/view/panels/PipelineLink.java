@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 
 /**
  * The visual (and selectable) component which displays the links between
- * connectors.
+ * {@link PipelineConnector}s.
  * 
  * @author tobias_kuhn
  */
@@ -29,7 +29,7 @@ public class PipelineLink extends JPanel {
 	private PipelineConnector linkDestination;
 
 	/**
-	 * Color this connection will be drawn in
+	 * {@link Color} this connection will be drawn in
 	 */
 	private Color color;
 

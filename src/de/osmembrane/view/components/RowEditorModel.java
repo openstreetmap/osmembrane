@@ -2,10 +2,11 @@ package de.osmembrane.view.components;
 
 import java.util.HashMap;
 
+import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
 /**
- * Implements a simple editor model for JTables that is based on rows instead of
+ * Implements a simple editor model for {@link JTable}s that is based on rows instead of
  * columns.
  * 
  * @author tobias_kuhn
@@ -16,14 +17,14 @@ public class RowEditorModel {
 	private HashMap<Integer, TableCellEditor> rowEditors;
 
 	/**
-	 * Initializes a row editor model
+	 * Initializes a new {@link RowEditorModel}
 	 */
 	public RowEditorModel() {
 		rowEditors = new HashMap<Integer, TableCellEditor>();
 	}
 
 	/**
-	 * sets a TableCellEditor for a specific row
+	 * sets a {@link TableCellEditor} for a specific row
 	 * @param row the row of the TableCellEditor
 	 * @param tce the TableCellEditor to set
 	 */
@@ -32,7 +33,7 @@ public class RowEditorModel {
 	}
 	
 	/**
-	 * removes a TableCellEditor for a specific row
+	 * removes a {@link TableCellEditor} for a specific row
 	 * @param row the row of the TableCellEditor
 	 */
 	public void removeEditorRow(int row) {
@@ -40,7 +41,7 @@ public class RowEditorModel {
 	}
 
 	/**
-	 * gets a TableCellEditor for a specific row
+	 * gets a {@link TableCellEditor} for a specific row
 	 * @param row the row of the TableCellEditor
 	 * @return the requested TableCellEditor
 	 */

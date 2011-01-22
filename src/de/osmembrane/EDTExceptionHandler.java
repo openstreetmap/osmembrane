@@ -1,9 +1,10 @@
 package de.osmembrane;
 
+import de.osmembrane.view.dialogs.ExceptionDialog;
 
 /**
  * Class necessary to be instantiated when an EDT exception occurs to forward it
- * to the ErrorDialog.
+ * to the {@link ExceptionDialog}.
  * 
  * @see java.awt.EventDispatchThread#handleException
  * 

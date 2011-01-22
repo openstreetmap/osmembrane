@@ -1,7 +1,7 @@
 package de.osmembrane.view.panels;
 
 /**
- * Represents the tool currently in use on the pipeline panel.
+ * Represents the tool currently in use on the {@link PipelinePanel}.
  * 
  * @see Specification, 2.1.3
  * 
@@ -12,28 +12,28 @@ public enum Tool {
 	/**
 	 * The magic default tool, that behaves as follows:
 	 * <ul>
-	 * <li>if a function or connection is below the cursor, it behaves like the
-	 * selection tool</li>
+	 * <li>if a {@link PipelineFunction} or {@link PipelineLink} is below the
+	 * cursor, it behaves like the selection tool</li>
 	 * <li>if nothing is below the cursor, it behaves like the view tool</li>
-	 * <li>if a connector is below the cursor, it behaves like the connection
-	 * tool</li>
+	 * <li>if a {@link PipelineConnector} is below the cursor, it behaves like
+	 * the connection tool</li>
 	 * </ul>
 	 */
 	DEFAULT_MAGIC_TOOL,
 
 	/**
-	 * tool to select functions or connections in order to move functions or
-	 * delete selections
+	 * tool to select {@link PipelineFunction}s or {@link PipelineLink}s in
+	 * order to move {@link PipelineFunction}s or delete selections
 	 */
 	SELECTION_TOOL,
 
 	/**
-	 * tool to move or zoom the view
+	 * tool to move or zoom the {@link PipelinePanel}
 	 */
 	VIEW_TOOL,
 
 	/**
-	 * tool to create connections
+	 * tool to create {@link PipelineLink}s
 	 */
 	CONNECTION_TOOL;
 }

@@ -1,30 +1,28 @@
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ImageIcon;
 
 import de.osmembrane.controller.events.ContainingFunctionChangeParameterEvent;
-import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.resources.Constants;
-import de.osmembrane.tools.I18N;
-import de.osmembrane.tools.IconLoader;
-import de.osmembrane.tools.IconLoader.Size;
-import de.osmembrane.view.ViewRegistry;
 
+/**
+ * Action to edit a specific parameter or task of a function. Receives a
+ * {@link ContainingFunctionChangeParameterEvent}. Only invoked from the view,
+ * should never be visible.
+ * 
+ * @author tobias_kuhn
+ * 
+ */
 public class EditPropertyAction extends AbstractAction {
 
+	private static final long serialVersionUID = 320672706619084111L;
+
+	/**
+	 * Creates a new {@link EditPropertyAction}
+	 */
 	public EditPropertyAction() {
-		putValue(Action.NAME, "Edit Property");
-		putValue(Action.SMALL_ICON, new IconLoader("property_edit.png",
-				Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY, new IconLoader("property_edit.png",
-				Size.NORMAL).get());
-		// FIXME
 	}
 
 	@Override

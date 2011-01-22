@@ -16,12 +16,14 @@ import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
+import de.osmembrane.model.pipeline.FunctionGroup;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;
 
 /**
- * A group panel that is placed for each FunctionGroup on the LibraryPanel
+ * A group panel that is placed for each {@link FunctionGroup} on the
+ * {@link LibraryPanel}.
  * 
  * @author tobias_kuhn
  * 
@@ -31,14 +33,14 @@ public class LibraryPanelGroup extends JPanel {
 	private static final long serialVersionUID = -2502154263887966328L;
 
 	/**
-	 * The id this panel group has in its main Library panel (used for click
-	 * handling calls)
+	 * The id this {@link LibraryPanelGroup} has in its main
+	 * {@link LibraryPanel} (used for click handling calls)
 	 */
 	private int id;
 
 	/**
-	 * The header button of this panel group that can make it expandable or
-	 * contractable
+	 * The header {@link JButton} of this {@link LibraryPanelGroup} that can
+	 * make it expandable or contractable
 	 */
 	private JButton headerButton;
 
@@ -46,9 +48,9 @@ public class LibraryPanelGroup extends JPanel {
 	 * The height of the contained objects
 	 */
 	private int contentHeight;
-	
+
 	/**
-	 * The function group represented
+	 * The {@link FunctionGroup} represented
 	 */
 	private AbstractFunctionGroup functionGroup;
 
@@ -58,17 +60,18 @@ public class LibraryPanelGroup extends JPanel {
 	private List<LibraryFunction> content;
 
 	/**
-	 * Initializes a new LibraryPanelGroup
+	 * Initializes a new {@link LibraryPanelGroup}
 	 * 
 	 * @param lp
-	 *            the parent LibraryPanel on which this group will be displayed
+	 *            the parent {@link LibraryPanel} on which this group will be
+	 *            displayed
 	 * @param afg
-	 *            the {@link AbstractFunctionGroup} which this LibraryPanelGroup
-	 *            represents
+	 *            the {@link AbstractFunctionGroup} which this
+	 *            {@link LibraryPanelGroup} represents
 	 */
 	public LibraryPanelGroup(final LibraryPanel lp, AbstractFunctionGroup afg) {
 		this.functionGroup = afg;
-		
+
 		// display
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		// best decision ever <- do not touch
@@ -82,7 +85,7 @@ public class LibraryPanelGroup extends JPanel {
 		headerButton = new JButton();
 		headerButton.setText(afg.getFriendlyName());
 		Color color = afg.getColor();
-		headerButton.setBackground(color);		
+		headerButton.setBackground(color);
 
 		// determine size, etc.
 		headerButton.setLocation(3, y);
@@ -97,18 +100,18 @@ public class LibraryPanelGroup extends JPanel {
 				lp.groupClicked(id);
 			}
 		});
-		
+
 		// hint listener for function group
 		headerButton.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// show no hint
@@ -116,7 +119,7 @@ public class LibraryPanelGroup extends JPanel {
 				MainFrame mf = (MainFrame) mainFrame;
 				mf.getPipeline().setHint(InspectorPanel.VALID_EMPTY_HINT);
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// show hint for this function group
@@ -124,7 +127,7 @@ public class LibraryPanelGroup extends JPanel {
 				MainFrame mf = (MainFrame) mainFrame;
 				mf.getPipeline().setHint(functionGroup.getDescription());
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			}
@@ -157,7 +160,8 @@ public class LibraryPanelGroup extends JPanel {
 
 	/**
 	 * @param id
-	 *            the id this panel group has in its main Library panel to set
+	 *            the id this {@link LibraryPanelGroup} has in its main
+	 *            {@link LibraryPanel} to set
 	 */
 	protected void setId(int id) {
 		this.id = id;
@@ -190,7 +194,8 @@ public class LibraryPanelGroup extends JPanel {
 	}
 
 	/**
-	 * Gets called when the library panel has rearranged the library panel group
+	 * Gets called when the {@link LibraryPanel} has rearranged the
+	 * {@link LibraryPanelGroup}s
 	 */
 	protected void rearranged() {
 		// correct the header button's width
@@ -201,5 +206,5 @@ public class LibraryPanelGroup extends JPanel {
 			vf.setLocation((getWidth() - vf.getWidth()) / 2, vf.getLocation().y);
 		}
 	}
-	
+
 }

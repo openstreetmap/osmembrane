@@ -62,6 +62,8 @@ import de.osmembrane.view.panels.Tool;
  * The Main window that is the center of OSMembrane and the first thing you'll
  * see after the splash screen.
  * 
+ * @see Spezifikation.pdf, chapter 2.1
+ * 
  * @author tobias_kuhn
  * 
  */
@@ -70,7 +72,7 @@ public class MainFrame extends AbstractFrame {
 	private static final long serialVersionUID = 6464462774273555770L;
 
 	/**
-	 * The pipeline panel showing the pipeline
+	 * The {@link PipelinePanel} showing the pipeline
 	 */
 	private PipelinePanel pipelineView;
 
@@ -81,9 +83,7 @@ public class MainFrame extends AbstractFrame {
 	private Map<Tool, Cursor> toolsCursors;
 
 	/**
-	 * Creates the main frame.
-	 * 
-	 * @see Spezifikation.pdf, chapter 2.1
+	 * Creates the {@link MainFrame}.
 	 */
 	public MainFrame() {
 		// window title
@@ -356,15 +356,15 @@ public class MainFrame extends AbstractFrame {
 	}
 
 	/**
-	 * @return the pipeline panel
+	 * @return the {@link PipelinePanel}
 	 */
 	public PipelinePanel getPipeline() {
 		return pipelineView;
 	}
 
 	/**
-	 * Draws a specific view function that is currently dragged & drop where the
-	 * cursor is
+	 * Draws a specific {@link LibraryFunction} that is currently dragged & drop
+	 * where the cursor is
 	 * 
 	 * @param libraryFunction
 	 *            the view function to be drawn

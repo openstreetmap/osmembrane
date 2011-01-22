@@ -9,11 +9,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.Application;
+import de.osmembrane.model.pipeline.FunctionGroup;
 
 /**
- * The function library panel that lists all the function groups in a register
- * style and gives you the ability to drag & drop them onto the
- * {@link PipelinePanel}.
+ * The function library panel that lists all the {@link FunctionGroup}s as
+ * {@link LibraryPanelGroup}s in a register style and gives you the ability to
+ * drag & drop them onto the {@link PipelinePanel}.
+ * 
+ * @see Spezifikation.pdf, chapter 2.1.4
  * 
  * @author tobias_kuhn
  * 
@@ -23,20 +26,20 @@ public class LibraryPanel extends JPanel {
 	private static final long serialVersionUID = -865621422748326256L;
 
 	/**
-	 * The index of the function group that is currently completely expanded, or
-	 * -1 if none is completely expanded.
+	 * The index of the {@link LibraryPanelGroup} that is currently completely
+	 * expanded, or -1 if none is completely expanded.
 	 */
 	private int expanded;
 
 	/**
-	 * The index of the function group that is currently expanding, or -1 if
-	 * none
+	 * The index of the {@link LibraryPanelGroup} that is currently expanding,
+	 * or -1 if none
 	 */
 	private int expanding;
 
 	/**
-	 * The index of the function group that is currently contracting, or -1 if
-	 * none
+	 * The index of the {@link LibraryPanelGroup} that is currently contracting,
+	 * or -1 if none
 	 */
 	private int contracting;
 
@@ -46,22 +49,22 @@ public class LibraryPanel extends JPanel {
 	private long expandingStart;
 
 	/**
-	 * The typical duration of an expandation, in milliseconds
+	 * The desired duration of an expandation, in milliseconds
 	 */
 	private final static double expandingDuration = 333.0;
 
 	/**
-	 * The thread that performs the expanding/contracting animation
+	 * The {@link Thread} that performs the expanding/contracting animation
 	 */
 	private Thread expandingThread;
 
 	/**
-	 * The group components listed in this library panel
+	 * The {@link LibraryPanelGroup}s listed in this library panel
 	 */
 	private List<LibraryPanelGroup> groups;
 
 	/**
-	 * Initializes the basics of the panel, i.e. logic and display
+	 * Initializes a new {@link LibraryPanel}
 	 */
 	public LibraryPanel() {
 		// internal logic
@@ -98,9 +101,11 @@ public class LibraryPanel extends JPanel {
 	}
 
 	/**
-	 * Notify the panel that a group has been clicked
+	 * Notify the panel that a {@link LibraryPanelGroup} has been clicked to
+	 * expand/collapse
 	 * 
 	 * @param group
+	 *            the {@link LibraryPanelGroup} to expand/collapse
 	 */
 	public void groupClicked(int group) {
 
@@ -111,7 +116,7 @@ public class LibraryPanel extends JPanel {
 			try {
 				expandingThread.join();
 			} catch (InterruptedException e) {
-				Application.handleException(e);	
+				Application.handleException(e);
 			}
 		}
 
@@ -210,8 +215,9 @@ public class LibraryPanel extends JPanel {
 	}
 
 	/**
-	 * Rearranges the library panel groups to actually look like a library panel
-	 * Unlike the "Layout Manager" (incompetent, is a Manager)
+	 * Rearranges the {@link LibraryPanelGroup}s to actually look like a
+	 * {@link LibraryPanel}. Unlike the "LayoutManager" (incompetent, is a
+	 * Manager)
 	 */
 	private void rearrange() {
 		int y = 3;
@@ -222,10 +228,10 @@ public class LibraryPanel extends JPanel {
 			lpg.setSize(this.getWidth() - 6, lpg.getHeight());
 			// notify the arrangement
 			lpg.rearranged();
-		
+
 			y += lpg.getHeight() + 6;
 		}
-		
+
 		// update for the scroll bar
 		setPreferredSize(new Dimension(this.getPreferredSize().width, y));
 	}
@@ -246,7 +252,7 @@ public class LibraryPanel extends JPanel {
 			boolean expanding) {
 		// function: timeFactor in [0, 1] ---> arg in [0, 1]
 		double arg = 0.5 - 0.5 * Math.cos(timeFactor * Math.PI);
-		
+
 		if (expanding) {
 			return (int) (arg * originalHeight);
 		} else {

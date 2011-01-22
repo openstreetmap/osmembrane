@@ -2,16 +2,12 @@ package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
-import de.osmembrane.model.pipeline.AbstractConnector;
-import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.IView;
@@ -20,8 +16,20 @@ import de.osmembrane.view.frames.MainFrame;
 import de.osmembrane.view.panels.PipelineFunction;
 import de.osmembrane.view.panels.PipelineLink;
 
+/**
+ * Action to delete a function or a connection from the pipeline. Receives no
+ * specific event, has to look for the currently selected object in the view.
+ * 
+ * @author tobias_kuhn
+ * 
+ */
 public class DeleteSelectionAction extends AbstractAction {
 
+	private static final long serialVersionUID = 8429188229104025512L;
+
+	/**
+	 * Creates a new {@link DeleteSelectionAction}
+	 */
 	public DeleteSelectionAction() {
 		putValue(Action.NAME, "Delete Selection");
 		putValue(Action.SMALL_ICON, new IconLoader("delete_function.png",
@@ -31,7 +39,6 @@ public class DeleteSelectionAction extends AbstractAction {
 		putValue(Action.ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 		setEnabled(false);
-		// FIXME
 	}
 
 	@Override
@@ -42,11 +49,13 @@ public class DeleteSelectionAction extends AbstractAction {
 
 		if (selected != null) {
 			if (selected instanceof PipelineFunction) {
+				// delete selected function
 				PipelineFunction pf = (PipelineFunction) selected;
 				ModelProxy.getInstance().accessPipeline()
 						.deleteFunction(pf.getModelFunction());
 
 			} else if (selected instanceof PipelineLink) {
+				// delete selected connection/link
 				PipelineLink pl = (PipelineLink) selected;
 				pl.getLinkSource()
 						.getModelConnector()

@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import de.osmembrane.model.pipeline.AbstractConnector;
+import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.ConnectorType;
 
 /**
@@ -27,25 +28,25 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	private static final long serialVersionUID = -3777471525969957175L;
 
 	/**
-	 * The image resource that keeps an image template used to prerender the
-	 * actual image that will be drawn on this connector
+	 * The {@link ImageIcon} resource that keeps an image template used to
+	 * prerender the actual image that will be drawn on this connector
 	 */
 	protected static ImageIcon displayTemplate = new ImageIcon(
 			PipelineConnector.class
 					.getResource("/de/osmembrane/resources/images/connector.png"));
 
 	/**
-	 * The model-connector associated with this connector
+	 * The model {@link Connector} associated with this connector
 	 */
 	private AbstractConnector modelConnector;
 
 	/**
-	 * The parent pipeline function associated with this connector
+	 * The parent {@link PipelineFunction} associated with this connector
 	 */
 	private PipelineFunction parentFunction;
 
 	/**
-	 * Pipeline this connector is drawn on.
+	 * {@link PipelinePanel} this connector is drawn on.
 	 */
 	private PipelinePanel pipeline;
 
@@ -61,23 +62,26 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	private boolean isOutpipes;
 
 	/**
-	 * id in a group of in- or out-connectors per function
+	 * the id this connector has in a group of connectors. one group of
+	 * connectors is all the in- or out-connectors of a function
 	 */
 	private int id;
 
 	/**
-	 * amount of the connectors in the group of in- or out-connectors per
-	 * function
+	 * amount of the connectors in the group of connectors. one group of
+	 * connectors is all the in- or out-connectors of a function
 	 */
 	private int amount;
 
 	/**
-	 * list of links going from this connector to other connectors
+	 * list of {@link PipelineLink}s going from this connector to other
+	 * connectors
 	 */
 	private List<PipelineLink> links;
 
 	/**
-	 * Creates a new connector for a model connector on a pipeline function.
+	 * Creates a new connector for a model {@link Connector} on a
+	 * {@link PipelineFunction}.
 	 * 
 	 * @param modelConnector
 	 *            connector in the model which is represented
@@ -156,7 +160,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	}
 
 	/**
-	 * Creates all the outflowing links from this connector.
+	 * Creates all the outflowing {@link PipelineLink}s from this connector.
 	 */
 	private void createLinks() {
 		for (AbstractConnector ac : modelConnector.getConnections()) {
@@ -169,7 +173,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	}
 
 	/**
-	 * Arranges all links to conform to the connector
+	 * Arranges all {@link PipelineLink}s to conform to this connector
 	 */
 	public void arrangeLinks() {
 		for (PipelineLink pl : links) {
@@ -210,8 +214,9 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	}
 
 	/**
-	 * Knows the color that has to be applied for a specific ConnectorType. Can
-	 * be called from all {@link PipelineConnector}s and {@link PipelineLink}s.
+	 * Knows the {@link Color} that has to be applied for a specific
+	 * {@link ConnectorType}. Can be called from all {@link PipelineConnector}s
+	 * and {@link PipelineLink}s.
 	 * 
 	 * @param connectorType
 	 *            type of the connector to apply color to
@@ -236,7 +241,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	}
 
 	/**
-	 * @return the model connector represented by this
+	 * @return the model {@link Connector} represented by this
 	 */
 	public AbstractConnector getModelConnector() {
 		return this.modelConnector;
@@ -250,28 +255,30 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	}
 
 	/**
-	 * @return unique id in a group of connectors
+	 * @return the id this connector has in a group of connectors. one group of
+	 *         connectors is all the in- or out-connectors of a function
 	 */
 	public int getId() {
 		return this.id;
 	}
 
 	/**
-	 * @return amount of connectors in a group of connectors
+	 * @return amount of the connectors in the group of connectors. one group of
+	 *         connectors is all the in- or out-connectors of a function
 	 */
 	public int getAmount() {
 		return this.amount;
 	}
 
 	/**
-	 * @return the list of links flowing out from this connector
+	 * @return the list of {@link PipelineLink}s flowing out from this connector
 	 */
 	public List<PipelineLink> getLinks() {
 		return this.links;
 	}
 
 	/**
-	 * Creates a new link to toConnector and returns it.
+	 * Creates a new {@link PipelineLink} to toConnector and returns it.
 	 * 
 	 * @param toConnector
 	 *            the target of the connection from here
@@ -285,7 +292,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	}
 
 	/**
-	 * Removes the link to toConnector and returns it.
+	 * Removes the {@link PipelineLink} to toConnector and returns it.
 	 * 
 	 * @param toConnector
 	 *            the target of the connection from here
@@ -305,7 +312,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	}
 
 	/**
-	 * @return the parent function this connector belongs to
+	 * @return the parent {@link PipelineFunction} this connector belongs to
 	 */
 	public PipelineFunction getParentFunction() {
 		return this.parentFunction;
