@@ -2,7 +2,6 @@ package de.osmembrane.view.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Point;
@@ -20,7 +19,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
@@ -70,8 +68,6 @@ import de.osmembrane.view.panels.Tool;
 public class MainFrame extends AbstractFrame {
 
 	private static final long serialVersionUID = 6464462774273555770L;
-
-	private String notification;
 
 	/**
 	 * The pipeline panel showing the pipeline
@@ -341,6 +337,7 @@ public class MainFrame extends AbstractFrame {
 
 		JSplitPane splitMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				true, splitLibAndView, paneInspector);
+		splitMain.setResizeWeight(1.0);
 		getContentPane().add(splitMain);
 
 		// set the application icon
@@ -351,19 +348,11 @@ public class MainFrame extends AbstractFrame {
 
 		// center, then maximize
 		pack();
-		pipelineView.setPreferredSize(new Dimension((int) (getWidth() * 0.7),
-				pipelineView.getPreferredSize().height));
-		pack();
 		centerWindow();
 		setExtendedState(Frame.MAXIMIZED_BOTH);
-	}
+		setWindowTitle(paneInspector.getPreferredSize().toString() + " "
+				+ paneInspector.getSize().toString());
 
-	/**
-	 * @param notification
-	 *            the notification to set
-	 */
-	public void setNotification(String notification) {
-		this.notification = notification;
 	}
 
 	/**
