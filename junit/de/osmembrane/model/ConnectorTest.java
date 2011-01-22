@@ -51,10 +51,7 @@ public class ConnectorTest {
 		
 		for (AbstractFunctionGroup afg : afp.getFunctionGroups()) {
 			for (AbstractFunction af : afg.getFunctions()) {
-				System.out.println(afg.getFriendlyName() + " - "
-						+ af.getFriendlyName());
-				System.out.println(af.getInConnectors().length + " - "
-						+ af.getOutConnectors().length);
+
 				if ((af.getInConnectors() != null)
 						&& (af.getInConnectors().length > 0)
 						&& (af.getOutConnectors() != null)
@@ -64,7 +61,8 @@ public class ConnectorTest {
 					AbstractConnector firstOut = af.getOutConnectors()[0];
 
 					if ((firstIn.getType() != ConnectorType.ENTITY)
-							|| (firstOut.getType() != ConnectorType.ENTITY)) {
+							|| (firstOut.getType() != ConnectorType.ENTITY)
+							|| (firstIn.getMaxConnections() == 1)) {
 						continue;
 					}
 
@@ -112,13 +110,13 @@ public class ConnectorTest {
 	@Test
 	public void testGetMaxConnections() {
 		assertTrue("ConnectorTest:getMaxConnections()",
-				conOut.getMaxConnections() != 0);
+				(conOut.getMaxConnections() > 0) && (conIn.getMaxConnections() == 1));
 	}
 
 	@Test
 	public void testIsFull() throws ConnectorException {
 		funcs[0].addConnectionTo(funcs[1]);
-		assertTrue("ConnectorTest:isFull()", conOut.isFull() && conIn.isFull());
+		assertTrue("ConnectorTest:isFull()", conIn.isFull());
 		funcs[0].removeConnectionTo(funcs[1]);
 	}
 
