@@ -1,5 +1,6 @@
 package de.osmembrane.model.pipeline;
 
+import de.osmembrane.model.pipeline.AbstractConnector.ConnectorPosition;
 import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.ConnectorException.Type;
 import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
@@ -212,6 +213,8 @@ public class Function extends AbstractFunction {
 	@Override
 	public void addConnectionTo(AbstractFunction function)
 			throws ConnectorException {
+		boolean foundFullOne = false;
+		
 		for (AbstractConnector connectorOut : getOutConnectors()) {
 			for (AbstractConnector connectorIn : function.getInConnectors()) {
 				if (connectorOut.getType() == connectorIn.getType()) {
@@ -242,13 +245,17 @@ public class Function extends AbstractFunction {
 
 						return;
 					} else {
-						throw new ConnectorException(Type.FULL);
+						foundFullOne = true;
 					}
 				}
 			}
 		}
 
-		throw new ConnectorException(Type.NO_MATCH);
+		if (foundFullOne) {
+			throw new ConnectorException(Type.FULL);
+		} else {
+			throw new ConnectorException(Type.NO_MATCH);
+		}
 	}
 
 	@Override
@@ -290,12 +297,12 @@ public class Function extends AbstractFunction {
 	private void createConnectors() {
 		/* In-Connectors */
 		for (XMLPipe pipe : activeTask.getInputPipe()) {
-			inConnectors.add(new Connector(this, pipe));
+			inConnectors.add(new Connector(this, ConnectorPosition.IN, pipe));
 		}
 
 		/* Out-Connectors */
 		for (XMLPipe pipe : activeTask.getOutputPipe()) {
-			outConnectors.add(new Connector(this, pipe));
+			outConnectors.add(new Connector(this , ConnectorPosition.OUT, pipe));
 		}
 	}
 

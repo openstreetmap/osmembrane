@@ -11,17 +11,17 @@ public enum ConnectorType {
 	/**
 	 * Stream-type "change".
 	 */
-	CHANGE("Change", -1, new Color(255, 0, 0)),
+	CHANGE("Change", 1, Integer.MAX_VALUE, new Color(255, 0, 0)),
 
 	/**
 	 * Stream-type "entity".
 	 */
-	ENTITY("Entity", -1, new Color(0, 255, 0)),
+	ENTITY("Entity", 1, Integer.MAX_VALUE, new Color(0, 255, 0)),
 
 	/**
 	 * Stream-type "dataset".
 	 */
-	DATASET("Dataset", 1, new Color(0, 0, 255));
+	DATASET("Dataset", 1, 1, new Color(0, 0, 255));
 
 	/**
 	 * Friendly name for connector type.
@@ -29,10 +29,10 @@ public enum ConnectorType {
 	private String friendlyName;
 
 	/**
-	 * Maximum connections for the connector type.<br/>
-	 * -1 represents infinity.
+	 * Maximum connections for the connector type.
 	 */
-	private int maxConnections;
+	private int maxInConnections;
+	private int maxOutConnections;
 
 	/**
 	 * Color of the connector type.
@@ -44,14 +44,15 @@ public enum ConnectorType {
 	 * 
 	 * @param friendlyName
 	 *            human readable name of the connector type
-	 * @param maxConnections
-	 *            maximum connections count for the connector type
+	 * @param maxInConnections
+	 *            maximum in-connections count for the connector type
 	 * @param color
 	 *            for the connector type
 	 */
-	private ConnectorType(String friendlyName, int maxConnections, Color color) {
+	private ConnectorType(String friendlyName, int maxInConnections, int maxOutConnections, Color color) {
 		this.friendlyName = friendlyName;
-		this.maxConnections = maxConnections;
+		this.maxInConnections = maxInConnections;
+		this.maxOutConnections = maxOutConnections;
 		this.color = color;
 	}
 
@@ -65,12 +66,21 @@ public enum ConnectorType {
 	}
 
 	/**
-	 * Returns the maximum count of connections for the connector type.
+	 * Returns the maximum count of in-connections for the connector type.
 	 * 
-	 * @return -1 for infinity
+	 * @return maximum connection count
 	 */
-	public int getMaxConnections() {
-		return maxConnections;
+	protected int getMaxInConnections() {
+		return maxInConnections;
+	}
+	
+	/**
+	 * Returns the maximum count of out-connections for the connector type.
+	 * 
+	 * @return maximum connection count
+	 */
+	protected int getMaxOutConnections() {
+		return maxOutConnections;
 	}
 
 	/**

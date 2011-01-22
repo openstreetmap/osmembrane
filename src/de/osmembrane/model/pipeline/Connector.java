@@ -17,7 +17,8 @@ public class Connector extends AbstractConnector {
 
 	private List<AbstractConnector> connectors = new ArrayList<AbstractConnector>();
 	private ConnectorType type;
-
+	private ConnectorPosition position;
+	
 	private XMLPipe xmlPipe;
 	private AbstractFunction parent;
 
@@ -28,9 +29,10 @@ public class Connector extends AbstractConnector {
 	 * @param pipe
 	 * @param parent
 	 */
-	public Connector(AbstractFunction parent, XMLPipe pipe) {
+	public Connector(AbstractFunction parent, ConnectorPosition position, XMLPipe pipe) {
 		this.xmlPipe = pipe;
 		this.parent = parent;
+		this.position = position;
 
 		this.type = ConnectorType.parseString(xmlPipe.getType());
 	}
@@ -52,12 +54,16 @@ public class Connector extends AbstractConnector {
 
 	@Override
 	public int getMaxConnections() {
-		return this.type.getMaxConnections();
+		if (position == ConnectorPosition.IN) {
+			return getType().getMaxInConnections();
+		} else {
+			return getType().getMaxOutConnections();
+		}
 	}
 
 	@Override
 	public boolean isFull() {
-		return (getMaxConnections() > 0 && connectors.size() >= getMaxConnections());
+		return (connectors.size() >= getMaxConnections());
 	}
 
 	@Override
