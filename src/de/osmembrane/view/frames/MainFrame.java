@@ -350,9 +350,6 @@ public class MainFrame extends AbstractFrame {
 		pack();
 		centerWindow();
 		setExtendedState(Frame.MAXIMIZED_BOTH);
-		setWindowTitle(paneInspector.getPreferredSize().toString() + " "
-				+ paneInspector.getSize().toString());
-
 	}
 
 	/**
