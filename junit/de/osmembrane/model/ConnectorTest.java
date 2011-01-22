@@ -34,9 +34,7 @@ import de.osmembrane.model.xml.XMLPipe;
  */
 public class ConnectorTest {
 
-	private static final int CYCLE_SIZE = 3;
-
-	private static AbstractFunction[] funcs = new AbstractFunction[CYCLE_SIZE];
+	private static AbstractFunction[] funcs = new AbstractFunction[3];
 
 	private static AbstractConnector conOut, conIn;
 
@@ -49,6 +47,8 @@ public class ConnectorTest {
 		AbstractFunctionPrototype afp = ModelProxy.getInstance()
 				.accessFunctions();
 
+		funcs[0] = null;
+		
 		for (AbstractFunctionGroup afg : afp.getFunctionGroups()) {
 			for (AbstractFunction af : afg.getFunctions()) {
 				System.out.println(afg.getFriendlyName() + " - "
@@ -68,21 +68,25 @@ public class ConnectorTest {
 						continue;
 					}
 
-					for (int i = 0; i < CYCLE_SIZE; i++) {
+					for (int i = 0; i < 3; i++) {
 						funcs[i] = ModelProxy.getInstance().accessFunctions()
 								.getFunction(af);
 						ModelProxy.getInstance().accessPipeline()
 								.addFunction(funcs[i]);
 					}
+					
+					conOut = funcs[0].getOutConnectors()[0];
+					conIn = funcs[1].getInConnectors()[0];
 
 					break;
 
 				}
+			} /* for */
+			
+			if (funcs[0] != null) {
+				break;
 			}
-
-			conOut = funcs[0].getOutConnectors()[0];
-			conIn = funcs[1].getInConnectors()[0];
-		}
+		} /* for */
 	}
 
 	@AfterClass
