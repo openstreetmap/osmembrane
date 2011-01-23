@@ -2,6 +2,8 @@ package de.osmembrane.model.pipeline;
 
 import java.awt.Color;
 
+import de.osmembrane.resources.Constants;
+
 /**
  * Type of the {@link AbstractConnector}.
  * 
@@ -11,17 +13,17 @@ public enum ConnectorType {
 	/**
 	 * Stream-type "change".
 	 */
-	CHANGE("Change", 1, Integer.MAX_VALUE, new Color(255, 0, 0)),
+	CHANGE("Change", 1, Integer.MAX_VALUE, Constants.CHANGE_STREAM_TYPE_COLOR),
 
 	/**
 	 * Stream-type "entity".
 	 */
-	ENTITY("Entity", 1, Integer.MAX_VALUE, new Color(0, 255, 0)),
+	ENTITY("Entity", 1, Integer.MAX_VALUE, Constants.ENTITY_STREAM_TYPE_COLOR),
 
 	/**
 	 * Stream-type "dataset".
 	 */
-	DATASET("Dataset", 1, 1, new Color(0, 0, 255));
+	DATASET("Dataset", 1, 1, Constants.DATASET_STREAM_TYPE_COLOR);
 
 	/**
 	 * Friendly name for connector type.

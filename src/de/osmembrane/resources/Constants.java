@@ -38,6 +38,20 @@ public class Constants {
 	 */
 	public static final Color DEFAULT_FUNCTIONGROUP_COLOR = new Color(0.8f, 0.8f, 0.8f);
 	
+	/**
+	 * Color definitions for the various stream types
+	 */
+	public static final Color ENTITY_STREAM_TYPE_COLOR = new Color(0.5f, 0.5f, 1.0f);
+	
+	/**
+	 * Color definitions for the various stream types
+	 */
+	public static final Color CHANGE_STREAM_TYPE_COLOR = new Color(1.0f, 0.5f, 0.5f);
+	
+	/**
+	 * Color definitions for the various stream types
+	 */
+	public static final Color DATASET_STREAM_TYPE_COLOR = new Color(0.5f, 1.0f, 0.5f);
 	
 	/**
 	 * Icons default folder.

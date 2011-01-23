@@ -64,12 +64,11 @@ public class PipelineLink extends JPanel {
 	 *            the link will be drawn in
 	 */
 	public PipelineLink(final PipelinePanel pipeline,
-			PipelineConnector linkSource, PipelineConnector linkDestination,
-			Color color) {
+			PipelineConnector linkSource, PipelineConnector linkDestination) {
 		this.pipeline = pipeline;
 		this.linkSource = linkSource;
 		this.linkDestination = linkDestination;
-		this.color = color;
+		this.color = linkSource.getModelConnector().getType().getColor();
 		this.line = new Line2D.Double();
 
 		this.setOpaque(false);

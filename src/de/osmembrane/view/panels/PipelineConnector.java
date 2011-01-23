@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.Connector;
-import de.osmembrane.model.pipeline.ConnectorType;
 
 /**
  * Represents a function connector, i.e. {@link AbstractConnector} in the View
@@ -148,7 +147,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 		});
 
 		// find right color
-		Color color = getConnectionColor(modelConnector.getType());
+		Color color = modelConnector.getType().getColor();
 		this.setOpaque(false);
 
 		display = derivateDisplay(displayTemplate, color, null);
@@ -165,8 +164,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	private void createLinks() {
 		for (AbstractConnector ac : modelConnector.getConnections()) {
 			PipelineLink pl = new PipelineLink(pipeline, this,
-					pipeline.findConnector(ac),
-					getConnectionColor(modelConnector.getType()));
+					pipeline.findConnector(ac));
 
 			links.add(pl);
 		}
@@ -211,28 +209,6 @@ public class PipelineConnector extends DisplayTemplatePanel {
 			pl.regenerateLine();
 		}
 
-	}
-
-	/**
-	 * Knows the {@link Color} that has to be applied for a specific
-	 * {@link ConnectorType}. Can be called from all {@link PipelineConnector}s
-	 * and {@link PipelineLink}s.
-	 * 
-	 * @param connectorType
-	 *            type of the connector to apply color to
-	 * @return the corresponding color for the connectorType
-	 */
-	protected static Color getConnectionColor(ConnectorType connectorType) {
-		switch (connectorType) {
-		case CHANGE:
-			return new Color(1.0f, 0.5f, 0.5f);
-		case DATASET:
-			return new Color(0.5f, 1.0f, 0.5f);
-		case ENTITY:
-			return new Color(0.5f, 0.5f, 1.0f);
-		default:
-			return new Color(1.0f, 1.0f, 1.0f);
-		}
 	}
 
 	@Override
@@ -285,8 +261,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 * @return the newly created link
 	 */
 	public PipelineLink addLinkTo(PipelineConnector toConnector) {
-		PipelineLink pl = new PipelineLink(pipeline, this, toConnector,
-				getConnectionColor(modelConnector.getType()));
+		PipelineLink pl = new PipelineLink(pipeline, this, toConnector);
 		links.add(pl);
 		return pl;
 	}
