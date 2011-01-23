@@ -2,33 +2,21 @@ package de.osmembrane.model;
 
 import static org.junit.Assert.*;
 
-import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.util.Observable;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.omg.CORBA.portable.ApplicationException;
 
 import de.osmembrane.Application;
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.pipeline.AbstractFunctionPrototype;
-import de.osmembrane.model.pipeline.AbstractPipeline;
-import de.osmembrane.model.pipeline.AbstractTask;
-import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorException.Type;
 import de.osmembrane.model.pipeline.ConnectorType;
 import de.osmembrane.model.pipeline.CopyType;
-import de.osmembrane.model.pipeline.Function;
-import de.osmembrane.model.pipeline.Pipeline;
-import de.osmembrane.model.xml.XMLFunction;
-import de.osmembrane.model.xml.XMLPipe;
 
 /**
  * Tests the connector.
@@ -94,7 +82,7 @@ public class ConnectorTest {
 			} /* for */
 		} /* for */
 
-		fail("ConnectorTest:No suitable function for testing found! Check the osmdefinitions!");
+		fail("No suitable function for testing found! Check the osmdefinitions!");
 	}
 
 	/**
@@ -128,23 +116,35 @@ public class ConnectorTest {
 		ModelProxy.getInstance().accessPipeline().clear();
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.Connector#getParent()}.
+	 */
 	@Test
 	public void testGetParent() {
 		assertEquals("Connector parent is not the function it belongs to",
 				funcs[0], conOut.getParent());
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.Connector#getDescription()}.
+	 */
 	@Test
 	public void testGetDescription() {
 		assertNotNull("Connector description is null", conOut.getDescription());
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.Connector#getType()}.
+	 */
 	@Test
 	public void testGetType() {
 		assertEquals("Connector type is suddenly not entity anymore",
 				ConnectorType.ENTITY, conOut.getType());
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.Connector#getMaxConnections()}.
+	 */
 	@Test
 	public void testGetMaxConnections() {
 		assertTrue(
@@ -153,6 +153,9 @@ public class ConnectorTest {
 						&& (conIn.getMaxConnections() == 1));
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.Connector#isFull()}.
+	 */
 	@Test
 	public void testIsFull() throws ConnectorException {
 		funcs[0].addConnectionTo(funcs[1]);
@@ -161,6 +164,9 @@ public class ConnectorTest {
 				conIn.isFull());
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.ConnectorException}.
+	 */
 	@Test
 	public void testConnectionCycle() throws ConnectorException {
 		funcs[0].addConnectionTo(funcs[1]);
@@ -180,6 +186,9 @@ public class ConnectorTest {
 		}
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.ConnectorException}.
+	 */
 	@Test
 	public void testTwoConnections() throws ConnectorException {
 		funcs[0].addConnectionTo(funcs[1]);
@@ -198,6 +207,9 @@ public class ConnectorTest {
 				(funcs[2].getOutConnectors()[0].getConnections().length == 0));
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.ConnectorException}.
+	 */
 	@Test
 	public void testSameConnectionTwice() throws ConnectorException {
 		funcs[0].addConnectionTo(funcs[1]);
@@ -205,7 +217,7 @@ public class ConnectorTest {
 			funcs[0].addConnectionTo(funcs[1]);
 			fail("No exception thrown");
 		} catch (ConnectorException ce) {
-			assertTrue("Exception was not already exists",
+			assertTrue("Exception was not " + Type.CONNECTION_ALREADY_EXISTS.toString() + " but " + ce.getType().toString(),
 					ce.getType() == Type.CONNECTION_ALREADY_EXISTS);
 		}
 
@@ -215,6 +227,9 @@ public class ConnectorTest {
 						&& (conOut.getConnections().length == 1));
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.Connector#removeConnection()}.
+	 */
 	@Test
 	public void testRemoveConnection() throws ConnectorException {
 		funcs[1].addConnectionTo(funcs[2]);
@@ -225,6 +240,9 @@ public class ConnectorTest {
 						&& (conOut.getConnections().length == 0));
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.Connector#getConnections()}.
+	 */
 	@Test
 	public void testGetConnections() throws ConnectorException {
 		funcs[0].addConnectionTo(funcs[1]);
@@ -236,6 +254,9 @@ public class ConnectorTest {
 
 	}
 
+	/**
+	 * Test method for {@link de.osmembrane.model.pipeline.Connector#unlink()}.
+	 */
 	@Test
 	public void testUnlink() throws ConnectorException {
 		funcs[0].addConnectionTo(funcs[1]);

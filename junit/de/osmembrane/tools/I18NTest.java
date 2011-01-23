@@ -2,19 +2,11 @@ package de.osmembrane.tools;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
 import org.junit.Test;
-
-import de.osmembrane.model.xml.XMLOsmosisStructure;
-import de.osmembrane.model.xml.XMLHasDescription.Description;
 
 /**
  * Simple test for {@link I18N}.
