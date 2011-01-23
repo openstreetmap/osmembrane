@@ -83,6 +83,7 @@ public class Pipeline extends AbstractPipeline {
 	@Override
 	public void clear() {
 		this.functions.clear();
+		savedState = true;
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
