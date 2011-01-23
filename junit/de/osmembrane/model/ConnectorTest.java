@@ -24,6 +24,7 @@ import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorException.Type;
 import de.osmembrane.model.pipeline.ConnectorType;
+import de.osmembrane.model.pipeline.CopyType;
 import de.osmembrane.model.pipeline.Function;
 import de.osmembrane.model.pipeline.Pipeline;
 import de.osmembrane.model.xml.XMLFunction;
@@ -111,8 +112,7 @@ public class ConnectorTest {
 	@Before
 	public void setUp() throws Exception {
 		for (int i = 0; i < 3; i++) {
-			funcs[i] = ModelProxy.getInstance().accessFunctions()
-					.getFunction(prototype);
+			funcs[i] = prototype.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
 			ModelProxy.getInstance().accessPipeline().addFunction(funcs[i]);
 		}
 
