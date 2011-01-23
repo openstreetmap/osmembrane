@@ -5,7 +5,11 @@ package de.osmembrane.model;
 
 import static org.junit.Assert.*;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.lang.reflect.Field;
+import java.rmi.server.ExportException;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -27,6 +31,9 @@ import de.osmembrane.model.pipeline.AbstractTask;
 import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorType;
 import de.osmembrane.model.pipeline.CopyType;
+import de.osmembrane.model.pipeline.Function;
+import de.osmembrane.model.pipeline.Task;
+import de.osmembrane.model.xml.XMLTask;
 import de.osmembrane.resources.Constants;
 
 /**
@@ -134,11 +141,13 @@ public class PipelineTest {
 	 */
 	protected void assertSingleConnection(AbstractFunction from,
 			AbstractFunction to) {
-		assertTrue(from.getOutConnectors()[0].getConnections().length == 1);
-		assertEquals(from.getOutConnectors()[0].getConnections()[0], to);
+		assertEquals(1, from.getOutConnectors()[0].getConnections().length);
+		assertEquals(to,
+				from.getOutConnectors()[0].getConnections()[0].getParent());
 
-		assertTrue(to.getInConnectors()[0].getConnections().length == 1);
-		assertEquals(to.getInConnectors()[0].getConnections()[0], from);
+		assertEquals(1, to.getInConnectors()[0].getConnections().length);
+		assertEquals(from,
+				to.getInConnectors()[0].getConnections()[0].getParent());
 	}
 
 	/**
@@ -148,8 +157,18 @@ public class PipelineTest {
 	 * @param to
 	 */
 	protected void assertNoConnection(AbstractFunction from, AbstractFunction to) {
-		assertTrue(from.getOutConnectors()[0].getConnections().length == 0);
-		assertTrue(to.getInConnectors()[0].getConnections().length == 0);
+		for (AbstractConnector ac : from.getOutConnectors()[0].getConnections()) {
+			if (ac.getParent().equals(to)) {
+				fail();
+			}
+		}
+
+		for (AbstractConnector ac : to.getInConnectors()[0].getConnections()) {
+			if (ac.getParent().equals(from)) {
+				fail();
+			}
+		}
+
 	}
 
 	/**
@@ -186,7 +205,7 @@ public class PipelineTest {
 	 * @param loc
 	 */
 	protected void assertAtLocation(AbstractFunction af, Point2D loc) {
-		assertEquals(af.getCoordinate(), loc);
+		assertEquals(loc, af.getCoordinate());
 	}
 
 	/**
@@ -196,7 +215,7 @@ public class PipelineTest {
 	 * @param task
 	 */
 	protected void assertTask(AbstractFunction af, AbstractTask task) {
-		assertEquals(af.getActiveTask(), task);
+		assertEquals(task, af.getActiveTask());
 	}
 
 	/**
@@ -207,8 +226,8 @@ public class PipelineTest {
 	 * @param value
 	 */
 	protected void assertParameter(AbstractFunction af, int param, String value) {
-		assertEquals(af.getActiveTask().getParameters()[param].getValue(),
-				value);
+		assertEquals(value,
+				af.getActiveTask().getParameters()[param].getValue());
 	}
 
 	/**
@@ -222,10 +241,10 @@ public class PipelineTest {
 				.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
 		pl.addFunction(newFunc);
 
-		assertTrue("not exactly 1 function present",
-				pl.getFunctions().length == 1);
-		assertEquals("not the correct function on the pipeline",
-				pl.getFunctions()[0], newFunc);
+		assertEquals("not exactly 1 function present", 1,
+				pl.getFunctions().length);
+		assertEquals("not the correct function on the pipeline", newFunc,
+				pl.getFunctions()[0]);
 	}
 
 	/**
@@ -240,8 +259,8 @@ public class PipelineTest {
 		pl.addFunction(newFunc);
 		pl.deleteFunction(newFunc);
 
-		assertTrue("more than 0 functions present",
-				pl.getFunctions().length == 0);
+		assertEquals("more than 0 functions present", 0,
+				pl.getFunctions().length);
 	}
 
 	/**
@@ -319,6 +338,18 @@ public class PipelineTest {
 
 		newFuncs[2].getActiveTask().getParameters()[0].setValue(paramB);
 		/* 09. 012 BABA CD */
+
+		// I'd like to assert here too, since changes might get lost in 10 and
+		// 11
+		assertOnPipeline(newFuncs[0], true);
+		assertOnPipeline(newFuncs[1], true);
+		assertOnPipeline(newFuncs[2], true);
+		assertAtLocation(newFuncs[0], locationB);
+		assertTask(newFuncs[1], task1A);
+		assertParameter(newFuncs[2], 0, paramB);
+		assertTask(newFuncs[2], task2A);
+		assertSingleConnection(newFuncs[0], newFuncs[1]);
+		assertSingleConnection(newFuncs[1], newFuncs[2]);
 
 		pl.deleteFunction(newFuncs[2]);
 		/* 10. 01_ BAxx C_ */
@@ -567,108 +598,51 @@ public class PipelineTest {
 	}
 
 	/**
-	 * Performs the same steps as undo redo test to step 9.
-	 * 
-	 * @return assertable object array
+	 * Creates a small, cozy pipeline.
 	 * 
 	 * @throws ConnectorException
 	 */
-	private Object[] performUndoRedoTestToStep9() throws ConnectorException {
+	private void examplePipeline() throws ConnectorException {
 		AbstractFunction[] newFuncs = new AbstractFunction[3];
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
 			newFuncs[i] = prototype.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
+			newFuncs[i].setCoordinate(new Point(i, 1));
 		}
 
-		final Point2D locationA = new Point2D.Double(1.0, 1.0);
-		final Point2D locationB = new Point2D.Double(2.0, 2.0);
-
-		final AbstractTask task1A = newFuncs[1].getAvailableTasks()[0];
-		final AbstractTask task1B = newFuncs[1].getAvailableTasks()[1];
-
-		final String paramA = "osmembrane";
-		final String paramB = "TESTING";
-
-		/* 00. ___ xxxx __ */
-
 		pl.addFunction(newFuncs[0]);
-		newFuncs[0].setCoordinate(locationA);
-		/* 01. 0__ Axxx __ */
-
 		pl.addFunction(newFuncs[1]);
-		newFuncs[1].setActiveTask(task1B);
-		/* 02. 01_ ABxx __ */
-
-		newFuncs[0].addConnectionTo(newFuncs[1]);
-		/* 03. 01_ ABxx C_ */
-
-		newFuncs[1].getActiveTask().getParameters()[0].setValue(paramA);
-		// should copy this as well.
-		newFuncs[2] = newFuncs[1].copy(CopyType.COPY_ALL);
-		final AbstractTask task2A = newFuncs[2].getAvailableTasks()[0];
-		final AbstractTask task2B = newFuncs[2].getAvailableTasks()[1];
 		pl.addFunction(newFuncs[2]);
-		/* 04. 012 ABAB C_ */
 
-		newFuncs[1].setActiveTask(task1A);
-		/* 05. 012 AAAB C_ */
+		newFuncs[0].addConnectionTo(newFuncs[2]);
 
-		newFuncs[1].addConnectionTo(newFuncs[2]);
-		/* 06. 012 AAAB CD */
-
-		newFuncs[0].setCoordinate(locationB);
-		/* 07. 012 BAAB CD */
-
-		newFuncs[2].setActiveTask(task1A);
-		/* 08. 012 BAAA CD */
-
-		newFuncs[2].getActiveTask().getParameters()[0].setValue(paramB);
-		/* 09. 012 BABA CD */
-
-		Object[] result = new Object[11];
-		result[0] = newFuncs[0];
-		result[1] = newFuncs[1];
-		result[2] = newFuncs[2];
-		result[3] = locationA;
-		result[4] = locationB;
-		result[5] = task1A;
-		result[6] = task1B;
-		result[7] = task2A;
-		result[8] = task2B;
-		result[9] = paramA;
-		result[10] = paramB;
-		return result;
+		newFuncs[1].setActiveTask(newFuncs[1].getAvailableTasks()[1]);
+		newFuncs[1].getActiveTask().getParameters()[0].setValue(TEST_FILE_NAME);
 	}
 
 	/**
-	 * Asserts the same things as undo redo test to step 9.
+	 * Asserts the pipeline is small, warm and cozy.
 	 */
-	private void assertUndoRedoTestToStep9(Object[] assertArray) {
+	private void assertExamplePipeline() {
+		// recreate the order using the locations
 		AbstractFunction[] newFuncs = new AbstractFunction[3];
-		newFuncs[0] = (AbstractFunction) assertArray[0];
-		newFuncs[1] = (AbstractFunction) assertArray[1];
-		newFuncs[2] = (AbstractFunction) assertArray[2];
+		for (int i = 0; i < pl.getFunctions().length; i++) {
+			AbstractFunction af = pl.getFunctions()[i];
+			Point p = (Point) af.getCoordinate();
+			if (p.y == 1) {
+				newFuncs[p.x] = af;
+			}
+		}
 
-		final Point2D locationA = (Point2D) assertArray[3];
-		final Point2D locationB = (Point2D) assertArray[4];
+		assertNotNull(newFuncs[0]);
+		assertNotNull(newFuncs[1]);
+		assertNotNull(newFuncs[2]);
 
-		final AbstractTask task1A = (AbstractTask) assertArray[5];
-		final AbstractTask task1B = (AbstractTask) assertArray[6];
-		
-		final AbstractTask task2A = (AbstractTask) assertArray[7];
-		final AbstractTask task2B = (AbstractTask) assertArray[8];
-		
-		final String paramA = (String) assertArray[9];
-		final String paramB = (String) assertArray[10];
+		assertSingleConnection(newFuncs[0], newFuncs[2]);
+		assertNoConnection(newFuncs[0], newFuncs[1]);
+		assertNoConnection(newFuncs[1], newFuncs[2]);
 
-		assertOnPipeline(newFuncs[0], true);
-		assertOnPipeline(newFuncs[1], true);
-		assertOnPipeline(newFuncs[2], true);
-		assertAtLocation(newFuncs[0], locationB);
-		assertTask(newFuncs[1], task1A);
-		assertParameter(newFuncs[2], 0, paramB);
-		assertTask(newFuncs[2], task2A);
-		assertSingleConnection(newFuncs[0], newFuncs[1]);
-		assertSingleConnection(newFuncs[1], newFuncs[2]);
+		assertTask(newFuncs[1], newFuncs[1].getAvailableTasks()[1]);
+		assertParameter(newFuncs[1], 0, TEST_FILE_NAME);
 	}
 
 	/**
@@ -693,14 +667,14 @@ public class PipelineTest {
 	 */
 	@Test
 	public void testSaveLoadPipeline() throws ConnectorException, FileException {
-		Object[] assertion = performUndoRedoTestToStep9();
-		assertUndoRedoTestToStep9(assertion);
+		examplePipeline();
+		assertExamplePipeline();
 
 		pl.savePipeline(TEST_FILE_NAME);
 		pl.clear();
 		pl.loadPipeline(TEST_FILE_NAME);
 
-		assertUndoRedoTestToStep9(assertion);
+		assertExamplePipeline();
 	}
 
 	/**
@@ -715,14 +689,14 @@ public class PipelineTest {
 	@Test
 	public void testBackupLoadPipeline() throws ConnectorException,
 			FileException {
-		Object[] assertion = performUndoRedoTestToStep9();
-		assertUndoRedoTestToStep9(assertion);
+		examplePipeline();
+		assertExamplePipeline();
 
 		pl.backupPipeline();
 		pl.clear();
 		pl.loadPipeline(Constants.DEFAULT_BACKUP_FILE);
 
-		assertUndoRedoTestToStep9(assertion);
+		assertExamplePipeline();
 	}
 
 	/**
@@ -749,24 +723,55 @@ public class PipelineTest {
 	 * Test method for
 	 * {@link de.osmembrane.model.pipeline.Pipeline#generate(de.osmembrane.model.persistence.FileType)}
 	 * .
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	 */
 	@Test
-	public void testGenerate() {
-		pl.generate(FileType.BASH);
-		fail("Not yet implemented");
+	public void testGenerate() throws IllegalArgumentException, IllegalAccessException {
+		AbstractFunction af = prototype.copy(CopyType.COPY_ALL);
+		pl.addFunction(af);
+		
+		String result = "";//pl.generate(FileType.BASH);
+		 
+		assertNotNull(result);
+		XMLTask xmlt = null;
+		
+		// Oh, look out! There's a bear behind you! *Scrolling down*
+		Task t = (Task) af.getActiveTask();
+		for (Field f : t.getClass().getDeclaredFields()) {
+			if (f.getType() == XMLTask.class) {
+				f.setAccessible(true);
+				xmlt = (XMLTask) f.get(new XMLTask());
+				// TODO breaks with UnsafeObjectFieldAccessorImpl ?
+				break;
+			}
+		}
+		// Huh? What has happened? I don't know...
+		
+		if (xmlt.getShortName() != null) {
+			assertTrue(result.contains(xmlt.getShortName()));
+		} else {
+			assertTrue(result.contains(xmlt.getName()));
+		}
 	}
 
 	/**
 	 * Test method for {@link de.osmembrane.model.pipeline.Pipeline#isSaved()}.
+	 * @throws FileException 
 	 */
 	@Test
-	public void testIsSaved() {
-		pl.clear();		
+	public void testIsSaved() throws FileException {
+		pl.clear();
 		assertTrue("pipeline empty, but not saved. huh?", pl.isSaved());
-		
+
 		pl.addFunction(prototype.copy(CopyType.WITHOUT_VALUES_AND_POSITION));
 		assertFalse("pipeline changed without saving, but saved. huh?",
 				pl.isSaved());
+		
+		pl.savePipeline(TEST_FILE_NAME);
+		assertTrue("pipeline saved, but not saved. huh?", pl.isSaved());
+		
+		
 	}
 
 }
