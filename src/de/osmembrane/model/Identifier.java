@@ -15,4 +15,23 @@ public class Identifier implements Serializable {
 	public String getIdentifier() {
 		return identifier;
 	}
+	
+	@Override
+	public String toString() {
+		return identifier.toString();
+	}
+	
+	@Override
+	public int hashCode() {
+		return identifier.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj1) {
+		if (obj1 instanceof Identifier) {
+			Identifier ident = (Identifier) obj1;
+			return identifier.equals(ident.getIdentifier());
+		}
+		return false;
+	}
 }
