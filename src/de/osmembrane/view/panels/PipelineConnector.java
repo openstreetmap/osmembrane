@@ -152,7 +152,14 @@ public class PipelineConnector extends DisplayTemplatePanel {
 
 		display = derivateDisplay(displayTemplate, color, null);
 
-		// create links
+		// do not create links here, we don't know if we are done with all other
+		// connectors yet
+	}
+
+	/**
+	 * Generates all links that the model maintains
+	 */
+	public void generateLinksFromModel() {
 		if (isOutpipes) {
 			createLinks();
 		}

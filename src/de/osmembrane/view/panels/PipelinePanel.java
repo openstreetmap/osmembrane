@@ -686,13 +686,18 @@ public class PipelinePanel extends JPanel implements Observer {
 					layeredPane.add(pfFullChange, FUNCTION_LAYER);
 					for (PipelineConnector pc : pfFullChange.getConnectors()) {
 						connectors.put(pc.getModelConnector(), pc);
-						layeredPane.add(pc, CONNECTOR_LAYER);
-
-						for (PipelineLink pl : pc.getLinks()) {
-							layeredPane.add(pl, LINK_LAYER);
-						}
+						layeredPane.add(pc, CONNECTOR_LAYER);						
 					}
 				}
+				
+				for (PipelineConnector pc : connectors.values()) {
+					pc.generateLinksFromModel();
+					
+					for (PipelineLink pl : pc.getLinks()) {
+						layeredPane.add(pl, LINK_LAYER);
+					}
+				}
+				
 				arrange();
 				repaint();
 				break;
