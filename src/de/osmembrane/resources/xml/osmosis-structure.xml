@@ -2,8 +2,8 @@
 <XMLOsmosisStructure xmlns="http://osmembrane.de/model/xml"
 	formatVersion="1.0.0" osmosisVersion="0.37">
 
-	<functionGroup id="input-output" friendlyName="In-/Output" color="255, 239, 0">
-		<function id="read" friendlyName="Read Tasks">
+	<functionGroup id="input-output" friendlyName="Input &amp; Output" color="255, 239, 0">
+		<function id="read" friendlyName="Read Entity Tasks">
 			<task name="read-xml" friendlyName="Read OSM XML" shortName="rx">
 				<description lang="en">
 					<value>Reads the current contents of an OSM XML file.</value>
@@ -370,10 +370,11 @@
 					</description>
 				</parameter>
 				<parameter name="bbox" type="bbox" required="true" />
-			</task>
-		</function>
+			</task><description lang="en">
+				<value>Reads input sources and produces an entity stream.</value></description>
+			</function>
 
-		<function id="read-change" friendlyName="Read-Change Tasks">
+		<function id="read-change" friendlyName="Read Change Tasks">
 			<task name="read-xml-change" friendlyName="Read OSM XML change file"
 				shortName="rxc">
 				<description lang="en">
@@ -569,9 +570,11 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Reads input sources and produces a change stream.</value></description>
 		</function>
 
-		<function id="read-dataset" friendlyName="Read-Dataset">
+		<function id="read-dataset" friendlyName="Read Dataset Tasks">
 			<task name="read-pgsql" shortName="rp">
 				<description lang="en">
 					<value>
@@ -647,9 +650,11 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Reads input sources and produces a dataset stream.</value></description>
 		</function>
 
-		<function id="write" friendlyName="Write Tasks">
+		<function id="write" friendlyName="Write Entity Tasks">
 			<task name="write-xml" friendlyName="Write OSM XML" shortName="wx">
 				<description lang="en">
 					<value>Writes data to an OSM XML file.</value>
@@ -1233,9 +1238,11 @@
 					<enumValue value="CompactTempFile" />
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Consumes entity streams and writes outputs.</value></description>
 		</function>
 
-		<function id="write-change" friendlyName="Write-Change Tasks">
+		<function id="write-change" friendlyName="Write Change Tasks">
 			<task name="write-xml-change" friendlyName="Write OSM XML change"
 				shortName="wxc">
 				<description lang="en">
@@ -1481,6 +1488,8 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Consumes change streams and writes outputs.</value></description>
 		</function>
 
 		<function id="truncate" friendlyName="Truncate Tasks">
@@ -1641,11 +1650,14 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Truncates sources.</value></description>
 		</function>
-	</functionGroup>
+		<description lang="en">
+			<value>Contains the functions with the ability to read various sources, write various outputs or truncate them.</value></description></functionGroup>
 
 	<functionGroup id="area-filtering" friendlyName="Area Filtering" color="100,255,100">
-		<function id="bbox-entity" friendlyName="BoundingBox - entity Stream">
+		<function id="bbox-entity" friendlyName="Entity Bounding Box">
 			<task name="bounding-box" shortName="bb">
 				<description lang="en">
 					<value>
@@ -1727,9 +1739,11 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Extracts data from an entity stream within a bounding box.</value></description>
 		</function>
 
-		<function id="bbox-dataset" friendlyName="BoundingBox - dataset Stream">
+		<function id="bbox-dataset" friendlyName="Dataset Bounding Box">
 			<task name="dataset-bounding-box" shortName="dbb">
 				<description lang="en">
 					<value>
@@ -1764,9 +1778,12 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Extracts data from a dataset stream within a bounding box.</value>
+			</description>
 		</function>
 
-		<function id="bpolygon-entity" friendlyName="BoundingPolygon - entity Stream">
+		<function id="bpolygon-entity" friendlyName="Entity Bounding Polygon">
 			<task name="bounding-polygon" shortName="bp">
 				<description lang="en">
 					<value>
@@ -1850,13 +1867,17 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Extracts data from an entity stream within a bounding polygon.</value></description>
 		</function>
+		<description lang="en">
+			<value>Extracts specific areas out of a stream.</value></description>
 
 	</functionGroup>
 
 	<functionGroup id="data-manipulation"
 		friendlyName="Data Manipulation" color="188,212,230">
-		<function id="node" friendlyName="Node-Changes">
+		<function id="node" friendlyName="Node Filters">
 			<task name="node-key" shortName="nk">
 				<description lang="en">
 					<value>
@@ -1900,30 +1921,35 @@
 				</parameter>
 			</task>
 
-			<task name="tag-filter" shortName="tf">
+			
+			<task name="used-node" shortName="un">
 				<description lang="en">
 					<value>
-						Filters entities based on their type and
-						optionally based on their tags. Can accept or
-						reject entities that match the filter
-						specification.
+						Restricts output of nodes to those that are used
+						in ways.
 					</value>
 				</description>
 				<inputPipe type="entity" count="single" index="0" />
 				<outputPipe type="entity" count="single" index="0" />
-				<parameter name="keyValueList" type="string">
+				<parameter name="idTrackerType" type="enum" defaultValue="IdList">
 					<description lang="en">
 						<value>
-							A two-field dash-separated string which
-							specifies accept/reject behavior and the
-							entity type on which this filter operates.
+							Specifies the memory mechanism for tracking
+							selected ids. BitSet is more efficient for
+							very large bounding boxes (where node count
+							is greater than 1/32 of maximum node id),
+							IdList will be more efficient for all
+							smaller bounding boxes.
 						</value>
 					</description>
+					<enumValue value="BitSet" />
+					<enumValue value="IdList" />
 				</parameter>
-			</task>
+			</task><description lang="en">
+				<value>Filters out all nodes that do not have a specific property.</value></description>
 		</function>
 
-		<function id="way" friendlyName="Way-Changes">
+		<function id="way" friendlyName="Way Filters">
 			<task name="way-key" shortName="wk">
 				<description lang="en">
 					<value>
@@ -1966,52 +1992,44 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Filters all ways that do not have specific tags set. All nodes and relations are passed on unmodified. </value></description>
 		</function>
 
-		<function id="used-node" friendlyName="Used Node (Filter)">
-			<task name="used-node" shortName="un">
+		<function id="used-node" friendlyName="Universal Filter">
+			<task name="tag-filter" shortName="tf">
 				<description lang="en">
 					<value>
-						Restricts output of nodes to those that are used
-						in ways.
+						Filters entities based on their type and
+						optionally based on their tags. Can accept or
+						reject entities that match the filter
+						specification.
 					</value>
 				</description>
 				<inputPipe type="entity" count="single" index="0" />
 				<outputPipe type="entity" count="single" index="0" />
-				<parameter name="idTrackerType" type="enum"
-					defaultValue="IdList">
+				<parameter name="keyValueList" type="string">
 					<description lang="en">
 						<value>
-							Specifies the memory mechanism for tracking
-							selected ids. BitSet is more efficient for
-							very large bounding boxes (where node count
-							is greater than 1/32 of maximum node id),
-							IdList will be more efficient for all
-							smaller bounding boxes.
+							A two-field dash-separated string which
+							specifies accept/reject behavior and the
+							entity type on which this filter operates.
 						</value>
 					</description>
-					<enumValue value="BitSet" />
-					<enumValue value="IdList" />
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Filters data based on its type and tags.</value></description>
 		</function>
+		<description lang="en">
+			<value>Filters specific data out of a stream.</value></description>
 	</functionGroup>
 
 	<functionGroup id="flow-control" friendlyName="Flow Control"
 		color="254,60,191">
-		<function id="dataset-dump" friendlyName="Dataset Dump">
-			<task name="dataset-dump" shortName="dd">
-				<description lang="en">
-					<value>
-						Converts an entire dataset to an entity stream.
-					</value>
-				</description>
-				<inputPipe count="single" index="0" type="dataset" />
-				<outputPipe count="single" index="0" type="entity" />
-			</task>
-		</function>
+		
 
-		<function id="write-null" friendlyName="Write NULL (entity)">
+		<function id="write-null" friendlyName="Entity Write Null">
 			<task name="write-null" shortName="wn">
 				<description lang="en">
 					<value>
@@ -2022,11 +2040,13 @@
 				</description>
 				<inputPipe type="entity" count="single" index="0" />
 			</task>
+			<description lang="en">
+				<value>Discards the entity stream put into it.</value></description>
 
 		</function>
 
 		<function id="write-null-change"
-			friendlyName="Write NULL (change)">
+			friendlyName="Change Write Null">
 			<task name="write-null-change" shortName="wnc">
 				<description lang="en">
 					<value>
@@ -2037,9 +2057,11 @@
 				</description>
 				<inputPipe type="change" count="single" index="0" />
 			</task>
+			<description lang="en">
+				<value>Discards the change stream put into it.</value></description>
 		</function>
 
-		<function id="buffer" friendlyName="Buffer (entity)">
+		<function id="buffer" friendlyName="Entity Buffer">
 			<task name="buffer" shortName="b">
 				<description lang="en">
 					<value>
@@ -2067,9 +2089,11 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Splits the pipeline processing of this entity stream along multiple threads for performance gain.</value></description>
 		</function>
 
-		<function id="buffer-change" friendlyName="Buffer (change)">
+		<function id="buffer-change" friendlyName="Change Buffer">
 			<task name="buffer-change" shortName="bc">
 				<description lang="en">
 					<value>
@@ -2085,8 +2109,7 @@
 				</description>
 				<inputPipe type="change" count="single" index="0" />
 				<outputPipe type="change" count="single" index="0" />
-				<parameter name="bufferCapacity" type="int"
-					defaultValue="100" defaultParameter="true">
+				<parameter name="bufferCapacity" type="int" defaultValue="100" defaultParameter="true">
 					<description lang="en">
 						<value>
 							The size of the storage buffer. This is
@@ -2098,11 +2121,25 @@
 					</description>
 				</parameter>
 			</task>
-		</function>
+			<description lang="en">
+				<value>Splits the pipeline processing of this change stream along multiple threads for performance gain.</value></description>
+		</function><function id="dataset-dump" friendlyName="Convert Dataset To Entity">
+			<task name="dataset-dump" shortName="dd">
+				<description lang="en">
+					<value>
+						Converts an entire dataset to an entity stream.
+					</value>
+				</description>
+				<inputPipe count="single" index="0" type="dataset" />
+				<outputPipe count="single" index="0" type="entity" />
+			</task>
+			<description lang="en">
+				<value>Converts a dataset stream into an entity stream.</value></description>
+</function>
 	</functionGroup>
 
 	<functionGroup id="report" friendlyName="Report" color="255,175,25">
-		<function id="report-entity" friendlyName="Report (entity)">
+		<function id="report-entity" friendlyName="File Report">
 			<task name="report-entity" shortName="re">
 				<description lang="en">
 					<value>
@@ -2117,12 +2154,7 @@
 						<value>The file to write the report to.</value>
 					</description>
 				</parameter>
-			</task>
-		</function>
-
-		<function id="report-integrity"
-			friendlyName="Report (integrity)">
-			<task name="report-integrity" shortName="ri">
+			</task><task name="report-integrity" shortName="ri">
 				<description lang="en">
 					<value>
 						Produces a list of the referential integrity
@@ -2130,18 +2162,18 @@
 					</value>
 				</description>
 				<inputPipe count="single" index="0" type="entity" />
-				<parameter name="file" defaultParameter="true"
-					type="filename" required="true"
-					defaultValue="integrity-report.txt">
+				<parameter name="file" defaultParameter="true" type="filename" required="true" defaultValue="integrity-report.txt">
 					<description lang="en">
 						<value>The file to write the report to.</value>
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Writes a report about an entity stream or its integrity to a file.</value></description>
 		</function>
 
 		<function id="log-progress"
-			friendlyName="Log Progress (entity)">
+			friendlyName="Entity Log Progress">
 			<task name="log-progress" shortName="lp">
 				<description lang="en">
 					<value>
@@ -2163,10 +2195,12 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Logs progress information about an entity stream in regular intervals.</value></description>
 		</function>
 
 		<function id="log-progress-change"
-			friendlyName="Log Progress (change)">
+			friendlyName="Change Log Progress">
 			<task name="log-progress-change" shortName="lpc">
 				<description lang="en">
 					<value>
@@ -2188,6 +2222,8 @@
 					</description>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Logs progress information about an change stream in regular intervals.</value></description>
 		</function>
 	</functionGroup>
 
