@@ -1,5 +1,7 @@
 package de.osmembrane.model.pipeline;
 
+import de.osmembrane.model.Identifier;
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractConnector.ConnectorPosition;
 import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.ConnectorException.Type;
@@ -11,6 +13,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -30,14 +33,13 @@ public class Function extends AbstractFunction {
 
 	private static final long serialVersionUID = 2010123022380001L;
 
-	private AbstractFunctionGroup parent;
-	private String parentIdentifier;
-
 	transient private Pipeline pipeline;
-	private String pipelineIdentifier;
+	
+	transient private AbstractFunctionGroup parent;
+	private Identifier parentIdentifier;
 
-	private XMLFunction xmlFunction;
-	private String xmlFunctionIdentifier;
+	transient private XMLFunction xmlFunction;
+	private Identifier xmlFunctionIdentifier;
 
 	private Point2D coordinate = new Point2D.Double();
 
@@ -66,9 +68,15 @@ public class Function extends AbstractFunction {
 	 *            XMLFunction belongs to this Function
 	 */
 	public Function(AbstractFunctionGroup parent, XMLFunction xmlFunction) {
-		this.xmlFunction = xmlFunction;
 		this.parent = parent;
+		this.xmlFunction = xmlFunction;
+		
+		/* set the identifiers */
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		this.parentIdentifier = afp.getMatchingFunctionGroupIdentifier(this.parent);
+		this.xmlFunctionIdentifier = afp.getMatchingXMLFunctionIdentifier(this.xmlFunction);
 
+		/* add task observers */
 		for (XMLTask xmlTask : xmlFunction.getTask()) {
 			Task task = new Task(xmlTask);
 			task.addObserver(this);
@@ -333,19 +341,13 @@ public class Function extends AbstractFunction {
 	
 	@Override
 	public Function copy(CopyType type) {
-		return copy(type, null);
-	}
-	
-	@Override
-	public Function copy(CopyType type, AbstractFunctionGroup parent) {
 		Function newFunction = new Function(this.parent, this.xmlFunction);
 		
 		newFunction.pipeline = this.pipeline;
-		newFunction.coordinate = this.coordinate;
+		newFunction.parent = parent;
 		
-		/* copy the parent if it is a new one */
-		if(parent != null) {
-			newFunction.parent = parent;
+		if(type.copyPosition()) {
+			newFunction.coordinate = this.coordinate;
 		}
 		
 		/* copy the tasks */
@@ -359,16 +361,19 @@ public class Function extends AbstractFunction {
 			}
 		}
 		
-		/* coyp the connectors */
-		newFunction.inConnectors.clear();
-		for (Connector inCon : inConnectors) {
-			newFunction.inConnectors.add(inCon.copy(type, newFunction));
-		}
-		newFunction.outConnectors.clear();
-		for (Connector outCon : outConnectors) {
-			newFunction.outConnectors.add(outCon.copy(type, newFunction));
+		return newFunction;
+	}
+	
+	private Object readResolve() throws ObjectStreamException {
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		this.parent = afp.getMatchingFunctionGroup(this.parentIdentifier);
+		this.xmlFunction = afp.getMatchingXMLFunction(this.xmlFunctionIdentifier);
+		
+		/* create the observers */
+		for (Task task : tasks) {
+			task.addObserver(this);
 		}
 		
-		return newFunction;
+		return this;
 	}
 }

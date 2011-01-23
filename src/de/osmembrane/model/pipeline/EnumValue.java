@@ -1,5 +1,9 @@
 package de.osmembrane.model.pipeline;
 
+import java.io.ObjectStreamException;
+
+import de.osmembrane.model.Identifier;
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.xml.XMLEnumValue;
 import de.osmembrane.tools.I18N;
 
@@ -15,7 +19,8 @@ public class EnumValue extends AbstractEnumValue {
 	/**
 	 * xml value of enum value.
 	 */
-	private XMLEnumValue xmlEnum;
+	transient private XMLEnumValue xmlEnum;
+	private Identifier xmlEnumIdentifier;
 	
 	/**
 	 * Creates a new EnumValue with a given {@link XMLEnumValue}.
@@ -24,6 +29,10 @@ public class EnumValue extends AbstractEnumValue {
 	 */
 	public EnumValue(XMLEnumValue xmlEnum) {
 		this.xmlEnum = xmlEnum;
+		
+		/* set the identifiers */
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		this.xmlEnumIdentifier = afp.getMatchingXMLEnumValueIdentifier(this.xmlEnum);
 	}
 
 	@Override
@@ -40,11 +49,11 @@ public class EnumValue extends AbstractEnumValue {
 	public String getValue() {
 		return xmlEnum.getValue();
 	}
-
-	@Override
-	public String getIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	private Object readResolve() throws ObjectStreamException {
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		this.xmlEnum = afp.getMatchingXMLEnumValue(this.xmlEnumIdentifier);
+		
+		return this;
 	}
-
 }

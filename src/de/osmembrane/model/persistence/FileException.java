@@ -61,6 +61,7 @@ public class FileException extends Exception {
 	 *            the Exception which is responsible for this exception
 	 */
 	public FileException(Type type, Exception parentException) {
+		this.type = type;
 		this.parentException = parentException;
 	}
 

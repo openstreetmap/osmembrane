@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.osmembrane.model.Identifier;
 import de.osmembrane.model.pipeline.Function;
 import de.osmembrane.model.xml.XMLFunction;
 import de.osmembrane.model.xml.XMLFunctionGroup;
@@ -22,7 +23,7 @@ public class FunctionGroup extends AbstractFunctionGroup {
 	private XMLFunctionGroup xmlGroup;
 	private List<Function> functions = new ArrayList<Function>();
 
-	private final String comparator;
+	private final Identifier identifier;
 
 	/**
 	 * Creates a new FunctionGroup with a given XMLFunctionGroup.
@@ -35,7 +36,7 @@ public class FunctionGroup extends AbstractFunctionGroup {
 			functions.add(new Function(this, xmlFunction));
 		}
 
-		comparator = this.xmlGroup.getId();
+		identifier = new Identifier(this.xmlGroup.getId());
 	}
 
 	@Override
@@ -99,33 +100,14 @@ public class FunctionGroup extends AbstractFunctionGroup {
 	public boolean same(AbstractFunctionGroup group) {
 		if (group instanceof FunctionGroup) {
 			FunctionGroup oFG = (FunctionGroup) group;
-			return (oFG.getComparatorString().equals(this.getComparatorString()));
+			return (oFG.getIdentifier().equals(this.getIdentifier()));
 		}
 		
 		return false;
 	}
 
-	protected String getComparatorString() {
-		return comparator;
-	}
-	
 	@Override
-	public FunctionGroup copy(CopyType type) {
-		FunctionGroup newFG = new FunctionGroup(this.xmlGroup);
-		
-		/* copy the functions */
-		newFG.functions.clear();
-		for(Function function : functions) {
-			Function newFunction = function.copy(type, newFG);
-			newFG.functions.add(newFunction);
-		}
-		
-		return newFG;
-	}
-
-	@Override
-	public String getIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
+	public Identifier getIdentifier() {
+		return identifier;
 	}
 }

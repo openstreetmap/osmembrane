@@ -1,8 +1,11 @@
 package de.osmembrane.model.pipeline;
 
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.osmembrane.model.Identifier;
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.tools.I18N;
 
@@ -19,8 +22,10 @@ public class Connector extends AbstractConnector {
 	private ConnectorType type;
 	private ConnectorPosition position;
 
-	private XMLPipe xmlPipe;
 	private AbstractFunction parent;
+	
+	transient private XMLPipe xmlPipe;
+	private Identifier xmlPipeIdentifier;
 
 	/**
 	 * Constructor for a new Connector with given {@link XMLPipe} and
@@ -31,11 +36,14 @@ public class Connector extends AbstractConnector {
 	 */
 	public Connector(AbstractFunction parent, ConnectorPosition position,
 			XMLPipe xmlPipe) {
-		this.xmlPipe = xmlPipe;
 		this.parent = parent;
 		this.position = position;
-
 		this.type = ConnectorType.parseString(xmlPipe.getType());
+		this.xmlPipe = xmlPipe;
+
+		/* set the identifier */
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		this.xmlPipeIdentifier = afp.getMatchingXMLPipeIdentifier(this.xmlPipe);
 	}
 
 	@Override
@@ -118,20 +126,13 @@ public class Connector extends AbstractConnector {
 			newConnector.parent = parent;
 		}
 		
-		if(type.copyConnections()) {
-			newConnector.connectors.clear();
-			for(AbstractConnector connector : this.connectors) {
-				// TODO is here a copy to do or not?
-				newConnector.connectors.add(connector);
-			}
-		}
-		
 		return newConnector;
 	}
-
-	@Override
-	public String getIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	private Object readResolve() throws ObjectStreamException {
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		this.xmlPipe = afp.getMatchingXMLPipe(this.xmlPipeIdentifier);
+		
+		return this;
 	}
 }

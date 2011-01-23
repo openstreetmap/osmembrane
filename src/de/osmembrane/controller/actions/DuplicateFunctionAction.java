@@ -11,6 +11,7 @@ import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.CopyType;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.IView;
@@ -54,9 +55,7 @@ public class DuplicateFunctionAction extends AbstractAction {
 				PipelineFunction pf = (PipelineFunction) selected;
 
 				// create new duplicate
-				AbstractFunction duplicate = (AbstractFunction) ModelProxy
-						.getInstance().accessFunctions()
-						.duplicate(pf.getModelFunction());
+				AbstractFunction duplicate = pf.getModelFunction().copy(CopyType.COPY_ALL);
 				
 				// set its location
 				Point2D duplLoc = duplicate.getCoordinate();

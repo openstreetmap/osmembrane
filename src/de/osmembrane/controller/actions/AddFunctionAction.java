@@ -10,6 +10,7 @@ import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.CopyType;
 import de.osmembrane.tools.I18N;
 
 /**
@@ -37,8 +38,7 @@ public class AddFunctionAction extends AbstractAction {
 
 			// get the copy from the prototypes
 			AbstractFunction prototype = (AbstractFunction) cle.getContained();
-			AbstractFunction newFunc = ModelProxy.getInstance()
-					.accessFunctions().getFunction(prototype);
+			AbstractFunction newFunc = prototype.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
 
 			// add the function at the location
 			newFunc.setCoordinate(cle.getLocation());

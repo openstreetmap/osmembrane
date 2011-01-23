@@ -17,6 +17,7 @@ import de.osmembrane.Application;
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
+import de.osmembrane.model.pipeline.AbstractFunctionPrototype;
 import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.model.pipeline.AbstractTask;
 import de.osmembrane.model.pipeline.Connector;

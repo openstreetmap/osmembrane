@@ -7,6 +7,7 @@ import org.junit.Test;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.pipeline.AbstractTask;
+import de.osmembrane.model.pipeline.FunctionPrototype;
 
 /**
  * Simple test for automatic FunctionPrototype generation.

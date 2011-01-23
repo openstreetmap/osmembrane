@@ -31,9 +31,4 @@ public abstract class AbstractEnumValue implements Serializable {
 	 * @return enum value
 	 */
 	public abstract String getValue();
-	
-	/**
-	 * Get identifier.
-	 */
-	public abstract String getIdentifier();
 }

@@ -78,9 +78,4 @@ public abstract class AbstractTask extends Observable implements Observer,
 	 * Copies the task.
 	 */
 	public abstract AbstractTask copy(CopyType type);
-	
-	/**
-	 * Get identifier.
-	 */
-	public abstract String getIdentifier();
 }

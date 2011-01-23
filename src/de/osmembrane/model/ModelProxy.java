@@ -3,7 +3,9 @@ package de.osmembrane.model;
 import java.util.Observable;
 import java.util.Observer;
 
+import de.osmembrane.model.pipeline.AbstractFunctionPrototype;
 import de.osmembrane.model.pipeline.AbstractPipeline;
+import de.osmembrane.model.pipeline.FunctionPrototype;
 import de.osmembrane.model.pipeline.Pipeline;
 
 /**

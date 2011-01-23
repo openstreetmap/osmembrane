@@ -3,7 +3,7 @@ package de.osmembrane.resources;
 import java.awt.Color;
 import java.util.Locale;
 
-import de.osmembrane.model.AbstractFunctionPrototype;
+import de.osmembrane.model.pipeline.AbstractFunctionPrototype;
 import de.osmembrane.model.pipeline.Pipeline;
 
 /**
@@ -57,4 +57,9 @@ public class Constants {
 	 * Icons default folder.
 	 */
 	public static final String ICONS_PATH = "src/de/osmembrane/resources/images/icons/";
+
+	/**
+	 * The OSMembrane file extension.
+	 */
+	public static final String OSMEMBRANE_EXTENSION = ".osmembrane";
 }

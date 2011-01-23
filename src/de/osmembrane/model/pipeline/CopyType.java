@@ -15,19 +15,19 @@ public enum CopyType {
 	/**
 	 * Copy all without the connections of the connectors.
 	 */
-	WITHOUT_CONNECTIONS,
+	WITHOUT_POSITION,
 
 	/**
 	 * @see CopyType#WITHOUT_VALUES
-	 * @see CopyType#WITHOUT_CONNECTIONS
+	 * @see CopyType#WITHOUT_POSITION
 	 */
-	WITHOUT_VALUES_AND_CONNECTIONS;
+	WITHOUT_VALUES_AND_POSITION;
 
-	protected boolean copyConnections() {
-		return (this != WITHOUT_CONNECTIONS && this != WITHOUT_VALUES_AND_CONNECTIONS);
+	protected boolean copyPosition() {
+		return (this != WITHOUT_POSITION && this != WITHOUT_VALUES_AND_POSITION);
 	}
 
 	protected boolean copyValues() {
-		return (this != WITHOUT_VALUES && this != WITHOUT_VALUES_AND_CONNECTIONS);
+		return (this != WITHOUT_VALUES && this != WITHOUT_VALUES_AND_POSITION);
 	}
 }

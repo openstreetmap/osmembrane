@@ -3,6 +3,8 @@ package de.osmembrane.model.pipeline;
 import java.awt.Color;
 import java.io.Serializable;
 
+import de.osmembrane.model.Identifier;
+
 /**
  * This represents a simple FunctionGroup for the XML-Functions.
  * 
@@ -58,12 +60,7 @@ public abstract class AbstractFunctionGroup implements Serializable {
 	public abstract boolean same(AbstractFunctionGroup group);
 	
 	/**
-	 * Copies the function group.
-	 */
-	public abstract AbstractFunctionGroup copy(CopyType type);
-	
-	/**
 	 * Get identifier.
 	 */
-	public abstract String getIdentifier();
+	public abstract Identifier getIdentifier();
 }

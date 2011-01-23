@@ -92,9 +92,4 @@ public abstract class AbstractParameter extends Observable implements
 	 * Copies the parameter.
 	 */
 	public abstract AbstractParameter copy(CopyType type);
-	
-	/**
-	 * Get identifier.
-	 */
-	public abstract String getIdentifier();
 }

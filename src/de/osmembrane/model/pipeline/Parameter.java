@@ -1,8 +1,11 @@
 package de.osmembrane.model.pipeline;
 
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.osmembrane.model.Identifier;
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.xml.XMLEnumValue;
 import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.tools.I18N;
@@ -19,7 +22,8 @@ public class Parameter extends AbstractParameter {
 	/**
 	 * The XML counterpart of the parameter.
 	 */
-	private XMLParameter xmlParam;
+	transient private XMLParameter xmlParam;
+	private Identifier xmlParamIdentifier;
 	
 	/**
 	 * The enum values for the parameter (if {@link Parameter#type} is {@link ParameterType#ENUM}).
@@ -42,10 +46,13 @@ public class Parameter extends AbstractParameter {
 	 * @param xmlParam XML counterpart which should be represented by the {@link Parameter}.
 	 */
 	public Parameter(XMLParameter xmlParam) {
-		this.xmlParam = xmlParam;
-		
 		this.type = ParameterType.parseString(xmlParam.getType());
 		this.value = xmlParam.getDefaultValue();
+		this.xmlParam = xmlParam;
+		
+		/* set the identifiers */
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		this.xmlParamIdentifier = afp.getMatchingXMLParameterIdentifier(this.xmlParam);
 		
 		/* create enum values */
 		for(XMLEnumValue xmlEnum : xmlParam.getEnumValue()) {
@@ -126,10 +133,11 @@ public class Parameter extends AbstractParameter {
 		
 		return newParam;
 	}
-
-	@Override
-	public String getIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	private Object readResolve() throws ObjectStreamException {
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		this.xmlParam = afp.getMatchingXMLParameter(this.xmlParamIdentifier);
+		
+		return this;
 	}
 }

@@ -36,6 +36,7 @@ public class OSMembranePersistence extends AbstractPersistence {
 							+ data.getClass()));
 		}
 
+		
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
@@ -43,7 +44,10 @@ public class OSMembranePersistence extends AbstractPersistence {
 
 			oos.writeObject(data);
 			oos.close();
+			bos.close();
+			fos.close();
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new FileException(Type.NOT_WRITABLE, e);
 		}
 	}
@@ -59,6 +63,8 @@ public class OSMembranePersistence extends AbstractPersistence {
 			List<AbstractFunction> object = (List<AbstractFunction>) ois.readObject();
 			
 			ois.close();
+			bis.close();
+			fis.close();
 			
 			return object;
 		} catch (FileNotFoundException e) {

@@ -1,9 +1,12 @@
 package de.osmembrane.model.pipeline;
 
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+import de.osmembrane.model.Identifier;
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.model.xml.XMLTask;
@@ -21,7 +24,8 @@ public class Task extends AbstractTask {
 	/**
 	 * The {@link XMLTask} which is represented by this instance.
 	 */
-	private XMLTask xmlTask;
+	transient private XMLTask xmlTask;
+	private Identifier xmlTaskIdentifier;
 	
 	/**
 	 * Parameters which are bound to this Task.
@@ -35,6 +39,10 @@ public class Task extends AbstractTask {
 	 */
 	public Task(XMLTask xmlTask) {
 		this.xmlTask = xmlTask;
+		
+		/* set the identifier */
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		this.xmlTaskIdentifier = afp.getMatchingXMLTaskIdentifier(this.xmlTask);
 		
 		for (XMLParameter xmlParam : xmlTask.getParameter()) {
 			Parameter param = new Parameter(xmlParam);
@@ -108,10 +116,16 @@ public class Task extends AbstractTask {
 		
 		return newTask;
 	}
-
-	@Override
-	public String getIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	private Object readResolve() throws ObjectStreamException {
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		this.xmlTask = afp.getMatchingXMLTask(this.xmlTaskIdentifier);
+		
+		/* create the observers */
+		for (Parameter param : parameters) {
+			param.addObserver(this);
+		}
+		
+		return this;
 	}
 }

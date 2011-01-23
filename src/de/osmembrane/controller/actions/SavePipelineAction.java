@@ -3,13 +3,25 @@ package de.osmembrane.controller.actions;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
+import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.persistence.FileException;
+import de.osmembrane.resources.Constants;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
+import de.osmembrane.view.IView;
+import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.MainFrame;
 
 /**
  * Action to store a OSMembrane pipeline in file.
@@ -36,7 +48,45 @@ public class SavePipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO implement
-		throw new UnsupportedOperationException();
+		/* get the MainFrame */
+		IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+		MainFrame mf = (MainFrame) mainFrame;
+
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+			@Override
+			public String getDescription() {
+				return (I18N.getInstance().getString(
+						"Controller.Actions.FileTypeName")
+						+ " (*" + Constants.OSMEMBRANE_EXTENSION)
+						+ ")";
+			}
+
+			@Override
+			public boolean accept(File arg0) {
+				return arg0.getName().toLowerCase()
+						.endsWith(Constants.OSMEMBRANE_EXTENSION);
+			}
+		});
+
+		int result = fileChooser.showSaveDialog(mf);
+
+		if (result == JFileChooser.APPROVE_OPTION) {
+			String file = fileChooser.getSelectedFile().getAbsolutePath();
+
+			if (!file.toLowerCase().endsWith(Constants.OSMEMBRANE_EXTENSION)) {
+				file = file + Constants.OSMEMBRANE_EXTENSION;
+			}
+
+			try {
+				ModelProxy.getInstance().accessPipeline().savePipeline(file);
+			} catch (FileException e1) {
+				Application.handleException(new ControlledException(this,
+						ExceptionSeverity.WARNING, e1, I18N.getInstance()
+								.getString(
+										"Controller.Actions.Save.Failed."
+												+ e1.getType())));
+			}
+		}
 	}
 }

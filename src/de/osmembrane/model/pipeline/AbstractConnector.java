@@ -103,9 +103,4 @@ public abstract class AbstractConnector implements Serializable {
 	 * Copies the connector.
 	 */
 	public abstract AbstractConnector copy(CopyType type, AbstractFunction parent);
-	
-	/**
-	 * Get identifier.
-	 */
-	public abstract String getIdentifier();
 }
