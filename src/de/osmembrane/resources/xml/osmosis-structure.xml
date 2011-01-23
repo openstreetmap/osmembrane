@@ -1654,7 +1654,9 @@
 				<value>Truncates sources.</value></description>
 		</function>
 		<description lang="en">
-			<value>Contains the functions with the ability to read various sources, write various outputs or truncate them.</value></description></functionGroup>
+			<value>The operations with the ability to read various sources, write various outputs or truncate them.</value></description>
+		<description lang="de">
+			<value>Die Operationen mit denen verschiedene Quellen gelesen oder gekürzt und verschiedene Ausgaben geschrieben werden können.</value></description></functionGroup>
 
 	<functionGroup id="area-filtering" friendlyName="Area Filtering" color="100,255,100">
 		<function id="bbox-entity" friendlyName="Entity Bounding Box">
@@ -1871,7 +1873,7 @@
 				<value>Extracts data from an entity stream within a bounding polygon.</value></description>
 		</function>
 		<description lang="en">
-			<value>Extracts specific areas out of a stream.</value></description>
+			<value>Operations which extract specific areas out of a stream.</value></description>
 
 	</functionGroup>
 
@@ -2022,7 +2024,7 @@
 				<value>Filters data based on its type and tags.</value></description>
 		</function>
 		<description lang="en">
-			<value>Filters specific data out of a stream.</value></description>
+			<value>Operations that filter specific data out of a stream.</value></description>
 	</functionGroup>
 
 	<functionGroup id="flow-control" friendlyName="Flow Control"
@@ -2136,6 +2138,8 @@
 			<description lang="en">
 				<value>Converts a dataset stream into an entity stream.</value></description>
 </function>
+		<description lang="en">
+			<value>Flow control operations in the pipeline which convert streams or improve performance.</value></description>
 	</functionGroup>
 
 	<functionGroup id="report" friendlyName="Report" color="255,175,25">
@@ -2225,10 +2229,109 @@
 			<description lang="en">
 				<value>Logs progress information about an change stream in regular intervals.</value></description>
 		</function>
+		<description lang="en">
+			<value>Operations that generate reports or logging.</value></description>
 	</functionGroup>
 
-	<functionGroup id="set" friendlyName="Set" color="95,135,255">
-		<function id="sort" friendlyName="Sort (entity)">
+	<functionGroup id="set" friendlyName="Merge &amp; Sort" color="95,135,255">
+		<function id="merge" friendlyName="Entity Merge">
+			<task name="merge" shortName="m">
+				<description lang="en">
+					<value>
+						Merges the contents of two data sources
+						together. Note that this task requires both
+						input streams to be sorted first by type then by
+						id.
+					</value>
+				</description>
+				<inputPipe type="entity" count="single" index="0" />
+				<inputPipe type="entity" count="single" index="1" />
+				<outputPipe type="entity" count="single" index="0" />
+				<parameter name="conflictResolutionMethod" type="enum" defaultValue="version">
+					<description lang="en">
+						<value>
+							The method to use for resolving conflicts
+							between data from the two sources.
+						</value>
+					</description>
+					<enumValue value="version">
+						<description lang="en">
+							<value>
+								Choose the entity with the highest
+								version, and second input source if both
+								versions are identical.
+							</value>
+						</description>
+					</enumValue>
+					<enumValue value="timestamp">
+						<description lang="en">
+							<value>
+								Choose the entity with the newest
+								timestamp.
+							</value>
+						</description>
+					</enumValue>
+					<enumValue value="lastSource">
+						<description lang="en">
+							<value>
+								Choose the entity from the second input
+								source.
+							</value>
+						</description>
+					</enumValue>
+				</parameter>
+			</task>
+			<description lang="en">
+				<value>Merges two entity streams into one.</value></description>
+		</function><function id="merge-change" friendlyName="Change Merge">
+			<task name="merge-change" shortName="mc">
+				<description lang="en">
+					<value>
+						Merges the contents of two changesets together.
+						Note that this task requires both input streams
+						to be sorted first by type then by id.
+					</value>
+				</description>
+				<inputPipe type="change" count="single" index="0" />
+				<inputPipe type="change" count="single" index="1" />
+				<outputPipe type="change" count="single" index="0" />
+				<parameter name="conflictResolutionMethod" type="enum" defaultValue="version">
+					<description lang="en">
+						<value>
+							The method to use for resolving conflicts
+							between data from the two sources.
+						</value>
+					</description>
+					<enumValue value="version">
+						<description lang="en">
+							<value>
+								Choose the entity with the highest
+								version, and second input source if both
+								versions are identical.
+							</value>
+						</description>
+					</enumValue>
+					<enumValue value="timestamp">
+						<description lang="en">
+							<value>
+								Choose the entity with the newest
+								timestamp.
+							</value>
+						</description>
+					</enumValue>
+					<enumValue value="lastSource">
+						<description lang="en">
+							<value>
+								Choose the entity from the second input
+								source.
+							</value>
+						</description>
+					</enumValue>
+				</parameter>
+			</task>
+			<description lang="en">
+				<value>Merges two change streams into one.</value></description>
+</function><function id="sort" friendlyName="Entity Sort">
 			<task name="sort" shortName="s">
 				<description lang="en">
 					<value>
@@ -2242,9 +2345,11 @@
 				<inputPipe type="entity" count="single" index="0" />
 				<outputPipe type="entity" count="single" index="0" />
 			</task>
-		</function>
+			<description lang="en">
+				<value>Sorts the contents of an entity stream.</value></description>
+</function>
 
-		<function id="sort-change" friendlyName="Sort (change)">
+		<function id="sort-change" friendlyName="Change Sort">
 			<task name="sort-change" shortName="sc">
 				<description lang="en">
 					<value>
@@ -2285,107 +2390,56 @@
 					</enumValue>
 				</parameter>
 			</task>
+			<description lang="en">
+				<value>Sorts the contents of a change stream.</value></description>
 		</function>
 
-		<function id="merge" friendlyName="Merge (entity)">
-			<task name="merge" shortName="m">
+		
+
+		
+
+		
+
+		<description lang="en">
+			<value>Operations which provide the ability to merge and sort streams.</value></description>
+	</functionGroup>
+
+	<functionGroup id="changeset"
+		friendlyName="Changeset Operations" color="211,155,250">
+		<function id="apply-change" friendlyName="Apply change">
+			<task name="apply-change" shortName="ac">
 				<description lang="en">
 					<value>
-						Merges the contents of two data sources
-						together. Note that this task requires both
-						input streams to be sorted first by type then by
-						id.
+						Applies a change stream to a data stream. Note
+						that this task requires both input streams to be
+						sorted first by type then by id.
 					</value>
 				</description>
-				<inputPipe type="entity" count="single" index="0" />
-				<inputPipe type="entity" count="single" index="1" />
-				<outputPipe type="entity" count="single" index="0" />
-				<parameter name="conflictResolutionMethod" type="enum"
-					defaultValue="version">
-					<description lang="en">
-						<value>
-							The method to use for resolving conflicts
-							between data from the two sources.
-						</value>
-					</description>
-					<enumValue value="version">
-						<description lang="en">
-							<value>
-								Choose the entity with the highest
-								version, and second input source if both
-								versions are identical.
-							</value>
-						</description>
-					</enumValue>
-					<enumValue value="timestamp">
-						<description lang="en">
-							<value>
-								Choose the entity with the newest
-								timestamp.
-							</value>
-						</description>
-					</enumValue>
-					<enumValue value="lastSource">
-						<description lang="en">
-							<value>
-								Choose the entity from the second input
-								source.
-							</value>
-						</description>
-					</enumValue>
-				</parameter>
+				<inputPipe index="0" count="single" type="entity" />
+				<inputPipe index="1" count="single" type="change" />
+				<outputPipe index="0" count="single" type="entity" />
 			</task>
+			<description lang="en">
+				<value>Applies the changes of a change stream to another stream.</value></description>
 		</function>
 
-		<function id="merge-change" friendlyName="Merge (change)">
-			<task name="merge-change" shortName="mc">
+		<function id="derive-change" friendlyName="Derive change">
+			<task name="derive-change" shortName="dc">
 				<description lang="en">
 					<value>
-						Merges the contents of two changesets together.
-						Note that this task requires both input streams
-						to be sorted first by type then by id.
+						Compares two data sources and produces a
+						changeset of the differences. Note that this
+						task requires both input streams to be sorted
+						first by type then by id.
 					</value>
 				</description>
-				<inputPipe type="change" count="single" index="0" />
-				<inputPipe type="change" count="single" index="1" />
-				<outputPipe type="change" count="single" index="0" />
-				<parameter name="conflictResolutionMethod" type="enum"
-					defaultValue="version">
-					<description lang="en">
-						<value>
-							The method to use for resolving conflicts
-							between data from the two sources.
-						</value>
-					</description>
-					<enumValue value="version">
-						<description lang="en">
-							<value>
-								Choose the entity with the highest
-								version, and second input source if both
-								versions are identical.
-							</value>
-						</description>
-					</enumValue>
-					<enumValue value="timestamp">
-						<description lang="en">
-							<value>
-								Choose the entity with the newest
-								timestamp.
-							</value>
-						</description>
-					</enumValue>
-					<enumValue value="lastSource">
-						<description lang="en">
-							<value>
-								Choose the entity from the second input
-								source.
-							</value>
-						</description>
-					</enumValue>
-				</parameter>
+				<inputPipe index="0" count="single" type="entity" />
+				<inputPipe index="1" count="single" type="entity" />
+				<outputPipe index="0" count="single" type="change" />
 			</task>
+			<description lang="en">
+				<value>Produces a change stream based on the differences of two streams.</value></description>
 		</function>
-
 		<function id="append-change" friendlyName="Append Change">
 			<task name="append-change" shortName="apc">
 				<description lang="en">
@@ -2403,11 +2457,9 @@
 						appropriate.
 					</value>
 				</description>
-				<inputPipe type="change" count="variable"
-					specifiedBy="sourceCount" />
+				<inputPipe type="change" count="variable" specifiedBy="sourceCount" />
 				<outputPipe type="change" count="single" index="0" />
-				<parameter name="sourceCount" type="int"
-					defaultValue="2">
+				<parameter name="sourceCount" type="int" defaultValue="2">
 					<description lang="en">
 						<value>
 							The number of change streams to be appended.
@@ -2415,9 +2467,9 @@
 					</description>
 				</parameter>
 			</task>
-		</function>
-
-		<function id="simplify-change" friendlyName="Simplify Change">
+			<description lang="en">
+				<value>Combines multiple change streams into one.</value></description>
+		</function><function id="simplify-change" friendlyName="Simplify Change">
 			<task name="simplify-change" shortName="simc">
 				<description lang="en">
 					<value>
@@ -2434,41 +2486,10 @@
 				<inputPipe type="change" count="single" index="0" />
 				<outputPipe type="change" count="single" index="0" />
 			</task>
-		</function>
-	</functionGroup>
-
-	<functionGroup id="changeset"
-		friendlyName="Changeset Derivation and Merging" color="211,155,250">
-		<function id="apply-change" friendlyName="Apply change">
-			<task name="apply-change" shortName="ac">
-				<description lang="en">
-					<value>
-						Applies a change stream to a data stream. Note
-						that this task requires both input streams to be
-						sorted first by type then by id.
-					</value>
-				</description>
-				<inputPipe index="0" count="single" type="entity" />
-				<inputPipe index="1" count="single" type="change" />
-				<outputPipe index="0" count="single" type="entity" />
-			</task>
-		</function>
-
-		<function id="derive-change" friendlyName="Derive change">
-			<task name="derive-change" shortName="dc">
-				<description lang="en">
-					<value>
-						Compares two data sources and produces a
-						changeset of the differences. Note that this
-						task requires both input streams to be sorted
-						first by type then by id.
-					</value>
-				</description>
-				<inputPipe index="0" count="single" type="entity" />
-				<inputPipe index="1" count="single" type="entity" />
-				<outputPipe index="0" count="single" type="change" />
-			</task>
-		</function>
+			<description lang="en">
+				<value>Simplifies a change stream.</value></description>
+</function><description lang="en">
+			<value>Operations working with changesets which represent data patches.</value></description>
 	</functionGroup>
 
 	<functionGroup id="replication" friendlyName="Replication"

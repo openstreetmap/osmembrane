@@ -146,7 +146,7 @@ public class LibraryPanelGroup extends JPanel {
 			vf.setSize(vf.getPreferredSize());
 			// find the maximum necessary width
 			maxPreferredWidth = Math.max(maxPreferredWidth,
-					vf.getPreferredSize().width);
+					vf.getPreferredSize().width + 24);
 			y += vf.getHeight() + 6;
 
 			contentHeight += vf.getPreferredSize().height + 7;

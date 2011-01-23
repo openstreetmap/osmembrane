@@ -97,7 +97,7 @@ public class LibraryPanel extends JPanel {
 			setPreferredSize(new Dimension(lpg.getPreferredSize().width,
 					getHeight()));
 		}
-		rearrange();
+		rearrange(true);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class LibraryPanel extends JPanel {
 		}
 		expanding = -1;
 		contracting = -1;
-		rearrange();
+		rearrange(true);
 
 		// check whether there is something to expand
 		if (expanded == group) {
@@ -176,7 +176,7 @@ public class LibraryPanel extends JPanel {
 								lpg.getFullContentHeight(), false));
 					}
 
-					rearrange();
+					rearrange(true);
 
 					// might be inaccurate by several factors, but will still
 					// guarantee a fluent animation
@@ -200,7 +200,7 @@ public class LibraryPanel extends JPanel {
 				expanded = expanding;
 				expanding = -1;
 				contracting = -1;
-				rearrange();
+				rearrange(true);
 
 			}
 
@@ -211,7 +211,14 @@ public class LibraryPanel extends JPanel {
 	@Override
 	public void setSize(Dimension d) {
 		super.setSize(d);
-		rearrange();
+		rearrange(false);
+	}
+	
+	/**
+	 * @see {@link JPanel#setSize}
+	 */
+	private void setSizeNoArrange(Dimension d) {
+		super.setSize(d);
 	}
 
 	/**
@@ -219,7 +226,7 @@ public class LibraryPanel extends JPanel {
 	 * {@link LibraryPanel}. Unlike the "LayoutManager" (incompetent, is a
 	 * Manager)
 	 */
-	private void rearrange() {
+	private void rearrange(boolean setSize) {
 		int y = 3;
 		for (LibraryPanelGroup lpg : groups) {
 			// determine top
@@ -234,6 +241,9 @@ public class LibraryPanel extends JPanel {
 
 		// update for the scroll bar
 		setPreferredSize(new Dimension(this.getPreferredSize().width, y));
+		if (setSize) {
+			setSizeNoArrange(getPreferredSize());
+		}
 	}
 
 	/**
