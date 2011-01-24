@@ -287,7 +287,7 @@ public class PipelinePanel extends JPanel implements Observer {
 						Point2D newObjPosition = new Point2D.Double(
 								objPosition.getX() + objOffset.getX(),
 								objPosition.getY() + objOffset.getY());
-
+						
 						// set position
 						Action a = ActionRegistry.getInstance().get(
 								MoveFunctionAction.class);
@@ -646,7 +646,7 @@ public class PipelinePanel extends JPanel implements Observer {
 									pl.getLinkSource().arrangeLinks();
 								}
 							}
-						} 
+						}
 					} /* if pfChange.equals(poo) */
 				}
 				break;
@@ -661,29 +661,31 @@ public class PipelinePanel extends JPanel implements Observer {
 
 						// clean-up on isle three
 						layeredPane.remove(pfDelete);
-						for (PipelineConnector pc : pfDelete.getConnectors()) {													
+						for (PipelineConnector pc : pfDelete.getConnectors()) {
 							// delete in links
 							int j = 0;
 							while (j < pc.getInLinks().size()) {
 								PipelineLink pl = pc.getInLinks().get(j);
-								pl.getLinkSource().removeLinkTo(pl.getLinkDestination());
-								layeredPane.remove(pl);								
+								pl.getLinkSource().removeLinkTo(
+										pl.getLinkDestination());
+								layeredPane.remove(pl);
 								j++;
 							}
-							
+
 							// delete out links
 							int k = 0;
 							while (k < pc.getOutLinks().size()) {
 								PipelineLink pl = pc.getOutLinks().get(k);
-								pl.getLinkSource().removeLinkTo(pl.getLinkDestination());
-								layeredPane.remove(pl);								
+								pl.getLinkSource().removeLinkTo(
+										pl.getLinkDestination());
+								layeredPane.remove(pl);
 								k++;
 							}
-							
+
 							// delete connector
 							connectors.remove(pc.getModelConnector());
 							layeredPane.remove(pc);
-						}						
+						}
 
 						// deselect stuff if necessary
 						if (pfDelete.equals(selected)) {
