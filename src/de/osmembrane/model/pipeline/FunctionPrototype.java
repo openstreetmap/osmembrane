@@ -148,8 +148,6 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 
 	@Override
 	protected Identifier getMatchingXMLFunctionIdentifier(XMLFunction identifier) {
-		String str = (identifiers.get(identifier) == null ? "never return null! function" : "");
-		if (str != "") { System.out.println(str); }
 		return identifiers.get(identifier);
 	}
 
@@ -160,8 +158,6 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 
 	@Override
 	protected Identifier getMatchingXMLTaskIdentifier(XMLTask identifier) {
-		String str = (identifiers.get(identifier) == null ? "never return null! task" : "");
-		if (str != "") { System.out.println(str); }
 		return identifiers.get(identifier);
 	}
 
@@ -172,8 +168,6 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 
 	@Override
 	protected Identifier getMatchingXMLPipeIdentifier(XMLPipe identifier) {
-		String str = (identifiers.get(identifier) == null ? "never return null! pipe" : "");
-		if (str != "") { System.out.println(str); }
 		return identifiers.get(identifier);
 	}
 
@@ -185,8 +179,6 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	@Override
 	protected Identifier getMatchingXMLParameterIdentifier(
 			XMLParameter identifier) {
-		String str = (identifiers.get(identifier) == null ? "never return null! param" : "");
-		if (str != "") { System.out.println(str); }
 		return identifiers.get(identifier);
 	}
 
@@ -198,8 +190,6 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	@Override
 	protected Identifier getMatchingXMLEnumValueIdentifier(
 			XMLEnumValue identifier) {
-		String str = (identifiers.get(identifier) == null ? "never return null! enumValue" : "");
-		if (str != "") { System.out.println(str); }
 		return identifiers.get(identifier);
 	}
 
