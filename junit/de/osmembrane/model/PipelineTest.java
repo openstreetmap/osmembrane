@@ -362,6 +362,8 @@ public class PipelineTest {
 
 		assertTrue("undo was not available", pl.undoAvailable());
 		assertTrue("undo could not be done", pl.undo());
+		assertTrue("undo was not available", pl.undoAvailable());
+		assertTrue("undo could not be done", pl.undo());
 		/* 03. 01_ ABxx C_ */
 
 		assertTrue(newFuncs[0].findOnPipeline(pl));
@@ -390,6 +392,8 @@ public class PipelineTest {
 
 		assertTrue("undo was not available", pl.undoAvailable());
 		assertTrue("undo could not be done", pl.undo());
+		assertTrue("undo was not available", pl.undoAvailable());
+		assertTrue("undo could not be done", pl.undo());
 		/* 01. 0__ Axxx __ */
 
 		assertTrue(newFuncs[0].findOnPipeline(pl));
@@ -402,6 +406,8 @@ public class PipelineTest {
 		// connection 0-1 not applicable
 		// connection 1-2 not applicable
 
+		assertTrue("undo was not available", pl.undoAvailable());
+		assertTrue("undo could not be done", pl.undo());
 		assertTrue("undo was not available", pl.undoAvailable());
 		assertTrue("undo could not be done", pl.undo());
 		/* 00. ___ xxxx __ */
