@@ -7,7 +7,6 @@ import static org.junit.Assert.*;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.lang.reflect.Field;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -23,12 +22,9 @@ import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.pipeline.AbstractFunctionPrototype;
 import de.osmembrane.model.pipeline.AbstractPipeline;
-import de.osmembrane.model.pipeline.AbstractTask;
 import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorType;
 import de.osmembrane.model.pipeline.CopyType;
-import de.osmembrane.model.pipeline.Function;
-import de.osmembrane.model.xml.XMLFunction;
 import de.osmembrane.resources.Constants;
 
 /**
@@ -220,8 +216,6 @@ public class PipelineTest {
 		// should copy this as well.
 		AbstractFunction copyFunc = newFuncs[1].copy(CopyType.COPY_ALL);
 		newFuncs[2] = new TestFunction(copyFunc);
-		final AbstractTask task2A = newFuncs[2].getAvailableTasks()[0];
-		final AbstractTask task2B = newFuncs[2].getAvailableTasks()[1];
 		pl.addFunction(newFuncs[2]);
 		/* 04. 012 ABAB C_ */
 
@@ -234,7 +228,7 @@ public class PipelineTest {
 		newFuncs[0].setCoordinate(locationB);
 		/* 07. 012 BAAB CD */
 
-		newFuncs[2].setActiveTask(task2A);
+		newFuncs[2].setActiveTask(newFuncs[2].getAvailableTasks()[0]); // task a
 		/* 08. 012 BAAA CD */
 
 		newFuncs[2].getActiveTask().getParameters()[0].setValue(paramB);

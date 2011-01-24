@@ -43,7 +43,7 @@ public class TestFunction extends AbstractFunction {
 	/**
 	 * the actual function contained
 	 */
-	private final AbstractFunction contained;
+	private AbstractFunction contained;
 
 	/**
 	 * 
@@ -68,8 +68,7 @@ public class TestFunction extends AbstractFunction {
 				TestFunction tf = (TestFunction) af;
 
 				if (tf.uniqueID == this.uniqueID) {
-					this.setActiveTask(tf.getActiveTask());
-					this.setCoordinate(tf.getCoordinate());
+					this.contained = tf.contained;
 					return true;
 				}
 			}
@@ -266,11 +265,6 @@ public class TestFunction extends AbstractFunction {
 	@Override
 	public AbstractFunction copy(CopyType type) {
 		return contained.copy(type);
-	}
-
-	@Override
-	public String getIdentifier() {
-		return contained.getIdentifier();
 	}
 
 }
