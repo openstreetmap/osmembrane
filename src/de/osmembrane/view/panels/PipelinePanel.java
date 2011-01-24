@@ -655,7 +655,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					if (pfDelete.getModelFunction().equals(
 							poo.getChangedFunction())) {
 
-						// clean-up on isle 3
+						// clean-up on isle three
 						layeredPane.remove(pfDelete);
 						for (PipelineConnector pc : pfDelete.getConnectors()) {
 							connectors.remove(pc.getModelConnector());
