@@ -3,6 +3,7 @@ package de.osmembrane.view.panels;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -217,7 +218,26 @@ public class InspectorPanel extends JPanel implements Observer {
 		if ((hintText == null) || (hintText.isEmpty())) {
 			hintText = I18N.getInstance().getString("View.Inspector.NoHint");
 		}
-		hintLabel.setText("<html><center><br /><p>" + hintText
+		
+		StringBuilder sb = new StringBuilder();
+		FontMetrics fm = hintLabel.getFontMetrics(hintLabel.getFont());
+		int lineWidth = 0;
+		
+		for (String word : hintText.split("\\s")) {
+			int thisWidth = fm.stringWidth(word + " ");
+
+			// if this line is wider than possible, make a new line
+			if (lineWidth + thisWidth >= hint.getWidth()) {
+				sb.append("<br />" + word);
+				lineWidth = 0;
+			} else {
+				// append
+				lineWidth += thisWidth;
+				sb.append(word + " ");
+			}
+		}		
+		
+		hintLabel.setText("<html><center><br /><p>" + sb.toString()
 				+ "</p></center></html>");
 	}
 
