@@ -16,6 +16,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -79,7 +80,7 @@ public class InspectorPanel extends JPanel implements Observer {
 	 * help
 	 */
 	private JPanel hint;
-	private JTextArea hintLabel;
+	private JEditorPane hintLabel;
 
 	/**
 	 * Useful {@link Color} definitions
@@ -187,12 +188,11 @@ public class InspectorPanel extends JPanel implements Observer {
 		hint.setBackground(InspectorPanel.LIGHT_YELLOW);
 		hint.setLayout(new GridLayout(1, 1));
 
-		hintLabel = new JTextArea();
+		hintLabel = new JEditorPane();
 		hintLabel.setEditable(false);
 		hintLabel.setOpaque(false);
 		hintLabel.setBorder(null);
-		hintLabel.setWrapStyleWord(true);
-		hintLabel.setLineWrap(true);
+		hintLabel.setContentType("text/html");
 		hintLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		hint.add(hintLabel);
 
@@ -433,13 +433,13 @@ public class InspectorPanel extends JPanel implements Observer {
 					}
 				} /* for tasks */
 			}
-		} 
+		}
 
 	} /* InspectorPanelTableTaskComboBoxModel */
 
 	/**
-	 * Model for an enum property of the combo box of the {@link InspectorPanel}'s
-	 * table. Is in a contest with
+	 * Model for an enum property of the combo box of the {@link InspectorPanel}
+	 * 's table. Is in a contest with
 	 * {@link ContainingFunctionChangeParameterEvent} and
 	 * {@link InspectorPanelTableTaskComboBoxModel} for the longest name in the
 	 * project.
@@ -497,7 +497,8 @@ public class InspectorPanel extends JPanel implements Observer {
 	} /* InspectorPanelTableCustomEnumComboBoxModel */
 
 	/**
-	 * The custom cell renderer for the display table of the {@link InspectorPanel}.
+	 * The custom cell renderer for the display table of the
+	 * {@link InspectorPanel}.
 	 * 
 	 * @author tobias_kuhn
 	 * 

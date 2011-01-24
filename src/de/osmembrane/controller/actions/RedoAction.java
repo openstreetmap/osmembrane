@@ -33,6 +33,7 @@ public class RedoAction extends AbstractAction {
 				Size.NORMAL).get());
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		setEnabled(false);
 	}
 
 	@Override

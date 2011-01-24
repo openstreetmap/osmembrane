@@ -32,6 +32,8 @@ import de.osmembrane.controller.actions.AddFunctionAction;
 import de.osmembrane.controller.actions.DeleteSelectionAction;
 import de.osmembrane.controller.actions.DuplicateFunctionAction;
 import de.osmembrane.controller.actions.MoveFunctionAction;
+import de.osmembrane.controller.actions.RedoAction;
+import de.osmembrane.controller.actions.UndoAction;
 import de.osmembrane.controller.events.ConnectingFunctionsEvent;
 import de.osmembrane.controller.events.ContainingLocationEvent;
 import de.osmembrane.exceptions.ControlledException;
@@ -686,18 +688,18 @@ public class PipelinePanel extends JPanel implements Observer {
 					layeredPane.add(pfFullChange, FUNCTION_LAYER);
 					for (PipelineConnector pc : pfFullChange.getConnectors()) {
 						connectors.put(pc.getModelConnector(), pc);
-						layeredPane.add(pc, CONNECTOR_LAYER);						
+						layeredPane.add(pc, CONNECTOR_LAYER);
 					}
 				}
-				
+
 				for (PipelineConnector pc : connectors.values()) {
 					pc.generateLinksFromModel();
-					
+
 					for (PipelineLink pl : pc.getLinks()) {
 						layeredPane.add(pl, LINK_LAYER);
 					}
 				}
-				
+
 				arrange();
 				repaint();
 				break;
@@ -731,6 +733,20 @@ public class PipelinePanel extends JPanel implements Observer {
 				break;
 			}
 		}
+
+		// update undo/redo-action availability
+		ActionRegistry
+				.getInstance()
+				.get(UndoAction.class)
+				.setEnabled(
+						ModelProxy.getInstance().accessPipeline()
+								.undoAvailable());
+		ActionRegistry
+				.getInstance()
+				.get(RedoAction.class)
+				.setEnabled(
+						ModelProxy.getInstance().accessPipeline()
+								.redoAvailable());
 
 		// recreate topleft and bottomright
 		calculateEdges();

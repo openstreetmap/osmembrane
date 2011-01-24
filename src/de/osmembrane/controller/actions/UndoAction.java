@@ -33,6 +33,7 @@ public class UndoAction extends AbstractAction {
 				new IconLoader("undo.png", Size.NORMAL).get());
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		setEnabled(false);
 	}
 
 	@Override
