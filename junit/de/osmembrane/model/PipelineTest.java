@@ -285,7 +285,7 @@ public class PipelineTest {
 		assertTrue(newFuncs[2].findOnPipeline(pl));
 		newFuncs[0].assertLocation(locationB);
 		newFuncs[1].assertTaskName(taskA);
-		newFuncs[2].assertParameter(0, paramA);
+		newFuncs[2].assertParameter(0, paramB);
 		newFuncs[2].assertTaskName(taskA);
 		newFuncs[0].assertConnectionCountTo(newFuncs[1], 1);
 		newFuncs[1].assertConnectionCountTo(newFuncs[2], 1);
