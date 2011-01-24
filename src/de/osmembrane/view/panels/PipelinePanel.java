@@ -665,16 +665,16 @@ public class PipelinePanel extends JPanel implements Observer {
 								layeredPane.remove(pl);
 							}
 						}
-						
+
 						// deselect stuff if necessary
 						if (pfDelete.equals(selected)) {
 							selected(null);
 						}
 						functions.remove(i);
-						
+
 						repaint();
 						break;
-					}										
+					}
 				}
 				break;
 
@@ -707,7 +707,7 @@ public class PipelinePanel extends JPanel implements Observer {
 						layeredPane.add(pl, LINK_LAYER);
 					}
 				}
-				
+
 				// deselect stuff
 				selected(null);
 
@@ -737,14 +737,14 @@ public class PipelinePanel extends JPanel implements Observer {
 						.getChangedConnectors()[1]));
 				if (plDel != null) {
 					layeredPane.remove(plDel);
-				}							
+				}
 
 				arrange();
 				repaint();
 				break;
 			}
 		}
-		
+
 		// this is better reset here
 		connectionStart = null;
 
@@ -826,6 +826,12 @@ public class PipelinePanel extends JPanel implements Observer {
 		for (PipelineFunction pf : functions) {
 			arrange(pf);
 		}
+
+		// now all connectors are arranged and we can arrange the links
+		for (PipelineFunction pf : functions) {
+			pf.arrangeLinks();
+		}
+
 		updateScrollbars(false);
 	}
 

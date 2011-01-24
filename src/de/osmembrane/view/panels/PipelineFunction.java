@@ -184,8 +184,18 @@ public class PipelineFunction extends LibraryFunction {
 					funcTopLeft.y + newPosition.y + offset.y);
 			pc.setSize(size.x, size.y);
 
-			pc.arrangeLinks();
+			// cannot arrange links here, cause some connectors probably aren't
+			// arranged yet
 			pc.repaint();
+		}
+	}
+
+	/**
+	 * Arranges the {@link PipelineLink}s, if necessary
+	 */
+	public void arrangeLinks() {
+		for (PipelineConnector pc : connectors) {
+			pc.arrangeLinks();
 		}
 	}
 
