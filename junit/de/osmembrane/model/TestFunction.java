@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import de.osmembrane.model.pipeline.AbstractConnector;
@@ -265,6 +266,11 @@ public class TestFunction extends AbstractFunction {
 	@Override
 	public AbstractFunction copy(CopyType type) {
 		return contained.copy(type);
+	}
+	
+	@Override
+	public synchronized void addObserver(Observer o) {
+		contained.addObserver(o);
 	}
 
 }
