@@ -392,7 +392,11 @@ public class PipelinePanel extends JPanel implements Observer {
 						// translate
 						e.translatePoint(winOffset.x, winOffset.y);
 						pf.setLocation(e.getPoint());
+						
 						pf.arrangeConnectors();
+						pf.arrangeLinks();
+						
+						// TODO For all incomings do that here
 					}
 				}
 
@@ -617,9 +621,6 @@ public class PipelinePanel extends JPanel implements Observer {
 						layeredPane.add(pl, LINK_LAYER);
 					}
 				}
-
-				arrange(pfAdd);
-				layeredPane.repaint();
 				break;
 
 			// properties of a function changed
@@ -627,7 +628,6 @@ public class PipelinePanel extends JPanel implements Observer {
 				for (PipelineFunction pfChange : functions) {
 					if (pfChange.getModelFunction().equals(
 							poo.getChangedFunction())) {
-						arrange(pfChange);
 
 						// TODO - THIS IS just a workaround for now
 						// if this function has links to its in-connectors,
@@ -641,8 +641,6 @@ public class PipelinePanel extends JPanel implements Observer {
 								}
 							}
 						}
-
-						repaint();
 					}
 				}
 				break;
@@ -671,8 +669,6 @@ public class PipelinePanel extends JPanel implements Observer {
 							selected(null);
 						}
 						functions.remove(i);
-
-						repaint();
 						break;
 					}
 				}
@@ -710,9 +706,6 @@ public class PipelinePanel extends JPanel implements Observer {
 
 				// deselect stuff
 				selected(null);
-
-				arrange();
-				repaint();
 				break;
 
 			// new connection added
@@ -722,11 +715,6 @@ public class PipelinePanel extends JPanel implements Observer {
 				PipelineLink plAdd = sourceAdd.addLinkTo(findConnector(poo
 						.getChangedConnectors()[1]));
 				layeredPane.add(plAdd, LINK_LAYER);
-
-				// necessary to let the arrange() methods perform the correct
-				// size of the new, deeply nested link
-				arrange();
-				repaint();
 				break;
 
 			// connection deleted
@@ -738,12 +726,12 @@ public class PipelinePanel extends JPanel implements Observer {
 				if (plDel != null) {
 					layeredPane.remove(plDel);
 				}
-
-				arrange();
-				repaint();
 				break;
 			}
 		}
+		
+		arrange();
+		layeredPane.repaint();
 
 		// this is better reset here
 		connectionStart = null;
