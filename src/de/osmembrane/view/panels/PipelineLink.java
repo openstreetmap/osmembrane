@@ -261,7 +261,7 @@ public class PipelineLink extends JPanel {
 	 * @return whether this link is between questFrom and questTo, regardless of
 	 *         the orientation of the actual connection
 	 */
-	public boolean links(PipelineConnector questFrom, PipelineConnector questTo) {
+	public boolean doesLink(PipelineConnector questFrom, PipelineConnector questTo) {
 		return (linkSource.equals(questFrom) && linkDestination.equals(questTo))
 				|| (linkSource.equals(questTo) && linkDestination
 						.equals(questFrom));

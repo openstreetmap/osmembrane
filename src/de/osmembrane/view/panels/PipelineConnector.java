@@ -76,7 +76,13 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 * list of {@link PipelineLink}s going from this connector to other
 	 * connectors
 	 */
-	private List<PipelineLink> links;
+	private List<PipelineLink> outLinks;
+
+	/**
+	 * lists of {@link PipelineLink}s coming in from other connectors to this
+	 * connector
+	 */
+	private List<PipelineLink> inLinks;
 
 	/**
 	 * Creates a new connector for a model {@link Connector} on a
@@ -110,7 +116,8 @@ public class PipelineConnector extends DisplayTemplatePanel {
 		this.id = id;
 		this.amount = amount;
 
-		this.links = new ArrayList<PipelineLink>();
+		this.outLinks = new ArrayList<PipelineLink>();
+		this.inLinks = new ArrayList<PipelineLink>();
 
 		this.addMouseListener(new MouseListener() {
 
@@ -152,12 +159,13 @@ public class PipelineConnector extends DisplayTemplatePanel {
 
 		display = derivateDisplay(displayTemplate, color, null);
 
-		// do not create links here, we don't know if we are done with all other
+		// do not create outLinks here, we don't know if we are done with all
+		// other
 		// connectors yet
 	}
 
 	/**
-	 * Generates all links that the model maintains
+	 * Generates all outLinks that the model maintains
 	 */
 	public void generateLinksFromModel() {
 		if (isOutpipes) {
@@ -170,10 +178,14 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 */
 	private void createLinks() {
 		for (AbstractConnector ac : modelConnector.getConnections()) {
+			PipelineConnector toCon = pipeline.findConnector(ac);
 			PipelineLink pl = new PipelineLink(pipeline, this,
-					pipeline.findConnector(ac));
+					toCon);
 
-			links.add(pl);
+			// out link here
+			outLinks.add(pl);
+			// in link there
+			toCon.inLinks.add(pl);
 		}
 	}
 
@@ -181,7 +193,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 * Arranges all {@link PipelineLink}s to conform to this connector
 	 */
 	public void arrangeLinks() {
-		for (PipelineLink pl : links) {
+		for (PipelineLink pl : outLinks) {
 			PipelineConnector dest = pl.getLinkDestination();
 
 			/* set size, set location */
@@ -256,8 +268,15 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	/**
 	 * @return the list of {@link PipelineLink}s flowing out from this connector
 	 */
-	public List<PipelineLink> getLinks() {
-		return this.links;
+	public List<PipelineLink> getOutLinks() {
+		return this.outLinks;
+	}
+	
+	/**
+	 * @return the list of {@link PipelineLink}s coming in to this connector
+	 */
+	public List<PipelineLink> getInLinks() {
+		return this.inLinks;
 	}
 
 	/**
@@ -269,7 +288,8 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 */
 	public PipelineLink addLinkTo(PipelineConnector toConnector) {
 		PipelineLink pl = new PipelineLink(pipeline, this, toConnector);
-		links.add(pl);
+		outLinks.add(pl);
+		toConnector.inLinks.add(pl);
 		return pl;
 	}
 
@@ -281,16 +301,27 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 * @return the removed link, or null if none found
 	 */
 	public PipelineLink removeLinkTo(PipelineConnector toConnector) {
-		for (int i = 0; i < links.size(); i++) {
-			PipelineLink pl = links.get(i);
+		PipelineLink result = null;
+		
+		// out from here
+		for (int i = 0; i < outLinks.size(); i++) {
+			result = outLinks.get(i);
 
-			if (pl.links(this, toConnector)) {
-				links.remove(i);
-				return pl;
+			if (result.doesLink(this, toConnector)) {
+				outLinks.remove(i);
+				break;
 			}
 		}
-
-		return null;
+		
+		// in to there
+		for (int i = 0; i < toConnector.inLinks.size(); i++) {
+			if (toConnector.inLinks.get(i).equals(result)) {
+				toConnector.inLinks.remove(i);
+				break;
+			}
+		}
+		
+		return result;
 	}
 
 	/**

@@ -392,12 +392,21 @@ public class PipelinePanel extends JPanel implements Observer {
 						// translate
 						e.translatePoint(winOffset.x, winOffset.y);
 						pf.setLocation(e.getPoint());
-						
+
 						pf.arrangeConnectors();
 						pf.arrangeLinks();
-						
-						// TODO For all incomings do that here
-					}
+
+						// now arrange all *incoming* links, since connectors
+						// only contain their outgoing connections
+						for (PipelineConnector pfCon : pf.getConnectors()) {
+							if (!pfCon.isOutpipes()) {
+								for (PipelineLink pfInLink : pfCon.getInLinks()) {
+									pfInLink.getLinkSource().arrangeLinks();
+								}
+							}
+						}
+
+					} /* if something selected */
 				}
 
 			} /* mouseDragged */
@@ -617,7 +626,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					connectors.put(pc.getModelConnector(), pc);
 					layeredPane.add(pc, CONNECTOR_LAYER);
 
-					for (PipelineLink pl : pc.getLinks()) {
+					for (PipelineLink pl : pc.getOutLinks()) {
 						layeredPane.add(pl, LINK_LAYER);
 					}
 				}
@@ -629,19 +638,16 @@ public class PipelinePanel extends JPanel implements Observer {
 					if (pfChange.getModelFunction().equals(
 							poo.getChangedFunction())) {
 
-						// TODO - THIS IS just a workaround for now
 						// if this function has links to its in-connectors,
 						// arrange those functions too
-						// (this will arrange the links to here)
-						for (PipelineFunction pf : functions) {
-							for (PipelineLink pl : pf.getAllOutLinks()) {
-								if (pl.getLinkDestination().getParentFunction()
-										.equals(pfChange)) {
-									arrange(pf);
+						for (PipelineConnector pc : pfChange.getConnectors()) {
+							if (!pc.isOutpipes()) {
+								for (PipelineLink pl : pc.getInLinks()) {
+									pl.getLinkSource().arrangeLinks();
 								}
 							}
-						}
-					}
+						} 
+					} /* if pfChange.equals(poo) */
 				}
 				break;
 
@@ -655,14 +661,29 @@ public class PipelinePanel extends JPanel implements Observer {
 
 						// clean-up on isle three
 						layeredPane.remove(pfDelete);
-						for (PipelineConnector pc : pfDelete.getConnectors()) {
+						for (PipelineConnector pc : pfDelete.getConnectors()) {													
+							// delete in links
+							int j = 0;
+							while (j < pc.getInLinks().size()) {
+								PipelineLink pl = pc.getInLinks().get(j);
+								pl.getLinkSource().removeLinkTo(pl.getLinkDestination());
+								layeredPane.remove(pl);								
+								j++;
+							}
+							
+							// delete out links
+							int k = 0;
+							while (k < pc.getOutLinks().size()) {
+								PipelineLink pl = pc.getOutLinks().get(k);
+								pl.getLinkSource().removeLinkTo(pl.getLinkDestination());
+								layeredPane.remove(pl);								
+								k++;
+							}
+							
+							// delete connector
 							connectors.remove(pc.getModelConnector());
 							layeredPane.remove(pc);
-
-							for (PipelineLink pl : pc.getLinks()) {
-								layeredPane.remove(pl);
-							}
-						}
+						}						
 
 						// deselect stuff if necessary
 						if (pfDelete.equals(selected)) {
@@ -699,7 +720,7 @@ public class PipelinePanel extends JPanel implements Observer {
 				for (PipelineConnector pc : connectors.values()) {
 					pc.generateLinksFromModel();
 
-					for (PipelineLink pl : pc.getLinks()) {
+					for (PipelineLink pl : pc.getOutLinks()) {
 						layeredPane.add(pl, LINK_LAYER);
 					}
 				}
@@ -729,7 +750,7 @@ public class PipelinePanel extends JPanel implements Observer {
 				break;
 			}
 		}
-		
+
 		arrange();
 		layeredPane.repaint();
 

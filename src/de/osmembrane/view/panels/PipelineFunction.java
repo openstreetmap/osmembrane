@@ -236,7 +236,7 @@ public class PipelineFunction extends LibraryFunction {
 		ArrayList<PipelineLink> result = new ArrayList<PipelineLink>();
 
 		for (PipelineConnector pc : connectors) {
-			result.addAll(pc.getLinks());
+			result.addAll(pc.getOutLinks());
 		}
 
 		return result;
