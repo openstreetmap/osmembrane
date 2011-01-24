@@ -92,6 +92,7 @@ public class ExceptionDialog extends AbstractDialog {
 			public void actionPerformed(ActionEvent e) {
 				showTraceButton.setVisible(false);						
 				exceptionTextPane.setVisible(true);
+				exceptionText.setCaretPosition(0);
 				pack();
 				centerWindow();
 			}
