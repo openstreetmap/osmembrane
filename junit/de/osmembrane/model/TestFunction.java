@@ -126,7 +126,7 @@ public class TestFunction extends AbstractFunction {
 			}
 		}
 
-		for (AbstractConnector ac : inTarget.getOutConnectors()) {
+		for (AbstractConnector ac : inTarget.getInConnectors()) {
 			for (AbstractConnector from : ac.getConnections()) {
 				if (from.getParent().equals(this.contained)) {
 					inCount++;

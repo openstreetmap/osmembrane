@@ -504,10 +504,9 @@ public class PipelineTest {
 	 * @throws ConnectorException
 	 */
 	private void examplePipeline() throws ConnectorException {
-		TestFunction[] newFuncs = new TestFunction[3];
+		AbstractFunction[] newFuncs = new AbstractFunction[3];
 		for (int i = 0; i < 3; i++) {
-			newFuncs[i] = new TestFunction(
-					prototype.copy(CopyType.WITHOUT_VALUES_AND_POSITION));
+			newFuncs[i] = prototype.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
 			newFuncs[i].setCoordinate(new Point(i, 1));
 		}
 
