@@ -1,5 +1,6 @@
 package de.osmembrane.view.dialogs;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -68,7 +69,9 @@ public class ExceptionDialog extends AbstractDialog {
 		exceptionMessage = new JLabel();
 		exceptionText = new JTextArea();
 		exceptionText.setEditable(false);
+	
 		exceptionTextPane = new JScrollPane(exceptionText);
+		exceptionTextPane.setPreferredSize(new Dimension(640, 480));
 
 		okButton = new JButton();
 		okButton.addActionListener(new ActionListener() {
@@ -87,7 +90,7 @@ public class ExceptionDialog extends AbstractDialog {
 		showTraceButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showTraceButton.setVisible(false);
+				showTraceButton.setVisible(false);						
 				exceptionTextPane.setVisible(true);
 				pack();
 				centerWindow();
