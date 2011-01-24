@@ -96,7 +96,7 @@ public class Task extends AbstractTask {
 	protected List<XMLPipe> getOutputPipe() {
 		return xmlTask.getOutputPipe();
 	}
-
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		/* A parameter got a change (anything changed) */
@@ -111,7 +111,9 @@ public class Task extends AbstractTask {
 		/* copy the parameters */
 		newTask.parameters.clear();
 		for(Parameter param : this.parameters) {
-			newTask.parameters.add(param.copy(type));
+			Parameter newParam = param.copy(type);
+			newParam.addObserver(newTask);
+			newTask.parameters.add(newParam);
 		}
 		
 		return newTask;

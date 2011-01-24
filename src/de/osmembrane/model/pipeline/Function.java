@@ -346,7 +346,9 @@ public class Function extends AbstractFunction {
 		newFunction.tasks.clear();
 		for(Task task : this.tasks) {
 			Task newTask = task.copy(type);
+			newTask.addObserver(newFunction);
 			newFunction.tasks.add(newTask);
+			
 			
 			if (task == activeTask && type.copyValues()) {
 				newFunction.activeTask = newTask;

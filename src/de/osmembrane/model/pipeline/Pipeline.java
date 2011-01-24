@@ -258,7 +258,6 @@ public class Pipeline extends AbstractPipeline {
 
 	@Override
 	public void update(Observable o, Object arg) {
-
 		/* only PipelineObserverObjects will be passed through */
 		if (arg instanceof PipelineObserverObject) {
 			changedNotifyObservers((PipelineObserverObject) arg);
@@ -272,7 +271,8 @@ public class Pipeline extends AbstractPipeline {
 		if (poo.getType() != ChangeType.FULLCHANGE) {
 			/* any changes made, set savedState to false */
 			changeSavedState(false);
-			System.out.println("new undo step: " + poo.getType());
+			
+			System.out.println("UndoSteps: " + undoStack.size() + " lastAction: " + poo.getType());
 		}
 		
 		this.setChanged();
@@ -284,6 +284,7 @@ public class Pipeline extends AbstractPipeline {
 
 		if (state == false) {
 			saveUndoStep(new PipelineMemento(functions, savedState));
+			
 		}
 	}
 
