@@ -34,7 +34,7 @@ public class Function extends AbstractFunction {
 	private static final long serialVersionUID = 2010123022380001L;
 
 	transient private Pipeline pipeline;
-	
+
 	transient private AbstractFunctionGroup parent;
 	private Identifier parentIdentifier;
 
@@ -70,11 +70,13 @@ public class Function extends AbstractFunction {
 	public Function(AbstractFunctionGroup parent, XMLFunction xmlFunction) {
 		this.parent = parent;
 		this.xmlFunction = xmlFunction;
-		
+
 		/* set the identifiers */
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance()
+				.accessFunctions();
 		this.parentIdentifier = this.parent.getIdentifier();
-		this.xmlFunctionIdentifier = afp.getMatchingXMLFunctionIdentifier(this.xmlFunction);
+		this.xmlFunctionIdentifier = afp
+				.getMatchingXMLFunctionIdentifier(this.xmlFunction);
 
 		/* add task observers */
 		for (XMLTask xmlTask : xmlFunction.getTask()) {
@@ -174,6 +176,10 @@ public class Function extends AbstractFunction {
 
 				}
 				activeTask = task;
+
+				changedNotifyObservers(new PipelineObserverObject(
+						ChangeType.CHANGE_FUNCTION, this));
+
 				return;
 			}
 		}
@@ -209,8 +215,7 @@ public class Function extends AbstractFunction {
 	public boolean same(AbstractFunction function) {
 		if (function instanceof Function) {
 			Function oFG = (Function) function;
-			return (oFG.getId()
-					.equals(this.getId()));
+			return (oFG.getId().equals(this.getId()));
 		}
 
 		return false;
@@ -302,7 +307,7 @@ public class Function extends AbstractFunction {
 			inConnector.unlink(false);
 		}
 	}
-	
+
 	/**
 	 * Creates the connectors for the active XMLTask.
 	 */
@@ -330,44 +335,45 @@ public class Function extends AbstractFunction {
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.CHANGE_FUNCTION, this));
 	}
-	
+
 	@Override
 	public Function copy(CopyType type) {
 		Function newFunction = new Function(this.parent, this.xmlFunction);
-		
+
 		newFunction.pipeline = this.pipeline;
 		newFunction.parent = parent;
-		
-		if(type.copyPosition()) {
+
+		if (type.copyPosition()) {
 			newFunction.coordinate = this.coordinate;
 		}
-		
+
 		/* copy the tasks */
 		newFunction.tasks.clear();
-		for(Task task : this.tasks) {
+		for (Task task : this.tasks) {
 			Task newTask = task.copy(type);
 			newTask.addObserver(newFunction);
 			newFunction.tasks.add(newTask);
-			
-			
+
 			if (task == activeTask && type.copyValues()) {
 				newFunction.activeTask = newTask;
 			}
 		}
-		
+
 		return newFunction;
 	}
-	
+
 	private Object readResolve() throws ObjectStreamException {
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance()
+				.accessFunctions();
 		this.parent = afp.getMatchingFunctionGroup(this.parentIdentifier);
-		this.xmlFunction = afp.getMatchingXMLFunction(this.xmlFunctionIdentifier);
-		
+		this.xmlFunction = afp
+				.getMatchingXMLFunction(this.xmlFunctionIdentifier);
+
 		/* create the observers */
 		for (Task task : tasks) {
 			task.addObserver(this);
 		}
-		
+
 		return this;
 	}
 }
