@@ -655,6 +655,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					if (pfDelete.getModelFunction().equals(
 							poo.getChangedFunction())) {
 
+						// clean-up on isle 3
 						layeredPane.remove(pfDelete);
 						for (PipelineConnector pc : pfDelete.getConnectors()) {
 							connectors.remove(pc.getModelConnector());
@@ -664,11 +665,16 @@ public class PipelinePanel extends JPanel implements Observer {
 								layeredPane.remove(pl);
 							}
 						}
-
+						
+						// deselect stuff if necessary
+						if (pfDelete.equals(selected)) {
+							selected(null);
+						}
 						functions.remove(i);
+						
 						repaint();
 						break;
-					}
+					}										
 				}
 				break;
 
@@ -676,6 +682,7 @@ public class PipelinePanel extends JPanel implements Observer {
 			case FULLCHANGE:
 				// let's pray for the GC to get this right
 				functions.clear();
+				connectors.clear();
 				layeredPane.removeAll();
 
 				for (AbstractFunction af : ModelProxy.getInstance()
@@ -692,6 +699,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					}
 				}
 
+				// start linking when all connectors are truly known
 				for (PipelineConnector pc : connectors.values()) {
 					pc.generateLinksFromModel();
 
@@ -699,6 +707,9 @@ public class PipelinePanel extends JPanel implements Observer {
 						layeredPane.add(pl, LINK_LAYER);
 					}
 				}
+				
+				// deselect stuff
+				selected(null);
 
 				arrange();
 				repaint();
@@ -726,13 +737,16 @@ public class PipelinePanel extends JPanel implements Observer {
 						.getChangedConnectors()[1]));
 				if (plDel != null) {
 					layeredPane.remove(plDel);
-				}
+				}							
 
 				arrange();
 				repaint();
 				break;
 			}
 		}
+		
+		// this is better reset here
+		connectionStart = null;
 
 		// update undo/redo-action availability
 		ActionRegistry
@@ -899,6 +913,7 @@ public class PipelinePanel extends JPanel implements Observer {
 			}
 		} else {
 			functionInspector.inspect(null);
+			repaint();
 		}
 
 		// enable deleting & duplicating
