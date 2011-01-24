@@ -1,5 +1,10 @@
 package de.osmembrane.model.pipeline;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -21,11 +26,9 @@ import de.osmembrane.resources.Constants;
  */
 public class Pipeline extends AbstractPipeline {
 
-	@SuppressWarnings("unused")
-	private Stack<Pipeline> undoStack;
-
-	@SuppressWarnings("unused")
-	private Stack<Pipeline> redoStack;
+	private Stack<PipelineMemento> undoStack;
+	private PipelineMemento currentState;
+	private Stack<PipelineMemento> redoStack;
 
 	private List<AbstractFunction> functions;
 
@@ -36,6 +39,8 @@ public class Pipeline extends AbstractPipeline {
 	 */
 	public Pipeline() {
 		this.functions = new ArrayList<AbstractFunction>();
+		this.undoStack = new Stack<PipelineMemento>();
+		this.redoStack = new Stack<PipelineMemento>();
 
 		/* register the Observer of Persistence to the Pipeline */
 		addObserver(PersistenceFactory.getInstance());
@@ -73,24 +78,26 @@ public class Pipeline extends AbstractPipeline {
 		}
 
 		if (returnValue == true) {
-			savedState = functions.isEmpty();
-			
 			/* notify the observers */
 			changedNotifyObservers(new PipelineObserverObject(
 					ChangeType.DELETE_FUNCTION, func));
 		}
-		
+
 		return returnValue;
 	}
 
 	@Override
 	public void clear() {
 		this.functions.clear();
-		savedState = true;
+		this.undoStack.clear();
+		this.currentState = new PipelineMemento(functions, savedState);
+		this.redoStack.clear();
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null));
+
+		changeSavedState(true);
 	}
 
 	@Override
@@ -101,7 +108,7 @@ public class Pipeline extends AbstractPipeline {
 		persistence.save(filename, functions);
 
 		/* Saved successfully (persistence has not thrown a FileException */
-		savedState = true;
+		changeSavedState(true);
 	}
 
 	@Override
@@ -177,7 +184,7 @@ public class Pipeline extends AbstractPipeline {
 
 		/* check the SCCs */
 		List<List<AbstractFunction>> sccs = check.getSCC();
-		
+
 		for (List<AbstractFunction> scc : sccs) {
 			if (scc.size() == 1) {
 				/*
@@ -185,8 +192,10 @@ public class Pipeline extends AbstractPipeline {
 				 * standing alone
 				 */
 				AbstractFunction function = scc.get(0);
-				for (AbstractConnector outConnector : function.getOutConnectors()) {
-					for(AbstractConnector inConnector : outConnector.getConnections()) {
+				for (AbstractConnector outConnector : function
+						.getOutConnectors()) {
+					for (AbstractConnector inConnector : outConnector
+							.getConnections()) {
 						if (inConnector.getParent() == function) {
 							/* found a connection to the function itself */
 							return true;
@@ -197,7 +206,7 @@ public class Pipeline extends AbstractPipeline {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -213,26 +222,38 @@ public class Pipeline extends AbstractPipeline {
 
 	@Override
 	public boolean undo() {
-		/* TODO Implement the undo/redo features */
-		return false;
+		if (!undoAvailable()) {
+			return false;
+		}
+		
+		PipelineMemento undoMemento = undoStack.pop();
+		saveRedoStep(currentState);
+		restoreMemento(undoMemento);
+
+		return true;
 	}
 
 	@Override
 	public boolean undoAvailable() {
-		/* TODO Implement the undo/redo features */
-		return false;
+		return !undoStack.isEmpty();
 	}
 
 	@Override
 	public boolean redo() {
-		/* TODO Implement the undo/redo features */
-		return false;
+		if (!redoAvailable()) {
+			return false;
+		}
+
+		PipelineMemento redoMemento = redoStack.pop();
+		undoStack.push(currentState);
+		restoreMemento(redoMemento);
+		
+		return true;
 	}
 
 	@Override
 	public boolean redoAvailable() {
-		/* TODO Implement the undo/redo features */
-		return false;
+		return !redoStack.isEmpty();
 	}
 
 	@Override
@@ -250,13 +271,90 @@ public class Pipeline extends AbstractPipeline {
 		this.setChanged();
 		this.notifyObservers(poo);
 
-		/* any changes made, set savedState to false */
-		savedState = false;
+		if (poo.getType() != ChangeType.FULLCHANGE) {
+			/* any changes made, set savedState to false */
+			changeSavedState(false);
+		}
+	}
+
+	private void changeSavedState(boolean state) {
+		this.savedState = state;
+
+		if (state == false) {
+			saveUndoStep(new PipelineMemento(functions, savedState));
+		}
+	}
+
+	private void saveUndoStep(PipelineMemento memento) {
+		undoStack.push(currentState);
+		currentState = memento;
+		if (undoStack.size() > Constants.MAXIMUM_UNDO_STEPS) {
+			undoStack.remove(0);
+		}
+		redoStack.clear();
+	}
+
+	private void saveRedoStep(PipelineMemento memento) {
+		redoStack.push(memento);
+		if (redoStack.size() > Constants.MAXIMUM_UNDO_STEPS) {
+			redoStack.remove(0);
+		}
+	}
+
+	private void restoreMemento(PipelineMemento memento) {
+		this.functions = memento.getFunctions();
+		this.savedState = memento.getSavedState();
+		this.currentState = memento;
+		
+		changedNotifyObservers(new PipelineObserverObject(
+				ChangeType.FULLCHANGE, null));
 	}
 
 	@Override
 	public String getIdentifier() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+}
+
+class PipelineMemento {
+
+	private List<AbstractFunction> functions = new ArrayList<AbstractFunction>();
+	private boolean savedState;
+
+	public PipelineMemento(List<AbstractFunction> functions, boolean savedState) {
+		this.functions = deepCopyFunctions(functions);
+		this.savedState = savedState;
+	}
+
+	public boolean getSavedState() {
+		return savedState;
+	}
+
+	public List<AbstractFunction> getFunctions() {
+		return functions;
+	}
+
+	private List<AbstractFunction> deepCopyFunctions(
+			List<AbstractFunction> functions) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(functions);
+			ByteArrayInputStream bais = new ByteArrayInputStream(
+					baos.toByteArray());
+			ObjectInputStream ois = new ObjectInputStream(bais);
+			Object deepCopy = ois.readObject();
+
+			@SuppressWarnings("unchecked")
+			List<AbstractFunction> copy = (List<AbstractFunction>) deepCopy;
+			return copy;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return functions;
 	}
 }

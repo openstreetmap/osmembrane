@@ -8,6 +8,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 
@@ -36,7 +37,9 @@ public class RedoAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO implement
-		throw new UnsupportedOperationException();
+		System.out.println("redo available: "
+				+ ModelProxy.getInstance().accessPipeline().redoAvailable());
+		
+		ModelProxy.getInstance().accessPipeline().redo();
 	}
 }

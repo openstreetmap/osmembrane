@@ -62,4 +62,9 @@ public class Constants {
 	 * The OSMembrane file extension.
 	 */
 	public static final String OSMEMBRANE_EXTENSION = ".osmembrane";
+
+	/**
+	 * Maximum count of undo steps until the first one is removed from the undoStack.
+	 */
+	public static final int MAXIMUM_UNDO_STEPS = 100;
 }

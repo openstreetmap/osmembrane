@@ -8,11 +8,12 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 
 /**
- * Action to undo the last done edit in the pipeline. 
+ * Action to undo the last done edit in the pipeline.
  * 
  * @author tobias_kuhn
  * 
@@ -26,17 +27,18 @@ public class UndoAction extends AbstractAction {
 	 */
 	public UndoAction() {
 		putValue(Action.NAME, "Undo");
-		putValue(Action.SMALL_ICON, new IconLoader("undo.png",
-				Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY, new IconLoader("undo.png",
-				Size.NORMAL).get());
+		putValue(Action.SMALL_ICON,
+				new IconLoader("undo.png", Size.SMALL).get());
+		putValue(Action.LARGE_ICON_KEY,
+				new IconLoader("undo.png", Size.NORMAL).get());
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO implement
-		throw new UnsupportedOperationException();
+		System.out.println("undo available: "
+				+ ModelProxy.getInstance().accessPipeline().undoAvailable());
+		ModelProxy.getInstance().accessPipeline().undo();
 	}
 }
