@@ -58,10 +58,8 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 			functionGroups.add(fg);
 			
 			/* add to the maps */
-			Identifier identifier = fg.getIdentifier();
-			functionGroupMap.put(identifier, fg);
+			Identifier identifier = identifiers.get(group);
 			functionGroupIdentifierMap.put(fg, identifier);
-			
 		}
 	}
 
@@ -90,7 +88,7 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 						xmlPipeMap.put(pipeIdentifier, inPipe);
 						identifiers.put(inPipe, pipeIdentifier);
 					}
-					for (XMLPipe outPipe : task.getInputPipe()) {
+					for (XMLPipe outPipe : task.getOutputPipe()) {
 						Identifier pipeIdentifier = new Identifier(
 								taskIdentifier + "|out|" + outPipe.getType()
 										+ outPipe.getIndex());
@@ -124,15 +122,23 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	}
 
 	@Override
+	protected Identifier pushFGToMap(AbstractFunctionGroup fg, XMLFunctionGroup xmlFG) {
+		Identifier ident = new Identifier(xmlFG.getId());
+		functionGroupMap.put(ident, fg);
+		identifiers.put(fg, ident);
+		return ident;
+	}
+	
+	@Override
 	protected AbstractFunctionGroup getMatchingFunctionGroup(
 			Identifier identifier) {
 		return functionGroupMap.get(identifier);
 	}
-
+	
 	@Override
 	protected Identifier getMatchingFunctionGroupIdentifier(
 			AbstractFunctionGroup identifier) {
-		return functionGroupIdentifierMap.get(identifier);
+		return identifiers.get(identifier);
 	}
 
 	@Override
@@ -142,6 +148,8 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 
 	@Override
 	protected Identifier getMatchingXMLFunctionIdentifier(XMLFunction identifier) {
+		String str = (identifiers.get(identifier) == null ? "never return null! function" : "");
+		if (str != "") { System.out.println(str); }
 		return identifiers.get(identifier);
 	}
 
@@ -152,6 +160,8 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 
 	@Override
 	protected Identifier getMatchingXMLTaskIdentifier(XMLTask identifier) {
+		String str = (identifiers.get(identifier) == null ? "never return null! task" : "");
+		if (str != "") { System.out.println(str); }
 		return identifiers.get(identifier);
 	}
 
@@ -162,6 +172,8 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 
 	@Override
 	protected Identifier getMatchingXMLPipeIdentifier(XMLPipe identifier) {
+		String str = (identifiers.get(identifier) == null ? "never return null! pipe" : "");
+		if (str != "") { System.out.println(str); }
 		return identifiers.get(identifier);
 	}
 
@@ -173,6 +185,8 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	@Override
 	protected Identifier getMatchingXMLParameterIdentifier(
 			XMLParameter identifier) {
+		String str = (identifiers.get(identifier) == null ? "never return null! param" : "");
+		if (str != "") { System.out.println(str); }
 		return identifiers.get(identifier);
 	}
 
@@ -184,6 +198,8 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	@Override
 	protected Identifier getMatchingXMLEnumValueIdentifier(
 			XMLEnumValue identifier) {
+		String str = (identifiers.get(identifier) == null ? "never return null! enumValue" : "");
+		if (str != "") { System.out.println(str); }
 		return identifiers.get(identifier);
 	}
 

@@ -73,10 +73,13 @@ public class Pipeline extends AbstractPipeline {
 		}
 
 		if (returnValue == true) {
+			savedState = functions.isEmpty();
+			
 			/* notify the observers */
 			changedNotifyObservers(new PipelineObserverObject(
 					ChangeType.DELETE_FUNCTION, func));
 		}
+		
 		return returnValue;
 	}
 

@@ -73,7 +73,7 @@ public class Function extends AbstractFunction {
 		
 		/* set the identifiers */
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
-		this.parentIdentifier = afp.getMatchingFunctionGroupIdentifier(this.parent);
+		this.parentIdentifier = this.parent.getIdentifier();
 		this.xmlFunctionIdentifier = afp.getMatchingXMLFunctionIdentifier(this.xmlFunction);
 
 		/* add task observers */

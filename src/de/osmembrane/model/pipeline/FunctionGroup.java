@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.osmembrane.model.Identifier;
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.Function;
 import de.osmembrane.model.xml.XMLFunction;
 import de.osmembrane.model.xml.XMLFunctionGroup;
@@ -36,7 +37,8 @@ public class FunctionGroup extends AbstractFunctionGroup {
 			functions.add(new Function(this, xmlFunction));
 		}
 
-		identifier = new Identifier(this.xmlGroup.getId());
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		identifier = afp.pushFGToMap(this, xmlGroup);
 	}
 
 	@Override
