@@ -209,8 +209,8 @@ public class Function extends AbstractFunction {
 	public boolean same(AbstractFunction function) {
 		if (function instanceof Function) {
 			Function oFG = (Function) function;
-			return (oFG.getIdentifier()
-					.equals(this.getIdentifier()));
+			return (oFG.getId()
+					.equals(this.getId()));
 		}
 
 		return false;
@@ -300,10 +300,6 @@ public class Function extends AbstractFunction {
 		for (AbstractConnector inConnector : getInConnectors()) {
 			inConnector.unlink(false);
 		}
-	}
-
-	public String getIdentifier() {
-		return this.xmlFunction.getId();
 	}
 	
 	/**

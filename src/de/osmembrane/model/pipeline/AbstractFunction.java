@@ -171,9 +171,4 @@ public abstract class AbstractFunction extends Observable implements
 	 * Copies the function.
 	 */
 	public abstract AbstractFunction copy(CopyType type);
-	
-	/**
-	 * Get identifier.
-	 */
-	public abstract String getIdentifier();
 }
