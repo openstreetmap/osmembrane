@@ -38,8 +38,11 @@ public class UndoAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("undo available: "
-				+ ModelProxy.getInstance().accessPipeline().undoAvailable());
 		ModelProxy.getInstance().accessPipeline().undo();
+	}
+	
+	@Override
+	public boolean isEnabled() {
+		return ModelProxy.getInstance().accessPipeline().undoAvailable();
 	}
 }

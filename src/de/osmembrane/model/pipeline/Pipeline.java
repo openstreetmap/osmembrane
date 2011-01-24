@@ -268,13 +268,15 @@ public class Pipeline extends AbstractPipeline {
 	@Override
 	protected void changedNotifyObservers(PipelineObserverObject poo) {
 		poo.setPipeline(this);
-		this.setChanged();
-		this.notifyObservers(poo);
-
+		
 		if (poo.getType() != ChangeType.FULLCHANGE) {
 			/* any changes made, set savedState to false */
 			changeSavedState(false);
+			System.out.println("new undo step: " + poo.getType());
 		}
+		
+		this.setChanged();
+		this.notifyObservers(poo);
 	}
 
 	private void changeSavedState(boolean state) {

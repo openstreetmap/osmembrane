@@ -38,9 +38,12 @@ public class RedoAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("redo available: "
-				+ ModelProxy.getInstance().accessPipeline().redoAvailable());
-		
 		ModelProxy.getInstance().accessPipeline().redo();
+	}
+	
+	
+	@Override
+	public boolean isEnabled() {
+		return ModelProxy.getInstance().accessPipeline().redoAvailable();
 	}
 }

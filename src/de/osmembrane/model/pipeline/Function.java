@@ -246,14 +246,15 @@ public class Function extends AbstractFunction {
 						/* now check loop freeness */
 						if (getPipeline().hasLoop()) {
 							/* remove 'cause that is not ok */
-							removeConnectionTo(function);
+							connectorIn.removeConnection(connectorOut);
+							connectorOut.removeConnection(connectorIn);
+
 							throw new ConnectorException(Type.LOOP_CREATED);
 						}
 
 						changedNotifyObservers(new PipelineObserverObject(
 								ChangeType.ADD_CONNECTION, connectorOut,
 								connectorIn));
-
 						return;
 					} else {
 						foundFullOne = true;
@@ -321,11 +322,6 @@ public class Function extends AbstractFunction {
 	protected void changedNotifyObservers(PipelineObserverObject poo) {
 		this.setChanged();
 		this.notifyObservers(poo);
-
-		/* now we have to notify the observer of the pipeline */
-		if (getPipeline() != null) {
-			getPipeline().changedNotifyObservers(poo);
-		}
 	}
 
 	@Override
