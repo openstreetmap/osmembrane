@@ -132,7 +132,7 @@ public class Pipeline extends AbstractPipeline {
 
 		this.functions = functions;
 		for (AbstractFunction function : functions) {
-			function.addObserver(function);
+			function.addObserver(this);
 		}
 
 		/* notify the observers */
@@ -305,6 +305,10 @@ public class Pipeline extends AbstractPipeline {
 		this.functions = memento.getFunctions();
 		this.savedState = memento.getSavedState();
 		this.currentState = memento;
+		
+		for (AbstractFunction function : functions) {
+			function.addObserver(this);
+		}
 		
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null));
