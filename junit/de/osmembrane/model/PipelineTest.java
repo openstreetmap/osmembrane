@@ -432,8 +432,12 @@ public class PipelineTest {
 
 		assertTrue("redo was not available", pl.redoAvailable());
 		assertTrue("redo could not be done", pl.redo());
+		assertTrue("redo was not available", pl.redoAvailable());
+		assertTrue("redo could not be done", pl.redo());
 		/* 01. 0__ Axxx __ */
 
+		assertTrue("redo was not available", pl.redoAvailable());
+		assertTrue("redo could not be done", pl.redo());
 		assertTrue("redo was not available", pl.redoAvailable());
 		assertTrue("redo could not be done", pl.redo());
 		/* 02. 01_ ABxx __ */
@@ -442,6 +446,8 @@ public class PipelineTest {
 		assertTrue("redo could not be done", pl.redo());
 		/* 03. 01_ ABxx C_ */
 
+		assertTrue("redo was not available", pl.redoAvailable());
+		assertTrue("redo could not be done", pl.redo());
 		assertTrue("redo was not available", pl.redoAvailable());
 		assertTrue("redo could not be done", pl.redo());
 		/* 04. 012 ABAB C_ */
