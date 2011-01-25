@@ -126,7 +126,7 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	}
 
 	@Override
-	public AbstractFunction[] doYouKnowWhetherAndHowMuchFunctionsThereAreWithThisStringInTheirDataNamesDescriptionsAndSuch(
+	public AbstractFunction[] getFilteredFunctions(
 			String matching) {
 		matching = matching.toLowerCase().trim();
 		List<AbstractFunction> matchingFunctions = new ArrayList<AbstractFunction>();
