@@ -100,6 +100,7 @@ public class FunctionGroup extends AbstractFunctionGroup {
 		return (AbstractFunction[]) returnFunctions;
 	}
 
+	/* TODO is that maybe dead code? */
 	@Override
 	public boolean same(AbstractFunctionGroup group) {
 		if (group instanceof FunctionGroup) {

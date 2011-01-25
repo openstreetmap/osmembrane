@@ -219,6 +219,7 @@ public class Function extends AbstractFunction {
 		return outConnectors;
 	}
 
+	/* TODO is that maybe dead code? */
 	@Override
 	public boolean same(AbstractFunction function) {
 		if (function instanceof Function) {

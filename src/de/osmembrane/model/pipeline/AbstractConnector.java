@@ -93,14 +93,4 @@ public abstract class AbstractConnector implements Serializable {
 	 *            true if the connector is an out connector
 	 */
 	protected abstract void unlink(boolean isOutConnector);
-	
-	/**
-	 * Copies the connector.
-	 */
-	public abstract AbstractConnector copy(CopyType type);
-	
-	/**
-	 * Copies the connector.
-	 */
-	public abstract AbstractConnector copy(CopyType type, AbstractFunction parent);
 }

@@ -108,22 +108,6 @@ public class Connector extends AbstractConnector {
 			this.removeConnection(connector);
 		}
 	}
-
-	@Override
-	public Connector copy(CopyType type) {
-		return copy(type, null);
-	}
-
-	@Override
-	public Connector copy(CopyType type, AbstractFunction parent) {
-		Connector newConnector = new Connector(this.parent, this.position, this.xmlPipe);
-		
-		if (parent != null) {
-			newConnector.parent = parent;
-		}
-		
-		return newConnector;
-	}
 	
 	private Object readResolve() throws ObjectStreamException {
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
