@@ -25,42 +25,126 @@ public abstract class AbstractFunctionPrototype extends Observable {
 	 */
 	public abstract void initiate(String xmlFilename);
 
+	/**
+	 * Returns all {@link AbstractFunctionGroup}s.
+	 * 
+	 * @return the {@link AbstractFunctionGroup}s
+	 */
 	public abstract AbstractFunctionGroup[] getFunctionGroups();
 
+	/**
+	 * Adds an Identifier for an {@link AbstractFunctionGroup} to the Map.
+	 * 
+	 * @param fg {@link AbstractFunctionGroup} which should be mapped
+	 * @param xmlFG referring {@link XMLFunctionGroup} for the {@link AbstractFunctionGroup}
+	 * @return the {@link Identifier} for the given {@link AbstractFunctionGroup}
+	 */
+	protected abstract Identifier pushFGToMap(AbstractFunctionGroup fg,
+			XMLFunctionGroup xmlFG);
+
+	/**
+	 * Returns a matching {@link AbstractFunctionGroup} for an {@link Identifier}.
+	 * 
+	 * @param identifier {@link Identifier} which should be found.
+	 * @return the matching {@link AbstractFunctionGroup} or NULL
+	 */
 	protected abstract AbstractFunctionGroup getMatchingFunctionGroup(
 			Identifier identifier);
 
+	/**
+	 * Returns a matching {@link Identifier} for an {@link AbstractFunctionGroup}.
+	 * 
+	 * @param identifier {@link AbstractFunctionGroup} which should be found.
+	 * @return the matching {@link Identifier} or NULL
+	 */
 	protected abstract Identifier getMatchingFunctionGroupIdentifier(
 			AbstractFunctionGroup identifier);
 
+	/**
+	 * Returns a matching {@link XMLFunction} for an {@link Identifier}.
+	 * 
+	 * @param identifier {@link Identifier} which should be found.
+	 * @return the matching {@link XMLFunction} or NULL
+	 */
 	protected abstract XMLFunction getMatchingXMLFunction(Identifier identifier);
 
+	/**
+	 * Returns a matching {@link Identifier} for an {@link XMLFunction}.
+	 * 
+	 * @param identifier {@link XMLFunction} which should be found.
+	 * @return the matching {@link Identifier} or NULL
+	 */
 	protected abstract Identifier getMatchingXMLFunctionIdentifier(
 			XMLFunction identifier);
 
+	/**
+	 * Returns a matching {@link XMLTask} for an {@link Identifier}.
+	 * 
+	 * @param identifier {@link Identifier} which should be found.
+	 * @return the matching {@link XMLTask} or NULL
+	 */
 	protected abstract XMLTask getMatchingXMLTask(Identifier identifier);
 
+	/**
+	 * Returns a matching {@link Identifier} for an {@link XMLTask}.
+	 * 
+	 * @param identifier {@link XMLTask} which should be found.
+	 * @return the matching {@link Identifier} or NULL
+	 */
 	protected abstract Identifier getMatchingXMLTaskIdentifier(
 			XMLTask identifier);
 
+	/**
+	 * Returns a matching {@link XMLPipe} for an {@link Identifier}.
+	 * 
+	 * @param identifier {@link Identifier} which should be found.
+	 * @return the matching {@link XMLPipe} or NULL
+	 */
 	protected abstract XMLPipe getMatchingXMLPipe(Identifier identifier);
 
+	/**
+	 * Returns a matching {@link Identifier} for an {@link XMLPipe}.
+	 * 
+	 * @param identifier {@link XMLPipe} which should be found.
+	 * @return the matching {@link Identifier} or NULL
+	 */
 	protected abstract Identifier getMatchingXMLPipeIdentifier(
 			XMLPipe identifier);
 
+	/**
+	 * Returns a matching {@link XMLParameter} for an {@link Identifier}.
+	 * 
+	 * @param identifier {@link Identifier} which should be found.
+	 * @return the matching {@link XMLParameter} or NULL
+	 */
 	protected abstract XMLParameter getMatchingXMLParameter(
 			Identifier identifier);
 
+	/**
+	 * Returns a matching {@link Identifier} for an {@link XMLParameter}.
+	 * 
+	 * @param identifier {@link XMLParameter} which should be found.
+	 * @return the matching {@link Identifier} or NULL
+	 */
 	protected abstract Identifier getMatchingXMLParameterIdentifier(
 			XMLParameter identifier);
 
+	/**
+	 * Returns a matching {@link XMLEnumValue} for an {@link Identifier}.
+	 * 
+	 * @param identifier {@link Identifier} which should be found.
+	 * @return the matching {@link XMLEnumValue} or NULL
+	 */
 	protected abstract XMLEnumValue getMatchingXMLEnumValue(
 			Identifier identifier);
 
+	/**
+	 * Returns a matching {@link Identifier} for an {@link XMLEnumValue}.
+	 * 
+	 * @param identifier {@link XMLEnumValue} which should be found.
+	 * @return the matching {@link Identifier} or NULL
+	 */
 	protected abstract Identifier getMatchingXMLEnumValueIdentifier(
 			XMLEnumValue identifier);
-
-	protected abstract Identifier pushFGToMap(AbstractFunctionGroup fg,
-			XMLFunctionGroup xmlFG);
 
 }

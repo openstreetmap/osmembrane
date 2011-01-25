@@ -169,8 +169,16 @@ public class Function extends AbstractFunction {
 						if (oldParam.getName().equals(newParam.getName())
 								&& oldParam.getType()
 										.equals(newParam.getType())) {
-							/* both parameters match, set the value */
-							newParam.setValue(oldParam.getValue());
+							/*
+							 * Now check if the oldParam is the default value,
+							 * if that is so, don't copy.
+							 */
+							if (!oldParam.getValue().equals(
+									oldParam.getDefaultValue())) {
+								/* oldParam has a real non-default value. */
+								newParam.setValue(oldParam.getValue());
+							}
+
 						}
 					}
 

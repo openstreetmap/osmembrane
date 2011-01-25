@@ -14,7 +14,6 @@
   <annotation>
     <appinfo>
       <jaxb:globalBindings generateIsSetMethod="true">
-        <xjc:serializable uid="2011011810070001"/>
       </jaxb:globalBindings>
     </appinfo>
   </annotation>

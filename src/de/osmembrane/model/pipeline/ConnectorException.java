@@ -10,8 +10,29 @@ public class ConnectorException extends Exception {
 
 	private static final long serialVersionUID = 2011010722360001L;
 
+	/**
+	 * Type of the connection failure.
+	 */
 	public enum Type {
-		NO_MATCH, FULL, LOOP_CREATED, CONNECTION_ALREADY_EXISTS
+		/**
+		 * There are no matching Connectors on both functions.
+		 */
+		NO_MATCH,
+
+		/**
+		 * One or both function have only full, matching connectors.
+		 */
+		FULL,
+
+		/**
+		 * The connection would create a loop, what should never be done.
+		 */
+		LOOP_CREATED,
+
+		/**
+		 * A connection between these functions does already exists.
+		 */
+		CONNECTION_ALREADY_EXISTS
 	}
 
 	private Type type;

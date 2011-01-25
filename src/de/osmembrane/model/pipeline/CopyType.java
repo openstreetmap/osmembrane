@@ -1,5 +1,10 @@
 package de.osmembrane.model.pipeline;
 
+/**
+ * Defines the type how a function should be copied.
+ * 
+ * @author jakob_jarosch
+ */
 public enum CopyType {
 	/**
 	 * Copy everything.

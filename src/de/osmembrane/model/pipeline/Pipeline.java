@@ -47,6 +47,20 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
+	public void clear() {
+		this.functions.clear();
+		this.undoStack.clear();
+		this.currentState = new PipelineMemento(functions, savedState);
+		this.redoStack.clear();
+	
+		/* notify the observers */
+		changedNotifyObservers(new PipelineObserverObject(
+				ChangeType.FULLCHANGE, null));
+	
+		changeSavedState(true);
+	}
+
+	@Override
 	public AbstractFunction[] getFunctions() {
 		AbstractFunction[] functions = new AbstractFunction[this.functions
 				.size()];
@@ -87,17 +101,30 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
-	public void clear() {
-		this.functions.clear();
-		this.undoStack.clear();
+	public void loadPipeline(String filename) throws FileException {
+		AbstractPersistence persistence = PersistenceFactory.getInstance()
+				.getPersistence(OSMembranePersistence.class);
+	
+		Object obj = persistence.load(filename);
+	
+		/* is checked by persistence */
+		@SuppressWarnings("unchecked")
+		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
+	
+		this.functions = functions;
+		for (AbstractFunction function : functions) {
+			function.addObserver(this);
+		}
+	
+		/*
+		 * Save the loaded Pipeline as the first undoStep which will be created
+		 * at the next step.
+		 */
 		this.currentState = new PipelineMemento(functions, savedState);
-		this.redoStack.clear();
-
+	
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null));
-
-		changeSavedState(true);
 	}
 
 	@Override
@@ -112,32 +139,16 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
+	public boolean isSaved() {
+		return savedState;
+	}
+
+	@Override
 	public void backupPipeline() throws FileException {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(OSMembranePersistence.class);
 
 		persistence.save(Constants.DEFAULT_BACKUP_FILE, functions);
-	}
-
-	@Override
-	public void loadPipeline(String filename) throws FileException {
-		AbstractPersistence persistence = PersistenceFactory.getInstance()
-				.getPersistence(OSMembranePersistence.class);
-
-		Object obj = persistence.load(filename);
-
-		/* is checked by persistence */
-		@SuppressWarnings("unchecked")
-		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
-
-		this.functions = functions;
-		for (AbstractFunction function : functions) {
-			function.addObserver(this);
-		}
-
-		/* notify the observers */
-		changedNotifyObservers(new PipelineObserverObject(
-				ChangeType.FULLCHANGE, null));
 	}
 
 	@Override
@@ -157,9 +168,20 @@ public class Pipeline extends AbstractPipeline {
 			function.addObserver(function);
 		}
 
+		/*
+		 * Save the imported Pipeline as the first undoStep which will be created
+		 * at the next step.
+		 */
+		
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null));
+	}
+
+	@Override
+	public String generate(FileType filetype) {
+		return ParserFactory.getInstance().getParser(filetype.getParserClass())
+				.parsePipeline(functions);
 	}
 
 	@Override
@@ -169,12 +191,6 @@ public class Pipeline extends AbstractPipeline {
 				.getPersistence(type.getPersistenceClass());
 
 		persistence.save(filename, functions);
-	}
-
-	@Override
-	public String generate(FileType filetype) {
-		return ParserFactory.getInstance().getParser(filetype.getParserClass())
-				.parsePipeline(functions);
 	}
 
 	@Override
@@ -211,11 +227,6 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
-	public boolean isSaved() {
-		return savedState;
-	}
-
-	@Override
 	public void optimizePipeline() {
 		/* TODO Implement a graph optimize algorithm */
 	}
@@ -225,7 +236,7 @@ public class Pipeline extends AbstractPipeline {
 		if (!undoAvailable()) {
 			return false;
 		}
-		
+
 		PipelineMemento undoMemento = undoStack.pop();
 		saveRedoStep(currentState);
 		restoreMemento(undoMemento);
@@ -247,13 +258,19 @@ public class Pipeline extends AbstractPipeline {
 		PipelineMemento redoMemento = redoStack.pop();
 		undoStack.push(currentState);
 		restoreMemento(redoMemento);
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean redoAvailable() {
 		return !redoStack.isEmpty();
+	}
+
+	@Override
+	public String getIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -267,14 +284,15 @@ public class Pipeline extends AbstractPipeline {
 	@Override
 	protected void changedNotifyObservers(PipelineObserverObject poo) {
 		poo.setPipeline(this);
-		
+
 		if (poo.getType() != ChangeType.FULLCHANGE) {
 			/* any changes made, set savedState to false */
 			changeSavedState(false);
 		}
-		
-		System.out.println("UndoSteps: " + undoStack.size() + " lastAction: " + poo.getType());
-		
+
+		System.out.println("UndoSteps: " + undoStack.size() + " lastAction: "
+				+ poo.getType());
+
 		this.setChanged();
 		this.notifyObservers(poo);
 	}
@@ -284,13 +302,14 @@ public class Pipeline extends AbstractPipeline {
 
 		if (state == false) {
 			saveUndoStep(new PipelineMemento(functions, savedState));
-			
+
 		}
 	}
 
 	private void saveUndoStep(PipelineMemento memento) {
 		undoStack.push(currentState);
 		currentState = memento;
+		
 		if (undoStack.size() > Constants.MAXIMUM_UNDO_STEPS) {
 			undoStack.remove(0);
 		}
@@ -299,6 +318,7 @@ public class Pipeline extends AbstractPipeline {
 
 	private void saveRedoStep(PipelineMemento memento) {
 		redoStack.push(memento);
+		
 		if (redoStack.size() > Constants.MAXIMUM_UNDO_STEPS) {
 			redoStack.remove(0);
 		}
@@ -308,19 +328,13 @@ public class Pipeline extends AbstractPipeline {
 		this.functions = memento.getFunctions();
 		this.savedState = memento.getSavedState();
 		this.currentState = memento;
-		
+
 		for (AbstractFunction function : functions) {
 			function.addObserver(this);
 		}
-		
+
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null));
-	}
-
-	@Override
-	public String getIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
 

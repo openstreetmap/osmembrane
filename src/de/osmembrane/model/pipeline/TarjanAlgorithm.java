@@ -102,6 +102,12 @@ public class TarjanAlgorithm {
 		return returnList;
 	}
 
+	/**
+	 * The tarjan algorithm.
+	 * 
+	 * @param node
+	 *            Node with which should be started.
+	 */
 	private void tarjan(AbstractFunction node) {
 		nodeIndex.put(node, index);
 		nodeLowlink.put(node, index);
@@ -170,18 +176,4 @@ public class TarjanAlgorithm {
 		}
 		nodeStack.clear();
 	}
-
-}
-
-class FoundSCCException extends Exception {
-
-	private int sccSize;
-	private List<AbstractFunction> nodes;
-
-	public FoundSCCException(int sccSize, List<AbstractFunction> stackNodes) {
-		this.sccSize = sccSize;
-		this.nodes = stackNodes;
-	}
-
-	private static final long serialVersionUID = 2011011617270001L;
 }
