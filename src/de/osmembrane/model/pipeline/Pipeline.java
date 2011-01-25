@@ -297,9 +297,8 @@ public class Pipeline extends AbstractPipeline {
 				+ "; functions.size = " + functions.size()
 				+ "\ncurrentState.functions.size = "
 				+ currentState.getFunctions().size()
-				+ "; undoStack.peek.functions.size = "
-				+ stackPeekSize + "\n lastAction = "
-				+ poo.getType() + "\n");
+				+ "; undoStack.peek.functions.size = " + stackPeekSize
+				+ "\n lastAction = " + poo.getType() + "\n");
 
 		this.setChanged();
 		this.notifyObservers(poo);
@@ -310,6 +309,12 @@ public class Pipeline extends AbstractPipeline {
 
 		if (state == false) {
 			saveStep();
+		} else {
+			/*
+			 * Update the savedState for the current item (nothing changed in
+			 * the pipeline only the state should be updated.
+			 */
+			currentState = new PipelineMemento(functions, savedState);
 		}
 	}
 
