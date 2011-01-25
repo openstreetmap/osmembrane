@@ -52,11 +52,11 @@ public class Pipeline extends AbstractPipeline {
 		this.undoStack.clear();
 		this.currentState = new PipelineMemento(functions, savedState);
 		this.redoStack.clear();
-	
+
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null));
-	
+
 		changeSavedState(true);
 	}
 
@@ -71,8 +71,8 @@ public class Pipeline extends AbstractPipeline {
 	@Override
 	public void addFunction(AbstractFunction func) {
 		func.setPipeline(this);
-		functions.add(func);
 		func.addObserver(this);
+		functions.add(func);
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
@@ -104,24 +104,24 @@ public class Pipeline extends AbstractPipeline {
 	public void loadPipeline(String filename) throws FileException {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(OSMembranePersistence.class);
-	
+
 		Object obj = persistence.load(filename);
-	
+
 		/* is checked by persistence */
 		@SuppressWarnings("unchecked")
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
-	
+
 		this.functions = functions;
 		for (AbstractFunction function : functions) {
 			function.addObserver(this);
 		}
-	
+
 		/*
 		 * Save the loaded Pipeline as the first undoStep which will be created
 		 * at the next step.
 		 */
 		this.currentState = new PipelineMemento(functions, savedState);
-	
+
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null));
@@ -169,10 +169,10 @@ public class Pipeline extends AbstractPipeline {
 		}
 
 		/*
-		 * Save the imported Pipeline as the first undoStep which will be created
-		 * at the next step.
+		 * Save the imported Pipeline as the first undoStep which will be
+		 * created at the next step.
 		 */
-		
+
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null));
@@ -237,9 +237,8 @@ public class Pipeline extends AbstractPipeline {
 			return false;
 		}
 
-		PipelineMemento undoMemento = undoStack.pop();
-		saveRedoStep(currentState);
-		restoreMemento(undoMemento);
+		redoStack.push(currentState);
+		restoreMemento(undoStack.pop());
 
 		return true;
 	}
@@ -255,9 +254,8 @@ public class Pipeline extends AbstractPipeline {
 			return false;
 		}
 
-		PipelineMemento redoMemento = redoStack.pop();
 		undoStack.push(currentState);
-		restoreMemento(redoMemento);
+		restoreMemento(redoStack.pop());
 
 		return true;
 	}
@@ -290,8 +288,18 @@ public class Pipeline extends AbstractPipeline {
 			changeSavedState(false);
 		}
 
-		System.out.println("UndoSteps: " + undoStack.size() + " lastAction: "
-				+ poo.getType());
+		Integer stackPeekSize = (Integer) null;
+		if (undoStack.size() > 0) {
+			stackPeekSize = undoStack.peek().getFunctions().size();
+		}
+		System.out.println("undoStack.size = " + undoStack.size()
+				+ "; redoStack.size = " + redoStack.size()
+				+ "; functions.size = " + functions.size()
+				+ "\ncurrentState.functions.size = "
+				+ currentState.getFunctions().size()
+				+ "; undoStack.peek.functions.size = "
+				+ stackPeekSize + "\n lastAction = "
+				+ poo.getType() + "\n");
 
 		this.setChanged();
 		this.notifyObservers(poo);
@@ -301,27 +309,14 @@ public class Pipeline extends AbstractPipeline {
 		this.savedState = state;
 
 		if (state == false) {
-			saveUndoStep(new PipelineMemento(functions, savedState));
-
+			saveStep();
 		}
 	}
 
-	private void saveUndoStep(PipelineMemento memento) {
+	private void saveStep() {
 		undoStack.push(currentState);
-		currentState = memento;
-		
-		if (undoStack.size() > Constants.MAXIMUM_UNDO_STEPS) {
-			undoStack.remove(0);
-		}
 		redoStack.clear();
-	}
-
-	private void saveRedoStep(PipelineMemento memento) {
-		redoStack.push(memento);
-		
-		if (redoStack.size() > Constants.MAXIMUM_UNDO_STEPS) {
-			redoStack.remove(0);
-		}
+		currentState = new PipelineMemento(functions, savedState);
 	}
 
 	private void restoreMemento(PipelineMemento memento) {
@@ -353,7 +348,7 @@ class PipelineMemento {
 	}
 
 	public List<AbstractFunction> getFunctions() {
-		return functions;
+		return deepCopyFunctions(functions);
 	}
 
 	private List<AbstractFunction> deepCopyFunctions(
