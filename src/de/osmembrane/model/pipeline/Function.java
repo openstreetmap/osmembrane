@@ -173,7 +173,7 @@ public class Function extends AbstractFunction {
 							 * Now check if the oldParam is the default value,
 							 * if that is so, don't copy.
 							 */
-							if (!oldParam.getValue().equals(
+							if (oldParam.getValue() != null && !oldParam.getValue().equals(
 									oldParam.getDefaultValue())) {
 								/* oldParam has a real non-default value. */
 								newParam.setValue(oldParam.getValue());
