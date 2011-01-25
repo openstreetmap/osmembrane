@@ -3,8 +3,8 @@ package de.osmembrane.tools;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -38,12 +38,12 @@ public class IconLoader {
 		 * Small icon for menubar.
 		 */
 		SMALL(16),
-		
+
 		/**
 		 * Normal icon for toolbar.
 		 */
 		NORMAL(32),
-		
+
 		/**
 		 * Big icon in original size (64px).
 		 */
@@ -57,7 +57,8 @@ public class IconLoader {
 		/**
 		 * Creates a new Size enum.
 		 * 
-		 * @param size of the icon.
+		 * @param size
+		 *            of the icon.
 		 */
 		private Size(int size) {
 			this.size = size;
@@ -76,29 +77,39 @@ public class IconLoader {
 	/**
 	 * Constructor for {@link IconLoader}, loads the icon.
 	 * 
-	 * @param file filename of the icon (only filename, no path)
-	 * @param size desired icon size
+	 * @param file
+	 *            filename of the icon (only filename, no path)
+	 * @param size
+	 *            desired icon size
 	 */
 	public IconLoader(String file, Size size) {
-		File fileObject = new File(Constants.ICONS_PATH + file);
+
+		URL fileObject = getClass().getResource(Constants.ICONS_PATH + file);
 		try {
+			if (fileObject == null) {
+				throw new IOException();
+			}
+
 			/* Load the icon to an BufferedImage */
 			BufferedImage tempImg = ImageIO.read(fileObject);
 			image = new BufferedImage(size.getSize(), size.getSize(),
 					BufferedImage.TYPE_INT_ARGB);
 
-			/* Copy image resized, with alpha channel and bicubic rendering algorithm */
+			/*
+			 * Copy image resized, with alpha channel and bicubic rendering
+			 * algorithm
+			 */
 			Graphics2D g2 = image.createGraphics();
 			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			
+
 			g2.drawImage(tempImg, 0, 0, size.getSize(), size.getSize(), null);
 		} catch (IOException e) {
 			/* Icon could not be loaded */
 			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N
-							.getInstance().getString(
-									"Exception.CantReadIconFile", fileObject)));
+					ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N.getInstance()
+							.getString("Exception.CantReadIconFile",
+									(Constants.ICONS_PATH + file))));
 		}
 	}
 

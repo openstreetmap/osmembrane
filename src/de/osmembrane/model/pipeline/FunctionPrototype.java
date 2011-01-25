@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.Identifier;
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.PersistenceFactory;
@@ -48,18 +51,19 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 					.load(xmlFilename);
 
 			createMaps();
-		} catch (FileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		for (XMLFunctionGroup group : xmlStruct.getFunctionGroup()) {
-			FunctionGroup fg = new FunctionGroup(group);
-			functionGroups.add(fg);
-			
-			/* add to the maps */
-			Identifier identifier = identifiers.get(group);
-			functionGroupIdentifierMap.put(fg, identifier);
+			for (XMLFunctionGroup group : xmlStruct.getFunctionGroup()) {
+				FunctionGroup fg = new FunctionGroup(group);
+				functionGroups.add(fg);
+
+				/* add to the maps */
+				Identifier identifier = identifiers.get(group);
+				functionGroupIdentifierMap.put(fg, identifier);
+			}
+		} catch (FileException e) {
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e,
+					"Could not load the OSMembrane xml file."));
 		}
 	}
 
@@ -122,19 +126,20 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	}
 
 	@Override
-	protected Identifier pushFGToMap(AbstractFunctionGroup fg, XMLFunctionGroup xmlFG) {
+	protected Identifier pushFGToMap(AbstractFunctionGroup fg,
+			XMLFunctionGroup xmlFG) {
 		Identifier ident = new Identifier(xmlFG.getId());
 		functionGroupMap.put(ident, fg);
 		identifiers.put(fg, ident);
 		return ident;
 	}
-	
+
 	@Override
 	protected AbstractFunctionGroup getMatchingFunctionGroup(
 			Identifier identifier) {
 		return functionGroupMap.get(identifier);
 	}
-	
+
 	@Override
 	protected Identifier getMatchingFunctionGroupIdentifier(
 			AbstractFunctionGroup identifier) {

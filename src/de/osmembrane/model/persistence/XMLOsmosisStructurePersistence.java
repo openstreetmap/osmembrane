@@ -1,6 +1,7 @@
 package de.osmembrane.model.persistence;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Observable;
 
 import javax.xml.bind.JAXBContext;
@@ -24,18 +25,17 @@ public class XMLOsmosisStructurePersistence extends AbstractPersistence {
 			jc = JAXBContext.newInstance("de.osmembrane.model.xml");
 
 			/* XML-Datei mit Osmosis-Task-Beschreibungen einlesen */
-			File xmlTasksFile = new File(file);
-			
-			if (!xmlTasksFile.exists()) {
+			URL xmlTasksFile = getClass().getResource(file);
+
+			if (xmlTasksFile == null) {
 				throw new FileException(Type.NOT_FOUND);
-			} else if (!xmlTasksFile.canRead()) {
-				throw new FileException(Type.NOT_READABLE);
 			}
-			
+
 			Unmarshaller u = jc.createUnmarshaller();
+
 			XMLOsmosisStructure otd = (XMLOsmosisStructure) u
 					.unmarshal(xmlTasksFile);
-			
+
 			return otd;
 		} catch (JAXBException e) {
 			throw new FileException(Type.WRONG_FORMAT, e);

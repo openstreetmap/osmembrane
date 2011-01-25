@@ -26,7 +26,7 @@ public class Constants {
 	/**
 	 * Path to the XML resource for {@link AbstractFunctionPrototype}.
 	 */
-	public static final String XML_RESOURCE_PATH = "src/de/osmembrane/resources/xml/osmosis-structure.xml";
+	public static final String XML_RESOURCE_PATH = "/de/osmembrane/resources/xml/osmosis-structure.xml";
 
 	/**
 	 * Default Backup filename (for {@link Pipeline}.
@@ -56,7 +56,7 @@ public class Constants {
 	/**
 	 * Icons default folder.
 	 */
-	public static final String ICONS_PATH = "src/de/osmembrane/resources/images/icons/";
+	public static final String ICONS_PATH = "/de/osmembrane/resources/images/icons/";
 
 	/**
 	 * The OSMembrane file extension.
