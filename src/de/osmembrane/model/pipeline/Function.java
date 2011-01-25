@@ -219,17 +219,6 @@ public class Function extends AbstractFunction {
 		return outConnectors;
 	}
 
-	/* TODO is that maybe dead code? */
-	@Override
-	public boolean same(AbstractFunction function) {
-		if (function instanceof Function) {
-			Function oFG = (Function) function;
-			return (oFG.getId().equals(this.getId()));
-		}
-
-		return false;
-	}
-
 	@Override
 	public void addConnectionTo(AbstractFunction function)
 			throws ConnectorException {

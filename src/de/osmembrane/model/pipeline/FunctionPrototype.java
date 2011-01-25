@@ -126,6 +126,42 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	}
 
 	@Override
+	public AbstractFunction[] doYouKnowWhetherAndHowMuchFunctionsThereAreWithThisStringInTheirDataNamesDescriptionsAndSuch(
+			String matching) {
+		matching = matching.toLowerCase().trim();
+		List<AbstractFunction> matchingFunctions = new ArrayList<AbstractFunction>();
+		
+		for (AbstractFunctionGroup group : getFunctionGroups()) {
+			for (AbstractFunction function : group.getFunctions()) {
+				boolean matched = false;
+				/* check if the function matches the String */
+				if (function.getId().toLowerCase().contains(matching)
+						|| function.getFriendlyName().toLowerCase()
+								.contains(matching)) {
+					matched = true;
+				}
+
+				/* check if a task matches the string */
+				for (AbstractTask task : function.getAvailableTasks()) {
+					if (task.getName().toLowerCase().contains(matching)
+							|| task.getFriendlyName().toLowerCase()
+									.contains(matching)) {
+						matched = true;
+					}
+				}
+				
+				/* something matched, add the function */
+				if (matched) {
+					matchingFunctions.add(function);
+				}
+			}
+		}
+		
+		AbstractFunction[] array = new AbstractFunction[matchingFunctions.size()];
+		return matchingFunctions.toArray(array);
+	}
+
+	@Override
 	protected Identifier pushFGToMap(AbstractFunctionGroup fg,
 			XMLFunctionGroup xmlFG) {
 		Identifier ident = new Identifier(xmlFG.getId());
@@ -197,5 +233,4 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 			XMLEnumValue identifier) {
 		return identifiers.get(identifier);
 	}
-
 }

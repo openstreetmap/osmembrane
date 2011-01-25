@@ -150,16 +150,6 @@ public abstract class AbstractFunction extends Observable implements
 	 * Removes all connections to other connectors.
 	 */
 	protected abstract void unlinkConnectors();
-	
-	/**
-	 * Compares the Function with another Function.
-	 * 
-	 * @param function
-	 *            Function which should be compared
-	 * @return true if the Functions equals (just the IDs are being compared).
-	 *         false if they do not equal.
-	 */
-	public abstract boolean same(AbstractFunction function);
 
 	/**
 	 * Notifies all registered {@link Observer}s with pre-called

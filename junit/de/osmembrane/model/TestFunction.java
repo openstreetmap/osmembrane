@@ -246,11 +246,6 @@ public class TestFunction extends AbstractFunction {
 	}
 
 	@Override
-	public boolean same(AbstractFunction function) {
-		return contained.same(function);
-	}
-
-	@Override
 	protected void changedNotifyObservers(PipelineObserverObject poo) {
 		try {
 			// contained.changedNotifyObservers(poo);

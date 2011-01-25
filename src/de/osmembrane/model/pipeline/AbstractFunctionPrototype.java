@@ -33,6 +33,14 @@ public abstract class AbstractFunctionPrototype extends Observable {
 	public abstract AbstractFunctionGroup[] getFunctionGroups();
 
 	/**
+	 * Returns matching functions for a given String.
+	 * 
+	 * @param matching string which should match on every function
+	 * @return all matching functions
+	 */
+	public abstract AbstractFunction[] doYouKnowWhetherAndHowMuchFunctionsThereAreWithThisStringInTheirDataNamesDescriptionsAndSuch(String matching);
+	
+	/**
 	 * Adds an Identifier for an {@link AbstractFunctionGroup} to the Map.
 	 * 
 	 * @param fg {@link AbstractFunctionGroup} which should be mapped
