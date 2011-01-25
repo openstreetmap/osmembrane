@@ -288,18 +288,21 @@ public class Pipeline extends AbstractPipeline {
 			changeSavedState(false);
 		}
 
-		Integer stackPeekSize = (Integer) null;
-		if (undoStack.size() > 0) {
-			stackPeekSize = undoStack.peek().getFunctions().size();
-		}
-		System.out.println("undoStack.size = " + undoStack.size()
-				+ "; redoStack.size = " + redoStack.size()
-				+ "; functions.size = " + functions.size()
-				+ "\ncurrentState.functions.size = "
-				+ currentState.getFunctions().size()
-				+ "; undoStack.peek.functions.size = " + stackPeekSize
-				+ "\n lastAction = " + poo.getType() + "\n");
-
+		/* Debug output, TODO remove that at final release */
+//		Integer stackPeekSize = (Integer) null;
+//		if (undoStack.size() > 0) {
+//			stackPeekSize = undoStack.peek().getFunctions().size();
+//		}
+//		
+//		System.out.println("undoStack.size = " + undoStack.size()
+//				+ "; redoStack.size = " + redoStack.size()
+//				+ "; functions.size = " + functions.size()
+//				+ "\ncurrentState.functions.size = "
+//				+ currentState.getFunctions().size()
+//				+ "; undoStack.peek.functions.size = " + stackPeekSize
+//				+ "\n lastAction = " + poo.getType() + "\n");
+		/* End of Debug output */
+		
 		this.setChanged();
 		this.notifyObservers(poo);
 	}
