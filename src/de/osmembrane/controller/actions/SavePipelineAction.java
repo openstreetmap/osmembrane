@@ -16,6 +16,7 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.resources.Constants;
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
@@ -38,10 +39,8 @@ public class SavePipelineAction extends AbstractAction {
 	 */
 	public SavePipelineAction() {
 		putValue(Action.NAME, "Save Pipeline");
-		putValue(Action.SMALL_ICON, new IconLoader("save_pipline.png",
-				Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY, new IconLoader("save_pipline.png",
-				Size.NORMAL).get());
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("save_pipeline.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("save_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}

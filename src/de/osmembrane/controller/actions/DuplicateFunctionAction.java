@@ -12,6 +12,7 @@ import javax.swing.KeyStroke;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.CopyType;
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.IView;
@@ -35,10 +36,8 @@ public class DuplicateFunctionAction extends AbstractAction {
 	 */
 	public DuplicateFunctionAction() {
 		putValue(Action.NAME, "Duplicate Function");
-		putValue(Action.SMALL_ICON,
-				new IconLoader("duplicate.png", Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY, new IconLoader("duplicate.png",
-				Size.NORMAL).get());
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("duplicate.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("duplicate.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		setEnabled(false);

@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
@@ -29,10 +30,8 @@ public class NewPipelineAction extends AbstractAction {
 	 */
 	public NewPipelineAction() {
 		putValue(Action.NAME, "New Pipeline");
-		putValue(Action.SMALL_ICON, new IconLoader("new_pipeline.png",
-				Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY, new IconLoader("new_pipeline.png",
-				Size.NORMAL).get());
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("new_pipeline.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("new_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		putValue(Action.SHORT_DESCRIPTION, "News an add pipeline item.");

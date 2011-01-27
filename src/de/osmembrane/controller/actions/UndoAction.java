@@ -9,6 +9,7 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 
@@ -27,10 +28,8 @@ public class UndoAction extends AbstractAction {
 	 */
 	public UndoAction() {
 		putValue(Action.NAME, "Undo");
-		putValue(Action.SMALL_ICON,
-				new IconLoader("undo.png", Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY,
-				new IconLoader("undo.png", Size.NORMAL).get());
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("undo.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("undo.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		setEnabled(false);

@@ -9,6 +9,7 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 
@@ -27,10 +28,8 @@ public class RedoAction extends AbstractAction {
 	 */
 	public RedoAction() {
 		putValue(Action.NAME, "Redo");
-		putValue(Action.SMALL_ICON, new IconLoader("redo.png",
-				Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY, new IconLoader("redo.png",
-				Size.NORMAL).get());
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("redo.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("redo.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		setEnabled(false);

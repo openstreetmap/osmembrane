@@ -8,6 +8,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 
@@ -27,10 +28,8 @@ public class ExitAction extends AbstractAction {
 	 */
 	public ExitAction() {
 		putValue(Action.NAME, "Exit");
-		putValue(Action.SMALL_ICON,
-				new IconLoader("exit.png", Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY,
-				new IconLoader("exit.png", Size.NORMAL).get());
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("exit.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("exit.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		putValue(Action.SHORT_DESCRIPTION, "Shut up");

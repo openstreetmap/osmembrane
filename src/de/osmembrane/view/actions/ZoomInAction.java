@@ -7,6 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.IView;
@@ -28,9 +29,8 @@ public class ZoomInAction extends AbstractAction {
 	 */
 	public ZoomInAction() {
 		putValue(Action.NAME, "Zoom In");
-		putValue(Action.SMALL_ICON, new IconLoader("zoom_in.png", Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY, new IconLoader("zoom_in.png",
-				Size.NORMAL).get());
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("zoom_in.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("zoom_in.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_PLUS,
 				0));
 	}

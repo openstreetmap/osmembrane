@@ -82,16 +82,15 @@ public class IconLoader {
 	 * @param size
 	 *            desired icon size
 	 */
-	public IconLoader(String file, Size size) {
+	public IconLoader(URL file, Size size, boolean silentLoad) {
 
-		URL fileObject = getClass().getResource(Constants.ICONS_PATH + file);
 		try {
-			if (fileObject == null) {
+			if (file == null) {
 				throw new IOException();
 			}
 
 			/* Load the icon to an BufferedImage */
-			BufferedImage tempImg = ImageIO.read(fileObject);
+			BufferedImage tempImg = ImageIO.read(file);
 			image = new BufferedImage(size.getSize(), size.getSize(),
 					BufferedImage.TYPE_INT_ARGB);
 
@@ -105,11 +104,7 @@ public class IconLoader {
 
 			g2.drawImage(tempImg, 0, 0, size.getSize(), size.getSize(), null);
 		} catch (IOException e) {
-			/* Icon could not be loaded */
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N.getInstance()
-							.getString("Exception.CantReadIconFile",
-									(Constants.ICONS_PATH + file))));
+			/* do nothing, imageIcon would be null. */
 		}
 	}
 
@@ -119,6 +114,9 @@ public class IconLoader {
 	 * @return the {@link ImageIcon}
 	 */
 	public ImageIcon get() {
+		if (image == null) {
+			return null;
+		}
 		return new ImageIcon(image);
 	}
 }

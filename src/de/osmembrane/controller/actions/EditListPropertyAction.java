@@ -6,6 +6,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 
 import de.osmembrane.controller.events.ContainingEvent;
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.dialogs.ListSelectionDialog;
@@ -26,10 +27,8 @@ public class EditListPropertyAction extends AbstractAction {
 	 */
 	public EditListPropertyAction() {
 		putValue(Action.NAME, "Edit List Property");
-		putValue(Action.SMALL_ICON, new IconLoader("list_property_edit.png",
-				Size.SMALL).get());
-		putValue(Action.LARGE_ICON_KEY, new IconLoader(
-				"list_property_edit.png", Size.NORMAL).get());
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("list_property_edit.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("list_property_edit.png", Size.NORMAL));
 	}
 
 	@Override

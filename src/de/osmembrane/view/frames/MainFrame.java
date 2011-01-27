@@ -45,7 +45,9 @@ import de.osmembrane.controller.actions.ShowHelpAction;
 import de.osmembrane.controller.actions.UndoAction;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
+import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.AbstractFrame;
 import de.osmembrane.view.actions.StandardViewAction;
 import de.osmembrane.view.actions.ViewAllAction;
@@ -131,26 +133,17 @@ public class MainFrame extends AbstractFrame {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		toolsImages = new HashMap<Tool, ImageIcon>();
 
-		toolsImages
-				.put(Tool.DEFAULT_MAGIC_TOOL,
-						new ImageIcon(
-								MainFrame.class
-										.getResource("/de/osmembrane/resources/cursors/cursor-magic.png")));
-		toolsImages
-				.put(Tool.SELECTION_TOOL,
-						new ImageIcon(
-								MainFrame.class
-										.getResource("/de/osmembrane/resources/cursors/cursor-select.png")));
-		toolsImages
-				.put(Tool.VIEW_TOOL,
-						new ImageIcon(
-								MainFrame.class
-										.getResource("/de/osmembrane/resources/cursors/cursor-move.png")));
-		toolsImages
-				.put(Tool.CONNECTION_TOOL,
-						new ImageIcon(
-								MainFrame.class
-										.getResource("/de/osmembrane/resources/cursors/cursor-connect.png")));
+		toolsImages.put(Tool.DEFAULT_MAGIC_TOOL, Resource.CURSOR_ICON
+				.getImageIcon("cursor-magic.png", Size.NORMAL));
+		
+		toolsImages.put(Tool.SELECTION_TOOL, Resource.CURSOR_ICON
+				.getImageIcon("cursor-select.png", Size.NORMAL));
+		
+		toolsImages.put(Tool.VIEW_TOOL, Resource.CURSOR_ICON
+				.getImageIcon("cursor-move.png", Size.NORMAL));
+		
+		toolsImages.put(Tool.CONNECTION_TOOL, Resource.CURSOR_ICON
+				.getImageIcon("cursor-connect.png", Size.NORMAL));
 
 		toolsCursors = new HashMap<Tool, Cursor>();
 		toolsCursors.put(Tool.DEFAULT_MAGIC_TOOL, Cursor.getDefaultCursor());
