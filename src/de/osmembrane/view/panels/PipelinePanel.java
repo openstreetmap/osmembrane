@@ -45,6 +45,7 @@ import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.components.JSilentScrollBar;
 
 /**
  * This is the pipeline view, i.e. the panel that shows the entire pipeline with
@@ -149,8 +150,8 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * The vertical and horizontal {@link JScrollBar} that can be used for
 	 * moving the view.
 	 */
-	private JScrollBar verticalScroll;
-	private JScrollBar horizontalScroll;
+	private JSilentScrollBar verticalScroll;
+	private JSilentScrollBar horizontalScroll;
 
 	/**
 	 * The upper-left-most and the bottom-right-most point on the whole pipeline
@@ -174,7 +175,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * The temporary saving slot for creating a two point {@link PipelineLink}.
 	 */
 	private PipelineFunction connectionStart;
-	
+
 	/**
 	 * The temporary link to show the creation of a new connection
 	 */
@@ -196,21 +197,26 @@ public class PipelinePanel extends JPanel implements Observer {
 		this.connectors = new HashMap<AbstractConnector, PipelineConnector>();
 		this.functionInspector = functionInspector;
 
-		this.verticalScroll = new JScrollBar(JScrollBar.VERTICAL, 0, 0, 0, 0);
-		this.horizontalScroll = new JScrollBar(JScrollBar.HORIZONTAL, 0, 0, 0,
-				0);
+		this.verticalScroll = new JSilentScrollBar(JScrollBar.VERTICAL, 0, 0,
+				0, 0);
+		this.horizontalScroll = new JSilentScrollBar(JScrollBar.HORIZONTAL, 0,
+				0, 0, 0);
 		AdjustmentListener al = new AdjustmentListener() {
 
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
-				/*
-				 * if (e.getSource() == verticalScroll) {
-				 * moveTo(objectToWindow.getTranslateX(), e.getValue());
-				 * arrange(); } else if (e.getSource() == horizontalScroll) {
-				 * moveTo(e.getValue(), objectToWindow.getTranslateY());
-				 * arrange(); }
-				 */
-				/* closed down, that ***n bar sends those too often */
+				if (verticalScroll.shouldIgnoreAdjustmentEvent()
+						|| horizontalScroll.shouldIgnoreAdjustmentEvent()) {
+					return;
+				}
+
+				if (e.getSource() == verticalScroll) {
+					moveTo(objectToWindow.getTranslateX(), e.getValue());
+					// arrange();
+				} else if (e.getSource() == horizontalScroll) {
+					moveTo(e.getValue(), objectToWindow.getTranslateY());
+					// arrange();
+				}
 			}
 		};
 		this.verticalScroll.addAdjustmentListener(al);
@@ -231,7 +237,7 @@ public class PipelinePanel extends JPanel implements Observer {
 		this.layeredPane.setVisible(true);
 		this.layeredPane.setOpaque(true);
 		add(this.layeredPane);
-		
+
 		this.layeredPane.add(this.connectionPreview);
 
 		// register as observer
@@ -295,7 +301,7 @@ public class PipelinePanel extends JPanel implements Observer {
 						Point2D newObjPosition = new Point2D.Double(
 								objPosition.getX() + objOffset.getX(),
 								objPosition.getY() + objOffset.getY());
-						
+
 						// set position
 						Action a = ActionRegistry.getInstance().get(
 								MoveFunctionAction.class);
@@ -456,6 +462,30 @@ public class PipelinePanel extends JPanel implements Observer {
 		try {
 			currentDisplay.inverseTransform(window, result);
 			objectToWindow.inverseTransform(result, result);
+		} catch (NoninvertibleTransformException e) {
+			Application.handleException(e);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Translates window delta coordinates to object delta coordinates. Typical
+	 * delta coordinates are object sizes.
+	 * 
+	 * @param windowDelta
+	 *            window delta coordinates
+	 * @return windowDelta in object delta coordinates
+	 */
+	private Point2D windowToObjDelta(Point windowDelta) {
+		Point2D result = new Point2D.Double();
+
+		try {
+			AffineTransform temp = new AffineTransform(objectToWindow);
+			temp.preConcatenate(currentDisplay);
+			temp.invert();
+			temp.deltaTransform(windowDelta, result);
+
 		} catch (NoninvertibleTransformException e) {
 			Application.handleException(e);
 		}
@@ -717,6 +747,7 @@ public class PipelinePanel extends JPanel implements Observer {
 				functions.clear();
 				connectors.clear();
 				layeredPane.removeAll();
+				System.gc();
 
 				for (AbstractFunction af : ModelProxy.getInstance()
 						.accessPipeline().getFunctions()) {
@@ -789,7 +820,7 @@ public class PipelinePanel extends JPanel implements Observer {
 
 		// recreate topleft and bottomright
 		calculateEdges();
-		updateScrollbars(true);
+		updateScrollbars();
 
 	}
 
@@ -823,25 +854,22 @@ public class PipelinePanel extends JPanel implements Observer {
 
 	/**
 	 * Updates the valid value ranges of the scroll bars.
-	 * 
-	 * @param range
-	 *            whether to update the ranges as well (only do so, if
-	 *            objTopLeft and/or objBottomRight could have changed)
 	 */
-	private void updateScrollbars(boolean range) {
-		if (range) {
-			horizontalScroll.setMinimum((int) objTopLeft.getX());
-			horizontalScroll.setMaximum((int) Math.max(0.0,
-					(objBottomRight.getX() - objTopLeft.getX()) - getWidth()));
+	private void updateScrollbars() {
+		// current size of the window, not needed to be scrolled
+		Point2D winSize = windowToObjDelta(new Point(getWidth(), getHeight()));
 
-			verticalScroll.setMinimum((int) objTopLeft.getY());
-			verticalScroll.setMaximum((int) Math.max(0.0,
-					(objBottomRight.getY() - objTopLeft.getY()) - getHeight()));
-		}
+		horizontalScroll.setMinimum((int) objTopLeft.getX());
+		horizontalScroll.setMaximum((int) Math.max(0.0,
+				(objBottomRight.getX() - winSize.getX())));
 
-		// Point2D objWindowZero = windowToObj(new Point(0, 0));
-		// horizontalScroll.setValue((int) objWindowZero.getX());
-		// verticalScroll.setValue((int) objWindowZero.getY());
+		verticalScroll.setMinimum((int) objTopLeft.getY());
+		verticalScroll.setMaximum((int) Math.max(0.0,
+				(objBottomRight.getY() - winSize.getY())));
+
+		Point2D objWindowZero = windowToObj(new Point(0, 0));
+		horizontalScroll.setValueSilently((int) objWindowZero.getX());
+		verticalScroll.setValueSilently((int) objWindowZero.getY());
 	}
 
 	/**
@@ -857,7 +885,8 @@ public class PipelinePanel extends JPanel implements Observer {
 			pf.arrangeLinks();
 		}
 
-		updateScrollbars(false);
+		calculateEdges();
+		updateScrollbars();
 	}
 
 	/**
@@ -1035,7 +1064,7 @@ public class PipelinePanel extends JPanel implements Observer {
 					.actionPerformed(cfe);
 			this.connectionStart = null;
 		}
-		
+
 		this.connectionPreview.setVisible(this.connectionStart != null);
 	}
 
