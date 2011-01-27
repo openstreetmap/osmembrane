@@ -174,6 +174,11 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * The temporary saving slot for creating a two point {@link PipelineLink}.
 	 */
 	private PipelineFunction connectionStart;
+	
+	/**
+	 * The temporary link to show the creation of a new connection
+	 */
+	private PipelinePreviewLink connectionPreview;
 
 	/**
 	 * Initializes a new {@link PipelinePanel}
@@ -217,6 +222,7 @@ public class PipelinePanel extends JPanel implements Observer {
 		this.activeTool = Tool.DEFAULT_MAGIC_TOOL;
 		this.selected = null;
 		this.connectionStart = null;
+		this.connectionPreview = new PipelinePreviewLink(this);
 
 		this.objectToWindow = new AffineTransform();
 		this.currentDisplay = new AffineTransform();
@@ -225,6 +231,8 @@ public class PipelinePanel extends JPanel implements Observer {
 		this.layeredPane.setVisible(true);
 		this.layeredPane.setOpaque(true);
 		add(this.layeredPane);
+		
+		this.layeredPane.add(this.connectionPreview);
 
 		// register as observer
 		ViewRegistry.getInstance().addObserver(this);
@@ -333,6 +341,12 @@ public class PipelinePanel extends JPanel implements Observer {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
+				// when the start of new connection is determined, rearrange it
+				if (connectionStart != null) {
+					connectionPreview.setTarget(e.getPoint());
+					connectionPreview.regenerateLine();
+					repaint();
+				}
 			}
 
 			@Override
@@ -1012,6 +1026,7 @@ public class PipelinePanel extends JPanel implements Observer {
 	public void connect(PipelineFunction connectionPoint) {
 		if (this.connectionStart == null) {
 			this.connectionStart = connectionPoint;
+			this.connectionPreview.setSource(connectionPoint);
 		} else {
 			ConnectingFunctionsEvent cfe = new ConnectingFunctionsEvent(this,
 					connectionStart.getModelFunction(),
@@ -1020,6 +1035,8 @@ public class PipelinePanel extends JPanel implements Observer {
 					.actionPerformed(cfe);
 			this.connectionStart = null;
 		}
+		
+//		this.connectionPreview.setVisible(this.connectionStart != null);
 	}
 
 	/**

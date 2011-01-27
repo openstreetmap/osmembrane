@@ -25,29 +25,31 @@ public class PipelineLink extends JPanel {
 	/**
 	 * actual source and destination of the connection
 	 */
-	private PipelineConnector linkSource;
-	private PipelineConnector linkDestination;
+	protected PipelineConnector linkSource;
+	protected PipelineConnector linkDestination;
 
 	/**
 	 * {@link Color} this connection will be drawn in
 	 */
-	private Color color;
+	protected Color color;
 
 	/**
 	 * The coordinates of the line to draw
 	 */
-	private Line2D line;
+	protected Line2D line;
 
 	/**
 	 * The specific widths of the actual line in object coordinates
 	 */
-	private static final double LINE_DRAWING_WIDTH = 5.0;
-	private static final double LINE_SELECTION_WIDTH = 15.0;
+	protected static final double LINE_DRAWING_WIDTH = 5.0;
+	protected static final double LINE_SELECTION_WIDTH = 15.0;
+	protected static final double CONNECTOR_WIDTH = PipelineConnector.displayTemplate
+			.getIconWidth();
 
 	/**
 	 * Pipeline this connector is drawn on.
 	 */
-	private PipelinePanel pipeline;
+	protected PipelinePanel pipeline;
 
 	/**
 	 * Creates a new pipeline link.
@@ -112,6 +114,17 @@ public class PipelineLink extends JPanel {
 	}
 
 	/**
+	 * Constructor only applying the {@link PipelinePanel} for descendant
+	 * classes.
+	 * 
+	 * @param pipeline
+	 *            the pipeline to draw on
+	 */
+	protected PipelineLink(PipelinePanel pipeline) {
+		this.pipeline = pipeline;
+	}
+
+	/**
 	 * Regenerates the line to be drawn, if one or more connectors have moved.
 	 * It is assumed the link's size and location is already correctly set.
 	 */
@@ -153,11 +166,12 @@ public class PipelineLink extends JPanel {
 	}
 
 	@Override
-	protected void paintComponent(Graphics g) {		
+	protected void paintComponent(Graphics g) {
 		if (this.equals(pipeline.getSelected())) {
 			float[] colorRGB = color.getComponents(null);
-			Color highlightColor = new Color(Math.min(1.0f, colorRGB[0] + 0.25f),
-					Math.min(1.0f, colorRGB[1] + 0.25f), Math.min(1.0f,
+			Color highlightColor = new Color(
+					Math.min(1.0f, colorRGB[0] + 0.25f), Math.min(1.0f,
+							colorRGB[1] + 0.25f), Math.min(1.0f,
 							colorRGB[2] + 0.25f));
 			g.setColor(highlightColor);
 		} else {
@@ -199,10 +213,10 @@ public class PipelineLink extends JPanel {
 		g.fillPolygon(p);
 
 		// some radius, some tip
-		double arrowRadius = getLinkDestination().getWidth() / 2.0;
+		double arrowRadius = CONNECTOR_WIDTH / 2.0;
 
 		Polygon arrowHead = new Polygon();
-		if (linkSource.getX() < linkDestination.getX()) {
+		if (line.getX1() < line.getX2()) {
 			// arrow goes like left -----> right
 			double tipLength = (length - arrowRadius) / length;
 			Point2D arrowTip = new Point2D.Double(line.getX1()
@@ -261,7 +275,8 @@ public class PipelineLink extends JPanel {
 	 * @return whether this link is between questFrom and questTo, regardless of
 	 *         the orientation of the actual connection
 	 */
-	public boolean doesLink(PipelineConnector questFrom, PipelineConnector questTo) {
+	public boolean doesLink(PipelineConnector questFrom,
+			PipelineConnector questTo) {
 		return (linkSource.equals(questFrom) && linkDestination.equals(questTo))
 				|| (linkSource.equals(questTo) && linkDestination
 						.equals(questFrom));
