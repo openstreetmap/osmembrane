@@ -50,8 +50,13 @@ public class PipelinePreviewLink extends PipelineLink {
 	 */
 	@Override
 	public void regenerateLine() {
-		setSize(new Dimension((int) Math.abs(target.getX() - source.getX()),
-				(int) Math.abs(target.getY() - source.getY())));
+		int newX = (int) Math.min(source.getX(), target.getX());
+		int newY = (int) Math.min(source.getY(), target.getY());
+		// TODO
+		int newWidth = (int) Math.abs(target.getX() - source.getX());
+		int newHeight = (int) Math.abs(target.getX() - source.getX());
+		setLocation(newX, newY);
+		setSize(new Dimension(newWidth, newHeight));
 		ViewRegistry.getInstance().getMainFrame().setWindowTitle(getSize().width + "x " + getSize().height);
 		
 		Point2D left;

@@ -1036,7 +1036,7 @@ public class PipelinePanel extends JPanel implements Observer {
 			this.connectionStart = null;
 		}
 		
-//		this.connectionPreview.setVisible(this.connectionStart != null);
+		this.connectionPreview.setVisible(this.connectionStart != null);
 	}
 
 	/**
