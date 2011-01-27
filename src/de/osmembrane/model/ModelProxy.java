@@ -7,6 +7,8 @@ import de.osmembrane.model.pipeline.AbstractFunctionPrototype;
 import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.model.pipeline.FunctionPrototype;
 import de.osmembrane.model.pipeline.Pipeline;
+import de.osmembrane.model.preset.AbstractPresetPrototype;
+import de.osmembrane.model.preset.PresetPrototype;
 
 /**
  * The ModelProxy is the connection to the whole Model of OSMembrane.
@@ -19,6 +21,7 @@ public class ModelProxy extends Observable implements Observer {
 	private AbstractSettings settings;
 	private AbstractPipeline pipeline;
 	private AbstractFunctionPrototype functionPrototype;
+	private AbstractPresetPrototype presetPrototype;
 	
 	/**
 	 * Implements the Singleton pattern.
@@ -37,6 +40,8 @@ public class ModelProxy extends Observable implements Observer {
 		
 		functionPrototype = new FunctionPrototype();
 		functionPrototype.addObserver(this);
+		
+		presetPrototype = new PresetPrototype();
 	}
 	
 	/**
@@ -74,6 +79,16 @@ public class ModelProxy extends Observable implements Observer {
 	public AbstractFunctionPrototype accessFunctions() {
 		return functionPrototype;
 	}
+	
+	/**
+	 * Returns the {@link AbstractPresetPrototype}.
+	 * 
+	 * @return give back the active {@link AbstractPresetPrototype}
+	 */
+	public AbstractPresetPrototype accessPreset() {
+		return presetPrototype;
+	}
+	
 
 	@Override
 	public void update(Observable o, Object arg) {

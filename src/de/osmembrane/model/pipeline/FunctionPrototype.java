@@ -126,11 +126,10 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	}
 
 	@Override
-	public AbstractFunction[] getFilteredFunctions(
-			String matching) {
+	public AbstractFunction[] getFilteredFunctions(String matching) {
 		matching = matching.toLowerCase().trim();
 		List<AbstractFunction> matchingFunctions = new ArrayList<AbstractFunction>();
-		
+
 		for (AbstractFunctionGroup group : getFunctionGroups()) {
 			for (AbstractFunction function : group.getFunctions()) {
 				boolean matched = false;
@@ -149,15 +148,16 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 						matched = true;
 					}
 				}
-				
+
 				/* something matched, add the function */
 				if (matched) {
 					matchingFunctions.add(function);
 				}
 			}
 		}
-		
-		AbstractFunction[] array = new AbstractFunction[matchingFunctions.size()];
+
+		AbstractFunction[] array = new AbstractFunction[matchingFunctions
+				.size()];
 		return matchingFunctions.toArray(array);
 	}
 

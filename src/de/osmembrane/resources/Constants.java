@@ -55,9 +55,17 @@ public class Constants {
 	
 	/**
 	 * Icons default folder.
+	 * 
+	 * 	 Preset-Icons latest version is available under http://josm.openstreetmap.de/svn/trunk/images/presets/
 	 */
 	public static final String ICONS_PATH = "/de/osmembrane/resources/images/icons/";
+	
+	/**
+	 * Preset-Icons default folder.
+	 * 
 
+	 */
+	
 	/**
 	 * The OSMembrane file extension.
 	 */
@@ -67,4 +75,11 @@ public class Constants {
 	 * Maximum count of undo steps until the first one is removed from the undoStack.
 	 */
 	public static final int MAXIMUM_UNDO_STEPS = 100;
+
+	/**
+	 * The Preset-File for node key-value-lists and way key-value-lists.
+	 * 
+	 * Latest version from http://josm.openstreetmap.de/svn/trunk/data/defaultpresets.xml
+	 */
+	public static final String XML_PRESET_PATH = "/de/osmembrane/resources/xml/defaultpresets.xml";
 }
