@@ -1,5 +1,6 @@
 package de.osmembrane.view.dialogs;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import de.osmembrane.controller.ActionRegistry;
@@ -51,7 +53,8 @@ public class CommandLineDialog extends AbstractDialog {
 
 		// text
 		commandline = new JTextArea();
-		add(commandline, gbc);
+		commandline.setPreferredSize(new Dimension(640, 480));
+		add(new JScrollPane(commandline), gbc);
 
 		// export
 		gbc.gridx = 0;
