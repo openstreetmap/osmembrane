@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import javax.naming.OperationNotSupportedException;
+
+import de.osmembrane.Application;
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractParameter;
@@ -18,8 +21,7 @@ public class CommandlineParser implements IParser {
 	@Override
 	public List<AbstractFunction> parseString(String input)
 			throws ParseException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -82,7 +84,7 @@ public class CommandlineParser implements IParser {
 					 */
 					connectorMap.put(connector, (pipeIndex+1));
 					builder.append(" outPipe." + connector.getConnectorIndex() + "=" + pipeIndex);
-						
+					
 					/* Add a tee, 'cause more than one connection is attached. */
 					if(connector.getConnections().length > 1) {
 						teeBuilder.append(breaklineSymbol);
