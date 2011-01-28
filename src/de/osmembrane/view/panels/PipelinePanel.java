@@ -45,7 +45,6 @@ import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.components.JSilentScrollBar;
 
 /**
  * This is the pipeline view, i.e. the panel that shows the entire pipeline with
@@ -150,8 +149,8 @@ public class PipelinePanel extends JPanel implements Observer {
 	 * The vertical and horizontal {@link JScrollBar} that can be used for
 	 * moving the view.
 	 */
-	private JSilentScrollBar verticalScroll;
-	private JSilentScrollBar horizontalScroll;
+	private JScrollBar verticalScroll;
+	private JScrollBar horizontalScroll;
 
 	/**
 	 * The upper-left-most and the bottom-right-most point on the whole pipeline
@@ -197,18 +196,18 @@ public class PipelinePanel extends JPanel implements Observer {
 		this.connectors = new HashMap<AbstractConnector, PipelineConnector>();
 		this.functionInspector = functionInspector;
 
-		this.verticalScroll = new JSilentScrollBar(JScrollBar.VERTICAL, 0, 0,
+		this.verticalScroll = new JScrollBar(JScrollBar.VERTICAL, 0, 0,
 				0, 0);
-		this.horizontalScroll = new JSilentScrollBar(JScrollBar.HORIZONTAL, 0,
+		this.horizontalScroll = new JScrollBar(JScrollBar.HORIZONTAL, 0,
 				0, 0, 0);
 		AdjustmentListener al = new AdjustmentListener() {
 
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
-				if (verticalScroll.shouldIgnoreAdjustmentEvent()
+				/*if (verticalScroll.shouldIgnoreAdjustmentEvent()
 						|| horizontalScroll.shouldIgnoreAdjustmentEvent()) {
 					return;
-				}
+				}*/
 
 				if (e.getSource() == verticalScroll) {
 					moveTo(objectToWindow.getTranslateX(), e.getValue());
@@ -868,8 +867,8 @@ public class PipelinePanel extends JPanel implements Observer {
 				(objBottomRight.getY() - winSize.getY())));
 
 		Point2D objWindowZero = windowToObj(new Point(0, 0));
-		horizontalScroll.setValueSilently((int) objWindowZero.getX());
-		verticalScroll.setValueSilently((int) objWindowZero.getY());
+		/*horizontalScroll.setValueSilently((int) objWindowZero.getX());
+		verticalScroll.setValueSilently((int) objWindowZero.getY());*/
 	}
 
 	/**
