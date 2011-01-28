@@ -16,6 +16,9 @@ import de.osmembrane.model.pipeline.FunctionGroup;
  * {@link LibraryPanelGroup}s in a register style and gives you the ability to
  * drag & drop them onto the {@link PipelinePanel}.
  * 
+ * Would have been fancy to be generic, but was not possible due to time constraints.
+ * Note smelly calls to getMainFrameByPass().getPipeline(). 
+ * 
  * @see Spezifikation.pdf, chapter 2.1.4
  * 
  * @author tobias_kuhn

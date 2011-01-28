@@ -1,5 +1,6 @@
 package de.osmembrane.view.panels;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -15,6 +16,7 @@ import java.util.Observer;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -24,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -43,6 +46,8 @@ import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.components.JRowTable;
+import de.osmembrane.view.components.JTextFieldWithButton;
+import de.osmembrane.view.components.JTextFieldWithButtonCellEditor;
 import de.osmembrane.view.components.RowEditorModel;
 
 /**
@@ -87,6 +92,10 @@ public class InspectorPanel extends JPanel implements Observer {
 	 * Useful {@link Color} definitions
 	 */
 	private static final Color LIGHT_BLUE = new Color(0.9f, 0.9f, 1.0f);
+	private static final Color LIGHTER_BLUE = new Color(0.95f, 0.95f, 1.0f);
+	private static final Color LIGHT_WHITE = new Color(0.95f, 0.95f, 0.95f);
+	private static final Color LIGHTER_WHITE = new Color(1.0f, 1.0f, 1.0f);
+
 	private static final Color LIGHT_YELLOW = new Color(1.0f, 1.0f, 0.9f);
 
 	/**
@@ -181,8 +190,10 @@ public class InspectorPanel extends JPanel implements Observer {
 			}
 		});
 
-		propertyTable.setDefaultRenderer(String.class,
+		propertyTable.setDefaultRenderer(JComponent.class,
 				new InspectorPanelTableRenderer());
+		// for nicer ComboBoxes
+		propertyTable.setRowHeight((int) (1.2 * propertyTable.getRowHeight()));
 
 		// hint
 		hint = new JPanel();
@@ -218,11 +229,11 @@ public class InspectorPanel extends JPanel implements Observer {
 		if ((hintText == null) || (hintText.isEmpty())) {
 			hintText = I18N.getInstance().getString("View.Inspector.NoHint");
 		}
-		
+
 		StringBuilder sb = new StringBuilder();
 		FontMetrics fm = hintLabel.getFontMetrics(hintLabel.getFont());
 		int lineWidth = 0;
-		
+
 		for (String word : hintText.split("\\s")) {
 			int thisWidth = fm.stringWidth(word + " ");
 
@@ -235,8 +246,8 @@ public class InspectorPanel extends JPanel implements Observer {
 				lineWidth += thisWidth;
 				sb.append(word + " ");
 			}
-		}		
-		
+		}
+
 		hintLabel.setText("<html><center><br /><p>" + sb.toString()
 				+ "</p></center></html>");
 	}
@@ -284,10 +295,11 @@ public class InspectorPanel extends JPanel implements Observer {
 			rowEditorModel.setEditorRow(0, new DefaultCellEditor(new JComboBox(
 					taskComboModel)));
 
-			// find the apropriate RowEditors for the parameters
+			// find the appropriate RowEditors for the parameters
 			for (int i = 0; i < inspect.getActiveTask().getParameters().length; i++) {
 				AbstractParameter ap = inspect.getActiveTask().getParameters()[i];
-				if (ap.getType() == ParameterType.ENUM) {
+				switch (ap.getType()) {
+				case ENUM:
 					rowEditorModel
 							.setEditorRow(
 									i + 1,
@@ -295,8 +307,24 @@ public class InspectorPanel extends JPanel implements Observer {
 											new JComboBox(
 													new InspectorPanelTableCustomEnumComboBoxModel(
 															ap))));
+					break;
+				case BBOX:
+					rowEditorModel.setEditorRow(i + 1,
+							new JTextFieldWithButtonCellEditor(
+									new JTextFieldWithButton(ap.getValue(),
+											"...")));
+					break;
+
+				default:
+					JTextField textField = new JTextField(ap.getValue());
+					textField.setOpaque(true);
+					textField.setBorder(null);
+					DefaultCellEditor dce = new DefaultCellEditor(textField);
+					dce.setClickCountToStart(1);
+					rowEditorModel.setEditorRow(i + 1, dce);
+
 				}
-			}
+			} /* for */
 		}
 
 		propertyTableModel.fireTableDataChanged();
@@ -348,7 +376,7 @@ public class InspectorPanel extends JPanel implements Observer {
 
 		@Override
 		public Class<?> getColumnClass(int columnIndex) {
-			return String.class;
+			return JComponent.class;
 		}
 
 		@Override
@@ -356,22 +384,34 @@ public class InspectorPanel extends JPanel implements Observer {
 			if (inspecting == null) {
 				return null;
 			} else {
+				Object result = null;
+
 				switch (column) {
 				case 0:
+					// property descriptions
 					if (row > 0) {
-						return inspecting.getActiveTask().getParameters()[row - 1]
+						result = inspecting.getActiveTask().getParameters()[row - 1]
 								.getFriendlyName();
 					} else {
-						return I18N.getInstance().getString("View.Task");
+						result = I18N.getInstance().getString("View.Task");
 					}
+					break;
 				default:
-					if (row > 0) {
-						return inspecting.getActiveTask().getParameters()[row - 1]
-								.getValue();
-					} else {
-						return inspecting.getActiveTask().getFriendlyName();
+					// property values
+					TableCellEditor tce = rowEditorModel.getEditorRow(row);
+					
+					boolean selected = (propertyTable.getSelectedRow() == row)
+							&& (propertyTable.getSelectedColumn() == column);
+					
+					result = tce.getTableCellEditorComponent(propertyTable,
+							tce.getCellEditorValue(), selected, row, column);
+					
+					if (result instanceof JTextField) {
+						result = ((JTextField) result).getText();
 					}
 				}
+
+				return result;
 			} /* else */
 		}
 
@@ -531,14 +571,26 @@ public class InspectorPanel extends JPanel implements Observer {
 		public Component getTableCellRendererComponent(JTable table,
 				Object value, boolean isSelected, boolean hasFocus, int row,
 				int column) {
-			Component c = super.getTableCellRendererComponent(table, value,
-					isSelected, hasFocus, row, column);
+			Component c;
+
+			c = super.getTableCellRendererComponent(table, value, isSelected,
+					hasFocus, row, column);
+
+			if (value instanceof JComboBox) {
+				c = (Component) value;
+			} else if (value instanceof JTextFieldWithButton) {
+				c = (Component) value;
+			} else if (value instanceof JTextField) {
+				c = (Component) value;
+			}
 
 			// some nice colors there
 			if (column == 0) {
-				c.setBackground(InspectorPanel.LIGHT_BLUE);
+				c.setBackground((row % 2 == 0) ? InspectorPanel.LIGHT_BLUE
+						: InspectorPanel.LIGHT_BLUE);
 			} else {
-				c.setBackground(Color.WHITE);
+				c.setBackground((row % 2 == 0) ? InspectorPanel.LIGHT_WHITE
+						: InspectorPanel.LIGHTER_WHITE);
 			}
 
 			c.setForeground(Color.BLACK);
@@ -548,6 +600,7 @@ public class InspectorPanel extends JPanel implements Observer {
 			if (c instanceof JComponent) {
 				JComponent jc = (JComponent) c;
 				jc.setBorder(null);
+				jc.setOpaque(true);
 			}
 
 			return c;
