@@ -27,7 +27,7 @@ import de.osmembrane.view.AbstractDialog;
  * @author tobias_kuhn
  * 
  */
-public class CommandLineDialog extends AbstractDialog {
+public class CommandLineDialog extends AbstractDialog implements ICommandLineDialog {
 
 	private static final long serialVersionUID = -904804959704267472L;
 	
@@ -95,12 +95,7 @@ public class CommandLineDialog extends AbstractDialog {
 		centerWindow();
 	}
 
-	/**
-	 * Sets the command line to display
-	 * 
-	 * @param commandline
-	 *            the command line to display
-	 */
+	@Override
 	public void setCommandline(String commandline) {
 		this.commandline.setText(commandline);
 		pack();

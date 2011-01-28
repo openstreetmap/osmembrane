@@ -4,7 +4,7 @@ import de.osmembrane.view.IView;
 import de.unistuttgart.iev.osm.bboxchooser.Bounds;
 
 /**
- * The interface for calling the bounding box dialog.
+ * The interface for calling the {@link BoundingBoxDialog}.
  * 
  * @author tobias_kuhn
  * 
