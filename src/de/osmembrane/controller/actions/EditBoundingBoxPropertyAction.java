@@ -52,7 +52,16 @@ public class EditBoundingBoxPropertyAction extends AbstractAction {
 				IBoundingBoxDialog ibbd = ViewRegistry.getInstance().getCasted(
 						BoundingBoxDialog.class, IBoundingBoxDialog.class);
 				
-				ibbd.setBoundingBox(new Bounds(p.getValue(), Constants.BBOX_SEPERATOR));
+				if (p.getValue() != null) {
+					try {
+						ibbd.setBoundingBox(new Bounds(p.getValue(), Constants.BBOX_SEPERATOR));
+					} catch (IllegalArgumentException e1) {
+						ibbd.setBoundingBox(null);
+					}
+				} else {
+					ibbd.setBoundingBox(null);
+				}
+				ibbd.centerWindow();
 				ibbd.showWindow();
 				
 				Bounds b = ibbd.getBoundingBox();

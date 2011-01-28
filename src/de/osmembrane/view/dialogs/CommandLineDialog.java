@@ -54,6 +54,8 @@ public class CommandLineDialog extends AbstractDialog implements ICommandLineDia
 		// text
 		commandline = new JTextArea();
 		commandline.setPreferredSize(new Dimension(640, 480));
+		commandline.setLineWrap(true);
+		commandline.setWrapStyleWord(true);
 		add(new JScrollPane(commandline), gbc);
 
 		// export

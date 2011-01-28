@@ -7,16 +7,19 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -30,10 +33,15 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
+
+import sun.swing.MenuItemLayoutHelper.ColumnAlignment;
 
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
+import de.osmembrane.controller.actions.EditBoundingBoxPropertyAction;
 import de.osmembrane.controller.actions.EditPropertyAction;
+import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.controller.events.ContainingFunctionChangeParameterEvent;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
@@ -297,22 +305,47 @@ public class InspectorPanel extends JPanel implements Observer {
 
 			// find the appropriate RowEditors for the parameters
 			for (int i = 0; i < inspect.getActiveTask().getParameters().length; i++) {
-				AbstractParameter ap = inspect.getActiveTask().getParameters()[i];
+				final AbstractParameter ap = inspect.getActiveTask()
+						.getParameters()[i];
+
 				switch (ap.getType()) {
+
 				case ENUM:
-					rowEditorModel
-							.setEditorRow(
-									i + 1,
-									new DefaultCellEditor(
-											new JComboBox(
-													new InspectorPanelTableCustomEnumComboBoxModel(
-															ap))));
+					InspectorPanelTableCustomEnumComboBoxModel iptcecbm = new InspectorPanelTableCustomEnumComboBoxModel(
+							ap);
+					DefaultCellEditor dceEnum = new DefaultCellEditor(
+							new JComboBox(iptcecbm));
+					rowEditorModel.setEditorRow(i + 1, dceEnum);
 					break;
+
+				case BOOLEAN:
+					JCheckBox jcb = new JCheckBox() {
+						private static final long serialVersionUID = 2308282763353016360L;
+
+						@Override
+						public boolean isSelected() {
+							return ap.getValue()
+									.equals(Boolean.TRUE.toString());
+						}
+					};
+					DefaultCellEditor dceBoolean = new DefaultCellEditor(jcb);
+					rowEditorModel.setEditorRow(i + 1, dceBoolean);
+					break;
+
 				case BBOX:
+					JTextFieldWithButton jtfwb = new JTextFieldWithButton(
+							ap.getValue(), "...");
+					jtfwb.addButtonActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Action a = ActionRegistry.getInstance().get(
+									EditBoundingBoxPropertyAction.class);
+							ContainingEvent ce = new ContainingEvent(this, ap);
+							a.actionPerformed(ce);
+						}
+					});
 					rowEditorModel.setEditorRow(i + 1,
-							new JTextFieldWithButtonCellEditor(
-									new JTextFieldWithButton(ap.getValue(),
-											"...")));
+							new JTextFieldWithButtonCellEditor(jtfwb));
 					break;
 
 				default:
@@ -399,13 +432,13 @@ public class InspectorPanel extends JPanel implements Observer {
 				default:
 					// property values
 					TableCellEditor tce = rowEditorModel.getEditorRow(row);
-					
+
 					boolean selected = (propertyTable.getSelectedRow() == row)
 							&& (propertyTable.getSelectedColumn() == column);
-					
+
 					result = tce.getTableCellEditorComponent(propertyTable,
 							tce.getCellEditorValue(), selected, row, column);
-					
+
 					if (result instanceof JTextField) {
 						result = ((JTextField) result).getText();
 					}
@@ -581,6 +614,8 @@ public class InspectorPanel extends JPanel implements Observer {
 			} else if (value instanceof JTextFieldWithButton) {
 				c = (Component) value;
 			} else if (value instanceof JTextField) {
+				c = (Component) value;
+			} else if (value instanceof JCheckBox) {
 				c = (Component) value;
 			}
 

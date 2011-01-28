@@ -67,6 +67,6 @@ public class BoundingBoxDialog implements IBoundingBoxDialog {
 	@Override
 	public void setBoundingBox(Bounds bounds) {
 		dialog.setBoundingBox(bounds);
-	}	
-	
+	}
+
 }

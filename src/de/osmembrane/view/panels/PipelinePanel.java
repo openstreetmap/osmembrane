@@ -218,8 +218,8 @@ public class PipelinePanel extends JPanel implements Observer {
 				}
 			}
 		};
-		this.verticalScroll.addAdjustmentListener(al);
-		this.horizontalScroll.addAdjustmentListener(al);
+		//this.verticalScroll.addAdjustmentListener(al);
+		//this.horizontalScroll.addAdjustmentListener(al);
 
 		this.objTopLeft = new Point2D.Double();
 		this.objBottomRight = new Point2D.Double();
