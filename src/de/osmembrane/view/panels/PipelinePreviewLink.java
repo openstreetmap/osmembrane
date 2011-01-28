@@ -57,7 +57,6 @@ public class PipelinePreviewLink extends PipelineLink {
 		int newHeight = (int) Math.abs(target.getX() - source.getX());
 		setLocation(newX, newY);
 		setSize(new Dimension(newWidth, newHeight));
-		ViewRegistry.getInstance().getMainFrame().setWindowTitle(getSize().width + "x " + getSize().height);
 		
 		Point2D left;
 		Point2D right;

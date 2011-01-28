@@ -124,10 +124,11 @@ public class LibraryFunction extends DisplayTemplatePanel {
 				dragging = false;
 
 				if (canDragAndDrop) {
-					IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-					MainFrame mf = (MainFrame) mainFrame;
-					mf.endDragAndDrop(); // necessary to make the glass pane go
-											// away
+					MainFrame mainFrame = ViewRegistry.getInstance()
+							.getMainFrameByPass();
+					mainFrame.endDragAndDrop(); // necessary to make the glass
+												// pane go
+					// away
 
 					// subtract the offset where it got clicked
 					e.translatePoint(-dragOffset.x, -dragOffset.y);
@@ -135,15 +136,17 @@ public class LibraryFunction extends DisplayTemplatePanel {
 					// convert the mouse event into the mainFrame and
 					// pipeline panel components
 					MouseEvent mainFrameEvent = SwingUtilities
-							.convertMouseEvent(LibraryFunction.this, e, mf);
+							.convertMouseEvent(LibraryFunction.this, e,
+									mainFrame);
 					MouseEvent pipelineEvent = SwingUtilities
 							.convertMouseEvent(LibraryFunction.this, e,
-									mf.getPipeline());
+									mainFrame.getPipeline());
 
-					Component c = mf.findComponentAt(mainFrameEvent.getPoint());
-					if (mf.getPipeline().getLayeredPane().equals(c)) {
-						mf.getPipeline().draggedOnto(LibraryFunction.this,
-								pipelineEvent.getPoint());
+					Component c = mainFrame.findComponentAt(mainFrameEvent
+							.getPoint());
+					if (mainFrame.getPipeline().getLayeredPane().equals(c)) {
+						mainFrame.getPipeline().draggedOnto(
+								LibraryFunction.this, pipelineEvent.getPoint());
 					} else {
 						Application.handleException(new ControlledException(
 								this, ExceptionSeverity.WARNING,
@@ -164,9 +167,10 @@ public class LibraryFunction extends DisplayTemplatePanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// show no hint
-				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-				MainFrame mf = (MainFrame) mainFrame;
-				mf.getPipeline().setHint(InspectorPanel.VALID_EMPTY_HINT);
+				MainFrame mainFrame = ViewRegistry.getInstance()
+						.getMainFrameByPass();
+				mainFrame.getPipeline()
+						.setHint(InspectorPanel.VALID_EMPTY_HINT);
 
 				if (canDragAndDrop) {
 					highlighted = false;
@@ -177,9 +181,9 @@ public class LibraryFunction extends DisplayTemplatePanel {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// show hint for this function
-				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-				MainFrame mf = (MainFrame) mainFrame;
-				mf.getPipeline().setHint(
+				MainFrame mainFrame = ViewRegistry.getInstance()
+						.getMainFrameByPass();
+				mainFrame.getPipeline().setHint(
 						modelFunctionPrototype.getDescription());
 
 				if (canDragAndDrop) {
@@ -205,8 +209,7 @@ public class LibraryFunction extends DisplayTemplatePanel {
 
 				@Override
 				public void mouseDragged(MouseEvent e) {
-					IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-					MainFrame mf = (MainFrame) mainFrame;
+					MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
 
 					// subtract the offset where it got clicked
 					e.translatePoint(-dragOffset.x, -dragOffset.y);
@@ -215,9 +218,9 @@ public class LibraryFunction extends DisplayTemplatePanel {
 					// pipeline panel components
 					MouseEvent mainFrameEvent = SwingUtilities
 							.convertMouseEvent(LibraryFunction.this, e,
-									mf.getGlassPane());
+									mainFrame.getGlassPane());
 
-					mf.paintDragAndDrop(LibraryFunction.this,
+					mainFrame.paintDragAndDrop(LibraryFunction.this,
 							mainFrameEvent.getPoint());
 				}
 			});

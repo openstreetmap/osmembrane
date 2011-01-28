@@ -3,9 +3,9 @@ package de.osmembrane.view.dialogs;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 
-import de.osmembrane.view.AbstractDialog;
-import de.osmembrane.view.IView;
 import de.unistuttgart.iev.osm.bboxchooser.BBoxChooserDialog;
+import de.unistuttgart.iev.osm.bboxchooser.Bounds;
+import de.unistuttgart.iev.osm.bboxchooser.DialogResponse;
 
 /**
  * 
@@ -17,7 +17,7 @@ import de.unistuttgart.iev.osm.bboxchooser.BBoxChooserDialog;
  * @author tobias_kuhn
  *
  */
-public class BoundingBoxDialog implements IView {
+public class BoundingBoxDialog implements IBoundingBoxDialog {
 
 	private static final long serialVersionUID = 5182327519016989905L;
 	
@@ -29,11 +29,6 @@ public class BoundingBoxDialog implements IView {
 	public BoundingBoxDialog() {
 		dialog = new BBoxChooserDialog();
 		dialog.setModal(true);
-	}
-
-	@Override
-	public void showWindow() {
-		dialog.setVisible(true);
 	}
 
 	@Override
@@ -58,6 +53,20 @@ public class BoundingBoxDialog implements IView {
 	public void bringToFront() {
 		dialog.toFront();
 	}
+	
+	@Override
+	public void showWindow() {
+		dialog.setVisible(true);
+	}
 
+	@Override
+	public Bounds getBoundingBox() {
+		return (dialog.getResponse() == DialogResponse.OK) ? dialog.getBoundingBox() : null;
+	}
 
+	@Override
+	public void setBoundingBox(Bounds bounds) {
+		dialog.setBoundingBox(bounds);
+	}	
+	
 }

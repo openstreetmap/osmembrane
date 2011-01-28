@@ -48,8 +48,7 @@ public class LoadPipelineAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		/* get the MainFrame */
-		IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-		MainFrame mf = (MainFrame) mainFrame;
+		MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
 
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
@@ -68,7 +67,7 @@ public class LoadPipelineAction extends AbstractAction {
 			}
 		});
 
-		int result = fileChooser.showOpenDialog(mf);
+		int result = fileChooser.showOpenDialog(mainFrame);
 
 		if (result == JFileChooser.APPROVE_OPTION) {
 			String file = fileChooser.getSelectedFile().getAbsolutePath();

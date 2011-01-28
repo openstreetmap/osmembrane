@@ -37,9 +37,8 @@ public class ZoomInAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-		MainFrame mf = (MainFrame) mainFrame;
-		mf.getPipeline().zoomIn();
+		MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
+		mainFrame.getPipeline().zoomIn();
 	}
 
 }

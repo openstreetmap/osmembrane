@@ -115,17 +115,15 @@ public class LibraryPanelGroup extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// show no hint
-				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-				MainFrame mf = (MainFrame) mainFrame;
-				mf.getPipeline().setHint(InspectorPanel.VALID_EMPTY_HINT);
+				MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
+				mainFrame.getPipeline().setHint(InspectorPanel.VALID_EMPTY_HINT);
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// show hint for this function group
-				IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-				MainFrame mf = (MainFrame) mainFrame;
-				mf.getPipeline().setHint(functionGroup.getDescription());
+				MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
+				mainFrame.getPipeline().setHint(functionGroup.getDescription());
 			}
 
 			@Override

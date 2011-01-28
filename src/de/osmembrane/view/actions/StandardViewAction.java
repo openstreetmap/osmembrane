@@ -38,9 +38,8 @@ public class StandardViewAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-		MainFrame mf = (MainFrame) mainFrame;
-		mf.getPipeline().resetView();
+		MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
+		mainFrame.getPipeline().resetView();
 	}
 
 }

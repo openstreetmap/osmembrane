@@ -37,9 +37,8 @@ public class ViewAllAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-		MainFrame mf = (MainFrame) mainFrame;
-		mf.getPipeline().showEntireView();
+		MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
+		mainFrame.getPipeline().showEntireView();
 	}
 
 }

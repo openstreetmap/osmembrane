@@ -36,8 +36,10 @@ public class DuplicateFunctionAction extends AbstractAction {
 	 */
 	public DuplicateFunctionAction() {
 		putValue(Action.NAME, "Duplicate Function");
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("duplicate.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("duplicate.png", Size.NORMAL));
+		putValue(Action.SMALL_ICON,
+				Resource.PROGRAM_ICON.getImageIcon("duplicate.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+				"duplicate.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		setEnabled(false);
@@ -45,17 +47,17 @@ public class DuplicateFunctionAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IView mainFrame = ViewRegistry.getInstance().getMainFrame();
-		MainFrame mf = (MainFrame) mainFrame;
-		Object selected = mf.getPipeline().getSelected();
+		MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
+		Object selected = mainFrame.getPipeline().getSelected();
 
 		if (selected != null) {
 			if (selected instanceof PipelineFunction) {
 				PipelineFunction pf = (PipelineFunction) selected;
 
 				// create new duplicate
-				AbstractFunction duplicate = pf.getModelFunction().copy(CopyType.COPY_ALL);
-				
+				AbstractFunction duplicate = pf.getModelFunction().copy(
+						CopyType.COPY_ALL);
+
 				// set its location
 				Point2D duplLoc = duplicate.getCoordinate();
 				duplicate.setCoordinate(new Point2D.Double(duplLoc.getX() + 0.3

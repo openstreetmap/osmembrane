@@ -103,6 +103,27 @@ public class ViewRegistry extends Observable implements Observer {
 		return result;
 	}
 
+	/**
+	 * Returns a view from the registry. If not already registered, creates it
+	 * and registers it. Tries to cast it to castTo. Throws
+	 * {@link ClassCastException}, if not possible.
+	 * 
+	 * @param castTo
+	 *            the desired type to return
+	 * @param clazz
+	 *            desired class to return
+	 * @return the registered object for that class casted to type castTo
+	 * @throws ClassCastException
+	 *             if clazz cannot be of type castTo. Test clazz instanceof
+	 *             castTo, if you want to make sure (Java 1.6 Generics don't
+	 *             support this)
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends IView> T getCasted(Class<? extends IView> clazz, Class<? extends T> castTo) {
+		IView result = get(clazz);
+		return (T) result;
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		// forward update() for Model classes
@@ -122,8 +143,23 @@ public class ViewRegistry extends Observable implements Observer {
 	}
 
 	/**
-	 * Displays an occurred exception using the {@link ExceptionDialog}. This method
-	 * should not be called directly. Use the
+	 * Note: The {@link ViewRegistry} can be exchanged along with all view
+	 * components, so it has to identify its main window for the purpose of
+	 * showing this window at startup.
+	 * 
+	 * This is a workarround. Technically, there should be an IMainFrame to be
+	 * fetched via {@link ViewRegistry#getCasted(Class, Class)}
+	 * 
+	 * @return the {@link MainFrame} of this view component, casted to its full
+	 *         type.
+	 */
+	public MainFrame getMainFrameByPass() {
+		return getCasted(MainFrame.class, MainFrame.class);
+	}
+
+	/**
+	 * Displays an occurred exception using the {@link ExceptionDialog}. This
+	 * method should not be called directly. Use the
 	 * {@link Application#handleException} method instead.
 	 * 
 	 * @param t
