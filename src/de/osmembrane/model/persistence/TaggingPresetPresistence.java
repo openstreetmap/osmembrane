@@ -19,15 +19,12 @@ import de.osmembrane.model.persistence.FileException.Type;
 public class TaggingPresetPresistence extends AbstractPersistence {
 
 	@Override
-	public Object load(String file) throws FileException {
+	public Object load(URL file) throws FileException {
 		JAXBContext jc;
 		try {
 			jc = JAXBContext.newInstance("de.openstreetmap.josm.tagging_preset_1");
 
-			/* XML-Datei mit Osmosis-Task-Beschreibungen einlesen */
-			URL xmlTasksFile = getClass().getResource(file);
-
-			if (xmlTasksFile == null) {
+			if (file == null) {
 				throw new FileException(Type.NOT_FOUND);
 			}
 
@@ -35,7 +32,7 @@ public class TaggingPresetPresistence extends AbstractPersistence {
 
 			@SuppressWarnings("unchecked")
 			JAXBElement<Root> root = (JAXBElement<Root>) u
-					.unmarshal(xmlTasksFile);
+					.unmarshal(file);
 
 			return root.getValue();
 		} catch (JAXBException e) {
@@ -45,13 +42,13 @@ public class TaggingPresetPresistence extends AbstractPersistence {
 
 	@Deprecated
 	@Override
-	public void save(String file, Object data) {
+	public void save(URL file, Object data) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	@Deprecated
 	public void update(Observable o, Object arg) {
-		throw new UnsupportedOperationException();
+		return;
 	}
 }

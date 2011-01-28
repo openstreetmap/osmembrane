@@ -4,6 +4,7 @@ import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Constants;
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
@@ -42,9 +43,9 @@ public class Application {
 	public void createModels() {
 		try {
 			ModelProxy.getInstance().accessFunctions()
-					.initiate(Constants.XML_RESOURCE_PATH);
+					.initiate(Resource.OSMEMBRANE_XML.getURL());
 			ModelProxy.getInstance().accessPreset()
-			.initiate(Constants.XML_PRESET_PATH);
+			.initiate(Resource.PRESET_XML.getURL());
 			ModelProxy.getInstance().accessPipeline().clear();
 		} catch (Exception e) {
 			Application.handleException(new ControlledException(this,

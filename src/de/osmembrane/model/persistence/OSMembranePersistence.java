@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Observable;
 
@@ -27,7 +28,7 @@ import de.osmembrane.tools.I18N;
 public class OSMembranePersistence extends AbstractPersistence {
 
 	@Override
-	public void save(String file, Object data) throws FileException {
+	public void save(URL file, Object data) throws FileException {
 		if (!(data instanceof List<?>)) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
@@ -38,7 +39,7 @@ public class OSMembranePersistence extends AbstractPersistence {
 
 		
 		try {
-			FileOutputStream fos = new FileOutputStream(file);
+			FileOutputStream fos = new FileOutputStream(file.toString().replace("file:", ""));
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 
@@ -53,9 +54,9 @@ public class OSMembranePersistence extends AbstractPersistence {
 	}
 
 	@Override
-	public Object load(String file) throws FileException {
+	public Object load(URL file) throws FileException {
 		try {
-			FileInputStream fis = new FileInputStream(file);
+			FileInputStream fis = new FileInputStream(file.toString());
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			ObjectInputStream ois = new ObjectInputStream(bis);
 			

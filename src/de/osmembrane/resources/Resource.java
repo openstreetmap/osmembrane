@@ -11,7 +11,10 @@ import de.osmembrane.tools.IconLoader;
 public enum Resource {
 	CURSOR_ICON("/de/osmembrane/resources/cursors/", null, false),
 	PROGRAM_ICON("/de/osmembrane/resources/images/icons/", new String[]{"resources/images/icons/"}, true),
-	PRESET_ICON("/de/osmembrane/resources/images/icons/presets/", new String[]{"resources/images/icons/presets/"}, true);
+	PRESET_ICON("/de/osmembrane/resources/images/icons/presets/", new String[]{"resources/images/icons/presets/"}, true),
+	
+	OSMEMBRANE_XML("/de/osmembrane/resources/xml/osmosis-structure.xml", new String[]{"resources/xml/osmosis-structure.xml"}, true),
+	PRESET_XML("/de/osmembrane/resources/xml/defaultpresets.xml", new String[]{"resources/xml/defaultpresets.xml"}, true),;
 	
 	
 	private String internalPath;

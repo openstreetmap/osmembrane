@@ -18,22 +18,19 @@ import de.osmembrane.model.xml.XMLOsmosisStructure;
 public class XMLOsmosisStructurePersistence extends AbstractPersistence {
 
 	@Override
-	public Object load(String file) throws FileException {
+	public Object load(URL file) throws FileException {
 		JAXBContext jc;
 		try {
 			jc = JAXBContext.newInstance("de.osmembrane.model.xml");
 
-			/* XML-Datei mit Osmosis-Task-Beschreibungen einlesen */
-			URL xmlTasksFile = getClass().getResource(file);
-
-			if (xmlTasksFile == null) {
+			if (file == null) {
 				throw new FileException(Type.NOT_FOUND);
 			}
 
 			Unmarshaller u = jc.createUnmarshaller();
 
 			XMLOsmosisStructure otd = (XMLOsmosisStructure) u
-					.unmarshal(xmlTasksFile);
+					.unmarshal(file);
 
 			return otd;
 		} catch (JAXBException e) {
@@ -43,13 +40,13 @@ public class XMLOsmosisStructurePersistence extends AbstractPersistence {
 
 	@Deprecated
 	@Override
-	public void save(String file, Object data) {
+	public void save(URL file, Object data) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	@Deprecated
 	public void update(Observable o, Object arg) {
-		throw new UnsupportedOperationException();
+		return;
 	}
 }

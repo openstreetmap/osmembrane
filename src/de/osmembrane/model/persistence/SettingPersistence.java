@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.Observable;
 
 import de.osmembrane.Application;
@@ -27,7 +28,7 @@ import de.osmembrane.tools.I18N;
 public class SettingPersistence extends AbstractPersistence {
 
 	@Override
-	public void save(String file, Object data) throws FileException {
+	public void save(URL file, Object data) throws FileException {
 		if (!(data instanceof Settings)) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
@@ -37,7 +38,7 @@ public class SettingPersistence extends AbstractPersistence {
 		}
 
 		try {
-			FileOutputStream fos = new FileOutputStream(file);
+			FileOutputStream fos = new FileOutputStream(file.toString());
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 
@@ -49,9 +50,9 @@ public class SettingPersistence extends AbstractPersistence {
 	}
 
 	@Override
-	public Object load(String file) throws FileException {
+	public Object load(URL file) throws FileException {
 		try {
-			FileInputStream fis = new FileInputStream(file);
+			FileInputStream fis = new FileInputStream(file.toString().replace("file:", ""));
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			ObjectInputStream ois = new ObjectInputStream(bis);
 
@@ -75,8 +76,8 @@ public class SettingPersistence extends AbstractPersistence {
 			Object data = ((SettingsObserverObject) arg).getObject();
 
 			try {
-				save(file, data);
-			} catch (FileException e) {
+				save(new URL(file), data);
+			} catch (Exception e) {
 				/* forward the exception to the view */
 				Application
 						.handleException(new ControlledException(this,

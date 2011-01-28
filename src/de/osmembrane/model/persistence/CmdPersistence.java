@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 import java.util.Observable;
 
@@ -29,7 +31,7 @@ public class CmdPersistence extends AbstractPersistence {
 	private static final Class<CmdParser> PARSER = CmdParser.class;
 	
 	@Override
-	public void save(String filename, Object data) throws FileException {
+	public void save(URL filename, Object data) throws FileException {
 		if (!(data instanceof List<?>)) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
@@ -39,7 +41,7 @@ public class CmdPersistence extends AbstractPersistence {
 		}
 
 		try {
-			File file = new File(filename);
+			File file = new File(filename.toString());
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
 
@@ -57,11 +59,10 @@ public class CmdPersistence extends AbstractPersistence {
 	}
 
 	@Override
-	public Object load(String filename) throws FileException {
+	public Object load(URL filename) throws FileException {
 		try {
-			File file = new File(filename);
-			FileReader fr = new FileReader(file);
-			BufferedReader br = new BufferedReader(fr);
+			InputStreamReader isr = new InputStreamReader(filename.openStream());
+			BufferedReader br = new BufferedReader(isr);
 
 			StringBuilder fileContent = new StringBuilder();
 			String line;
@@ -69,7 +70,7 @@ public class CmdPersistence extends AbstractPersistence {
 				fileContent.append(line);
 			}
 			br.close();
-			fr.close();
+			isr.close();
 
 			List<AbstractFunction> functions = ParserFactory.getInstance()
 					.getParser(PARSER).parseString(fileContent.toString());
@@ -87,7 +88,6 @@ public class CmdPersistence extends AbstractPersistence {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+		return;
 	}
 }

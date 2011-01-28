@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -101,7 +102,7 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
-	public void loadPipeline(String filename) throws FileException {
+	public void loadPipeline(URL filename) throws FileException {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(OSMembranePersistence.class);
 
@@ -128,7 +129,7 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
-	public void savePipeline(String filename) throws FileException {
+	public void savePipeline(URL filename) throws FileException {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(OSMembranePersistence.class);
 
@@ -152,7 +153,7 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
-	public void importPipeline(String filename, FileType type)
+	public void importPipeline(URL filename, FileType type)
 			throws FileException {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(type.getPersistenceClass());
@@ -185,7 +186,7 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
-	public void exportPipeline(String filename, FileType type)
+	public void exportPipeline(URL filename, FileType type)
 			throws FileException {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(type.getPersistenceClass());

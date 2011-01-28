@@ -1,5 +1,6 @@
 package de.osmembrane.model.pipeline;
 
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -74,7 +75,7 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	 * 
 	 * @throws FileException when something with the IO went wrong
 	 */
-	public abstract void savePipeline(String filename) throws FileException;
+	public abstract void savePipeline(URL filename) throws FileException;
 	
 	/**
 	 * Saves the pipeline to the default backup file.
@@ -90,7 +91,7 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	 * 
 	 * @throws FileException when something with the IO went wrong
 	 */
-	public abstract void loadPipeline(String filename) throws FileException;
+	public abstract void loadPipeline(URL filename) throws FileException;
 
 	/**
 	 * Imports the pipeline from a given file.
@@ -100,7 +101,7 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	 * 
 	 * @throws FileException when something with the IO went wrong
 	 */
-	public abstract void importPipeline(String filename, FileType type) throws FileException;
+	public abstract void importPipeline(URL filename, FileType type) throws FileException;
 
 	/**
 	 *  Exports the pipeline a file on the given path.
@@ -110,7 +111,7 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	 * 
 	 * @throws FileException when something with the IO went wrong
 	 */
-	public abstract void exportPipeline(String filename, FileType type) throws FileException;
+	public abstract void exportPipeline(URL filename, FileType type) throws FileException;
 
 	/**
 	 * Creates an empty pipeline.

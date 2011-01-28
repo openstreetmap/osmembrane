@@ -1,5 +1,7 @@
 package de.osmembrane.model.preset;
 
+import java.net.URL;
+
 
 /**
  * A prototype for the Key.Value lists.
@@ -13,7 +15,7 @@ public abstract class AbstractPresetPrototype {
 	 * 
 	 * @param xmlFilename xml-file with presets
 	 */
-	public abstract void initiate(String xmlFilename);
+	public abstract void initiate(URL xmlFilename);
 
 	/**
 	 * Returns the way-items.

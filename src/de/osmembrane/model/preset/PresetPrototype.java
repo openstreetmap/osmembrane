@@ -1,5 +1,6 @@
 package de.osmembrane.model.preset;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class PresetPrototype extends AbstractPresetPrototype {
 	private List<PresetItem> wayList = new ArrayList<PresetItem>();
 
 	@Override
-	public void initiate(String xmlFilename) {
+	public void initiate(URL xmlFilename) {
 		try {
 			preset = (Root) PersistenceFactory.getInstance()
 					.getPersistence(TaggingPresetPresistence.class)

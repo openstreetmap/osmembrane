@@ -1,5 +1,6 @@
 package de.osmembrane.model.pipeline;
 
+import java.net.URL;
 import java.util.Observable;
 
 import de.osmembrane.model.Identifier;
@@ -23,7 +24,7 @@ public abstract class AbstractFunctionPrototype extends Observable {
 	 * @param xmlFilename
 	 *            filename of the given XML-file
 	 */
-	public abstract void initiate(String xmlFilename);
+	public abstract void initiate(URL xmlFilename);
 
 	/**
 	 * Returns all {@link AbstractFunctionGroup}s.

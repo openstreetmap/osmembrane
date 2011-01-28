@@ -7,6 +7,9 @@ import static org.junit.Assert.*;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -42,8 +45,16 @@ public class PipelineTest {
 	 */
 	private static AbstractPipeline pl;
 
-	private static String TEST_FILE_NAME = System.getProperty("java.io.tmpdir")
-			+ "test.tmp";
+	private static URL TEST_FILE_NAME;
+	
+	static {
+		try {
+			TEST_FILE_NAME = new File(System.getProperty("java.io.tmpdir")
+					+ "test.tmp").toURI().toURL();
+		} catch (MalformedURLException e) {
+			TEST_FILE_NAME = null;
+		}
+	}
 
 	/**
 	 * Initiates a full testable {@link Application}, then selects the first
@@ -523,7 +534,7 @@ public class PipelineTest {
 		newFuncs[0].addConnectionTo(newFuncs[2]);
 
 		newFuncs[1].setActiveTask(newFuncs[1].getAvailableTasks()[1]);
-		newFuncs[1].getActiveTask().getParameters()[0].setValue(TEST_FILE_NAME);
+		newFuncs[1].getActiveTask().getParameters()[0].setValue(TEST_FILE_NAME.toString());
 
 	}
 
@@ -553,7 +564,7 @@ public class PipelineTest {
 		testFuncs[1].assertConnectionCountTo(testFuncs[2], 0);
 
 		testFuncs[1].assertTaskName(prototype.getAvailableTasks()[1].getName());
-		testFuncs[1].assertParameter(0, TEST_FILE_NAME);
+		testFuncs[1].assertParameter(0, TEST_FILE_NAME.toString());
 	}
 
 	/**

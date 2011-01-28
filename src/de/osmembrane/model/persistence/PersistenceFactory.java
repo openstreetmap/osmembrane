@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.AbstractPersistence;
 
 import java.util.Observer;
@@ -29,7 +30,7 @@ public class PersistenceFactory extends Observable implements Observer {
 	 * Initiates the PersistenceFactory.
 	 */
 	private PersistenceFactory() {
-
+		
 	}
 
 	/**
@@ -69,6 +70,7 @@ public class PersistenceFactory extends Observable implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		notifyObservers(o.getClass());
+		setChanged();
+		notifyObservers(arg);
 	}
 }

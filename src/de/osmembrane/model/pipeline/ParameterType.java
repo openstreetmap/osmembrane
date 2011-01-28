@@ -49,6 +49,8 @@ public enum ParameterType {
 
 	/**
 	 * BoundingBox Value.
+	 * The String should be in the following format: double,double,double,double
+	 * first double is left, second right, third top and fourth is bottom
 	 */
 	BBOX("BoundingBox");
 

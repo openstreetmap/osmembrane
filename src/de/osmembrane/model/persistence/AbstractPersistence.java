@@ -1,6 +1,7 @@
 package de.osmembrane.model.persistence;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Observer;
 
 
@@ -23,7 +24,7 @@ public abstract class AbstractPersistence implements Observer {
 	 * 
 	 * @throws FileException
 	 */
-	public abstract void save(String file, Object data) throws FileException;
+	public abstract void save(URL file, Object data) throws FileException;
 
 	/**
 	 * Loads a file and returns the object inside of it.
@@ -34,5 +35,5 @@ public abstract class AbstractPersistence implements Observer {
 	 * 
 	 * @throws FileException
 	 */
-	public abstract Object load(String file) throws FileException;
+	public abstract Object load(URL file) throws FileException;
 }

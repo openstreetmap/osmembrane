@@ -1,5 +1,6 @@
 package de.osmembrane.model.pipeline;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +44,7 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	private Map<Object, Identifier> identifiers = new HashMap<Object, Identifier>();
 
 	@Override
-	public void initiate(String xmlFilename) {
+	public void initiate(URL xmlFilename) {
 
 		try {
 			xmlStruct = (XMLOsmosisStructure) PersistenceFactory.getInstance()
