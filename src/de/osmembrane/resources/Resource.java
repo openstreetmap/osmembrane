@@ -10,16 +10,16 @@ import de.osmembrane.tools.IconLoader;
 
 public enum Resource {
 	CURSOR_ICON("/de/osmembrane/resources/cursors/", null, false),
-	PROGRAM_ICON("/de/osmembrane/resources/images/icons/", "resources/images/icons/", true),
-	PRESET_ICON("/de/osmembrane/resources/images/icons/presets/", "resources/images/icons/presets/", true);
+	PROGRAM_ICON("/de/osmembrane/resources/images/icons/", new String[]{"resources/images/icons/"}, true),
+	PRESET_ICON("/de/osmembrane/resources/images/icons/presets/", new String[]{"resources/images/icons/presets/"}, true);
 	
 	
 	private String internalPath;
-	private String externalPath;
+	private String[] externalPath;
 	private boolean externalPrefered;
 	private boolean silentLoad = false;
 	
-	Resource(String internalPath, String externalPath, boolean externalPrefered) {
+	Resource(String internalPath, String[] externalPath, boolean externalPrefered) {
 		this.internalPath = internalPath;
 		this.externalPath = externalPath;
 		this.externalPrefered = externalPrefered;
@@ -39,28 +39,36 @@ public enum Resource {
 	
 	public URL getURL(String file) {
 		URL url;
-		try {
-			if(externalPrefered) {
-				File fileObject = new File(externalPath + file);
-				if(!fileObject.exists()) {
-					throw new MalformedURLException();
-				} else {
-					url = fileObject.toURI().toURL();
-				}
-			} else {
+		if(externalPrefered) {
+			url = getExternalUrl(file);
+			if(url == null) {
 				url = this.getClass().getResource(internalPath + file);
-				if (url == null) {
-					File fileObject = new File(externalPath + file);
-					if(fileObject.exists()) {
-						url = fileObject.toURI().toURL();
-					}
-				}
 			}
-		} catch(MalformedURLException e) {
+		} else {
 			url = this.getClass().getResource(internalPath + file);
+			if (url == null) {
+				url = getExternalUrl(file);
+			}
 		}
 		
 		return url;
+	}
+	
+	private URL getExternalUrl(String file) {
+		if(externalPath == null) {
+			return null;
+		}
+		for(String externalPath : this.externalPath) {
+			File fileObject = new File(externalPath + file);
+			if(fileObject.exists()) {
+				try {
+					return fileObject.toURI().toURL();
+				} catch (MalformedURLException e) {
+					/* try silently another one */
+				}
+			}
+		}
+		return null;
 	}
 	
 	public ImageIcon getImageIcon(IconLoader.Size size) {
@@ -68,7 +76,6 @@ public enum Resource {
 	}
 	
 	public ImageIcon getImageIcon(String filename, IconLoader.Size size) {
-		System.out.println(getURL(filename));
 		return new IconLoader(getURL(filename), size, silentLoad).get();
 	}
 }
