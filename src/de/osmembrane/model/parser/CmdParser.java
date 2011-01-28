@@ -9,8 +9,14 @@ import de.osmembrane.model.pipeline.AbstractFunction;
  * 
  * @author jakob_jarosch
  */
-public class CmdParser implements IParser {
+public class CmdParser extends CommandlineParser {
 
+	protected String BREAKLINE_SYMBOL = "^\r\n";
+	
+	public CmdParser() {
+		super.setBreaklineSymbol(BREAKLINE_SYMBOL);
+	}
+	
 	@Override
 	public List<AbstractFunction> parseString(String input) {
 		throw new UnsupportedOperationException();

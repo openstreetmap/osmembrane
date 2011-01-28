@@ -67,6 +67,13 @@ public abstract class AbstractConnector implements Serializable {
 	public abstract AbstractConnector[] getConnections();
 
 	/**
+	 * Returns the index of the conenctor.
+	 * 
+	 * @return index of the connector
+	 */
+	public abstract int getConnectorIndex();
+	
+	/**
 	 * Creates a connection to another connector.
 	 * 
 	 * @param connector

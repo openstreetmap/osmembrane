@@ -8,7 +8,6 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.resources.Resource;
-import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 
 /**

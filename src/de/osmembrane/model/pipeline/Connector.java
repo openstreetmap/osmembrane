@@ -81,6 +81,11 @@ public class Connector extends AbstractConnector {
 		connectors = this.connectors.toArray(connectors);
 		return connectors;
 	}
+	
+	@Override
+	public int getConnectorIndex() {
+		return xmlPipe.getIndex().intValue();
+	}
 
 	@Override
 	protected boolean addConnection(AbstractConnector connector) {
