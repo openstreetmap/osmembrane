@@ -15,6 +15,7 @@ import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.CommandLineDialog;
+import de.osmembrane.view.dialogs.ICommandLineDialog;
 
 /**
  * Action to generate the pipeline command line and display the {@link CommandLineDialog}.
@@ -39,11 +40,10 @@ public class GeneratePipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		CommandLineDialog commandLineDialog = ViewRegistry.getInstance().getCasted(
-				CommandLineDialog.class, CommandLineDialog.class);
+		ICommandLineDialog commandLineDialog = ViewRegistry.getInstance().getCasted(
+				CommandLineDialog.class, ICommandLineDialog.class);
 		
 		// TODO Let the user choose the correct file-type.
-		String NL = System.getProperty("line.separator");
 		commandLineDialog.setCommandline(ModelProxy.getInstance().accessPipeline().generate(FileType.BASH));
 		commandLineDialog.showWindow();
 	}
