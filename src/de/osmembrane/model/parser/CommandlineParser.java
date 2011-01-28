@@ -52,6 +52,8 @@ public class CommandlineParser implements IParser {
 			}
 			
 			if(addable) {
+				usedFunctions.add(function);
+				
 				if(builder.length() > 0) {
 					builder.append(breaklineSymbol);
 				}
@@ -68,27 +70,29 @@ public class CommandlineParser implements IParser {
 				for(AbstractConnector connector : function.getInConnectors()) {
 					for(AbstractConnector otherConnector : connector.getConnections()) {
 						int offset = getConnectorOffset(connector, otherConnector);
-						builder.append(" inPipe." + connector.getConnectorIndex() + "=" + connectorMap.get(otherConnector)+offset);
+						builder.append(" inPipe." + connector.getConnectorIndex() + "=" + (connectorMap.get(otherConnector)+offset));
 					}
 				}
 				
 				StringBuilder teeBuilder = new StringBuilder();
 				for(AbstractConnector connector : function.getOutConnectors()) {
-					int connectorIndex = pipeIndex;
+					
+					/* add to the index + 1, 'cause the first tee-out-connector
+					 * has function.connector + 1 as pipe key.
+					 */
+					connectorMap.put(connector, (pipeIndex+1));
 					builder.append(" outPipe." + connector.getConnectorIndex() + "=" + pipeIndex);
 						
 					/* Add a tee, 'cause more than one connection is attached. */
 					if(connector.getConnections().length > 1) {
 						teeBuilder.append(breaklineSymbol);
-						teeBuilder.append("--tee " + connector.getConnections().length + " inPipe.0=" + connectorIndex);
+						teeBuilder.append("--tee " + connector.getConnections().length + " inPipe.0=" + pipeIndex);
 						for(int i = 0; i < connector.getConnections().length; i++) {
 							pipeIndex++;
 							/* append a out-pipe for the tee (outPipe.Index=pipeIndex */
 							teeBuilder.append(" outPipe." + i + "=" + pipeIndex);
 						}
 					}
-					
-					connectorMap.put(connector, pipeIndex);
 				}
 				
 				builder.append(teeBuilder);

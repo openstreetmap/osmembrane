@@ -8,6 +8,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.IView;
@@ -37,20 +39,12 @@ public class GeneratePipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IView commandLineDialog = ViewRegistry.getInstance().get(
-				CommandLineDialog.class);
-		CommandLineDialog cld = (CommandLineDialog) commandLineDialog;
+		CommandLineDialog commandLineDialog = ViewRegistry.getInstance().getCasted(
+				CommandLineDialog.class, CommandLineDialog.class);
 		
-		// TODO implement
+		// TODO Let the user choose the correct file-type.
 		String NL = System.getProperty("line.separator");
-		cld.setCommandline("osmosis \\" + NL +
-				"--rx full/planet-071128.osm.bz2 \\" + NL +
-				"--tee 16 \\" + NL +
-				"--bp file=polygons/europe/germany/baden-wuerttemberg.poly \\" + NL +
-				"--wx baden-wuerttemberg.osm.bz2 \\" + NL +
-				"--bp file=polygons/europe/germany/bayern.poly \\" + NL +
-				"--wx bayern.osm.bz2 \\" + NL +
-				"--bp file=polygons/europe/germany/berlin.poly \\");
-		cld.showWindow();
+		commandLineDialog.setCommandline(ModelProxy.getInstance().accessPipeline().generate(FileType.BASH));
+		commandLineDialog.showWindow();
 	}
 }
