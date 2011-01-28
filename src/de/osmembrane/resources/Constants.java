@@ -82,4 +82,9 @@ public class Constants {
 	 * Latest version from http://josm.openstreetmap.de/svn/trunk/data/defaultpresets.xml
 	 */
 	public static final String XML_PRESET_PATH = "/de/osmembrane/resources/xml/defaultpresets.xml";
+
+	/**
+	 * Seperator char of the bbox parameter
+	 */
+	public static final String BBOX_SEPERATOR = ",";
 }

@@ -23,7 +23,6 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.Function;
 import de.osmembrane.tools.I18N;
-import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;
 

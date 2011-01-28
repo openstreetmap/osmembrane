@@ -17,7 +17,6 @@ import javax.swing.border.EtchedBorder;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.pipeline.FunctionGroup;
-import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;
 

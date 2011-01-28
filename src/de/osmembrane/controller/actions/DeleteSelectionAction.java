@@ -9,9 +9,7 @@ import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
-import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
-import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;
 import de.osmembrane.view.panels.PipelineFunction;
