@@ -238,7 +238,7 @@ public class InspectorPanel extends JPanel implements Observer {
 			int thisWidth = fm.stringWidth(word + " ");
 
 			// if this line is wider than possible, make a new line
-			if (lineWidth + thisWidth >= hint.getWidth()) {
+			if (lineWidth + thisWidth >= hint.getWidth() - 8) {
 				sb.append("<br />" + word);
 				lineWidth = 0;
 			} else {
