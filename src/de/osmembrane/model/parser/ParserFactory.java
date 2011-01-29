@@ -1,6 +1,5 @@
 package de.osmembrane.model.parser;
 
-import de.osmembrane.model.parser.IParser;
 
 /**
  * Factory for Parser-Instances.

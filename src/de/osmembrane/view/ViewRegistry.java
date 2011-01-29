@@ -10,7 +10,6 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ExceptionSeverity;
-import de.osmembrane.view.IView;
 import de.osmembrane.view.dialogs.ExceptionDialog;
 import de.osmembrane.view.frames.MainFrame;
 

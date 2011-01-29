@@ -1,14 +1,10 @@
 package de.osmembrane.view.panels;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 import de.osmembrane.resources.Constants;
-import de.osmembrane.view.ViewRegistry;
 
 /**
  * A special pipeline link used only for the preview.
@@ -46,53 +42,71 @@ public class PipelinePreviewLink extends PipelineLink {
 
 	/**
 	 * Regenerates the coordinates of the line, if destination has moved.
-	 * Furthermore assigns the size.
+	 * Furthermore assigns the size and location.
 	 */
 	@Override
 	public void regenerateLine() {
-		int newX = (int) Math.min(source.getX(), target.getX());
-		int newY = (int) Math.min(source.getY(), target.getY());
-		// TODO
-		int newWidth = (int) Math.abs(target.getX() - source.getX());
-		int newHeight = (int) Math.abs(target.getX() - source.getX());
-		setLocation(newX, newY);
-		setSize(new Dimension(newWidth, newHeight));
-		
+		Point2D leftAbs = new Point2D.Double(source.getX() + source.getWidth()
+				/ 2.0, source.getY() + source.getHeight() / 2.0);
+
+		double basicX, basicY;
+		double sizeX, sizeY;
+		if (target.getX() < leftAbs.getX()) {
+			// left
+			basicX = source.getX() + source.getWidth();
+			sizeX = Math.max(source.getWidth(), basicX - target.getX());
+
+			basicX = basicX - sizeX;
+		} else {
+			// right
+			basicX = source.getX();
+			sizeX = Math.max(source.getWidth(), target.getX() - basicX);
+		}
+		if (target.getY() < leftAbs.getY()) {
+			// above
+			basicY = source.getY() + source.getHeight();
+			sizeY = Math.max(source.getHeight(), basicY - target.getY());
+
+			basicY = basicY - sizeY;
+		} else {
+			// below
+			basicY = source.getY();
+			sizeY = Math.max(source.getHeight(), target.getY() - basicY);
+		}
+
+		setLocation((int) basicX, (int) basicY);
+		setSize((int) sizeX, (int) sizeY);
+
 		Point2D left;
 		Point2D right;
-
-		Point offset = new Point(0, 0);//source.getWidth() / 2, source.getHeight() / 2);
-
-		if (source.getX() < target.getX()) {
-			// arrow goes like left -----> right
-			if (source.getY() < target.getY()) {
-				// left top to right bottom
-				left = new Point2D.Double(offset.x, offset.y);
-				right = new Point2D.Double(getWidth() - offset.x, getHeight()
-						- offset.y);
-			} else {
-				// left bottom to right top
-				left = new Point2D.Double(offset.x, getHeight() - offset.y);
-				right = new Point2D.Double(getWidth() - offset.x, offset.y);
-			}
+		
+		double leftX, leftY;
+		boolean swapLR = false;
+		if (target.getX() < leftAbs.getX()) {
+			// left
+			leftX = getWidth() - source.getWidth() / 2.0;
+			swapLR = true;
 		} else {
-			// arrow goes like left <----- right
-			if (source.getY() < target.getY()) {
-				// right top to left bottom
-				left = new Point2D.Double(offset.x, getHeight() - offset.y);
-				right = new Point2D.Double(getWidth() - offset.x, offset.y);
-			} else {
-				// right bottom to left top
-				left = new Point2D.Double(offset.x, offset.y);
-				right = new Point2D.Double(getWidth() - offset.x, getHeight()
-						- offset.y);
-			}
+			// right
+			leftX = source.getWidth() / 2.0; 
 		}
+		if (target.getY() < leftAbs.getY()) {
+			// above
+			leftY = getHeight() - source.getHeight() / 2.0;
+			swapLR = true;
+		} else {
+			// below
+			leftY = source.getHeight() / 2.0;
+		}
+		
+		left = new Point2D.Double(leftX, leftY);
+		right = new Point2D.Double(target.getX() - basicX, target.getY()
+				- basicY);
 
 		line.setLine(left, right);
 		repaint();
 	}
-	
+
 	/**
 	 * Sets the source to connectionSource and sets the location to the same.
 	 * 
@@ -100,8 +114,10 @@ public class PipelinePreviewLink extends PipelineLink {
 	 */
 	public void setSource(PipelineFunction connectionSource) {
 		this.source = connectionSource;
-		double newX = connectionSource.getLocation().x + 0.5 * connectionSource.getWidth();
-		double newY = connectionSource.getLocation().y + 0.5 * connectionSource.getHeight();
+		double newX = connectionSource.getLocation().x + 0.5
+				* connectionSource.getWidth();
+		double newY = connectionSource.getLocation().y + 0.5
+				* connectionSource.getHeight();
 		setLocation(new Point((int) newX, (int) newY));
 		setVisible(true);
 	}

@@ -12,7 +12,6 @@ import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader.Size;
-import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.CommandLineDialog;
 import de.osmembrane.view.dialogs.ICommandLineDialog;

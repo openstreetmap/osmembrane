@@ -3,9 +3,6 @@ package de.osmembrane.model.persistence;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
-
-import de.osmembrane.model.persistence.AbstractPersistence;
-
 import java.util.Observer;
 
 /**

@@ -53,11 +53,11 @@ import de.osmembrane.view.actions.StandardViewAction;
 import de.osmembrane.view.actions.ViewAllAction;
 import de.osmembrane.view.actions.ZoomInAction;
 import de.osmembrane.view.actions.ZoomOutAction;
-import de.osmembrane.view.panels.LibraryPanel;
 import de.osmembrane.view.panels.InspectorPanel;
+import de.osmembrane.view.panels.LibraryFunction;
+import de.osmembrane.view.panels.LibraryPanel;
 import de.osmembrane.view.panels.LibraryPanelGroup;
 import de.osmembrane.view.panels.PipelinePanel;
-import de.osmembrane.view.panels.LibraryFunction;
 import de.osmembrane.view.panels.Tool;
 
 /**

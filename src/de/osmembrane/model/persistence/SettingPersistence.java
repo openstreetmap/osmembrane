@@ -15,9 +15,9 @@ import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.AbstractSettings;
+import de.osmembrane.model.Settings;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.settings.SettingsObserverObject;
-import de.osmembrane.model.Settings;
 import de.osmembrane.tools.I18N;
 
 /**

@@ -9,11 +9,6 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import de.osmembrane.Application;
-import de.osmembrane.exceptions.ControlledException;
-import de.osmembrane.exceptions.ExceptionSeverity;
-import de.osmembrane.resources.Constants;
-
 /**
  * Simple loader for icons.
  * 

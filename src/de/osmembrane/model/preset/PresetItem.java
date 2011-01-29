@@ -2,13 +2,11 @@ package de.osmembrane.model.preset;
 
 import java.io.File;
 
-import javax.swing.Action;
 import javax.swing.ImageIcon;
 
 import de.openstreetmap.josm.tagging_preset_1.Item;
 import de.openstreetmap.josm.tagging_preset_1.Key;
 import de.osmembrane.resources.Resource;
-import de.osmembrane.tools.IconLoader;
 import de.osmembrane.tools.IconLoader.Size;
 
 /**

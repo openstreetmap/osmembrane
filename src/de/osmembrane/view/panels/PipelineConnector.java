@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,6 +151,19 @@ public class PipelineConnector extends DisplayTemplatePanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+			}
+		});
+		
+		this.addMouseMotionListener(new MouseMotionListener() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
+						PipelineConnector.this, e, pipeline);
+				pipeline.dispatchEvent(pipelineEvent);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
 			}
 		});
 

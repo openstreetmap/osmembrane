@@ -6,7 +6,6 @@ import java.util.List;
 
 import de.osmembrane.model.Identifier;
 import de.osmembrane.model.ModelProxy;
-import de.osmembrane.model.pipeline.Function;
 import de.osmembrane.model.xml.XMLFunction;
 import de.osmembrane.model.xml.XMLFunctionGroup;
 import de.osmembrane.resources.Constants;

@@ -1,14 +1,5 @@
 package de.osmembrane.model.pipeline;
 
-import de.osmembrane.model.Identifier;
-import de.osmembrane.model.ModelProxy;
-import de.osmembrane.model.pipeline.AbstractConnector.ConnectorPosition;
-import de.osmembrane.model.pipeline.Connector;
-import de.osmembrane.model.pipeline.ConnectorException.Type;
-import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
-import de.osmembrane.model.xml.XMLPipe;
-import de.osmembrane.model.xml.XMLTask;
-
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -20,7 +11,14 @@ import java.util.Observable;
 
 import javax.imageio.ImageIO;
 
+import de.osmembrane.model.Identifier;
+import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.pipeline.AbstractConnector.ConnectorPosition;
+import de.osmembrane.model.pipeline.ConnectorException.Type;
+import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
 import de.osmembrane.model.xml.XMLFunction;
+import de.osmembrane.model.xml.XMLPipe;
+import de.osmembrane.model.xml.XMLTask;
 import de.osmembrane.tools.I18N;
 
 /**

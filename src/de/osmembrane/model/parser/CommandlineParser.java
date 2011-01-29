@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import javax.naming.OperationNotSupportedException;
-
-import de.osmembrane.Application;
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractParameter;

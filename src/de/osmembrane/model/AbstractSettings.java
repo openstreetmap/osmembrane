@@ -1,10 +1,10 @@
 package de.osmembrane.model;
 
 import java.io.Serializable;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import de.osmembrane.model.settings.AbstractSetting;
 

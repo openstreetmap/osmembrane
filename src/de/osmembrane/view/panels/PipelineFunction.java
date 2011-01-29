@@ -124,6 +124,9 @@ public class PipelineFunction extends LibraryFunction {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
+						PipelineFunction.this, e, pipeline);
+				pipeline.dispatchEvent(pipelineEvent);
 			}
 
 			@Override

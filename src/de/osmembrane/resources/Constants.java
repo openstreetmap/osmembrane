@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.Locale;
 
 import de.osmembrane.Application;
-import de.osmembrane.model.pipeline.AbstractFunctionPrototype;
 import de.osmembrane.model.pipeline.Pipeline;
 
 /**

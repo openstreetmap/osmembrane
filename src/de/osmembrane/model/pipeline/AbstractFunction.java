@@ -1,12 +1,12 @@
 package de.osmembrane.model.pipeline;
 
-import de.osmembrane.model.xml.XMLHasDescription;
-
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
+
+import de.osmembrane.model.xml.XMLHasDescription;
 
 /**
  * This represents a simple Function for the XML-Functions.
