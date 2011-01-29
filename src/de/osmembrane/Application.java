@@ -79,8 +79,8 @@ public class Application {
 		if (t instanceof ControlledException) {
 			ControlledException ce = (ControlledException) t;
 
-			Throwable toShow = t;
-			if (ce.getCause() != null) {
+			Throwable toShow = t;			
+			if ((ce.getCause() != null) && (ce.getMessage() == null)) {
 				toShow = ce.getCause();
 			}
 			ViewRegistry.showException(toShow, ce.getKind(),
