@@ -56,9 +56,15 @@ public class SavePipelineAction extends AbstractAction {
 
 		if (result == JFileChooser.APPROVE_OPTION) {
 			
+			/* check if the .osmembrane extension is missing */
+			String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+			if (!filePath.endsWith(FileType.OSMEMBRANE.getExtension())) {
+				filePath = filePath + FileType.OSMEMBRANE.getExtension();
+			}
+			
 			URL file;
 			try {
-				file = fileChooser.getSelectedFile().toURI().toURL();
+				file = new URL("file:" + filePath);
 			} catch (MalformedURLException e2) {
 				file = null;
 			}

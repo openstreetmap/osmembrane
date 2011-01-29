@@ -84,7 +84,7 @@ public enum FileType {
 			@Override
 			public boolean accept(File f) {
 				for(String extension : getAllExtensions()) {
-					if (f.getName().toLowerCase().endsWith(extension)) {
+					if (f.getName().toLowerCase().endsWith(extension) || f.isDirectory()) {
 						return true;
 					}
 				}
