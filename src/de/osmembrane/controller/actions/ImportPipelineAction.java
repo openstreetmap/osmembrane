@@ -51,6 +51,8 @@ public class ImportPipelineAction extends AbstractAction {
 
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
+		fileChooser.addChoosableFileFilter(FileType.BASH.getFileFilter());
+		fileChooser.addChoosableFileFilter(FileType.CMD.getFileFilter());
 
 		int result = fileChooser.showOpenDialog(mainFrame);
 

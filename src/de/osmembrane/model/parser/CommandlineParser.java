@@ -121,17 +121,20 @@ public class CommandlineParser implements IParser {
 				/* Create the out-Connectors and add a tee if needed. */
 				StringBuilder teeBuilder = new StringBuilder();
 				for (AbstractConnector connector : function.getOutConnectors()) {
-
-					/*
-					 * add to the index + 1, 'cause the first tee-out-connector
-					 * has function.connector + 1 as pipe key.
-					 */
-					connectorMap.put(connector, (pipeIndex + 1));
+					pipeIndex++;
+					
+					
 					builder.append(" outPipe." + connector.getConnectorIndex()
 							+ "=" + pipeIndex);
 
 					/* Add a tee, 'cause more than one connection is attached. */
 					if (connector.getConnections().length > 1) {
+						/*
+						 * add to the index + 1, 'cause the first tee-out-connector
+						 * has function.connector + 1 as pipe key.
+						 */
+						connectorMap.put(connector, (pipeIndex + 1));
+						
 						teeBuilder.append(breaklineSymbol);
 						
 						/* add the correct --tee */
@@ -153,6 +156,8 @@ public class CommandlineParser implements IParser {
 							teeBuilder
 									.append(" outPipe." + i + "=" + pipeIndex);
 						}
+					} else {
+						connectorMap.put(connector, pipeIndex);
 					}
 				}
 
