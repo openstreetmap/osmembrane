@@ -1,15 +1,12 @@
 package de.osmembrane.view.panels;
 
-import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -18,7 +15,6 @@ import java.util.Observer;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultButtonModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
@@ -97,7 +93,7 @@ public class InspectorPanel extends JPanel implements Observer {
 	 * Useful {@link Color} definitions
 	 */
 	private static final Color LIGHT_BLUE = new Color(0.9f, 0.9f, 1.0f);
-	private static final Color LIGHTER_BLUE = new Color(0.95f, 0.95f, 1.0f);
+	//private static final Color LIGHTER_BLUE = new Color(0.95f, 0.95f, 1.0f);
 	private static final Color LIGHT_WHITE = new Color(0.95f, 0.95f, 0.95f);
 	private static final Color LIGHTER_WHITE = new Color(1.0f, 1.0f, 1.0f);
 
@@ -596,10 +592,19 @@ public class InspectorPanel extends JPanel implements Observer {
 
 		private static final long serialVersionUID = -3716607547245684756L;
 
+		/**
+		 * The param with boolean to be edited
+		 */
 		private AbstractParameter param;
+
+		/**
+		 * The last edit action in {@link System#currentTimeMillis()}.
+		 */
+		private long lastSetFire;
 
 		public InspectorPanelTableBooleanCheckBoxModel(AbstractParameter param) {
 			this.param = param;
+			this.lastSetFire = System.currentTimeMillis();
 		}
 
 		@Override
@@ -609,6 +614,20 @@ public class InspectorPanel extends JPanel implements Observer {
 
 		@Override
 		public void setSelected(boolean b) {
+			/*
+			 * this method fires way too often, so we got to make sure, it does
+			 * not constantly recall itself. (= 50msec blocking)
+			 */
+			long now = System.currentTimeMillis();
+			if (now - lastSetFire < 50) {
+				return;
+			}
+			lastSetFire = System.currentTimeMillis();
+
+			/*
+			 * additionally we only want swaps to get to the model. Ask the damn
+			 * Swing coders why the fork this thing is so messed up.
+			 */
 			Boolean bool = Boolean.valueOf(b);
 			if (param.getValue().equals(bool.toString())) {
 				return;
@@ -622,6 +641,7 @@ public class InspectorPanel extends JPanel implements Observer {
 
 			ActionRegistry.getInstance().get(EditPropertyAction.class)
 					.actionPerformed(cfcpe);
+			System.out.println("FIRE!");
 		}
 
 	}
