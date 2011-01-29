@@ -316,6 +316,11 @@ public class InspectorPanel extends JPanel implements Observer {
 
 						@Override
 						public boolean isSelected() {
+							/*
+							 * model.setSelected(ap.getValue()
+							 * .equals(Boolean.TRUE.toString())); return
+							 * super.isSelected();
+							 */
 							return ap.getValue()
 									.equals(Boolean.TRUE.toString());
 						}
@@ -339,6 +344,11 @@ public class InspectorPanel extends JPanel implements Observer {
 					rowEditorModel.setEditorRow(i + 1,
 							new JTextFieldWithButtonCellEditor(jtfwb));
 					break;
+
+				/*
+				 * geht nicht: gibts nicht (doesn't work: doesn't exist) case
+				 * LIST: break;
+				 */
 
 				default:
 					JTextField textField = new JTextField(ap.getValue());

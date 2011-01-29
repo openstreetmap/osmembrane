@@ -86,6 +86,17 @@ public class JTextFieldWithButton extends JPanel {
 	public void setValue(String value) {
 		field.setText(value);
 	}
+	
+	/**
+	 * Sets the content value to value
+	 * 
+	 * @param value
+	 * @param fixed whether the value shall be editable
+	 */
+	public void setValue(String value, boolean fixed) {
+		field.setEditable(!fixed);
+		field.setText(value);
+	}
 
 	/**
 	 * @return the content value
