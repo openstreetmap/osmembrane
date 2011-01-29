@@ -25,6 +25,7 @@ import de.osmembrane.controller.actions.NewPipelineAction;
 import de.osmembrane.controller.actions.PreviewPipelineAction;
 import de.osmembrane.controller.actions.RedoAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
+import de.osmembrane.controller.actions.ShowAboutAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
 import de.osmembrane.controller.actions.UndoAction;
 
@@ -82,6 +83,7 @@ public class ActionRegistry {
 
 		// other actions
 		register(new ShowHelpAction());
+		register(new ShowAboutAction());
 		register(new ChangeSettingsAction());
 		register(new ExitAction());
 	}

@@ -41,6 +41,7 @@ import de.osmembrane.controller.actions.NewPipelineAction;
 import de.osmembrane.controller.actions.PreviewPipelineAction;
 import de.osmembrane.controller.actions.RedoAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
+import de.osmembrane.controller.actions.ShowAboutAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
 import de.osmembrane.controller.actions.UndoAction;
 import de.osmembrane.model.ModelProxy;
@@ -217,6 +218,7 @@ public class MainFrame extends AbstractFrame {
 		JMenu aboutMenu = new JMenu(I18N.getInstance().getString(
 				"View.Menu.About"));
 		aboutMenu.add(ActionRegistry.getInstance().get(ShowHelpAction.class));
+		aboutMenu.add(ActionRegistry.getInstance().get(ShowAboutAction.class));
 		menuBar.add(aboutMenu);
 
 		setJMenuBar(menuBar);
