@@ -1,12 +1,15 @@
 package de.osmembrane.view.panels;
 
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -15,6 +18,7 @@ import java.util.Observer;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultButtonModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
@@ -27,6 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -311,20 +316,8 @@ public class InspectorPanel extends JPanel implements Observer {
 					break;
 
 				case BOOLEAN:
-					JCheckBox jcb = new JCheckBox() {
-						private static final long serialVersionUID = 2308282763353016360L;
-
-						@Override
-						public boolean isSelected() {
-							/*
-							 * model.setSelected(ap.getValue()
-							 * .equals(Boolean.TRUE.toString())); return
-							 * super.isSelected();
-							 */
-							return ap.getValue()
-									.equals(Boolean.TRUE.toString());
-						}
-					};
+					JCheckBox jcb = new JCheckBox();
+					jcb.setModel(new InspectorPanelTableBooleanCheckBoxModel(ap));
 					DefaultCellEditor dceBoolean = new DefaultCellEditor(jcb);
 					rowEditorModel.setEditorRow(i + 1, dceBoolean);
 					break;
@@ -361,7 +354,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				}
 			} /* for */
 		}
-			
+
 		propertyTableModel.fireTableDataChanged();
 	}
 
@@ -456,7 +449,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				ContainingFunctionChangeParameterEvent cfcpe = new ContainingFunctionChangeParameterEvent(
 						this, inspecting);
 
-				if (row > 0) {
+				if ((row > 0) && (aValue instanceof String)) {
 					cfcpe.setChangedParameter(inspecting.getActiveTask()
 							.getParameters()[row - 1]);
 					cfcpe.setNewParameterValue(aValue.toString());
@@ -590,6 +583,48 @@ public class InspectorPanel extends JPanel implements Observer {
 		}
 
 	} /* InspectorPanelTableCustomEnumComboBoxModel */
+
+	/**
+	 * /** Model for a boolean property of the check box of the
+	 * {@link InspectorPanel} 's table. I suppose by now, you know these
+	 * abominations.
+	 * 
+	 * @author tobias_kuhn
+	 * 
+	 */
+	class InspectorPanelTableBooleanCheckBoxModel extends ToggleButtonModel {
+
+		private static final long serialVersionUID = -3716607547245684756L;
+
+		private AbstractParameter param;
+
+		public InspectorPanelTableBooleanCheckBoxModel(AbstractParameter param) {
+			this.param = param;
+		}
+
+		@Override
+		public boolean isSelected() {
+			return param.getValue().equals(Boolean.TRUE.toString());
+		}
+
+		@Override
+		public void setSelected(boolean b) {
+			Boolean bool = Boolean.valueOf(b);
+			if (param.getValue().equals(bool.toString())) {
+				return;
+			}
+
+			ContainingFunctionChangeParameterEvent cfcpe = new ContainingFunctionChangeParameterEvent(
+					this, inspecting);
+
+			cfcpe.setChangedParameter(param);
+			cfcpe.setNewParameterValue(bool.toString());
+
+			ActionRegistry.getInstance().get(EditPropertyAction.class)
+					.actionPerformed(cfcpe);
+		}
+
+	}
 
 	/**
 	 * The custom cell renderer for the display table of the
