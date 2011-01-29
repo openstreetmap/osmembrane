@@ -282,7 +282,7 @@ public class InspectorPanel extends JPanel implements Observer {
 	 */
 	public void inspect(AbstractFunction inspect) {
 		rowEditorModel.clear();
-		propertyTable.setEditingRow(-1);
+		propertyTable.removeEditor();
 
 		this.inspecting = inspect;
 
@@ -361,7 +361,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				}
 			} /* for */
 		}
-
+			
 		propertyTableModel.fireTableDataChanged();
 	}
 
