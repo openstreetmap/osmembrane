@@ -159,8 +159,21 @@
                   </documentation>
                 </annotation>
               </enumeration>
+              <enumeration value="list">
+                <annotation>
+                  <documentation>
+                    A list with for example a key or key.value list.
+					The Parameter listType has to be set.
+                  </documentation>
+                </annotation>
+              </enumeration>
             </restriction>
           </simpleType>
+        </attribute>
+		<attribute name="listType" type="string">
+          <annotation>
+            <documentation>The type of the list, only required if type is list.</documentation>
+          </annotation>
         </attribute>
         <attribute name="booleanEncoding" default="yesno">
           <annotation>

@@ -50,6 +50,14 @@ public abstract class AbstractParameter extends Observable implements
 	public abstract AbstractEnumValue[] getEnumValue();
 
 	/**
+	 * Returns the list-type of the parameter, is only set, if getType() returns
+	 * {@link ParameterType#LIST}.
+	 * 
+	 * @return the type of the list
+	 */
+	public abstract String getListType();
+
+	/**
 	 * Returns the default value of the parameter.
 	 * 
 	 * @return default value
@@ -87,7 +95,7 @@ public abstract class AbstractParameter extends Observable implements
 	 * the processing is undefined.
 	 */
 	public abstract boolean isDefaultParameter();
-	
+
 	/**
 	 * Copies the parameter.
 	 */

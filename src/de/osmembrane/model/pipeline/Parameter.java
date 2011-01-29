@@ -90,6 +90,11 @@ public class Parameter extends AbstractParameter {
 		EnumValue[] values = new EnumValue[enumValues.size()];
 		return enumValues.toArray(values);
 	}
+	
+	@Override
+	public String getListType() {
+		return xmlParam.getListType();
+	}
 
 	@Override
 	public String getDefaultValue() {

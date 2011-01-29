@@ -52,7 +52,12 @@ public enum ParameterType {
 	 * The String should be in the following format: double,double,double,double
 	 * first double is left, second right, third top and fourth is bottom
 	 */
-	BBOX("BoundingBox");
+	BBOX("BoundingBox"),
+	
+	/**
+	 * A comma sperated list of values.
+	 */
+	LIST("List");
 
 	/**
 	 * Friendly name of the type.

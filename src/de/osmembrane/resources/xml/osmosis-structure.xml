@@ -1892,7 +1892,7 @@
 				</description>
 				<inputPipe type="entity" count="single" index="0" />
 				<outputPipe type="entity" count="single" index="0" />
-				<parameter name="keyList" type="string">
+				<parameter name="keyList" type="list" listType="node-key">
 					<description lang="en">
 						<value>
 							Comma-separated list of desired keys.
@@ -1913,7 +1913,7 @@
 				</description>
 				<inputPipe type="entity" count="single" index="0" />
 				<outputPipe type="entity" count="single" index="0" />
-				<parameter name="keyValueList" type="string">
+				<parameter name="keyValueList" type="list" listType="node-key-value">
 					<description lang="en">
 						<value>
 							Comma-separated list of desired key.value
@@ -1964,7 +1964,7 @@
 				</description>
 				<inputPipe type="entity" count="single" index="0" />
 				<outputPipe type="entity" count="single" index="0" />
-				<parameter name="keyList" type="string">
+				<parameter name="keyList" type="list" listType="way-key">
 					<description lang="en">
 						<value>
 							Comma-separated list of desired keys.
@@ -1985,7 +1985,7 @@
 				</description>
 				<inputPipe type="entity" count="single" index="0" />
 				<outputPipe type="entity" count="single" index="0" />
-				<parameter name="keyValueList" type="string">
+				<parameter name="keyValueList" type="list" listType="way-key-value">
 					<description lang="en">
 						<value>
 							Comma-separated list of desired key.value
