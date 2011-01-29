@@ -69,7 +69,7 @@ public class ExceptionDialog extends AbstractDialog {
 		exceptionMessage = new JLabel();
 		exceptionText = new JTextArea();
 		exceptionText.setEditable(false);
-	
+
 		exceptionTextPane = new JScrollPane(exceptionText);
 		exceptionTextPane.setPreferredSize(new Dimension(640, 480));
 
@@ -92,7 +92,10 @@ public class ExceptionDialog extends AbstractDialog {
 		showTraceButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showTraceButton.setVisible(false);						
+				exceptionTextPane.setPreferredSize(new Dimension(
+						(getWidth() > 648) ? getWidth() - 8 : 640,
+						480));
+				showTraceButton.setVisible(false);
 				exceptionTextPane.setVisible(true);
 				exceptionText.setCaretPosition(0);
 				pack();
@@ -185,7 +188,7 @@ public class ExceptionDialog extends AbstractDialog {
 		if (severity == null) {
 			severity = ExceptionSeverity.INVALID;
 		}
-		
+
 		// set icon
 
 		switch (severity) {

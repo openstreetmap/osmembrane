@@ -29,7 +29,7 @@ public abstract class AbstractDialog extends JDialog implements IView {
 	 * common constructor for all dialog view elements
 	 */
 	public AbstractDialog() {
-		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		setModal(true);
 		
 		// ability activate buttons with return
