@@ -641,7 +641,6 @@ public class InspectorPanel extends JPanel implements Observer {
 
 			ActionRegistry.getInstance().get(EditPropertyAction.class)
 					.actionPerformed(cfcpe);
-			System.out.println("FIRE!");
 		}
 
 	}
