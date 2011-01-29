@@ -66,14 +66,13 @@ public class ImportPipelineAction extends AbstractAction {
 			}
 			
 			try {
-				ModelProxy.getInstance().accessPipeline().loadPipeline(file);
+				ModelProxy.getInstance().accessPipeline().importPipeline(file, FileType.fileTypeFor(fileChooser.getSelectedFile()));
 			} catch (FileException e1) {
-				e1.getParentException().printStackTrace();
 				Application.handleException(new ControlledException(this,
 						ExceptionSeverity.WARNING, e1, I18N.getInstance()
 								.getString(
 										"Controller.Actions.Load.Failed."
-												+ e1.getType())));
+												+ e1.getType(), e1.getParentException().getMessage())));
 			}
 		}
 	}

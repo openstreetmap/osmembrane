@@ -118,7 +118,7 @@ public class Parameter extends AbstractParameter {
 	}
 
 	@Override
-	public boolean isDefaulXMLParameter() {
+	public boolean isDefaultParameter() {
 		return xmlParam.isDefaulXMLParameter();
 	}
 

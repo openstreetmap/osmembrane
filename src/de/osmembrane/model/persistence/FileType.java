@@ -1,6 +1,7 @@
 package de.osmembrane.model.persistence;
 
 import java.io.File;
+import java.net.URL;
 
 import javax.swing.filechooser.FileFilter;
 
@@ -20,22 +21,22 @@ public enum FileType {
 	/**
 	 * Bash normally used under UNIX systems.
 	 */
-	BASH(".sh", BashPersistence.class, BashParser.class),
+	BASH(new String[]{".sh"}, BashPersistence.class, BashParser.class),
 
 	/**
 	 * CMD normally used under Windows systems.
 	 */
-	CMD(".bat", CmdPersistence.class, CmdParser.class),
+	CMD(new String[]{".bat", ".cmd"}, CmdPersistence.class, CmdParser.class),
 
 	/**
 	 * OSMembrane filetype.
 	 */
-	OSMEMBRANE(".osmembrane", OSMembranePersistence.class, null);
+	OSMEMBRANE(new String[]{".osmembrane"}, OSMembranePersistence.class, null);
 
 	/**
 	 * {@link FileType} as a string.
 	 */
-	private String extension;
+	private String[] extensions;
 
 	/**
 	 * Matching persistence for the {@link FileType}.
@@ -47,21 +48,29 @@ public enum FileType {
 	 */
 	private Class<? extends IParser> parserClass;
 
-	private FileType(String extension,
+	private FileType(String[] extensions,
 			Class<? extends AbstractPersistence> persistenceClass,
 			Class<? extends IParser> parserClass) {
-		this.extension = extension;
+		this.extensions = extensions;
 		this.persistenceClass = persistenceClass;
 		this.parserClass = parserClass;
 	}
 
 	/**
-	 * Returns the extension as a String.
+	 * Returns the default extension as a String.
 	 * 
 	 * @return extension as a String
 	 */
 	public String getExtension() {
-		return extension;
+		return extensions[0];
+	}
+	
+	/**
+	 * Returns all possible extensions for a filetype as a String-Array.
+	 * @return
+	 */
+	public String[] getAllExtensions() {
+		return extensions;
 	}
 
 	/**
@@ -74,12 +83,26 @@ public enum FileType {
 
 			@Override
 			public boolean accept(File f) {
-				return f.getName().toLowerCase().endsWith(getExtension());
+				for(String extension : getAllExtensions()) {
+					if (f.getName().toLowerCase().endsWith(extension)) {
+						return true;
+					}
+				}
+				return false;
 			}
 
 			@Override
 			public String getDescription() {
-				return getName() + " (*" + getExtension() + ")";
+				StringBuilder builder = new StringBuilder();
+				for(int i = 0; i < getAllExtensions().length; i++) {
+					builder.append("*");
+					builder.append(getAllExtensions()[i]);
+					if(i+1 < getAllExtensions().length) {
+						builder.append(", ");
+					}
+				}
+				
+				return getName() + " (" + builder.toString() + ")";
 			}
 		};
 	}
@@ -103,8 +126,28 @@ public enum FileType {
 		return parserClass;
 	}
 
+	/**
+	 * Returns the internationalized name as String.
+	 * @return
+	 */
 	public String getName() {
 		return I18N.getInstance().getString(
 				"Controller.Actions.FileType." + this.toString() + ".Name");
+	}
+
+	/**
+	 * Returns the a corresponding filetype for a given filename.
+	 * 
+	 * @param file filename for which the filetype is needed.
+	 * 
+	 * @return filetype if a matching one is found, otherwise NULL
+	 */
+	public static FileType fileTypeFor(File file) {
+		for(FileType fileType : FileType.values()) {
+			if (fileType.getFileFilter().accept((file))) {
+				return fileType;
+			}
+		}
+		return null;
 	}
 }

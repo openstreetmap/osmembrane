@@ -86,7 +86,7 @@ public abstract class AbstractParameter extends Observable implements
 	 * single parameter of a given task should be declared default, otherwise
 	 * the processing is undefined.
 	 */
-	public abstract boolean isDefaulXMLParameter();
+	public abstract boolean isDefaultParameter();
 	
 	/**
 	 * Copies the parameter.

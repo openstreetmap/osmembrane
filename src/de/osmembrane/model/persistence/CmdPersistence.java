@@ -15,6 +15,7 @@ import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.parser.CmdParser;
+import de.osmembrane.model.parser.IParser;
 import de.osmembrane.model.parser.ParseException;
 import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.FileException.Type;
@@ -27,7 +28,7 @@ import de.osmembrane.model.pipeline.AbstractFunction;
  */
 public class CmdPersistence extends AbstractPersistence {
 
-	private static final Class<CmdParser> PARSER = CmdParser.class;
+	private static final Class<? extends IParser> PARSER = FileType.CMD.getParserClass();
 	
 	@Override
 	public void save(URL filename, Object data) throws FileException {

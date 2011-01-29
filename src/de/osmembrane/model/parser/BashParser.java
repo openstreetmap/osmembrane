@@ -8,9 +8,11 @@ package de.osmembrane.model.parser;
  */
 public class BashParser extends CommandlineParser {
 
-	protected static String BREAKLINE_SYMBOL = "\\\n";
+	protected String BREAKLINE_SYMBOL = "\\";
+	protected String BREAKLINE_COMMAND = "\n";
 	
 	public BashParser() {
 		super.setBreaklineSymbol(BREAKLINE_SYMBOL);
+		super.setBreaklineCommand(BREAKLINE_COMMAND);
 	}
 }

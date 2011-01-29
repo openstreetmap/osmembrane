@@ -163,7 +163,7 @@ public class Pipeline extends AbstractPipeline {
 		/* is checked by persistence */
 		@SuppressWarnings("unchecked")
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
-
+		
 		this.functions = functions;
 		for (AbstractFunction function : functions) {
 			function.addObserver(function);

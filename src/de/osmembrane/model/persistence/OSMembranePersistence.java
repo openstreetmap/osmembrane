@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
@@ -56,8 +57,7 @@ public class OSMembranePersistence extends AbstractPersistence {
 	@Override
 	public Object load(URL file) throws FileException {
 		try {
-			FileInputStream fis = new FileInputStream(file.toString());
-			BufferedInputStream bis = new BufferedInputStream(fis);
+			BufferedInputStream bis = new BufferedInputStream(file.openStream());
 			ObjectInputStream ois = new ObjectInputStream(bis);
 			
 			@SuppressWarnings("unchecked")
@@ -65,7 +65,6 @@ public class OSMembranePersistence extends AbstractPersistence {
 			
 			ois.close();
 			bis.close();
-			fis.close();
 			
 			return object;
 		} catch (FileNotFoundException e) {
