@@ -74,6 +74,7 @@ public class ExceptionDialog extends AbstractDialog {
 		exceptionTextPane.setPreferredSize(new Dimension(640, 480));
 
 		okButton = new JButton();
+		okButton.addKeyListener(returnButtonListener);
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -87,6 +88,7 @@ public class ExceptionDialog extends AbstractDialog {
 
 		showTraceButton = new JButton(I18N.getInstance().getString(
 				"View.ShowStackTrace"));
+		showTraceButton.addKeyListener(returnButtonListener);
 		showTraceButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

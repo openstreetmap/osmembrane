@@ -3,6 +3,7 @@ package de.osmembrane.view.dialogs;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -48,7 +50,6 @@ public class CommandLineDialog extends AbstractDialog implements ICommandLineDia
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.gridwidth = 3;
 		gbc.insets = new Insets(8, 8, 8, 8);
 
 		// text
@@ -61,15 +62,18 @@ public class CommandLineDialog extends AbstractDialog implements ICommandLineDia
 		// export
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.gridwidth = 1;
+		
+		JPanel buttonGrid = new JPanel(new GridLayout(1, 3, 10, 0));
+		
 		JButton exportButton = new JButton(ActionRegistry.getInstance().get(
 				ExportPipelineAction.class));
-		add(exportButton, gbc);
+		exportButton.addKeyListener(returnButtonListener);
+		buttonGrid.add(exportButton);
 
 		// Copy to clipboard
-		gbc.gridx = 1;
 		JButton copyToClipButton = new JButton(I18N.getInstance().getString(
 				"View.CopyToClipboard"));
+		copyToClipButton.addKeyListener(returnButtonListener);
 		copyToClipButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -80,18 +84,20 @@ public class CommandLineDialog extends AbstractDialog implements ICommandLineDia
 								null);
 			}
 		});
-		add(copyToClipButton, gbc);
+		buttonGrid.add(copyToClipButton);
 
 		// OK Button
-		gbc.gridx = 2;
 		JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
+		okButton.addKeyListener(returnButtonListener);
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				hideWindow();
 			}
 		});
-		add(okButton, gbc);
+		buttonGrid.add(okButton);
+		
+		add(buttonGrid, gbc);
 
 		pack();
 		centerWindow();
