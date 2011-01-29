@@ -130,7 +130,8 @@ public class ConnectorTest {
 	 */
 	@Test
 	public void testGetDescription() {
-		assertNotNull("Connector description is null", conOut.getDescription());
+		assertNull("Connector description is not null", conOut.getDescription());
+		// connectors do not have descriptions.
 	}
 
 	/**

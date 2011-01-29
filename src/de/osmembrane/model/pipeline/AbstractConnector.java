@@ -40,7 +40,7 @@ public abstract class AbstractConnector implements Serializable {
 	/**
 	 * Returns the {@link ConnectorType} of the {@link AbstractConnector}.
 	 * 
-	 * @return type of the connector
+	 * @return <strike>type of the connector</strike> null
 	 */
 	public abstract ConnectorType getType();
 

@@ -12,7 +12,7 @@ public class ResourceTest {
 	@Test
 	public void testGetURL() {
 		Resource res = Resource.PROGRAM_ICON;
-		System.out.println(res.getURL("add_connection.png"));
+		fail("Not yet implemented");
 	}
 
 	@Test
