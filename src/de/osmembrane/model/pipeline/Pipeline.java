@@ -166,7 +166,7 @@ public class Pipeline extends AbstractPipeline {
 		
 		this.functions = functions;
 		for (AbstractFunction function : functions) {
-			function.addObserver(function);
+			function.addObserver(this);
 		}
 
 		/*

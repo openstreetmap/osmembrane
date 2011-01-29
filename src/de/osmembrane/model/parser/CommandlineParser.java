@@ -11,16 +11,21 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.parser.ParseException.ErrorType;
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractParameter;
+import de.osmembrane.model.pipeline.AbstractTask;
 import de.osmembrane.model.pipeline.ConnectorType;
+import de.osmembrane.tools.I18N;
 
 public class CommandlineParser implements IParser {
 
 	protected String breaklineSymbol = "<linebreak>";
 	protected String breaklineCommand = "\n";
+
+	protected String DEFAULT_KEY = "DEFAULTKEY";
 
 	protected static final Pattern PATTERN_TASK = Pattern
 			.compile("--([a-zA-Z0-9\\-]+)(.+?)((?=--)|$)");
@@ -66,6 +71,8 @@ public class CommandlineParser implements IParser {
 	public List<AbstractFunction> parseString(String input)
 			throws ParseException {
 
+		List<AbstractFunction> pipelineFunctions = new ArrayList<AbstractFunction>();
+
 		Map<String, String> teeMap = new HashMap<String, String>();
 
 		input = input.replace(breaklineSymbol, " ");
@@ -81,22 +88,22 @@ public class CommandlineParser implements IParser {
 			Map<Integer, String> inPipes = new HashMap<Integer, String>();
 			Map<Integer, String> outPipes = new HashMap<Integer, String>();
 
-			System.out.println(taskName);
+//			System.out.println(taskName);
 
 			Matcher paramMatcher = PATTERN_PARAMETER.matcher(taskParameters);
 			while (paramMatcher.find()) {
 				String[] keyValuePair = getParameter(paramMatcher);
-				
+
 				/*
 				 * change the key to an empty String, if it NULL. this is a
 				 * default parameter.
 				 */
 				if (keyValuePair[0] == null) {
-					keyValuePair[0] = "";
+					keyValuePair[0] = DEFAULT_KEY;
 				}
-				
-				
-				Matcher pipeMatcher = PATTERN_PIPE.matcher(keyValuePair[0].toLowerCase());
+
+				Matcher pipeMatcher = PATTERN_PIPE.matcher(keyValuePair[0]
+						.toLowerCase());
 				if (pipeMatcher.find()) {
 					/* found a pipe */
 					String inOutPipe = pipeMatcher.group(1);
@@ -114,10 +121,10 @@ public class CommandlineParser implements IParser {
 					/* found a normal parameter */
 					parameters.put(keyValuePair[0], keyValuePair[1]);
 
-					System.out.println("     Param: "
-							+ (keyValuePair[0].equals("") ? "DEFAULT"
-									: keyValuePair[0]) + " = "
-							+ keyValuePair[1]);
+//					System.out.println("     Param: "
+//							+ (keyValuePair[0].equals(DEFAULT_KEY) ? DEFAULT_KEY
+//									: keyValuePair[0]) + " = "
+//							+ keyValuePair[1]);
 				}
 			}
 
@@ -128,12 +135,39 @@ public class CommandlineParser implements IParser {
 			if (taskName.equals("tee") || taskName.equals("tee-change")) {
 
 			} else {
-				// ...
+				AbstractFunction function = ModelProxy.getInstance()
+						.accessFunctions()
+						.getMatchingFunctionForTaskName(taskName);
+
+				if (function == null) {
+					throw new ParseException(ErrorType.UNKNOWN_TASK);
+				}
+
+				/* copy parameters to the function */
+				Set<String> keySet = parameters.keySet();
+				for (String key : keySet) {
+					boolean foundKey = false;
+					for (AbstractParameter parameter : function.getActiveTask()
+							.getParameters()) {
+						if (parameter.getName().toLowerCase()
+								.equals(key.toLowerCase())
+								|| (key.equals(DEFAULT_KEY) && parameter
+										.isDefaultParameter())) {
+							parameter.setValue(parameters.get(key));
+							foundKey = true;
+						}
+					}
+					if (!foundKey) {
+						throw new ParseException(ErrorType.UNKNOWN_TASK_FORMAT,
+								I18N.getInstance().getString("Model.Parser.ParameterNotFound", taskName, key));
+					}
+				}
+
+				pipelineFunctions.add(function);
 			}
 		}
 
-		throw new ParseException(ErrorType.UNKNOWN_TASK);
-		// return new ArrayList<AbstractFunction>();
+		return pipelineFunctions;
 	}
 
 	@Override

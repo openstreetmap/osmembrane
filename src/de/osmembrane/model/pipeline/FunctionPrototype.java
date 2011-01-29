@@ -163,6 +163,41 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	}
 
 	@Override
+	public AbstractFunction getMatchingFunctionForTaskName(String taskName) {
+		AbstractTask foundTask = null;
+		
+		for (AbstractFunctionGroup group : getFunctionGroups()) {
+			for (AbstractFunction function : group.getFunctions()) {
+				
+				for (AbstractTask task : function.getAvailableTasks()) {
+					if (task.getName().toLowerCase()
+							.equals(taskName.toLowerCase())) {
+						foundTask = task;
+					}
+					if(task.getShortName() != null) {
+						if(task.getShortName().toLowerCase().equals(taskName.toLowerCase())) {
+							foundTask = task;
+						}
+					}
+				}
+				
+				if(foundTask != null) {
+					
+					AbstractFunction functionCopy = function.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
+					for (AbstractTask task : functionCopy.getAvailableTasks()) {
+						if(task.getName().equals(foundTask.getName())) {
+							functionCopy.setActiveTask(task);
+						}
+					}
+					return functionCopy;
+				}
+			}
+		}
+		
+		return null;
+	}
+
+	@Override
 	protected Identifier pushFGToMap(AbstractFunctionGroup fg,
 			XMLFunctionGroup xmlFG) {
 		Identifier ident = new Identifier(xmlFG.getId());

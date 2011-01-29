@@ -42,6 +42,15 @@ public abstract class AbstractFunctionPrototype extends Observable {
 	public abstract AbstractFunction[] getFilteredFunctions(String matching);
 	
 	/**
+	 * Returns the matching function for a given task-name.
+	 * The corresponding task is set as active
+	 * 
+	 * @param taskName name of task which should be found
+	 * @return the function for the task
+	 */
+	public abstract AbstractFunction getMatchingFunctionForTaskName(String taskName);
+
+	/**
 	 * Adds an Identifier for an {@link AbstractFunctionGroup} to the Map.
 	 * 
 	 * @param fg {@link AbstractFunctionGroup} which should be mapped

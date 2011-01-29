@@ -91,7 +91,7 @@
             <documentation>True if the parameter is required by the Osmosis task.</documentation>
           </annotation>
         </attribute>
-        <attribute name="defaulXMLParameter" type="boolean" default="false">
+        <attribute name="defaultParameter" type="boolean" default="false">
           <annotation>
             <documentation>
               True if the parameter is the default parameter of the task.

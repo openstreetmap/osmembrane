@@ -314,6 +314,8 @@ public class InspectorPanel extends JPanel implements Observer {
 				case BOOLEAN:
 					JCheckBox jcb = new JCheckBox();
 					jcb.setModel(new InspectorPanelTableBooleanCheckBoxModel(ap));
+					jcb.setSelected(ap.getValue().equals(Boolean.TRUE.toString()));
+					
 					DefaultCellEditor dceBoolean = new DefaultCellEditor(jcb);
 					rowEditorModel.setEditorRow(i + 1, dceBoolean);
 					break;

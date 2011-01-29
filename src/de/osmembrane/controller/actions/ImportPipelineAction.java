@@ -16,6 +16,7 @@ import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileException;
+import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
@@ -38,8 +39,10 @@ public class ImportPipelineAction extends AbstractAction {
 	 */
 	public ImportPipelineAction() {
 		putValue(Action.NAME, "Import Pipeline");
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("import_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("import_pipeline.png", Size.NORMAL));
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+				"import_pipeline.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+				"import_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
@@ -57,22 +60,35 @@ public class ImportPipelineAction extends AbstractAction {
 		int result = fileChooser.showOpenDialog(mainFrame);
 
 		if (result == JFileChooser.APPROVE_OPTION) {
-			
+
 			URL file;
 			try {
 				file = fileChooser.getSelectedFile().toURI().toURL();
 			} catch (MalformedURLException e2) {
 				file = null;
 			}
-			
+
 			try {
-				ModelProxy.getInstance().accessPipeline().importPipeline(file, FileType.fileTypeFor(fileChooser.getSelectedFile()));
+				ModelProxy
+						.getInstance()
+						.accessPipeline()
+						.importPipeline(
+								file,
+								FileType.fileTypeFor(fileChooser
+										.getSelectedFile()));
 			} catch (FileException e1) {
+				String message;
+				if (e1.getType() == Type.SYNTAX_PROBLEM) {
+					message = I18N.getInstance().getString(
+							"Controller.Actions.Load.Failed." + e1.getType(),
+							e1.getParentException().getMessage());
+				} else {
+					message = I18N.getInstance().getString(
+							"Controller.Actions.Load.Failed." + e1.getType());
+				}
+
 				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.WARNING, e1, I18N.getInstance()
-								.getString(
-										"Controller.Actions.Load.Failed."
-												+ e1.getType(), e1.getParentException().getMessage())));
+						ExceptionSeverity.WARNING, e1, message));
 			}
 		}
 	}

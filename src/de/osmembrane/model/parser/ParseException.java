@@ -26,6 +26,7 @@ public class ParseException extends Exception {
 	}
 
 	private ErrorType type;
+	private String message;
 	
 	/**
 	 * Creates a new {@link ParseException} with a given {@link ErrorType}.
@@ -33,9 +34,14 @@ public class ParseException extends Exception {
 	 * @param type corresponding type for the {@link ParseException}
 	 */
 	public ParseException(ErrorType type) {
-		this.type = type;
+		this(type, null);
 	}
 	
+	public ParseException(ErrorType type, String message) {
+		this.type = type;
+		this.message = message;
+	}
+
 	/**
 	 * Returns the {@link ErrorType} of the {@link ParseException}.
 	 * 
@@ -43,5 +49,10 @@ public class ParseException extends Exception {
 	 */
 	public ErrorType getType() {
 		return type;
+	}
+	
+	@Override
+	public String getMessage() {
+		return message;
 	}
 }
