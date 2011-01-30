@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.Application;
+import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
@@ -21,6 +22,7 @@ import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.actions.ViewAllAction;
 import de.osmembrane.view.frames.MainFrame;
 
 /**
@@ -38,8 +40,10 @@ public class LoadPipelineAction extends AbstractAction {
 	 */
 	public LoadPipelineAction() {
 		putValue(Action.NAME, "Load Pipeline");
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("load_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("load_pipeline.png", Size.NORMAL));
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+				"load_pipeline.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+				"load_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
@@ -55,16 +59,19 @@ public class LoadPipelineAction extends AbstractAction {
 		int result = fileChooser.showOpenDialog(mainFrame);
 
 		if (result == JFileChooser.APPROVE_OPTION) {
-			
+
 			URL file;
 			try {
 				file = fileChooser.getSelectedFile().toURI().toURL();
 			} catch (MalformedURLException e2) {
 				file = null;
 			}
-			
+
 			try {
 				ModelProxy.getInstance().accessPipeline().loadPipeline(file);
+				
+				ActionRegistry.getInstance().get(ViewAllAction.class)
+						.actionPerformed(null);
 			} catch (FileException e1) {
 				e1.getParentException().printStackTrace();
 				Application.handleException(new ControlledException(this,

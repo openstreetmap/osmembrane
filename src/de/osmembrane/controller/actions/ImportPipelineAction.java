@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.Application;
+import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
@@ -22,6 +23,7 @@ import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.actions.ViewAllAction;
 import de.osmembrane.view.frames.MainFrame;
 
 /**
@@ -76,6 +78,9 @@ public class ImportPipelineAction extends AbstractAction {
 								file,
 								FileType.fileTypeFor(fileChooser
 										.getSelectedFile()));
+				
+				ActionRegistry.getInstance().get(ViewAllAction.class)
+						.actionPerformed(null);
 			} catch (FileException e1) {
 				String message;
 				if (e1.getType() == Type.SYNTAX_PROBLEM) {
