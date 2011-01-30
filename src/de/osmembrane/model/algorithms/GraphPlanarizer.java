@@ -29,7 +29,10 @@ public class GraphPlanarizer {
 		double xOffsetFactor = -1.0;
 		double yOffsetFactor = 0.0;
 		for (AbstractFunction function : pirmaryFunctions) {
-			yOffsetFactor += orderFunctions(function, xOffsetFactor, yOffsetFactor);
+			System.out.println("> orderFunction(" + function.hashCode() + "," + xOffsetFactor + "," + yOffsetFactor + ")");
+			double newYOffset = orderFunctions(function, xOffsetFactor, yOffsetFactor);
+			yOffsetFactor += newYOffset;
+			System.out.println("> returned yOffsetFactor=" + newYOffset);
 		}
 	}
 
@@ -66,16 +69,21 @@ public class GraphPlanarizer {
 	private double orderFunctions(AbstractFunction function, double xOffsetFactor, double yOffsetFactor) {
 		xOffsetFactor++;
 		
-		/* substract one, 'cause we stay in line until we have more than one function */
-		yOffsetFactor--;
+		System.out.println("| " + function.hashCode() + "\t" + xOffsetFactor + "\t" + yOffsetFactor);
+		
+		function.getCoordinate().setLocation(X_OFFSET * xOffsetFactor, Y_OFFSET * yOffsetFactor);
+		
+		boolean moreThanOneConnection = false;
 		for(AbstractConnector connector : function.getOutConnectors()) {
 			for(AbstractConnector connector2 : connector.getConnections()) {
-				yOffsetFactor++;
+				if(moreThanOneConnection) {
+					yOffsetFactor++;
+				} else {
+					moreThanOneConnection = true;
+				}
 				yOffsetFactor += orderFunctions(connector2.getParent(), xOffsetFactor, yOffsetFactor);
 			}
 		}
-		
-		function.getCoordinate().setLocation(X_OFFSET * xOffsetFactor, Y_OFFSET * yOffsetFactor);
 
 		return yOffsetFactor;
 	}
