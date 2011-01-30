@@ -30,9 +30,8 @@ public class GraphPlanarizer {
 		double yOffsetFactor = 0.0;
 		for (AbstractFunction function : pirmaryFunctions) {
 			System.out.println("> orderFunction(" + function.hashCode() + "," + xOffsetFactor + "," + yOffsetFactor + ")");
-			double newYOffset = orderFunctions(function, xOffsetFactor, yOffsetFactor);
-			yOffsetFactor += newYOffset;
-			System.out.println("> returned yOffsetFactor=" + newYOffset);
+			yOffsetFactor = orderFunctions(function, xOffsetFactor, yOffsetFactor);
+			System.out.println("> returned yOffsetFactor=" + yOffsetFactor);
 		}
 	}
 
@@ -81,7 +80,7 @@ public class GraphPlanarizer {
 				} else {
 					moreThanOneConnection = true;
 				}
-				yOffsetFactor += orderFunctions(connector2.getParent(), xOffsetFactor, yOffsetFactor);
+				yOffsetFactor = orderFunctions(connector2.getParent(), xOffsetFactor, yOffsetFactor);
 			}
 		}
 
