@@ -29,10 +29,11 @@ import de.osmembrane.view.AbstractDialog;
  * @author tobias_kuhn
  * 
  */
-public class CommandLineDialog extends AbstractDialog implements ICommandLineDialog {
+public class CommandLineDialog extends AbstractDialog implements
+		ICommandLineDialog {
 
 	private static final long serialVersionUID = -904804959704267472L;
-	
+
 	/**
 	 * the component to display the command line
 	 */
@@ -53,18 +54,19 @@ public class CommandLineDialog extends AbstractDialog implements ICommandLineDia
 		gbc.insets = new Insets(8, 8, 8, 8);
 
 		// text
-		commandline = new JTextArea();
-		commandline.setPreferredSize(new Dimension(640, 480));
+		commandline = new JTextArea();		
 		commandline.setLineWrap(true);
 		commandline.setWrapStyleWord(true);
-		add(new JScrollPane(commandline), gbc);
+		JScrollPane clPane = new JScrollPane(commandline);
+		clPane.setPreferredSize(new Dimension(640, 480));
+		add(clPane, gbc);
 
 		// export
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		
+
 		JPanel buttonGrid = new JPanel(new GridLayout(1, 3, 10, 0));
-		
+
 		JButton exportButton = new JButton(ActionRegistry.getInstance().get(
 				ExportPipelineAction.class));
 		exportButton.addKeyListener(returnButtonListener);
@@ -96,7 +98,7 @@ public class CommandLineDialog extends AbstractDialog implements ICommandLineDia
 			}
 		});
 		buttonGrid.add(okButton);
-		
+
 		add(buttonGrid, gbc);
 
 		pack();
