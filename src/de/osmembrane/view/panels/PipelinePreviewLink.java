@@ -81,11 +81,9 @@ public class PipelinePreviewLink extends PipelineLink {
 		Point2D right;
 		
 		double leftX, leftY;
-		boolean swapLR = false;
 		if (target.getX() < leftAbs.getX()) {
 			// left
 			leftX = getWidth() - source.getWidth() / 2.0;
-			swapLR = true;
 		} else {
 			// right
 			leftX = source.getWidth() / 2.0; 
@@ -93,7 +91,6 @@ public class PipelinePreviewLink extends PipelineLink {
 		if (target.getY() < leftAbs.getY()) {
 			// above
 			leftY = getHeight() - source.getHeight() / 2.0;
-			swapLR = true;
 		} else {
 			// below
 			leftY = source.getHeight() / 2.0;

@@ -58,7 +58,7 @@ public class PipelineFunction extends LibraryFunction {
 	public PipelineFunction(AbstractFunction modelFunction,
 			final PipelinePanel pipeline) {
 		// pretend this is a prototype
-		super(modelFunction, false);
+		super(pipeline, modelFunction, false);
 		this.modelFunction = modelFunction;
 		this.pipeline = pipeline;
 		this.connectors = new ArrayList<PipelineConnector>();

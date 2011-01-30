@@ -9,7 +9,9 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.view.dialogs.ExceptionDialog;
 import de.osmembrane.view.frames.MainFrame;
 
@@ -105,12 +107,13 @@ public class ViewRegistry extends Observable implements Observer {
 	/**
 	 * Returns a view from the registry. If not already registered, creates it
 	 * and registers it. Tries to cast it to castTo. Throws
-	 * {@link ClassCastException}, if not possible.
+	 * {@link ClassCastException}, if not possible. Causes critical failure, if
+	 * break-in is tried (when clazz is not an interface).
 	 * 
 	 * @param castTo
 	 *            the desired type to return
 	 * @param clazz
-	 *            desired class to return
+	 *            desired <b>interface</b> to return
 	 * @return the registered object for that class casted to type castTo
 	 * @throws ClassCastException
 	 *             if clazz cannot be of type castTo. Test clazz instanceof
@@ -118,7 +121,15 @@ public class ViewRegistry extends Observable implements Observer {
 	 *             support this)
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends IView> T getCasted(Class<? extends IView> clazz, Class<? extends T> castTo) {
+	public <T extends IView> T getCasted(Class<? extends IView> clazz,
+			Class<? extends T> castTo) {
+		// prevent break-ins
+		if (!castTo.isInterface()) {
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, I18N
+							.getInstance().getString("View.IllegalCast")));
+		}
+
 		IView result = get(clazz);
 		return (T) result;
 	}
@@ -139,23 +150,6 @@ public class ViewRegistry extends Observable implements Observer {
 	 */
 	public IView getMainFrame() {
 		return get(MainFrame.class);
-	}
-
-	/**
-	 * Note: The {@link ViewRegistry} can be exchanged along with all view
-	 * components, so it has to identify its main window for the purpose of
-	 * showing this window at startup.
-	 * 
-	 * @deprecated
-	 * This is a workarround. Technically, there should be an IMainFrame to be
-	 * fetched via {@link ViewRegistry#getCasted(Class, Class)}
-	 * 
-	 * @return the {@link MainFrame} of this view component, casted to its full
-	 *         type.
-	 */
-	@Deprecated
-	public MainFrame getMainFrameByPass() {
-		return getCasted(MainFrame.class, MainFrame.class);
 	}
 
 	/**

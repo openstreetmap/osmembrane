@@ -57,7 +57,6 @@ import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.AbstractFrame;
 import de.osmembrane.view.panels.InspectorPanel;
-import de.osmembrane.view.panels.LibraryFunction;
 import de.osmembrane.view.panels.LibraryPanel;
 import de.osmembrane.view.panels.LibraryPanelGroup;
 import de.osmembrane.view.panels.PipelinePanel;
@@ -72,7 +71,7 @@ import de.osmembrane.view.panels.Tool;
  * @author tobias_kuhn
  * 
  */
-public class MainFrame extends AbstractFrame {
+public class MainFrame extends AbstractFrame implements IMainFrame {
 
 	private static final long serialVersionUID = 6464462774273555770L;
 
@@ -314,7 +313,7 @@ public class MainFrame extends AbstractFrame {
 
 		for (AbstractFunctionGroup afg : ModelProxy.getInstance()
 				.accessFunctions().getFunctionGroups()) {
-			LibraryPanelGroup lpg = new LibraryPanelGroup(functionLibrary, afg);
+			LibraryPanelGroup lpg = new LibraryPanelGroup(functionLibrary, pipelineView, afg);
 			functionLibrary.addGroup(lpg);
 		}
 		JScrollPane paneLibrary = new JScrollPane(functionLibrary);
@@ -355,33 +354,24 @@ public class MainFrame extends AbstractFrame {
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
-	/**
-	 * @return the {@link PipelinePanel}
-	 */
-	public PipelinePanel getPipeline() {
-		return pipelineView;
+	@Override
+	public Object getSelected() {
+		return pipelineView.getSelected();
 	}
 
-	/**
-	 * Draws a specific {@link LibraryFunction} that is currently dragged & drop
-	 * where the cursor is
-	 * 
-	 * @param libraryFunction
-	 *            the view function to be drawn
-	 * @param point
-	 *            top left position of the view function to be drawn
-	 */
-	public void paintDragAndDrop(LibraryFunction libraryFunction, Point point) {
-		MainFrameGlassPane mfgp = (MainFrameGlassPane) getGlassPane();
-		mfgp.dragAndDrop(libraryFunction, point);
+	@Override
+	public void setHint(String hint) {
+		pipelineView.setHint(hint);
 	}
 
-	/**
-	 * Stops the drag and drop display
-	 */
-	public void endDragAndDrop() {
-		MainFrameGlassPane mfgp = (MainFrameGlassPane) getGlassPane();
-		mfgp.endDragAndDrop();
+	@Override
+	public MainFrameGlassPane getMainGlassPane() {
+		return (MainFrameGlassPane) getGlassPane();
+	}
+
+	@Override
+	public boolean isDragAndDropTarget(Point at) {
+		return pipelineView.getLayeredPane().equals(findComponentAt(at));
 	}
 
 }

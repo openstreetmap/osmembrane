@@ -18,6 +18,7 @@ import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.pipeline.FunctionGroup;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.IMainFrame;
 import de.osmembrane.view.frames.MainFrame;
 
 /**
@@ -64,11 +65,15 @@ public class LibraryPanelGroup extends JPanel {
 	 * @param lp
 	 *            the parent {@link LibraryPanel} on which this group will be
 	 *            displayed
+	 * @param pipeline
+	 *            the {@link PipelinePanel} that shall later be able to identify
+	 *            drags from the {@link LibraryFunction}s stored here.
 	 * @param afg
 	 *            the {@link AbstractFunctionGroup} which this
 	 *            {@link LibraryPanelGroup} represents
 	 */
-	public LibraryPanelGroup(final LibraryPanel lp, AbstractFunctionGroup afg) {
+	public LibraryPanelGroup(final LibraryPanel lp, PipelinePanel pipeline,
+			AbstractFunctionGroup afg) {
 		this.functionGroup = afg;
 
 		// display
@@ -114,15 +119,17 @@ public class LibraryPanelGroup extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// show no hint
-				MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
-				mainFrame.getPipeline().setHint(InspectorPanel.VALID_EMPTY_HINT);
+				IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
+						MainFrame.class, IMainFrame.class);
+				mainFrame.setHint(InspectorPanel.VALID_EMPTY_HINT);
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// show hint for this function group
-				MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
-				mainFrame.getPipeline().setHint(functionGroup.getDescription());
+				IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
+						MainFrame.class, IMainFrame.class);
+				mainFrame.setHint(functionGroup.getDescription());
 			}
 
 			@Override
@@ -135,7 +142,7 @@ public class LibraryPanelGroup extends JPanel {
 		content = new ArrayList<LibraryFunction>();
 		// all functions available in the function group
 		for (AbstractFunction af : afg.getFunctions()) {
-			LibraryFunction vf = new LibraryFunction(af, true);
+			LibraryFunction vf = new LibraryFunction(pipeline, af, true);
 
 			// determine the top
 			vf.setLocation(3, y);

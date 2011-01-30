@@ -15,6 +15,7 @@ import de.osmembrane.model.pipeline.CopyType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.IMainFrame;
 import de.osmembrane.view.frames.MainFrame;
 import de.osmembrane.view.panels.PipelineFunction;
 
@@ -45,8 +46,8 @@ public class DuplicateFunctionAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
-		Object selected = mainFrame.getPipeline().getSelected();
+		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(MainFrame.class, IMainFrame.class);
+		Object selected = mainFrame.getSelected();
 
 		if (selected != null) {
 			if (selected instanceof PipelineFunction) {

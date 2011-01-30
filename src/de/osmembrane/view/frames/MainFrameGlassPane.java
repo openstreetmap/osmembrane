@@ -37,10 +37,10 @@ public class MainFrameGlassPane extends JComponent {
 	 * @param point
 	 *            top left position of the view function to be drawn
 	 */
-	protected void dragAndDrop(LibraryFunction libraryFunction, Point point) {
+	public void dragAndDrop(LibraryFunction libraryFunction, Point point) {
 		if (dragAndDrop == null) {
 			// add the display function
-			dragAndDrop = new LibraryFunction(
+			dragAndDrop = new LibraryFunction(null,
 					libraryFunction.getModelFunctionPrototype(), false);
 
 			dragAndDrop.setSize(dragAndDrop.getPreferredSize());
@@ -56,7 +56,7 @@ public class MainFrameGlassPane extends JComponent {
 	/**
 	 * Ends the current drag and drop functionality and restores normal behavior
 	 */
-	protected void endDragAndDrop() {
+	public void endDragAndDrop() {
 		if (dragAndDrop != null) {
 			remove(dragAndDrop);
 			dragAndDrop = null;

@@ -71,11 +71,11 @@ public class LibraryPanel extends JPanel {
 	 */
 	public LibraryPanel() {
 		// internal logic
-		expanded = -1;
-		expanding = -1;
-		contracting = -1;
-		expandingThread = null;
-		groups = new ArrayList<LibraryPanelGroup>();
+		this.expanded = -1;
+		this.expanding = -1;
+		this.contracting = -1;
+		this.expandingThread = null;
+		this.groups = new ArrayList<LibraryPanelGroup>();
 
 		// display
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));

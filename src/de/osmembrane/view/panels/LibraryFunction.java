@@ -1,7 +1,6 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -24,6 +23,7 @@ import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.Function;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.IMainFrame;
 import de.osmembrane.view.frames.MainFrame;
 import de.osmembrane.view.frames.MainFrameGlassPane;
 
@@ -85,6 +85,9 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	 * Initializes a new {@link LibraryFunction} for the given model prototype
 	 * function
 	 * 
+	 * @param pipeline
+	 *            the {@link PipelinePanel} that shall later be able to identify
+	 *            drags from this class.
 	 * @param modelFunctionPrototype
 	 *            the model's prototype {@link Function} this
 	 *            {@link LibraryFunction} should represent
@@ -95,7 +98,8 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	 *            it gets highlighted when the mouse cursor moves over it. All
 	 *            non-library descendants are recommended to set this to false.
 	 */
-	public LibraryFunction(final AbstractFunction modelFunctionPrototype,
+	public LibraryFunction(final PipelinePanel pipeline,
+			final AbstractFunction modelFunctionPrototype,
 			final boolean canDragAndDrop) {
 		this.modelFunctionPrototype = modelFunctionPrototype;
 		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
@@ -124,10 +128,12 @@ public class LibraryFunction extends DisplayTemplatePanel {
 				dragging = false;
 
 				if (canDragAndDrop) {
-					MainFrame mainFrame = ViewRegistry.getInstance()
-							.getMainFrameByPass();
-					mainFrame.endDragAndDrop(); // necessary to make the glass
-												// pane go
+					IMainFrame mainFrame = ViewRegistry.getInstance()
+							.getCasted(MainFrame.class, IMainFrame.class);
+					mainFrame.getMainGlassPane().endDragAndDrop(); // necessary
+																	// to make
+																	// the glass
+					// pane go
 					// away
 
 					// subtract the offset where it got clicked
@@ -137,16 +143,15 @@ public class LibraryFunction extends DisplayTemplatePanel {
 					// pipeline panel components
 					MouseEvent mainFrameEvent = SwingUtilities
 							.convertMouseEvent(LibraryFunction.this, e,
-									mainFrame);
+									mainFrame.getMainGlassPane());
 					MouseEvent pipelineEvent = SwingUtilities
 							.convertMouseEvent(LibraryFunction.this, e,
-									mainFrame.getPipeline());
+									pipeline);
 
-					Component c = mainFrame.findComponentAt(mainFrameEvent
-							.getPoint());
-					if (mainFrame.getPipeline().getLayeredPane().equals(c)) {
-						mainFrame.getPipeline().draggedOnto(
-								LibraryFunction.this, pipelineEvent.getPoint());
+					if (mainFrame
+							.isDragAndDropTarget(mainFrameEvent.getPoint())) {
+						pipeline.draggedOnto(LibraryFunction.this,
+								pipelineEvent.getPoint());
 					} else {
 						Application.handleException(new ControlledException(
 								this, ExceptionSeverity.WARNING,
@@ -167,10 +172,7 @@ public class LibraryFunction extends DisplayTemplatePanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// show no hint
-				MainFrame mainFrame = ViewRegistry.getInstance()
-						.getMainFrameByPass();
-				mainFrame.getPipeline()
-						.setHint(InspectorPanel.VALID_EMPTY_HINT);
+				pipeline.setHint(InspectorPanel.VALID_EMPTY_HINT);
 
 				if (canDragAndDrop) {
 					highlighted = false;
@@ -181,10 +183,7 @@ public class LibraryFunction extends DisplayTemplatePanel {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// show hint for this function
-				MainFrame mainFrame = ViewRegistry.getInstance()
-						.getMainFrameByPass();
-				mainFrame.getPipeline().setHint(
-						modelFunctionPrototype.getDescription());
+				pipeline.setHint(modelFunctionPrototype.getDescription());
 
 				if (canDragAndDrop) {
 					highlighted = true;
@@ -209,7 +208,8 @@ public class LibraryFunction extends DisplayTemplatePanel {
 
 				@Override
 				public void mouseDragged(MouseEvent e) {
-					MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
+					IMainFrame mainFrame = ViewRegistry.getInstance()
+							.getCasted(MainFrame.class, IMainFrame.class);
 
 					// subtract the offset where it got clicked
 					e.translatePoint(-dragOffset.x, -dragOffset.y);
@@ -218,10 +218,10 @@ public class LibraryFunction extends DisplayTemplatePanel {
 					// pipeline panel components
 					MouseEvent mainFrameEvent = SwingUtilities
 							.convertMouseEvent(LibraryFunction.this, e,
-									mainFrame.getGlassPane());
+									mainFrame.getMainGlassPane());
 
-					mainFrame.paintDragAndDrop(LibraryFunction.this,
-							mainFrameEvent.getPoint());
+					mainFrame.getMainGlassPane().dragAndDrop(
+							LibraryFunction.this, mainFrameEvent.getPoint());
 				}
 			});
 		}
@@ -251,7 +251,7 @@ public class LibraryFunction extends DisplayTemplatePanel {
 		// get applicable font
 		g.setFont(g.getFont().deriveFont(Font.BOLD)
 				.deriveFont(g.getFont().getSize() * getHeight() / 90.0f));
-		
+
 		printCenteredString(g, modelFunctionPrototype.getFriendlyName(), at.x,
 				at.y + 0.8 * getHeight());
 	}
@@ -269,7 +269,8 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	 * @param y
 	 *            the base y coordinate for the last line of the string
 	 */
-	protected void printCenteredString(Graphics g, String str, double x, double y) {
+	protected void printCenteredString(Graphics g, String str, double x,
+			double y) {
 
 		// find out how large this is gonna be
 		FontMetrics fm = g.getFontMetrics();
