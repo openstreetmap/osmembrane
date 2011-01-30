@@ -28,6 +28,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
 import de.osmembrane.controller.ActionRegistry;
+import de.osmembrane.controller.actions.ArrangePipelineAction;
 import de.osmembrane.controller.actions.ChangeSettingsAction;
 import de.osmembrane.controller.actions.DeleteSelectionAction;
 import de.osmembrane.controller.actions.DuplicateFunctionAction;
@@ -136,13 +137,13 @@ public class MainFrame extends AbstractFrame {
 
 		toolsImages.put(Tool.DEFAULT_MAGIC_TOOL, Resource.CURSOR_ICON
 				.getImageIcon("cursor-magic.png", Size.NORMAL));
-		
-		toolsImages.put(Tool.SELECTION_TOOL, Resource.CURSOR_ICON
-				.getImageIcon("cursor-select.png", Size.NORMAL));
-		
-		toolsImages.put(Tool.VIEW_TOOL, Resource.CURSOR_ICON
-				.getImageIcon("cursor-move.png", Size.NORMAL));
-		
+
+		toolsImages.put(Tool.SELECTION_TOOL, Resource.CURSOR_ICON.getImageIcon(
+				"cursor-select.png", Size.NORMAL));
+
+		toolsImages.put(Tool.VIEW_TOOL, Resource.CURSOR_ICON.getImageIcon(
+				"cursor-move.png", Size.NORMAL));
+
 		toolsImages.put(Tool.CONNECTION_TOOL, Resource.CURSOR_ICON
 				.getImageIcon("cursor-connect.png", Size.NORMAL));
 
@@ -213,6 +214,8 @@ public class MainFrame extends AbstractFrame {
 				GeneratePipelineAction.class));
 		pipelineMenu.add(ActionRegistry.getInstance().get(
 				ExecutePipelineAction.class));
+		pipelineMenu.add(ActionRegistry.getInstance().get(
+				ArrangePipelineAction.class));
 		menuBar.add(pipelineMenu);
 
 		JMenu aboutMenu = new JMenu(I18N.getInstance().getString(

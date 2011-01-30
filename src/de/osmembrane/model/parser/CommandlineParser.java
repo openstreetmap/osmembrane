@@ -302,7 +302,7 @@ public class CommandlineParser implements IParser {
 		}
 
 		/* TODO get the real path to osmosis from SettingsModel */
-		builder.append("osmosis ");
+		builder.append("osmosis");
 
 		/* do the parsing while a function is in the queue */
 		while (!functionQueue.isEmpty()) {
@@ -345,13 +345,24 @@ public class CommandlineParser implements IParser {
 				String tn = function.getActiveTask().getName();
 
 				/* write the task(-short)-name */
-				builder.append("--" + (stn != null ? stn : tn));
+				// builder.append("--" + (stn != null ? stn : tn));
+				
+				/*
+				 * TODO Inform osmosis developers that there is an error with
+				 * --write-pbf --wb, so long we should use only the long version
+				 * of task names.
+				 */
+				builder.append("--" + tn);
 
 				/* write all parameters of the task */
 				for (AbstractParameter parameter : function.getActiveTask()
 						.getParameters()) {
-					builder.append(" " + parameter.getName() + "='"
-							+ parameter.getValue() + "'");
+					
+					/* only add a parameter when there is not a default value assigned */
+					if(!parameter.getValue().equals(parameter.getDefaultValue())) {
+						builder.append(" " + parameter.getName() + "=\""
+								+ parameter.getValue() + "\"");
+					}
 				}
 
 				/* write all inConnectors */
@@ -487,6 +498,7 @@ public class CommandlineParser implements IParser {
 	}
 
 	private void appendLineBreak(StringBuilder builder) {
+		builder.append(" ");
 		builder.append(breaklineSymbol);
 		builder.append(breaklineCommand);
 	}

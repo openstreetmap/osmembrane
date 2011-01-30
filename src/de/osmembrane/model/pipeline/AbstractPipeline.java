@@ -66,7 +66,7 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	/**
 	 * Optimizes the pipeline. Only functions are rearranged.
 	 */
-	public abstract void optimizePipeline();
+	public abstract void arrangePipeline();
 
 	/**
 	 * Saves the pipeline to a OSMembrane file.

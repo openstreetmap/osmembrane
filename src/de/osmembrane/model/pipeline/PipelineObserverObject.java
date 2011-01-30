@@ -72,6 +72,11 @@ public class PipelineObserverObject {
 	private AbstractPipeline pipeline;
 
 	/**
+	 * Saves either the pipeline should create a undo-step or not.
+	 */
+	private boolean createUndoStep = true;
+
+	/**
 	 * Creates a new {@link PipelineObserverObject}.
 	 * 
 	 * @param type
@@ -153,5 +158,19 @@ public class PipelineObserverObject {
 	 */
 	public AbstractPipeline getPipeline() {
 		return pipeline;
+	}
+	
+	protected PipelineObserverObject setCreateUndoStep(boolean createUndoStep) {
+		this.createUndoStep = createUndoStep;
+		return this;
+	}
+	
+	/**
+	 * Returns if an undo-step should be added to the pipeline or not.
+	 * 
+	 * @return true if an undo-step should be created, otherwise false
+	 */
+	public boolean createUndoStep() {
+		return createUndoStep;
 	}
 }

@@ -13,8 +13,8 @@ import de.osmembrane.model.xml.XMLHasDescription;
  * 
  * @author jakob_jarosch
  */
-public abstract class AbstractFunction extends Observable implements
-		Observer, Serializable {
+public abstract class AbstractFunction extends Observable implements Observer,
+		Serializable {
 
 	private static final long serialVersionUID = 2010123022230001L;
 
@@ -60,7 +60,7 @@ public abstract class AbstractFunction extends Observable implements
 	 * @return a {@link XMLHasDescription} object
 	 */
 	public abstract String getDescription();
-	
+
 	/**
 	 * Returns the icon of the {@link AbstractFunction}.
 	 * 
@@ -95,7 +95,9 @@ public abstract class AbstractFunction extends Observable implements
 	public abstract void setActiveTask(AbstractTask task);
 
 	/**
-	 * Returns the Coordinates in the Pipeline of the current Function.
+	 * Returns the Coordinates in the Pipeline of the current Function.<br/>
+	 * Updates to the returned object will not be published on the pipeline, use
+	 * {@link AbstractFunction#setCoordinate(Point2D)} instead.
 	 * 
 	 * @return Coordinates of the current Function
 	 */
@@ -156,7 +158,7 @@ public abstract class AbstractFunction extends Observable implements
 	 * {@link Observable#setChanged())}.
 	 */
 	protected abstract void changedNotifyObservers(PipelineObserverObject poo);
-	
+
 	/**
 	 * Copies the function.
 	 */

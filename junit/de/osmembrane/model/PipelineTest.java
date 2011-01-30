@@ -569,11 +569,11 @@ public class PipelineTest {
 
 	/**
 	 * Test method for
-	 * {@link de.osmembrane.model.pipeline.Pipeline#optimizePipeline()}.
+	 * {@link de.osmembrane.model.pipeline.Pipeline#arrangePipeline()}.
 	 */
 	@Test
 	public void testOptimizePipeline() throws FileException, ConnectorException {
-		pl.optimizePipeline();
+		pl.arrangePipeline();
 		fail("No idea what this is and how to test it");
 	}
 

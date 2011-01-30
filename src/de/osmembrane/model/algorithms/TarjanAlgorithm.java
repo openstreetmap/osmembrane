@@ -1,4 +1,4 @@
-package de.osmembrane.model.pipeline;
+package de.osmembrane.model.algorithms;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+
+import de.osmembrane.model.pipeline.AbstractConnector;
+import de.osmembrane.model.pipeline.AbstractFunction;
 
 /**
  * Checks if functions does create a loop.

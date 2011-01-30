@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
 
+import de.osmembrane.model.algorithms.GraphPlanarizer;
+import de.osmembrane.model.algorithms.TarjanAlgorithm;
 import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.AbstractPersistence;
 import de.osmembrane.model.persistence.FileException;
@@ -44,7 +46,7 @@ public class Pipeline extends AbstractPipeline {
 		this.redoStack = new Stack<PipelineMemento>();
 
 		/* register the Observer of Persistence to the Pipeline */
-		if(!silent) {
+		if (!silent) {
 			addObserver(PersistenceFactory.getInstance());
 		}
 	}
@@ -58,7 +60,7 @@ public class Pipeline extends AbstractPipeline {
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
-				ChangeType.FULLCHANGE, null));
+				ChangeType.FULLCHANGE, null).setCreateUndoStep(false));
 
 		changeSavedState(true);
 	}
@@ -127,7 +129,7 @@ public class Pipeline extends AbstractPipeline {
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
-				ChangeType.FULLCHANGE, null));
+				ChangeType.FULLCHANGE, null).setCreateUndoStep(false));
 	}
 
 	@Override
@@ -165,7 +167,7 @@ public class Pipeline extends AbstractPipeline {
 		/* is checked by persistence */
 		@SuppressWarnings("unchecked")
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
-		
+
 		this.functions = functions;
 		for (AbstractFunction function : functions) {
 			function.addObserver(this);
@@ -178,7 +180,7 @@ public class Pipeline extends AbstractPipeline {
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
-				ChangeType.FULLCHANGE, null));
+				ChangeType.FULLCHANGE, null).setCreateUndoStep(false));
 	}
 
 	@Override
@@ -230,8 +232,11 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
-	public void optimizePipeline() {
-		/* TODO Implement a graph optimize algorithm */
+	public void arrangePipeline() {
+		GraphPlanarizer gprizer = new GraphPlanarizer(functions);
+		gprizer.planarize();
+		changedNotifyObservers(new PipelineObserverObject(
+				ChangeType.FULLCHANGE, null));
 	}
 
 	@Override
@@ -286,26 +291,26 @@ public class Pipeline extends AbstractPipeline {
 	protected void changedNotifyObservers(PipelineObserverObject poo) {
 		poo.setPipeline(this);
 
-		if (poo.getType() != ChangeType.FULLCHANGE) {
+		if (poo.createUndoStep()) {
 			/* any changes made, set savedState to false */
 			changeSavedState(false);
 		}
 
 		/* Debug output, TODO remove that at final release */
-//		Integer stackPeekSize = (Integer) null;
-//		if (undoStack.size() > 0) {
-//			stackPeekSize = undoStack.peek().getFunctions().size();
-//		}
-//		
-//		System.out.println("undoStack.size = " + undoStack.size()
-//				+ "; redoStack.size = " + redoStack.size()
-//				+ "; functions.size = " + functions.size()
-//				+ "\ncurrentState.functions.size = "
-//				+ currentState.getFunctions().size()
-//				+ "; undoStack.peek.functions.size = " + stackPeekSize
-//				+ "\n lastAction = " + poo.getType() + "\n");
+		// Integer stackPeekSize = (Integer) null;
+		// if (undoStack.size() > 0) {
+		// stackPeekSize = undoStack.peek().getFunctions().size();
+		// }
+		//
+		// System.out.println("undoStack.size = " + undoStack.size()
+		// + "; redoStack.size = " + redoStack.size()
+		// + "; functions.size = " + functions.size()
+		// + "\ncurrentState.functions.size = "
+		// + currentState.getFunctions().size()
+		// + "; undoStack.peek.functions.size = " + stackPeekSize
+		// + "\n lastAction = " + poo.getType() + "\n");
 		/* End of Debug output */
-		
+
 		this.setChanged();
 		this.notifyObservers(poo);
 	}
@@ -340,7 +345,7 @@ public class Pipeline extends AbstractPipeline {
 		}
 
 		changedNotifyObservers(new PipelineObserverObject(
-				ChangeType.FULLCHANGE, null));
+				ChangeType.FULLCHANGE, null).setCreateUndoStep(false));
 	}
 }
 

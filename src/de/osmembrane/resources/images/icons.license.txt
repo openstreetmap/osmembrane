@@ -5,3 +5,13 @@ Source:         Tango project.
 Released under: "Public Domain"
 Website:        http://tango.freedesktop.org/Tango_Desktop_Project
 
+
+Import- and Export-Icons:
+Source:         http://fasticon.com/
+Released under: http://www.iconarchive.com/show/isimple-system-icons-by-fasticon/file-export-icon.html
+
+
+Commandline-Icon (Show Commandline):
+Source:         Crystal-Project
+Released under: GNU
+Website:        http://www.everaldo.com/crystal/
