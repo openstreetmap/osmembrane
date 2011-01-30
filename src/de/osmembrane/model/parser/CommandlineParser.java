@@ -207,7 +207,7 @@ public class CommandlineParser implements IParser {
 												+ e.getType());
 
 						String message = I18N.getInstance().getString(
-								"Model.Parser.ConnectonNotPermitted",
+								"Model.Parser.ConnectionNotPermitted",
 								outFunction.getActiveTask().getName(),
 								function.getActiveTask().getName(),
 								connectionExceptionMessage);
