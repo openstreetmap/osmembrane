@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
@@ -80,6 +82,8 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 	 * {@link JFileChooser} for saving and loading the model
 	 */
 	private JFileChooser fileChooser;
+
+	private JTextField editField;
 
 	/**
 	 * Generates a new {@link ListDialog}.
@@ -173,7 +177,18 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		add(buttonCtrlFlow, BorderLayout.SOUTH);
 
 		// editing buttons
-		JButton deleteButton = new JButton(I18N.getInstance().getString(
+		final JButton addButton = new JButton(I18N.getInstance().getString(
+				"View.Add"));
+		addButton.addKeyListener(returnButtonListener);
+		addButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editListModel.insert(editField.getText());
+				editField.setText("");
+			}
+		});
+		
+		final JButton deleteButton = new JButton(I18N.getInstance().getString(
 				"View.Delete"));
 		deleteButton.addKeyListener(returnButtonListener);
 		deleteButton.addActionListener(new ActionListener() {
@@ -261,6 +276,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		});
 
 		JPanel buttonEditGrid = new JPanel(new GridLayout(7, 1));
+		buttonEditGrid.add(addButton);
 		buttonEditGrid.add(deleteButton);
 		buttonEditGrid.add(clearButton);
 		buttonEditGrid.add(resetButton);
@@ -276,10 +292,47 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		editList = new JTable(editListModel);
 		editList.setPreferredSize(new Dimension(640, 480));
 		editList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		editList.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					deleteButton.doClick();
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
 
 		JPanel edit = new JPanel(new BorderLayout());
 		edit.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		edit.add(new JScrollPane(editList), BorderLayout.CENTER);
+		
+		editField = new JTextField();
+		editField.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					addButton.doClick();
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
+		edit.add(editField, BorderLayout.NORTH);
 
 		add(edit, BorderLayout.CENTER);
 
@@ -345,6 +398,15 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		}
 
 		/**
+		 * inserts text
+		 * @param text
+		 */
+		public void insert(String text) {
+			parameters.add(text);
+			fireTableDataChanged();
+		}
+
+		/**
 		 * Removes the entry with index index. Does nothing, if index does not
 		 * exist.
 		 * 
@@ -374,9 +436,8 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		@Override
 		public int getRowCount() {
 			if (parameters != null) {
-				return parameters.size()
-						+ (int) (editList.getHeight() / (double) editList
-								.getRowHeight());
+				return parameters.size();
+						
 			} else {
 				return 0;
 			}
