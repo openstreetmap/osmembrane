@@ -119,82 +119,84 @@ public class LibraryFunction extends DisplayTemplatePanel {
 		highlighted = false;
 		dragging = false;
 
-		addMouseListener(new MouseListener() {
-
-			// drag & drop
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				dragging = false;
-
-				if (canDragAndDrop) {
-					IMainFrame mainFrame = ViewRegistry.getInstance()
-							.getCasted(MainFrame.class, IMainFrame.class);
-					mainFrame.getMainGlassPane().endDragAndDrop(); // necessary
-																	// to make
-																	// the glass
-					// pane go
-					// away
-
-					// subtract the offset where it got clicked
-					e.translatePoint(-dragOffset.x, -dragOffset.y);
-
-					// convert the mouse event into the mainFrame and
-					// pipeline panel components
-					MouseEvent mainFrameEvent = SwingUtilities
-							.convertMouseEvent(LibraryFunction.this, e,
-									mainFrame.getMainGlassPane());
-					MouseEvent pipelineEvent = SwingUtilities
-							.convertMouseEvent(LibraryFunction.this, e,
-									pipeline);
-
-					if (mainFrame
-							.isDragAndDropTarget(mainFrameEvent.getPoint())) {
-						pipeline.draggedOnto(LibraryFunction.this,
-								pipelineEvent.getPoint());
-					} else {
-						Application.handleException(new ControlledException(
-								this, ExceptionSeverity.WARNING,
-								I18N.getInstance().getString(
-										"View.Library.CannotDropFunction")));
+			if (pipeline != null) {
+			addMouseListener(new MouseListener() {
+	
+				// drag & drop
+	
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					dragging = false;
+	
+					if (canDragAndDrop) {
+						IMainFrame mainFrame = ViewRegistry.getInstance()
+								.getCasted(MainFrame.class, IMainFrame.class);
+						mainFrame.getMainGlassPane().endDragAndDrop(); // necessary
+																		// to make
+																		// the glass
+						// pane go
+						// away
+	
+						// subtract the offset where it got clicked
+						e.translatePoint(-dragOffset.x, -dragOffset.y);
+	
+						// convert the mouse event into the mainFrame and
+						// pipeline panel components
+						MouseEvent mainFrameEvent = SwingUtilities
+								.convertMouseEvent(LibraryFunction.this, e,
+										mainFrame.getMainGlassPane());
+						MouseEvent pipelineEvent = SwingUtilities
+								.convertMouseEvent(LibraryFunction.this, e,
+										pipeline);
+	
+						if (mainFrame
+								.isDragAndDropTarget(mainFrameEvent.getPoint())) {
+							pipeline.draggedOnto(LibraryFunction.this,
+									pipelineEvent.getPoint());
+						} else {
+							Application.handleException(new ControlledException(
+									this, ExceptionSeverity.WARNING,
+									I18N.getInstance().getString(
+											"View.Library.CannotDropFunction")));
+						}
 					}
 				}
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				dragging = true;
-				dragOffset = e.getPoint();
-			}
-
-			// mouse move hint
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// show no hint
-				pipeline.setHint(InspectorPanel.VALID_EMPTY_HINT);
-
-				if (canDragAndDrop) {
-					highlighted = false;
-					repaint();
+	
+				@Override
+				public void mousePressed(MouseEvent e) {
+					dragging = true;
+					dragOffset = e.getPoint();
 				}
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// show hint for this function
-				pipeline.setHint(modelFunctionPrototype.getDescription());
-
-				if (canDragAndDrop) {
-					highlighted = true;
-					repaint();
+	
+				// mouse move hint
+	
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// show no hint
+					pipeline.setHint(InspectorPanel.VALID_EMPTY_HINT);
+	
+					if (canDragAndDrop) {
+						highlighted = false;
+						repaint();
+					}
 				}
+	
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// show hint for this function
+					pipeline.setHint(modelFunctionPrototype.getDescription());
+	
+					if (canDragAndDrop) {
+						highlighted = true;
+						repaint();
+					}
+				}
+	
+				@Override
+				public void mouseClicked(MouseEvent e) {
+				}
+			});
 			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
 
 		// nice drag & drop animation
 		if (canDragAndDrop) {

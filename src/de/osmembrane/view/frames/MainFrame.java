@@ -307,6 +307,20 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		toolsBar.add(ActionRegistry.getInstance().get(ZoomInAction.class));
 		toolsBar.add(ActionRegistry.getInstance().get(ZoomOutAction.class));
 		toolBar.add(toolsBar);
+		
+		/* yes the order is important */
+		
+		// function inspector
+		InspectorPanel functionInspector = new InspectorPanel();
+		JScrollPane paneInspector = new JScrollPane(functionInspector);
+		
+		// pipeline view
+		pipelineView = new PipelinePanel(functionInspector);
+		JPanel panePipeline = new JPanel(new BorderLayout());
+		panePipeline.add(pipelineView, BorderLayout.CENTER);
+		panePipeline.add(pipelineView.getVerticalScroll(), BorderLayout.EAST);
+		panePipeline
+				.add(pipelineView.getHorizontalScroll(), BorderLayout.SOUTH);
 
 		// function library
 		LibraryPanel functionLibrary = new LibraryPanel();
@@ -320,18 +334,6 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		paneLibrary
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		paneLibrary.getVerticalScrollBar().setUnitIncrement(10);
-
-		// function inspector
-		InspectorPanel functionInspector = new InspectorPanel();
-		JScrollPane paneInspector = new JScrollPane(functionInspector);
-
-		// pipeline view
-		pipelineView = new PipelinePanel(functionInspector);
-		JPanel panePipeline = new JPanel(new BorderLayout());
-		panePipeline.add(pipelineView, BorderLayout.CENTER);
-		panePipeline.add(pipelineView.getVerticalScroll(), BorderLayout.EAST);
-		panePipeline
-				.add(pipelineView.getHorizontalScroll(), BorderLayout.SOUTH);
 
 		// split containers
 		JSplitPane splitLibAndView = new JSplitPane(
