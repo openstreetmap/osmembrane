@@ -41,6 +41,7 @@ import de.osmembrane.controller.actions.LoadPipelineAction;
 import de.osmembrane.controller.actions.NewPipelineAction;
 import de.osmembrane.controller.actions.PreviewPipelineAction;
 import de.osmembrane.controller.actions.RedoAction;
+import de.osmembrane.controller.actions.SaveAsPipelineAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
 import de.osmembrane.controller.actions.ShowAboutAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
@@ -174,6 +175,7 @@ public class MainFrame extends AbstractFrame {
 		fileMenu.add(ActionRegistry.getInstance().get(NewPipelineAction.class));
 		fileMenu.add(ActionRegistry.getInstance().get(LoadPipelineAction.class));
 		fileMenu.add(ActionRegistry.getInstance().get(SavePipelineAction.class));
+		fileMenu.add(ActionRegistry.getInstance().get(SaveAsPipelineAction.class));
 		fileMenu.add(new JSeparator());
 		fileMenu.add(ActionRegistry.getInstance().get(
 				ImportPipelineAction.class));

@@ -33,6 +33,8 @@ import de.osmembrane.controller.actions.DeleteSelectionAction;
 import de.osmembrane.controller.actions.DuplicateFunctionAction;
 import de.osmembrane.controller.actions.MoveFunctionAction;
 import de.osmembrane.controller.actions.RedoAction;
+import de.osmembrane.controller.actions.SaveAsPipelineAction;
+import de.osmembrane.controller.actions.SavePipelineAction;
 import de.osmembrane.controller.actions.UndoAction;
 import de.osmembrane.controller.events.ConnectingFunctionsEvent;
 import de.osmembrane.controller.events.ContainingLocationEvent;
@@ -196,18 +198,17 @@ public class PipelinePanel extends JPanel implements Observer {
 		this.connectors = new HashMap<AbstractConnector, PipelineConnector>();
 		this.functionInspector = functionInspector;
 
-		this.verticalScroll = new JScrollBar(JScrollBar.VERTICAL, 0, 0,
-				0, 0);
-		this.horizontalScroll = new JScrollBar(JScrollBar.HORIZONTAL, 0,
-				0, 0, 0);
+		this.verticalScroll = new JScrollBar(JScrollBar.VERTICAL, 0, 0, 0, 0);
+		this.horizontalScroll = new JScrollBar(JScrollBar.HORIZONTAL, 0, 0, 0,
+				0);
 		AdjustmentListener al = new AdjustmentListener() {
 
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
-				/*if (verticalScroll.shouldIgnoreAdjustmentEvent()
-						|| horizontalScroll.shouldIgnoreAdjustmentEvent()) {
-					return;
-				}*/
+				/*
+				 * if (verticalScroll.shouldIgnoreAdjustmentEvent() ||
+				 * horizontalScroll.shouldIgnoreAdjustmentEvent()) { return; }
+				 */
 
 				if (e.getSource() == verticalScroll) {
 					moveTo(objectToWindow.getTranslateX(), e.getValue());
@@ -218,8 +219,8 @@ public class PipelinePanel extends JPanel implements Observer {
 				}
 			}
 		};
-		//this.verticalScroll.addAdjustmentListener(al);
-		//this.horizontalScroll.addAdjustmentListener(al);
+		// this.verticalScroll.addAdjustmentListener(al);
+		// this.horizontalScroll.addAdjustmentListener(al);
 
 		this.objTopLeft = new Point2D.Double();
 		this.objBottomRight = new Point2D.Double();
@@ -803,20 +804,6 @@ public class PipelinePanel extends JPanel implements Observer {
 		// this is better reset here
 		connectionStart = null;
 
-		// update undo/redo-action availability
-		ActionRegistry
-				.getInstance()
-				.get(UndoAction.class)
-				.setEnabled(
-						ModelProxy.getInstance().accessPipeline()
-								.undoAvailable());
-		ActionRegistry
-				.getInstance()
-				.get(RedoAction.class)
-				.setEnabled(
-						ModelProxy.getInstance().accessPipeline()
-								.redoAvailable());
-
 		// recreate topleft and bottomright
 		calculateEdges();
 		updateScrollbars();
@@ -867,8 +854,10 @@ public class PipelinePanel extends JPanel implements Observer {
 				(objBottomRight.getY() - winSize.getY())));
 
 		Point2D objWindowZero = windowToObj(new Point(0, 0));
-		/*horizontalScroll.setValueSilently((int) objWindowZero.getX());
-		verticalScroll.setValueSilently((int) objWindowZero.getY());*/
+		/*
+		 * horizontalScroll.setValueSilently((int) objWindowZero.getX());
+		 * verticalScroll.setValueSilently((int) objWindowZero.getY());
+		 */
 	}
 
 	/**

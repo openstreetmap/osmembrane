@@ -41,7 +41,12 @@ public class PipelineObserverObject {
 		/**
 		 * A full change of the pipeline.
 		 */
-		FULLCHANGE
+		FULLCHANGE,
+		
+		/**
+		 * Is returned, when a save event occurred.
+		 */
+		SAVED_PIPELINE
 	};
 
 	/**

@@ -29,13 +29,9 @@ public class GraphPlanarizer {
 		double xOffsetFactor = -1.0;
 		double yOffsetFactor = 0.0;
 		
-		System.out.println(primaryFunctions);
-		
 		for (AbstractFunction function : primaryFunctions) {
-			System.out.println("> orderFunction(" + function.hashCode() + "," + xOffsetFactor + "," + yOffsetFactor + ")");
 			yOffsetFactor = orderFunctions(function, xOffsetFactor, yOffsetFactor);
 			yOffsetFactor++;
-			System.out.println("> returned yOffsetFactor=" + yOffsetFactor);
 		}
 	}
 
@@ -75,10 +71,7 @@ public class GraphPlanarizer {
 	private double orderFunctions(AbstractFunction function, double xOffsetFactor, double yOffsetFactor) {
 		xOffsetFactor++;
 		
-		System.out.println("| " + function.getId() + "\t" + xOffsetFactor + "\t" + yOffsetFactor);
-		
 		function.getCoordinate().setLocation(X_OFFSET * xOffsetFactor, Y_OFFSET * yOffsetFactor);
-		System.out.println(function.getCoordinate());
 		
 		boolean moreThanOneConnection = false;
 		for(AbstractConnector connector : function.getOutConnectors()) {

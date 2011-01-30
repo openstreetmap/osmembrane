@@ -35,6 +35,8 @@ public class Pipeline extends AbstractPipeline {
 
 	private List<AbstractFunction> functions;
 
+	private URL pipelineFilename = null;
+
 	private boolean savedState = true;
 
 	/**
@@ -49,20 +51,22 @@ public class Pipeline extends AbstractPipeline {
 		if (!silent) {
 			addObserver(PersistenceFactory.getInstance());
 		}
+
+		clear();
 	}
 
 	@Override
 	public void clear() {
 		this.functions.clear();
 		this.undoStack.clear();
-		this.currentState = new PipelineMemento(functions, savedState);
 		this.redoStack.clear();
+		pipelineFilename = null;
+
+		changeSavedState(true);
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null).setCreateUndoStep(false));
-
-		changeSavedState(true);
 	}
 
 	@Override
@@ -116,20 +120,24 @@ public class Pipeline extends AbstractPipeline {
 		@SuppressWarnings("unchecked")
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
 
+		clear();
+
+		pipelineFilename = filename;
 		this.functions = functions;
 		for (AbstractFunction function : functions) {
 			function.addObserver(this);
 		}
 
-		/*
-		 * Save the loaded Pipeline as the first undoStep which will be created
-		 * at the next step.
-		 */
-		this.currentState = new PipelineMemento(functions, savedState);
+		changeSavedState(true);
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null).setCreateUndoStep(false));
+	}
+
+	@Override
+	public void savePipeline() throws FileException {
+		savePipeline(pipelineFilename);
 	}
 
 	@Override
@@ -138,14 +146,23 @@ public class Pipeline extends AbstractPipeline {
 				.getPersistence(OSMembranePersistence.class);
 
 		persistence.save(filename, functions);
+		pipelineFilename = filename;
 
 		/* Saved successfully (persistence has not thrown a FileException */
 		changeSavedState(true);
+
+		changedNotifyObservers(new PipelineObserverObject(
+				ChangeType.SAVED_PIPELINE, null).setCreateUndoStep(false));
 	}
 
 	@Override
 	public boolean isSaved() {
 		return savedState;
+	}
+
+	@Override
+	public URL getFilename() {
+		return pipelineFilename;
 	}
 
 	@Override
@@ -169,18 +186,14 @@ public class Pipeline extends AbstractPipeline {
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
 
 		clear();
-		
+
 		this.functions = functions;
 		for (AbstractFunction function : functions) {
 			function.addObserver(this);
 		}
 
-		/*
-		 * Save the loaded Pipeline as the first undoStep which will be created
-		 * at the next step.
-		 */
-		this.currentState = new PipelineMemento(functions, savedState);
-		
+		changeSavedState(true);
+
 		arrangePipeline();
 
 		/* notify the observers */
@@ -276,12 +289,6 @@ public class Pipeline extends AbstractPipeline {
 	@Override
 	public boolean redoAvailable() {
 		return !redoStack.isEmpty();
-	}
-
-	@Override
-	public String getIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

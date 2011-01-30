@@ -2,6 +2,8 @@ package de.osmembrane.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.Action;
 
@@ -25,10 +27,12 @@ import de.osmembrane.controller.actions.MoveFunctionAction;
 import de.osmembrane.controller.actions.NewPipelineAction;
 import de.osmembrane.controller.actions.PreviewPipelineAction;
 import de.osmembrane.controller.actions.RedoAction;
+import de.osmembrane.controller.actions.SaveAsPipelineAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
 import de.osmembrane.controller.actions.ShowAboutAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
 import de.osmembrane.controller.actions.UndoAction;
+import de.osmembrane.model.ModelProxy;
 
 /**
  * The action registry implements the Broker pattern to organize the
@@ -37,7 +41,7 @@ import de.osmembrane.controller.actions.UndoAction;
  * @author tobias_kuhn
  * 
  */
-public class ActionRegistry {
+public class ActionRegistry implements Observer {
 	/**
 	 * implements the Singleton pattern
 	 */
@@ -56,6 +60,7 @@ public class ActionRegistry {
 		// pipeline actions
 		register(new NewPipelineAction());
 		register(new SavePipelineAction());
+		register(new SaveAsPipelineAction());
 		register(new LoadPipelineAction());
 		register(new ExportPipelineAction());
 		register(new ImportPipelineAction());
@@ -88,6 +93,8 @@ public class ActionRegistry {
 		register(new ShowAboutAction());
 		register(new ChangeSettingsAction());
 		register(new ExitAction());
+		
+		ModelProxy.getInstance().accessPipeline().addObserver(this);
 	}
 
 	/**
@@ -117,5 +124,34 @@ public class ActionRegistry {
 	 */
 	public Action get(Class<? extends Action> clazz) {
 		return actions.get(clazz);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// update all actions and their enabled state
+		ActionRegistry
+				.getInstance()
+				.get(UndoAction.class)
+				.setEnabled(
+						ModelProxy.getInstance().accessPipeline()
+								.undoAvailable());
+		ActionRegistry
+				.getInstance()
+				.get(RedoAction.class)
+				.setEnabled(
+						ModelProxy.getInstance().accessPipeline()
+								.redoAvailable());
+
+		ActionRegistry
+				.getInstance()
+				.get(SaveAsPipelineAction.class)
+				.setEnabled(
+						!ModelProxy.getInstance().accessPipeline().isSaved());
+
+		ActionRegistry
+				.getInstance()
+				.get(SavePipelineAction.class)
+				.setEnabled(
+						!ModelProxy.getInstance().accessPipeline().isSaved());
 	}
 }
