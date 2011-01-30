@@ -335,7 +335,10 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 			parameters = new ArrayList<String>();
 			for (String param : params.split(",")) {
-				parameters.add(param.trim());
+				String trimmed = param.trim();
+				if (!trimmed.isEmpty()) {
+					parameters.add(trimmed);
+				}
 			}
 
 			fireTableDataChanged();
