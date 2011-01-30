@@ -146,12 +146,14 @@ public class ViewRegistry extends Observable implements Observer {
 	 * components, so it has to identify its main window for the purpose of
 	 * showing this window at startup.
 	 * 
+	 * @deprecated
 	 * This is a workarround. Technically, there should be an IMainFrame to be
 	 * fetched via {@link ViewRegistry#getCasted(Class, Class)}
 	 * 
 	 * @return the {@link MainFrame} of this view component, casted to its full
 	 *         type.
 	 */
+	@Deprecated
 	public MainFrame getMainFrameByPass() {
 		return getCasted(MainFrame.class, MainFrame.class);
 	}
