@@ -3,7 +3,6 @@ package de.osmembrane.view.dialogs;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,8 +15,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringReader;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,21 +23,16 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
 import javax.swing.table.DefaultTableModel;
 
 import de.osmembrane.Application;
-import de.osmembrane.model.pipeline.AbstractEnumValue;
 import de.osmembrane.model.pipeline.AbstractParameter;
-import de.osmembrane.model.pipeline.CopyType;
-import de.osmembrane.model.pipeline.ParameterType;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
 
@@ -301,6 +293,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					editList.removeEditor();
 					deleteButton.doClick();
 				}
 			}
