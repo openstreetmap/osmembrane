@@ -35,6 +35,7 @@ import javax.swing.table.TableCellEditor;
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.EditBoundingBoxPropertyAction;
+import de.osmembrane.controller.actions.EditListPropertyAction;
 import de.osmembrane.controller.actions.EditPropertyAction;
 import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.controller.events.ContainingFunctionChangeParameterEvent;
@@ -104,6 +105,11 @@ public class InspectorPanel extends JPanel implements Observer {
 	 * == null and .isEmpty())
 	 */
 	protected static final String VALID_EMPTY_HINT = " ";
+
+	/**
+	 * Text to be shown on "edit me further" buttons
+	 */
+	private static final String EDIT_BUTTON_CAPTION = "...";
 
 	/**
 	 * the reference to the {@link AbstractFunction} which is currently
@@ -321,25 +327,37 @@ public class InspectorPanel extends JPanel implements Observer {
 					break;
 
 				case BBOX:
-					JTextFieldWithButton jtfwb = new JTextFieldWithButton(
-							ap.getValue(), "...");
-					jtfwb.addButtonActionListener(new ActionListener() {
+					JTextFieldWithButton jtfwbBB = new JTextFieldWithButton(
+							ap.getValue(), EDIT_BUTTON_CAPTION);
+					jtfwbBB.addButtonActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							Action a = ActionRegistry.getInstance().get(
+							Action aBB = ActionRegistry.getInstance().get(
 									EditBoundingBoxPropertyAction.class);
-							ContainingEvent ce = new ContainingEvent(this, ap);
-							a.actionPerformed(ce);
+							ContainingEvent ceBB = new ContainingEvent(this, ap);
+							aBB.actionPerformed(ceBB);
 						}
 					});
 					rowEditorModel.setEditorRow(i + 1,
-							new JTextFieldWithButtonCellEditor(jtfwb));
+							new JTextFieldWithButtonCellEditor(jtfwbBB));
 					break;
-
-				/*
-				 * geht nicht: gibts nicht (doesn't work: doesn't exist) case
-				 * LIST: break;
-				 */
+				
+				case LIST:
+					JTextFieldWithButton jtwbList = new JTextFieldWithButton(
+							ap.getValue(), EDIT_BUTTON_CAPTION);					
+					jtwbList.addButtonActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Action aList = ActionRegistry.getInstance().get(
+									EditListPropertyAction.class);
+							ContainingEvent ceList = new ContainingEvent(this, ap);
+							aList.actionPerformed(ceList);						
+						}
+					});
+					rowEditorModel.setEditorRow(i + 1,
+							new JTextFieldWithButtonCellEditor(jtwbList));
+					break;
 
 				default:
 					JTextField textField = new JTextField(ap.getValue());
@@ -604,6 +622,12 @@ public class InspectorPanel extends JPanel implements Observer {
 		 */
 		private long lastSetFire;
 
+		/**
+		 * Creates a new {@link InspectorPanelTableBooleanCheckBoxModel}
+		 * 
+		 * @param param
+		 *            the boolean parameter to be edited
+		 */
 		public InspectorPanelTableBooleanCheckBoxModel(AbstractParameter param) {
 			this.param = param;
 			this.lastSetFire = System.currentTimeMillis();

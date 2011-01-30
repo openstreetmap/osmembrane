@@ -17,7 +17,6 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.FileType;
-import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;

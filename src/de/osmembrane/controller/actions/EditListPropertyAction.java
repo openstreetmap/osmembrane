@@ -6,13 +6,16 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 
 import de.osmembrane.controller.events.ContainingEvent;
+import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader.Size;
-import de.osmembrane.view.dialogs.ListSelectionDialog;
+import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.dialogs.IListDialog;
+import de.osmembrane.view.dialogs.ListDialog;
 
 /**
  * Action to edit a parameter which is a list and therefore open the
- * {@link ListSelectionDialog}. Receives a {@link ContainingEvent}.
+ * {@link ListDialog}. Receives a {@link ContainingEvent}.
  * 
  * @author tobias_kuhn
  * 
@@ -26,13 +29,24 @@ public class EditListPropertyAction extends AbstractAction {
 	 */
 	public EditListPropertyAction() {
 		putValue(Action.NAME, "Edit List Property");
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("list_property_edit.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("list_property_edit.png", Size.NORMAL));
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+				"list_property_edit.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+				"list_property_edit.png", Size.NORMAL));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO implement
-		throw new UnsupportedOperationException();
+		ContainingEvent ce = (ContainingEvent) e;
+		AbstractParameter ap = (AbstractParameter) ce.getContained();
+
+		IListDialog list = ViewRegistry.getInstance().getCasted(
+				ListDialog.class, IListDialog.class);
+
+		list.open(ap);
+		if (list.shallApplyChanges()) {
+			ap.setValue(list.getEdits());
+		}
+
 	}
 }

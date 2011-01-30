@@ -15,14 +15,17 @@ import de.unistuttgart.iev.osm.bboxchooser.DialogResponse;
  * @see Spezifikation.pdf, chapter 2.4
  * 
  * @author tobias_kuhn
- *
+ * 
  */
 public class BoundingBoxDialog implements IBoundingBoxDialog {
 
 	private static final long serialVersionUID = 5182327519016989905L;
-	
+
+	/**
+	 * The external {@link BBoxChooserDialog} that will be used.
+	 */
 	private BBoxChooserDialog dialog;
-	
+
 	/**
 	 * Creates a new {@link BoundingBoxDialog}
 	 */
@@ -43,9 +46,10 @@ public class BoundingBoxDialog implements IBoundingBoxDialog {
 
 	@Override
 	public void centerWindow() {
-		Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
+		Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getCenterPoint();
 		Point edgeLeftTop = new Point(screenCenter.x - (dialog.getWidth() / 2),
-									  screenCenter.y - (dialog.getHeight() / 2));
+				screenCenter.y - (dialog.getHeight() / 2));
 		dialog.setLocation(edgeLeftTop.x, edgeLeftTop.y);
 	}
 
@@ -53,7 +57,7 @@ public class BoundingBoxDialog implements IBoundingBoxDialog {
 	public void bringToFront() {
 		dialog.toFront();
 	}
-	
+
 	@Override
 	public void showWindow() {
 		dialog.setVisible(true);
@@ -61,7 +65,8 @@ public class BoundingBoxDialog implements IBoundingBoxDialog {
 
 	@Override
 	public Bounds getBoundingBox() {
-		return (dialog.getResponse() == DialogResponse.OK) ? dialog.getBoundingBox() : null;
+		return (dialog.getResponse() == DialogResponse.OK) ? dialog
+				.getBoundingBox() : null;
 	}
 
 	@Override

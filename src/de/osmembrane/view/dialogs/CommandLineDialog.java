@@ -24,7 +24,7 @@ import de.osmembrane.view.AbstractDialog;
  * Simple dialog to display the generated command line, export it, or copy it to
  * the clipboard.
  * 
- * @see Spezifikation.pdf, chapter 2.6
+ * @see Spezifikation.pdf, chapter 2.5
  * 
  * @author tobias_kuhn
  * 
