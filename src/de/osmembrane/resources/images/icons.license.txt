@@ -1,0 +1,7 @@
+If an icon has no detailed information about his origin it is part
+of the Tango-project.
+
+Source:         Tango project.
+Released under: "Public Domain"
+Website:        http://tango.freedesktop.org/Tango_Desktop_Project
+

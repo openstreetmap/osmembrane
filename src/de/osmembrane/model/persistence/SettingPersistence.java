@@ -38,7 +38,7 @@ public class SettingPersistence extends AbstractPersistence {
 		}
 
 		try {
-			FileOutputStream fos = new FileOutputStream(file.toString());
+			FileOutputStream fos = new FileOutputStream(file.toString().replace("file:",""));
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 

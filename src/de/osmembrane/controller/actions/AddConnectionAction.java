@@ -41,7 +41,7 @@ public class AddConnectionAction extends AbstractAction {
 					.handleException(new ControlledException(this,
 							ExceptionSeverity.WARNING, I18N.getInstance()
 									.getString(
-											"Controller.Actions.AddConnection."
+											"Model.Pipeline.AddConnection."
 													+ e1.getType())));
 
 		}

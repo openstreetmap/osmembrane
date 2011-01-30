@@ -38,13 +38,15 @@ public class Pipeline extends AbstractPipeline {
 	/**
 	 * Constructor for {@link Pipeline}.
 	 */
-	public Pipeline() {
+	public Pipeline(boolean silent) {
 		this.functions = new ArrayList<AbstractFunction>();
 		this.undoStack = new Stack<PipelineMemento>();
 		this.redoStack = new Stack<PipelineMemento>();
 
 		/* register the Observer of Persistence to the Pipeline */
-		addObserver(PersistenceFactory.getInstance());
+		if(!silent) {
+			addObserver(PersistenceFactory.getInstance());
+		}
 	}
 
 	@Override

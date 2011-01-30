@@ -40,7 +40,7 @@ public class BashPersistence extends AbstractPersistence {
 		}
 
 		try {
-			File file = new File(filename.toString());
+			File file = new File(filename.toString().replace("file:",""));
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
 

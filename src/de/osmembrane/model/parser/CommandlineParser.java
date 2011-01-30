@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,8 +14,10 @@ import de.osmembrane.model.parser.ParseException.ErrorType;
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractParameter;
-import de.osmembrane.model.pipeline.AbstractTask;
+import de.osmembrane.model.pipeline.AbstractPipeline;
+import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorType;
+import de.osmembrane.model.pipeline.Pipeline;
 import de.osmembrane.tools.I18N;
 
 public class CommandlineParser implements IParser {
@@ -71,13 +71,19 @@ public class CommandlineParser implements IParser {
 	public List<AbstractFunction> parseString(String input)
 			throws ParseException {
 
-		List<AbstractFunction> pipelineFunctions = new ArrayList<AbstractFunction>();
+		/** A temporary silent pipeline to check loop freeness */
+		AbstractPipeline pipeline = new Pipeline(true);
 
-		Map<String, String> teeMap = new HashMap<String, String>();
+		/** A map for listing all connections belongs to its function */
+		Map<String, AbstractFunction> connectionMap = new HashMap<String, AbstractFunction>();
+
+		/**
+		 * Map saves for each ConnectorType a function which has such an outPipe
+		 * but none explicit defined in the commandline.
+		 */
+		Map<ConnectorType, AbstractFunction> openOutConnectors = new HashMap<ConnectorType, AbstractFunction>();
 
 		input = input.replace(breaklineSymbol, " ");
-
-		System.out.println(input);
 
 		Matcher taskMatcher = PATTERN_TASK.matcher(input);
 		while (taskMatcher.find()) {
@@ -88,7 +94,7 @@ public class CommandlineParser implements IParser {
 			Map<Integer, String> inPipes = new HashMap<Integer, String>();
 			Map<Integer, String> outPipes = new HashMap<Integer, String>();
 
-//			System.out.println(taskName);
+			// System.out.println(taskName);
 
 			Matcher paramMatcher = PATTERN_PARAMETER.matcher(taskParameters);
 			while (paramMatcher.find()) {
@@ -115,16 +121,16 @@ public class CommandlineParser implements IParser {
 						outPipes.put(pipeIndex, keyValuePair[1]);
 					}
 
-					System.out.println("     Pipe: " + inOutPipe + " "
-							+ pipeIndex + " = " + keyValuePair[1]);
+					// System.out.println("     Pipe: " + inOutPipe + " "
+					// + pipeIndex + " = " + keyValuePair[1]);
 				} else {
 					/* found a normal parameter */
 					parameters.put(keyValuePair[0], keyValuePair[1]);
 
-//					System.out.println("     Param: "
-//							+ (keyValuePair[0].equals(DEFAULT_KEY) ? DEFAULT_KEY
-//									: keyValuePair[0]) + " = "
-//							+ keyValuePair[1]);
+					// System.out.println("     Param: "
+					// + (keyValuePair[0].equals(DEFAULT_KEY) ? DEFAULT_KEY
+					// : keyValuePair[0]) + " = "
+					// + keyValuePair[1]);
 				}
 			}
 
@@ -133,7 +139,29 @@ public class CommandlineParser implements IParser {
 			 * tee and tee-change, 'cause they have no corresponding functions.
 			 */
 			if (taskName.equals("tee") || taskName.equals("tee-change")) {
+				AbstractFunction function = null;
+				for (Integer pipeId : inPipes.keySet()) {
+					function = connectionMap.get(inPipes.get(pipeId));
+				}
+				/* check if that could be also an implicit function */
+				if (function == null) {
+					function = openOutConnectors
+							.get((taskName.equals("tee") ? ConnectorType.ENTITY
+									: ConnectorType.CHANGE));
+				}
 
+				if (function == null) {
+					throw new ParseException(ErrorType.UNKNOWN_PIPE_STREAM,
+							I18N.getInstance().getString(
+									"Model.Parser.UnknownPipeStream", taskName));
+				}
+
+				for (Integer pipeId : outPipes.keySet()) {
+					String pipeName = outPipes.get(pipeId);
+					if (function != null) {
+						connectionMap.put(pipeName, function);
+					}
+				}
 			} else {
 				AbstractFunction function = ModelProxy.getInstance()
 						.accessFunctions()
@@ -141,11 +169,12 @@ public class CommandlineParser implements IParser {
 
 				if (function == null) {
 					throw new ParseException(ErrorType.UNKNOWN_TASK);
+				} else {
+					pipeline.addFunction(function);
 				}
 
 				/* copy parameters to the function */
-				Set<String> keySet = parameters.keySet();
-				for (String key : keySet) {
+				for (String key : parameters.keySet()) {
 					boolean foundKey = false;
 					for (AbstractParameter parameter : function.getActiveTask()
 							.getParameters()) {
@@ -159,15 +188,95 @@ public class CommandlineParser implements IParser {
 					}
 					if (!foundKey) {
 						throw new ParseException(ErrorType.UNKNOWN_TASK_FORMAT,
-								I18N.getInstance().getString("Model.Parser.ParameterNotFound", taskName, key));
+								I18N.getInstance().getString(
+										"Model.Parser.ParameterNotFound",
+										taskName, key));
 					}
 				}
 
-				pipelineFunctions.add(function);
+				/* add the connections */
+				for (Integer pipeId : inPipes.keySet()) {
+					String pipeName = inPipes.get(pipeId);
+					AbstractFunction outFunction = connectionMap.get(pipeName);
+					try {
+						outFunction.addConnectionTo(function);
+					} catch (ConnectorException e) {
+						String connectionExceptionMessage = I18N.getInstance()
+								.getString(
+										"Model.Pipeline.AddConnection."
+												+ e.getType());
+
+						String message = I18N.getInstance().getString(
+								"Model.Parser.ConnectonNotPermitted",
+								outFunction.getActiveTask().getName(),
+								function.getActiveTask().getName(),
+								connectionExceptionMessage);
+
+						throw new ParseException(
+								ErrorType.CONNECTION_NOT_PERMITTED, message);
+					}
+				}
+				/* find connectors without a explicit definition. */
+				for (AbstractConnector connector : function.getInConnectors()) {
+					/*
+					 * check if the connector is one without a explicit defined
+					 * pipe.
+					 */
+					if (inPipes.get(connector.getConnectorIndex()) == null) {
+						AbstractFunction outFunction = openOutConnectors
+								.get(connector.getType());
+						if (outFunction != null) {
+							try {
+								outFunction.addConnectionTo(function);
+							} catch (ConnectorException e) {
+								String connectionExceptionMessage = I18N
+										.getInstance().getString(
+												"Model.Pipeline.AddConnection."
+														+ e.getType());
+
+								String message = I18N.getInstance().getString(
+										"Model.Parser.ConnectonNotPermitted",
+										outFunction.getActiveTask().getName(),
+										function.getActiveTask().getName(),
+										connectionExceptionMessage);
+
+								throw new ParseException(
+										ErrorType.CONNECTION_NOT_PERMITTED,
+										message);
+							}
+							/* remove the openConnector from the map */
+							openOutConnectors.remove(connector.getType());
+						}
+					}
+				}
+
+				/* register all open outPipes */
+				for (Integer pipeId : outPipes.keySet()) {
+					String pipeName = outPipes.get(pipeId);
+					connectionMap.put(pipeName, function);
+				}
+				/* find connectors without a explicit definition. */
+				for (AbstractConnector connector : function.getOutConnectors()) {
+					/*
+					 * check if the connector is one without a explicit defined
+					 * pipe.
+					 */
+					if (outPipes.get(connector.getConnectorIndex()) == null) {
+						openOutConnectors.put(connector.getType(), function);
+					}
+				}
 			}
 		}
 
-		return pipelineFunctions;
+		/* create the output List */
+		List<AbstractFunction> returnList = new ArrayList<AbstractFunction>();
+		for (AbstractFunction function : pipeline.getFunctions()) {
+			/* remove the observer of this pipeline (no longer required) */
+			function.deleteObserver(pipeline);
+
+			returnList.add(function);
+		}
+		return returnList;
 	}
 
 	@Override
@@ -193,7 +302,7 @@ public class CommandlineParser implements IParser {
 		}
 
 		/* TODO get the real path to osmosis from SettingsModel */
-		builder.append("osmosis");
+		builder.append("osmosis ");
 
 		/* do the parsing while a function is in the queue */
 		while (!functionQueue.isEmpty()) {

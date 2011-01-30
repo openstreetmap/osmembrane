@@ -22,7 +22,17 @@ public class ParseException extends Exception {
 		/**
 		 * The task has an unknown format, e.g. a parameter is not known, or the pipes do not match.
 		 */
-		UNKNOWN_TASK_FORMAT
+		UNKNOWN_TASK_FORMAT,
+		
+		/**
+		 * The task has a connection which is not allowed to be one.
+		 */
+		CONNECTION_NOT_PERMITTED,
+		
+		/** 
+		 * The pipe-stream direction could not be recognized implicit.
+		 */
+		UNKNOWN_PIPE_STREAM,
 	}
 
 	private ErrorType type;
