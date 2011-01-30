@@ -248,6 +248,10 @@ public class LibraryFunction extends DisplayTemplatePanel {
 			g.drawImage(display, at.x, at.y, getWidth(), getHeight(), this);
 		}
 
+		// get applicable font
+		g.setFont(g.getFont().deriveFont(Font.BOLD)
+				.deriveFont(g.getFont().getSize() * getHeight() / 90.0f));
+		
 		printCenteredString(g, modelFunctionPrototype.getFriendlyName(), at.x,
 				at.y + 0.8 * getHeight());
 	}
@@ -265,10 +269,7 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	 * @param y
 	 *            the base y coordinate for the last line of the string
 	 */
-	private void printCenteredString(Graphics g, String str, double x, double y) {
-		// get applicable font
-		g.setFont(g.getFont().deriveFont(Font.BOLD)
-				.deriveFont(g.getFont().getSize() * getHeight() / 90.0f));
+	protected void printCenteredString(Graphics g, String str, double x, double y) {
 
 		// find out how large this is gonna be
 		FontMetrics fm = g.getFontMetrics();

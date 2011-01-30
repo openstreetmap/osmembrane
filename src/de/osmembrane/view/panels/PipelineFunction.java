@@ -1,5 +1,6 @@
 package de.osmembrane.view.panels;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -207,6 +208,11 @@ public class PipelineFunction extends LibraryFunction {
 		highlighted = this.equals(pipeline.getSelected());
 
 		super.paintComponent(g);
+		
+		g.setFont(g.getFont().deriveFont(Font.PLAIN)
+				.deriveFont((int) (g.getFont().getSize() * 0.9)));					
+		printCenteredString(g, modelFunction.getActiveTask().getName(), 0,
+				0 + 0.5 * getHeight());
 	}
 
 	/**
