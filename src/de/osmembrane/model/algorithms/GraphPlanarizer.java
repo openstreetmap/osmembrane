@@ -34,6 +34,7 @@ public class GraphPlanarizer {
 		for (AbstractFunction function : primaryFunctions) {
 			System.out.println("> orderFunction(" + function.hashCode() + "," + xOffsetFactor + "," + yOffsetFactor + ")");
 			yOffsetFactor = orderFunctions(function, xOffsetFactor, yOffsetFactor);
+			yOffsetFactor++;
 			System.out.println("> returned yOffsetFactor=" + yOffsetFactor);
 		}
 	}

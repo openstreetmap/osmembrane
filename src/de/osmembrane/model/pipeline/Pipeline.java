@@ -168,15 +168,20 @@ public class Pipeline extends AbstractPipeline {
 		@SuppressWarnings("unchecked")
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
 
+		clear();
+		
 		this.functions = functions;
 		for (AbstractFunction function : functions) {
 			function.addObserver(this);
 		}
 
 		/*
-		 * Save the imported Pipeline as the first undoStep which will be
-		 * created at the next step.
+		 * Save the loaded Pipeline as the first undoStep which will be created
+		 * at the next step.
 		 */
+		this.currentState = new PipelineMemento(functions, savedState);
+		
+		arrangePipeline();
 
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
