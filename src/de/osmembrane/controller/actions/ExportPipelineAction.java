@@ -46,15 +46,13 @@ public class ExportPipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		/* get the MainFrame */
-		MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
 
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
 		fileChooser.addChoosableFileFilter(FileType.BASH.getFileFilter());
 		fileChooser.addChoosableFileFilter(FileType.CMD.getFileFilter());
 
-		int result = fileChooser.showSaveDialog(mainFrame);
+		int result = fileChooser.showSaveDialog(null);
 
 		if (result == JFileChooser.APPROVE_OPTION) {
 

@@ -47,13 +47,11 @@ public class SaveAsPipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		/* get the MainFrame */
-		MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
 
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
 
-		int result = fileChooser.showSaveDialog(mainFrame);
+		int result = fileChooser.showSaveDialog(null);
 
 		if (result == JFileChooser.APPROVE_OPTION) {
 			
