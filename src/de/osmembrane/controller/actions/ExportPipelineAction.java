@@ -20,8 +20,6 @@ import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
-import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.frames.MainFrame;
 
 /**
  * Action to export the created pipeline to a file.
