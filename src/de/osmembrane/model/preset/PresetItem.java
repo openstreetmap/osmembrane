@@ -17,6 +17,9 @@ import de.osmembrane.tools.IconLoader.Size;
 public class PresetItem {
 
 	private Item item;
+	
+	private String key;
+	private String value;
 
 	private ImageIcon icon = null;
 	private boolean triedLoadIcon = false;
@@ -26,9 +29,13 @@ public class PresetItem {
 	 * 
 	 * @param item
 	 *            {@link Item} which should be represented
+	 * @param string2 
+	 * @param string 
 	 */
-	protected PresetItem(Item item) {
+	protected PresetItem(Item item, String key, String value) {
 		this.item = item;
+		this.key = key;
+		this.value = value;
 	}
 
 	/**
@@ -62,7 +69,7 @@ public class PresetItem {
 	 * @return key of the item
 	 */
 	public String getKey() {
-		return getObjKey().getKey();
+		return key;
 	}
 
 	/**
@@ -71,7 +78,7 @@ public class PresetItem {
 	 * @return value of the item
 	 */
 	public String getValue() {
-		return getObjKey().getValue();
+		return value;
 	}
 
 	/**

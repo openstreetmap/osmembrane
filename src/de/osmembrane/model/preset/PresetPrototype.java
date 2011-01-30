@@ -4,8 +4,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.awt.SunHints.Value;
+
 import de.openstreetmap.josm.tagging_preset_1.Group;
 import de.openstreetmap.josm.tagging_preset_1.Item;
+import de.openstreetmap.josm.tagging_preset_1.Key;
 import de.openstreetmap.josm.tagging_preset_1.Root;
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
@@ -88,14 +91,22 @@ public class PresetPrototype extends AbstractPresetPrototype {
 	}
 	
 	private void processItem(Item item) {
-		PresetItem presetItem = new PresetItem(item);
-		
-		/* Add the item to the lists which it refer to. */
-		if(presetItem.isNode()) {
-			nodeList.add(presetItem);
+		Key key = null;
+		for (Object obj : item.getLabelOrSpaceOrLink()) {
+			if (obj instanceof Key) {
+				key = (Key) obj;
+			}
 		}
-		if(presetItem.isWay()) {
-			wayList.add(presetItem);
+		if (key != null) {
+			PresetItem presetItem = new PresetItem(item, key.getKey(), key.getValue());
+			
+			/* Add the item to the lists which it refer to. */
+			if(presetItem.isNode()) {
+				nodeList.add(presetItem);
+			}
+			if(presetItem.isWay()) {
+				wayList.add(presetItem);
+			}
 		}
 	}
 }

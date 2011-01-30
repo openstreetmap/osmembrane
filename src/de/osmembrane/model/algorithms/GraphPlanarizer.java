@@ -12,8 +12,8 @@ public class GraphPlanarizer {
 
 	private List<AbstractFunction> functions;
 
-	private static final double X_OFFSET = 400.0;
-	private static final double Y_OFFSET = 300.0;
+	private static final double X_OFFSET = 300.0;
+	private static final double Y_OFFSET = 150.0;
 
 	public GraphPlanarizer(List<AbstractFunction> functions) {
 		this.functions = functions;
