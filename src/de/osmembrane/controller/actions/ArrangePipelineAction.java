@@ -1,19 +1,21 @@
 package de.osmembrane.controller.actions;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader.Size;
-import de.osmembrane.view.dialogs.CommandLineDialog;
 
 /**
- * Action to generate the pipeline command line and display the {@link CommandLineDialog}.
+ * Action to arrange the pipeline.
  * 
- * @author tobias_kuhn
+ * @author jakob_jarosch
  * 
  */
 public class ArrangePipelineAction extends AbstractAction {
@@ -27,6 +29,8 @@ public class ArrangePipelineAction extends AbstractAction {
 		putValue(Action.NAME, "Arrange Pipeline");
 		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("arrange_pipeline.png", Size.SMALL));
 		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("arrange_pipeline.png", Size.NORMAL));
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
 
 	@Override

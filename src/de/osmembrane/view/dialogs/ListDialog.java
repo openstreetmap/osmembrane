@@ -20,19 +20,22 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
 import de.osmembrane.Application;
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractParameter;
+import de.osmembrane.model.preset.PresetItem;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
 
@@ -51,6 +54,26 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 	private static final long serialVersionUID = -1373885104364615162L;
 
 	/**
+	 * Allocates the correct type for the listType
+	 * 
+	 * @author tobias_kuhn
+	 * 
+	 */
+	private enum ListType {
+		INVALID, NODE, WAY 
+	};
+	
+	/**
+	 * Allocates the correct content type fo rthe listContentType
+	 *
+	 * @author tobias_kuhn 
+	 * 
+	 */
+	private enum ListContentType {
+		INVALID, KEY, KEY_VALUE 
+	}
+
+	/**
 	 * Whether or not to apply the changes made in the dialog
 	 */
 	private boolean applyChanges;
@@ -59,6 +82,16 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 	 * The list parameter currently in edition
 	 */
 	private AbstractParameter listParam;
+
+	/**
+	 * The {@link ListType} of the list
+	 */
+	private ListType listType;
+	
+	/**
+	 * The {@link ListContentType} of the list
+	 */
+	private ListContentType listContentType;
 
 	/**
 	 * The {@link JTable} to display all the list entries.
@@ -75,7 +108,15 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 	 */
 	private JFileChooser fileChooser;
 
-	private JTextField editField;
+	/**
+	 * Field for entering new entries
+	 */
+	private JComboBox editField;
+
+	/**
+	 * Model for the auto completion
+	 */
+	private AutoCompleteComboBoxModel editFieldModel;
 
 	/**
 	 * Generates a new {@link ListDialog}.
@@ -175,11 +216,11 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				editListModel.insert(editField.getText());
-				editField.setText("");
+				editListModel.insert(editField.getSelectedItem().toString());
+				editField.setSelectedItem("");
 			}
 		});
-		
+
 		final JButton deleteButton = new JButton(I18N.getInstance().getString(
 				"View.Delete"));
 		deleteButton.addKeyListener(returnButtonListener);
@@ -285,11 +326,11 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		editList.setPreferredSize(new Dimension(640, 480));
 		editList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		editList.addKeyListener(new KeyListener() {
-			
+
 			@Override
 			public void keyTyped(KeyEvent e) {
 			}
-			
+
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
@@ -297,7 +338,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 					deleteButton.doClick();
 				}
 			}
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
 			}
@@ -306,25 +347,35 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		JPanel edit = new JPanel(new BorderLayout());
 		edit.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		edit.add(new JScrollPane(editList), BorderLayout.CENTER);
-		
-		editField = new JTextField();
-		editField.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					addButton.doClick();
-				}
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-		});
+
+		editFieldModel = new AutoCompleteComboBoxModel();
+		editField = new JComboBox(editFieldModel);
+		editField.setEditable(true);
+		editField.getEditor().getEditorComponent()
+				.addKeyListener(new KeyListener() {
+
+					@Override
+					public void keyTyped(KeyEvent e) {
+					}
+
+					@Override
+					public void keyReleased(KeyEvent e) {
+						if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+							addButton.doClick();
+						} else {
+							if (editField.getSelectedItem() != null) {
+								editFieldModel.regenerate(editField.getSelectedItem().toString());
+							} else {
+								editFieldModel.regenerate("");
+							}
+							editField.showPopup();
+						}
+					}
+
+					@Override
+					public void keyPressed(KeyEvent e) {
+					}
+				});
 		edit.add(editField, BorderLayout.NORTH);
 
 		add(edit, BorderLayout.CENTER);
@@ -338,6 +389,13 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		this.listParam = list;
 		this.editListModel.regenerate(list.getValue());
 		this.applyChanges = false;
+		if (listParam.getListType().toLowerCase().contains("node")) {
+			this.listType = ListType.NODE;
+		} else if (listParam.getListType().toLowerCase().contains("way")) {
+			this.listType = ListType.WAY;
+		} else {
+			this.listType = ListType.INVALID;
+		}
 
 		setWindowTitle(I18N.getInstance().getString("View.ListDialog",
 				list.getListType()));
@@ -392,6 +450,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		/**
 		 * inserts text
+		 * 
 		 * @param text
 		 */
 		public void insert(String text) {
@@ -430,7 +489,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		public int getRowCount() {
 			if (parameters != null) {
 				return parameters.size();
-						
+
 			} else {
 				return 0;
 			}
@@ -468,6 +527,66 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 				parameters.add(aValue.toString());
 				fireTableDataChanged();
 			}
+		}
+
+	}
+
+	/**
+	 * The combobox model used for the auto complete functionality
+	 * 
+	 * @author tobias_kuhn
+	 * 
+	 */
+	class AutoCompleteComboBoxModel extends DefaultComboBoxModel {
+
+		private static final long serialVersionUID = -2411522330049480604L;
+		
+		/**
+		 * The set of preset items that are the current auto complete contents filter
+		 */
+		private List<String> autoComplete;
+		
+		public AutoCompleteComboBoxModel() {
+			autoComplete = new ArrayList<String>();
+		}
+
+		/**
+		 * Regenerates the auto complete contents with filter
+		 * @param filter
+		 */
+		public void regenerate(String filter) {
+			PresetItem[] items;
+			if (listType == ListType.NODE) {
+				items = ModelProxy.getInstance().accessPreset().getFilteredNodes(filter);
+			} else if (listType == ListType.WAY) {
+				items = ModelProxy.getInstance().accessPreset().getFilteredWays(filter);
+			} else {
+				items = new PresetItem[0];
+			}
+
+			for (PresetItem pi : items) {
+				String toAdd;
+				if (listContentType == ListContentType.KEY) {
+					toAdd = pi.getKey();
+				} else {
+					toAdd = pi.getKey() + "." + pi.getValue();
+				}
+				// add, if not already present
+				if (!autoComplete.contains(toAdd)) {
+					autoComplete.add(toAdd);
+				}
+			}
+			
+		}
+
+		@Override
+		public int getSize() {
+			return autoComplete.size();
+		}
+
+		@Override
+		public Object getElementAt(int index) {
+			return autoComplete.get(index);
 		}
 
 	}

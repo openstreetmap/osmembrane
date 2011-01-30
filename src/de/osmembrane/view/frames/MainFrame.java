@@ -248,6 +248,9 @@ public class MainFrame extends AbstractFrame {
 		toolBar.add(ActionRegistry.getInstance().get(
 				ExecutePipelineAction.class));
 		toolBar.add(new JSeparator(SwingConstants.VERTICAL));
+		toolBar.add(ActionRegistry.getInstance().get(
+				ArrangePipelineAction.class));
+		toolBar.add(new JSeparator(SwingConstants.VERTICAL));
 		toolBar.add(ActionRegistry.getInstance().get(ShowHelpAction.class));
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 
