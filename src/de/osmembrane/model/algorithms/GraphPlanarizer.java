@@ -23,12 +23,15 @@ public class GraphPlanarizer {
 		/* Reset all function to their zero-position */
 		resetAllFunctions();
 
-		List<AbstractFunction> pirmaryFunctions = getPrimaryFunctions();
+		List<AbstractFunction> primaryFunctions = getPrimaryFunctions();
 
 		/* set the xOffsetfactor to -1.0 'cause orderFunction will add 1.0 in the first step */
 		double xOffsetFactor = -1.0;
 		double yOffsetFactor = 0.0;
-		for (AbstractFunction function : pirmaryFunctions) {
+		
+		System.out.println(primaryFunctions);
+		
+		for (AbstractFunction function : primaryFunctions) {
 			System.out.println("> orderFunction(" + function.hashCode() + "," + xOffsetFactor + "," + yOffsetFactor + ")");
 			yOffsetFactor = orderFunctions(function, xOffsetFactor, yOffsetFactor);
 			System.out.println("> returned yOffsetFactor=" + yOffsetFactor);
@@ -49,13 +52,16 @@ public class GraphPlanarizer {
 	private List<AbstractFunction> getPrimaryFunctions() {
 		List<AbstractFunction> primaryFunctions = new ArrayList<AbstractFunction>();
 		for (AbstractFunction function : functions) {
+			boolean foundConnection = false;
 			for (AbstractConnector connector : function.getInConnectors()) {
 				if (connector.getConnections().length > 0) {
 					/* found a inConnection, do not add as a primary one */
-					break;
+					foundConnection = true;
 				}
 			}
-			primaryFunctions.add(function);
+			if(!foundConnection) {
+				primaryFunctions.add(function);
+			}
 		}
 		return primaryFunctions;
 	}
@@ -68,9 +74,10 @@ public class GraphPlanarizer {
 	private double orderFunctions(AbstractFunction function, double xOffsetFactor, double yOffsetFactor) {
 		xOffsetFactor++;
 		
-		System.out.println("| " + function.hashCode() + "\t" + xOffsetFactor + "\t" + yOffsetFactor);
+		System.out.println("| " + function.getId() + "\t" + xOffsetFactor + "\t" + yOffsetFactor);
 		
 		function.getCoordinate().setLocation(X_OFFSET * xOffsetFactor, Y_OFFSET * yOffsetFactor);
+		System.out.println(function.getCoordinate());
 		
 		boolean moreThanOneConnection = false;
 		for(AbstractConnector connector : function.getOutConnectors()) {
