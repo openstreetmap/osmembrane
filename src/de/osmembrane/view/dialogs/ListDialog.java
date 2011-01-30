@@ -324,7 +324,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		editListModel = new ListDialogTableModel();
 		editList = new JTable(editListModel);
-		editList.setPreferredSize(new Dimension(640, 480));
 		editList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		editList.addKeyListener(new KeyListener() {
 
@@ -345,9 +344,12 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 			}
 		});
 
+		JScrollPane editPane = new JScrollPane(editList);
+		editPane.setPreferredSize(new Dimension(640, 480));
+
 		JPanel edit = new JPanel(new BorderLayout());
 		edit.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		edit.add(new JScrollPane(editList), BorderLayout.CENTER);
+		edit.add(editPane, BorderLayout.CENTER);
 
 		editFieldModel = new AutoCompleteComboBoxModel();
 		editField = new JComboBox(editFieldModel);
@@ -367,7 +369,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 							JTextField editorField = (JTextField) editField
 									.getEditor().getEditorComponent();
 							editFieldModel.regenerate(editorField.getText());
-							
+
 							editField.showPopup();
 						}
 					}
@@ -582,8 +584,8 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 				if (!autoComplete.contains(toAdd)) {
 					autoComplete.add(toAdd);
 				}
-			}						
-			
+			}
+
 			fireContentsChanged(this, -1, -1);
 		}
 
