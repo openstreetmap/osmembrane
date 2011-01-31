@@ -33,6 +33,11 @@ public class ParseException extends Exception {
 		 * The pipe-stream direction could not be recognized implicit.
 		 */
 		UNKNOWN_PIPE_STREAM,
+		
+		/**
+		 * The defined inPipe for a task has no counterpart task with a outPipe.
+		 */
+		COUNTERPART_PIPE_MISSING,
 	}
 
 	private ErrorType type;

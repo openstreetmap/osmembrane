@@ -100,6 +100,18 @@ public class Parameter extends AbstractParameter {
 	public String getDefaultValue() {
 		return xmlParam.getDefaultValue();
 	}
+	
+	@Override
+	public boolean isDefaultValue() {
+		if(getValue() != null && getDefaultValue() != null) {
+			return getValue().equals(getDefaultValue());
+		} else {
+			if(getValue() == null && getDefaultValue() == null) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public String getValue() {

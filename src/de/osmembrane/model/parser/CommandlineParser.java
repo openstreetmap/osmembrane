@@ -200,6 +200,15 @@ public class CommandlineParser implements IParser {
 				for (Integer pipeId : inPipes.keySet()) {
 					String pipeName = inPipes.get(pipeId);
 					AbstractFunction outFunction = connectionMap.get(pipeName);
+					
+					/* check if the inPipe has no counterpart as a outPipe */
+					if(outFunction == null) {
+						throw new ParseException(ErrorType.COUNTERPART_PIPE_MISSING,
+								I18N.getInstance().getString(
+										"Model.Parser.CounterpartPipeMissing",
+										taskName, pipeId));
+					}
+					
 					try {
 						outFunction.addConnectionTo(function);
 					} catch (ConnectorException e) {
@@ -364,8 +373,7 @@ public class CommandlineParser implements IParser {
 					 * only add a parameter when there is not a default value
 					 * assigned
 					 */
-					if (!parameter.getValue().equals(
-							parameter.getDefaultValue())) {
+					if (!parameter.isDefaultValue()) {
 						builder.append(" " + parameter.getName() + "=\""
 								+ parameter.getValue() + "\"");
 					}

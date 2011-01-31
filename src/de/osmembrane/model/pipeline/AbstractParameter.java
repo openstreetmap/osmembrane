@@ -65,6 +65,14 @@ public abstract class AbstractParameter extends Observable implements
 	public abstract String getDefaultValue();
 
 	/**
+	 * Returns if the value is equivalent to the default value.
+	 * 
+	 * @return true if the value is equivalent to the default value, otherwise
+	 *         false
+	 */
+	public abstract boolean isDefaultValue();
+
+	/**
 	 * Returns the value of the parameter.
 	 * 
 	 * @return parameter-value
