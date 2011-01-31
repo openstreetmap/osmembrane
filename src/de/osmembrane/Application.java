@@ -45,6 +45,7 @@ public class Application {
 					.initiate(Resource.OSMEMBRANE_XML.getURL());
 			ModelProxy.getInstance().accessPreset()
 			.initiate(Resource.PRESET_XML.getURL());
+			ModelProxy.getInstance().accessSettings().initiate();
 			ModelProxy.getInstance().accessPipeline().clear();
 		} catch (Exception e) {
 			Application.handleException(new ControlledException(this,

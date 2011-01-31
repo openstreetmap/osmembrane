@@ -15,64 +15,105 @@ import de.osmembrane.model.pipeline.Pipeline;
  * @author jakob_jarosch
  */
 public class Constants {
-	
+
 	/**
 	 * Path to the language files.
 	 */
 	public static final String RESOURCE_BUNDLE_PATH = "de.osmembrane.resources.language.Locale";
-	
+
 	/**
-	 * Is used by I18N for a default translation of the XMLHasDescription objects.
+	 * Is used by I18N for a default translation of the XMLHasDescription
+	 * objects.
 	 */
 	public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
+
+	/**
+	 * All available Locales.
+	 */
+	public static final Locale[] AVAILABLE_LOCALES = new Locale[] {
+			Locale.ENGLISH, Locale.GERMAN
+	};
 
 	/**
 	 * Default Backup filename (for {@link Pipeline}.
 	 */
 	public static final URL DEFAULT_BACKUP_FILE;
-	
+
+	/**
+	 * The default path to the settings file
+	 */
+	public static final URL DEFAULT_SETTINGS_FILE;
+
 	/**
 	 * The default color for a function-group with a non parsable color.
 	 */
-	public static final Color DEFAULT_FUNCTIONGROUP_COLOR = new Color(0.8f, 0.8f, 0.8f);
-	
+	public static final Color DEFAULT_FUNCTIONGROUP_COLOR = new Color(0.8f,
+			0.8f, 0.8f);
+
 	/**
 	 * Color definitions for the various stream types
 	 */
-	public static final Color ENTITY_STREAM_TYPE_COLOR = new Color(0.5f, 0.5f, 1.0f);
-	
+	public static final Color ENTITY_STREAM_TYPE_COLOR = new Color(0.5f, 0.5f,
+			1.0f);
+
 	/**
 	 * Color definitions for the various stream types
 	 */
-	public static final Color CHANGE_STREAM_TYPE_COLOR = new Color(1.0f, 0.5f, 0.5f);
-	
+	public static final Color CHANGE_STREAM_TYPE_COLOR = new Color(1.0f, 0.5f,
+			0.5f);
+
 	/**
 	 * Color definitions for the various stream types
 	 */
-	public static final Color DATASET_STREAM_TYPE_COLOR = new Color(0.5f, 1.0f, 0.5f);
-	
+	public static final Color DATASET_STREAM_TYPE_COLOR = new Color(0.5f, 1.0f,
+			0.5f);
+
 	/**
-	 * Maximum count of undo steps until the first one is removed from the undoStack.
+	 * Maximum count of undo steps until the first one is removed from the
+	 * undoStack.
 	 */
 	public static final int MAXIMUM_UNDO_STEPS = 100;
+
+	/**
+	 * The default path to the osmosis binaries.
+	 */
+	public static final String DEFAULT_OSMOSIS_PATH = "osmosis";
+	
+	/**
+	 * The default path to the JOSM binaries.
+	 */
+	public static final String DEFAULT_JOSM_PATH = "josm";
 
 	/**
 	 * Seperator char of the bbox parameter
 	 */
 	public static final String BBOX_SEPERATOR = ",";
-	
+
+
 	/**
 	 * static method
 	 */
 	static {
 		URL url = null;
 		try {
-			url = new File(System.getProperty("user.home") + "/" + "backup.osmembrane").toURI().toURL();
+			url = new File(System.getProperty("user.home") + "/"
+					+ ".osmembrane.backup").toURI().toURL();
 		} catch (MalformedURLException e) {
 			/* no that shouldn't be so! */
 			Application.handleException(e);
 		} finally {
 			DEFAULT_BACKUP_FILE = url;
+		}
+
+		url = null;
+		try {
+			url = new File(System.getProperty("user.home") + "/"
+					+ ".osmembrane.settings").toURI().toURL();
+		} catch (MalformedURLException e) {
+			/* no that shouldn't be so! */
+			Application.handleException(e);
+		} finally {
+			DEFAULT_SETTINGS_FILE = url;
 		}
 	}
 }

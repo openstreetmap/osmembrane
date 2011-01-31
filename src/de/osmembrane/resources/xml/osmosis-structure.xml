@@ -2010,7 +2010,7 @@
 				</description>
 				<inputPipe type="entity" count="single" index="0" />
 				<outputPipe type="entity" count="single" index="0" />
-				<parameter name="keyValueList" type="string">
+				<parameter name="filter mode" type="string">
 					<description lang="en">
 						<value>
 							A two-field dash-separated string which

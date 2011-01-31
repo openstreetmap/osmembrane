@@ -184,7 +184,7 @@ public class Pipeline extends AbstractPipeline {
 		/* is checked by persistence */
 		@SuppressWarnings("unchecked")
 		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
-
+		
 		clear();
 
 		this.functions = functions;

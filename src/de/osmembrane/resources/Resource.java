@@ -14,8 +14,7 @@ public enum Resource {
 	PRESET_ICON("/de/osmembrane/resources/images/icons/presets/", new String[]{"resources/images/icons/presets/"}, true),
 	
 	OSMEMBRANE_XML("/de/osmembrane/resources/xml/osmosis-structure.xml", new String[]{"resources/xml/osmosis-structure.xml"}, true),
-	PRESET_XML("/de/osmembrane/resources/xml/defaultpresets.xml", new String[]{"resources/xml/defaultpresets.xml"}, true),;
-	
+	PRESET_XML("/de/osmembrane/resources/xml/defaultpresets.xml", new String[]{"resources/xml/defaultpresets.xml"}, true);
 	
 	private String internalPath;
 	private String[] externalPath;

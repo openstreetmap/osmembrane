@@ -9,6 +9,8 @@ import de.osmembrane.model.pipeline.FunctionPrototype;
 import de.osmembrane.model.pipeline.Pipeline;
 import de.osmembrane.model.preset.AbstractPresetPrototype;
 import de.osmembrane.model.preset.PresetPrototype;
+import de.osmembrane.model.settings.AbstractSettings;
+import de.osmembrane.model.settings.Settings;
 
 /**
  * The ModelProxy is the connection to the whole Model of OSMembrane.

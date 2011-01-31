@@ -9,15 +9,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.util.Map;
 import java.util.Observable;
 
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
-import de.osmembrane.model.AbstractSettings;
-import de.osmembrane.model.Settings;
 import de.osmembrane.model.persistence.FileException.Type;
-import de.osmembrane.model.settings.SettingsObserverObject;
+import de.osmembrane.model.settings.AbstractSettings;
+import de.osmembrane.model.settings.SettingType;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 
 /**
@@ -29,7 +30,7 @@ public class SettingPersistence extends AbstractPersistence {
 
 	@Override
 	public void save(URL file, Object data) throws FileException {
-		if (!(data instanceof Settings)) {
+		if (!(data instanceof Map)) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
 					"SettingPersistence#save() got a wrong"
@@ -56,7 +57,8 @@ public class SettingPersistence extends AbstractPersistence {
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			ObjectInputStream ois = new ObjectInputStream(bis);
 
-			AbstractSettings object = (AbstractSettings) ois.readObject();
+			@SuppressWarnings("unchecked")
+			Map<SettingType, Object> object = (Map<SettingType, Object>) ois.readObject();
 			ois.close();
 
 			return object;
@@ -71,12 +73,9 @@ public class SettingPersistence extends AbstractPersistence {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (arg instanceof SettingsObserverObject) {
-			String file = ((SettingsObserverObject) arg).getString();
-			Object data = ((SettingsObserverObject) arg).getObject();
-
+		if (arg instanceof Map) {
 			try {
-				save(new URL(file), data);
+				save(Constants.DEFAULT_SETTINGS_FILE, arg);
 			} catch (Exception e) {
 				/* forward the exception to the view */
 				Application
@@ -84,7 +83,6 @@ public class SettingPersistence extends AbstractPersistence {
 								ExceptionSeverity.WARNING, e,
 								I18N.getInstance().getString(
 										"Exception.AutosaveSettingsFailed")));
-
 			}
 		}
 	}

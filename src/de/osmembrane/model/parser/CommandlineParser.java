@@ -28,7 +28,7 @@ public class CommandlineParser implements IParser {
 	protected String DEFAULT_KEY = "DEFAULTKEY";
 
 	protected static final Pattern PATTERN_TASK = Pattern
-			.compile("--([a-zA-Z0-9\\-]+)(.+?)((?=--)|$)");
+			.compile("--([^ ]+)(.*?)((?=--)|$)");
 
 	protected static final Pattern PATTERN_PIPE = Pattern
 			.compile("^(in|out)pipe\\.([0-9+])$");
@@ -168,7 +168,9 @@ public class CommandlineParser implements IParser {
 						.getMatchingFunctionForTaskName(taskName);
 
 				if (function == null) {
-					throw new ParseException(ErrorType.UNKNOWN_TASK);
+					throw new ParseException(ErrorType.UNKNOWN_TASK, I18N
+							.getInstance().getString(
+									"Model.Parser.UnknownTask", taskName));
 				} else {
 					pipeline.addFunction(function);
 				}
@@ -346,7 +348,7 @@ public class CommandlineParser implements IParser {
 
 				/* write the task(-short)-name */
 				// builder.append("--" + (stn != null ? stn : tn));
-				
+
 				/*
 				 * TODO Inform osmosis developers that there is an error with
 				 * --write-pbf --wb, so long we should use only the long version
@@ -357,9 +359,13 @@ public class CommandlineParser implements IParser {
 				/* write all parameters of the task */
 				for (AbstractParameter parameter : function.getActiveTask()
 						.getParameters()) {
-					
-					/* only add a parameter when there is not a default value assigned */
-					if(!parameter.getValue().equals(parameter.getDefaultValue())) {
+
+					/*
+					 * only add a parameter when there is not a default value
+					 * assigned
+					 */
+					if (!parameter.getValue().equals(
+							parameter.getDefaultValue())) {
 						builder.append(" " + parameter.getName() + "=\""
 								+ parameter.getValue() + "\"");
 					}
