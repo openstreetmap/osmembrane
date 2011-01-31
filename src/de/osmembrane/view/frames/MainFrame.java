@@ -275,24 +275,28 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 		JToggleButton magicTool = new JToggleButton(
 				toolsImages.get(Tool.DEFAULT_MAGIC_TOOL), true);
+		magicTool.setToolTipText(I18N.getInstance().getString("View.Tools.Magic"));
 		magicTool.addActionListener(toolsButtonsActionListener);
 		tools.add(magicTool);
 		toolsBar.add(magicTool);
 
 		JToggleButton selectTool = new JToggleButton(
 				toolsImages.get(Tool.SELECTION_TOOL));
+		selectTool.setToolTipText(I18N.getInstance().getString("View.Tools.Select"));
 		selectTool.addActionListener(toolsButtonsActionListener);
 		tools.add(selectTool);
 		toolsBar.add(selectTool);
 
 		JToggleButton viewTool = new JToggleButton(
 				toolsImages.get(Tool.VIEW_TOOL));
+		viewTool.setToolTipText(I18N.getInstance().getString("View.Tools.View"));
 		viewTool.addActionListener(toolsButtonsActionListener);
 		tools.add(viewTool);
 		toolsBar.add(viewTool);
 
 		JToggleButton connectTool = new JToggleButton(
 				toolsImages.get(Tool.CONNECTION_TOOL));
+		connectTool.setToolTipText(I18N.getInstance().getString("View.Tools.Connect"));
 		connectTool.addActionListener(toolsButtonsActionListener);
 		tools.add(connectTool);
 		toolsBar.add(connectTool);

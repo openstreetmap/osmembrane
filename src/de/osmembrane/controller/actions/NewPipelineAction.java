@@ -43,7 +43,6 @@ public class NewPipelineAction extends AbstractAction {
 				"new_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		putValue(Action.SHORT_DESCRIPTION, "News an add pipeline item.");
 	}
 
 	@Override
