@@ -78,6 +78,6 @@ public class ParseException extends Exception {
 	@Override
 	public String getMessage() {
 		return I18N.getInstance().getString(
-				"Model.Parser.Exceptions." + this.toString(), messageValues);
+				"Model.Parser.Exceptions." + type, messageValues);
 	}
 }
