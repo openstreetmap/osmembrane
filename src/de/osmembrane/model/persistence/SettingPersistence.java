@@ -45,6 +45,8 @@ public class SettingPersistence extends AbstractPersistence {
 
 			oos.writeObject(data);
 			oos.close();
+			bos.close();
+			fos.close();
 		} catch (IOException e) {
 			throw new FileException(Type.NOT_WRITABLE, e);
 		}
@@ -53,13 +55,13 @@ public class SettingPersistence extends AbstractPersistence {
 	@Override
 	public Object load(URL file) throws FileException {
 		try {
-			FileInputStream fis = new FileInputStream(file.toString().replace("file:", ""));
-			BufferedInputStream bis = new BufferedInputStream(fis);
+			BufferedInputStream bis = new BufferedInputStream(file.openStream());
 			ObjectInputStream ois = new ObjectInputStream(bis);
 
 			@SuppressWarnings("unchecked")
 			Map<SettingType, Object> object = (Map<SettingType, Object>) ois.readObject();
 			ois.close();
+			bis.close();
 
 			return object;
 		} catch (FileNotFoundException e) {

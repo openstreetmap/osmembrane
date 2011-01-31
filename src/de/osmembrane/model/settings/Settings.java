@@ -1,5 +1,6 @@
 package de.osmembrane.model.settings;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -29,12 +30,13 @@ public class Settings extends AbstractSettings {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(SettingPersistence.class);
 
-		/*
-		 * TODO Check if file exists, and when not try first to create a default
-		 * one
-		 */
-
 		try {
+			File file = new File(Constants.DEFAULT_SETTINGS_FILE.toString()
+					.replace("file:", ""));
+			if (!file.isFile()) {
+				persistence.save(Constants.DEFAULT_SETTINGS_FILE, settingsMap);
+			}
+			
 			Object obj = persistence.load(Constants.DEFAULT_SETTINGS_FILE);
 
 			/* is checked by persistence */
