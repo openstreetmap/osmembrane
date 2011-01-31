@@ -36,7 +36,6 @@ import javax.swing.table.DefaultTableModel;
 import de.osmembrane.Application;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractParameter;
-import de.osmembrane.model.preset.AbstractPresetPrototype;
 import de.osmembrane.model.preset.PresetItem;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
@@ -127,7 +126,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		// set the basics up
 		setLayout(new BorderLayout());
 
-		setWindowTitle(I18N.getInstance().getString("View.ListDialog"));
+		setWindowTitle(I18N.getInstance().getString("View.ListDialog", ""));
 
 		// ensure no editor when hiding
 		addWindowListener(new WindowListener() {
@@ -369,12 +368,9 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 						} else {
 							JTextField editorField = (JTextField) editField
 									.getEditor().getEditorComponent();
-							String editorFieldText = editorField.getText();
-							
-							editFieldModel.regenerate(editorFieldText);
+							editFieldModel.regenerate(editorField.getText());
 
 							editField.showPopup();
-							editorField.setText(editorFieldText);
 						}
 					}
 
@@ -567,26 +563,16 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		 */
 		public void regenerate(String filter) {
 			PresetItem[] items;
-			
-			AbstractPresetPrototype app = ModelProxy.getInstance().accessPreset();
-			
-			if(listType == ListType.NODE) {
-				if(listContentType == ListContentType.KEY) {
-					items = app.getFilteredNodeKeys(filter);
-				} else {
-					items = app.getFilteredNodes(filter);
-				}
+			if (listType == ListType.NODE) {
+				items = ModelProxy.getInstance().accessPreset()
+						.getFilteredNodes(filter);
+			} else if (listType == ListType.WAY) {
+				items = ModelProxy.getInstance().accessPreset()
+						.getFilteredWays(filter);
 			} else {
-				if(listContentType == ListContentType.KEY) {
-					items = app.getFilteredWayKeys(filter);
-				} else {
-					items = app.getFilteredWays(filter);
-				}
+				items = new PresetItem[0];
 			}
 
-			/* reset autoComplete to renew the results */
-			autoComplete.clear();
-			
 			for (PresetItem pi : items) {
 				String toAdd;
 				if (listContentType == ListContentType.KEY) {
@@ -594,9 +580,12 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 				} else {
 					toAdd = pi.getKey() + "." + pi.getValue();
 				}
-				autoComplete.add(toAdd);
+				// add, if not already present
+				if (!autoComplete.contains(toAdd)) {
+					autoComplete.add(toAdd);
+				}
 			}
-			
+
 			fireContentsChanged(this, -1, -1);
 		}
 
