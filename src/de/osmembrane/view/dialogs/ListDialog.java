@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -444,6 +445,8 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		} else {
 			this.listContentType = ListContentType.INVALID;
 		}
+		
+		this.editFieldModel.setSelectedItem(new String());		
 
 		setWindowTitle(I18N.getInstance().getString("View.ListDialog",
 				list.getListType()));
@@ -462,14 +465,15 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 	/**
 	 * Sets the current editList editor value to full and selects all parts of
-	 * full, that are after contentLen.
+	 * full, that are after contentLen. Needs to be synchronized, so setText()
+	 * and setSelection() are performed atomic.
 	 * 
 	 * @param full
 	 *            the String you most likely want to enter
 	 * @param contentLen
 	 *            the length of the content you have entered so far
 	 */
-	public void setEditorValue(String full, int contentLen) {
+	public synchronized void setEditorValue(String full, int contentLen) {
 		JTextField editorField = (JTextField) editField.getEditor()
 				.getEditorComponent();
 		editorField.setText(full);
@@ -685,13 +689,19 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		@Override
 		public Object getElementAt(int index) {
-			if (listContentType == ListContentType.KEY) {
-				return autoComplete.get(index).getKey();
-			} else if (listContentType == ListContentType.KEY_VALUE) {
-				return autoComplete.get(index).getKeyValue();
-			} else {
+			String element;
+			switch (listContentType) {
+			case KEY:
+				element = autoComplete.get(index).getKey();
+				break;
+			case KEY_VALUE:
+				element = autoComplete.get(index).getKeyValue();
+				break;
+			default:
 				return null;
 			}
+
+			return element;
 		}
 
 		@Override
