@@ -151,9 +151,7 @@ public class CommandlineParser implements IParser {
 				}
 
 				if (function == null) {
-					throw new ParseException(ErrorType.UNKNOWN_PIPE_STREAM,
-							I18N.getInstance().getString(
-									"Model.Parser.UnknownPipeStream", taskName));
+					throw new ParseException(ErrorType.UNKNOWN_PIPE_STREAM, taskName);
 				}
 
 				for (Integer pipeId : outPipes.keySet()) {
@@ -168,9 +166,7 @@ public class CommandlineParser implements IParser {
 						.getMatchingFunctionForTaskName(taskName);
 
 				if (function == null) {
-					throw new ParseException(ErrorType.UNKNOWN_TASK, I18N
-							.getInstance().getString(
-									"Model.Parser.UnknownTask", taskName));
+					throw new ParseException(ErrorType.UNKNOWN_TASK, taskName);
 				} else {
 					pipeline.addFunction(function);
 				}
@@ -189,10 +185,11 @@ public class CommandlineParser implements IParser {
 						}
 					}
 					if (!foundKey) {
-						throw new ParseException(ErrorType.UNKNOWN_TASK_FORMAT,
-								I18N.getInstance().getString(
-										"Model.Parser.ParameterNotFound",
-										taskName, key));
+						if (key.equals(DEFAULT_KEY)) {
+							throw new ParseException(ErrorType.NO_DEFAULT_PARAMETER_FOUND, taskName, key);
+						} else {
+							throw new ParseException(ErrorType.UNKNOWN_TASK_FORMAT, taskName, key);
+						}
 					}
 				}
 
@@ -203,10 +200,7 @@ public class CommandlineParser implements IParser {
 					
 					/* check if the inPipe has no counterpart as a outPipe */
 					if(outFunction == null) {
-						throw new ParseException(ErrorType.COUNTERPART_PIPE_MISSING,
-								I18N.getInstance().getString(
-										"Model.Parser.CounterpartPipeMissing",
-										taskName, pipeId));
+						throw new ParseException(ErrorType.COUNTERPART_PIPE_MISSING, taskName, pipeId);
 					}
 					
 					try {
@@ -217,14 +211,11 @@ public class CommandlineParser implements IParser {
 										"Model.Pipeline.AddConnection."
 												+ e.getType());
 
-						String message = I18N.getInstance().getString(
-								"Model.Parser.ConnectionNotPermitted",
+						throw new ParseException(
+								ErrorType.CONNECTION_NOT_PERMITTED,
 								outFunction.getActiveTask().getName(),
 								function.getActiveTask().getName(),
 								connectionExceptionMessage);
-
-						throw new ParseException(
-								ErrorType.CONNECTION_NOT_PERMITTED, message);
 					}
 				}
 				/* find connectors without a explicit definition. */
@@ -245,15 +236,11 @@ public class CommandlineParser implements IParser {
 												"Model.Pipeline.AddConnection."
 														+ e.getType());
 
-								String message = I18N.getInstance().getString(
-										"Model.Parser.ConnectonNotPermitted",
+								throw new ParseException(
+										ErrorType.CONNECTION_NOT_PERMITTED,
 										outFunction.getActiveTask().getName(),
 										function.getActiveTask().getName(),
 										connectionExceptionMessage);
-
-								throw new ParseException(
-										ErrorType.CONNECTION_NOT_PERMITTED,
-										message);
 							}
 							/* remove the openConnector from the map */
 							openOutConnectors.remove(connector.getType());
@@ -479,7 +466,7 @@ public class CommandlineParser implements IParser {
 
 		/* should never! happen! */
 		throw new RuntimeException(
-				"Sorry, but can't parse that, found a connection with only a connection in one dirction.");
+				"Sorry, but can't parse that, found a connection with only a connection in one direction.");
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package de.osmembrane.model.parser;
 
+import de.osmembrane.tools.I18N;
+
 /**
  * Is thrown when something is not right while parsing.
  * 
@@ -8,32 +10,38 @@ package de.osmembrane.model.parser;
 public class ParseException extends Exception {
 
 	private static final long serialVersionUID = 2011011214380001L;
-	
+
 	/**
 	 * type of the {@link ParseException}.
 	 */
 	public enum ErrorType {
-		
+
 		/**
 		 * There is no known Task with this name.
 		 */
 		UNKNOWN_TASK,
-		
+
 		/**
-		 * The task has an unknown format, e.g. a parameter is not known, or the pipes do not match.
+		 * The task has an unknown format, e.g. a parameter is not known, or the
+		 * pipes do not match.
 		 */
 		UNKNOWN_TASK_FORMAT,
 		
 		/**
+		 * Found no default parameter for the task.
+		 */
+		NO_DEFAULT_PARAMETER_FOUND,
+
+		/**
 		 * The task has a connection which is not allowed to be one.
 		 */
 		CONNECTION_NOT_PERMITTED,
-		
-		/** 
+
+		/**
 		 * The pipe-stream direction could not be recognized implicit.
 		 */
 		UNKNOWN_PIPE_STREAM,
-		
+
 		/**
 		 * The defined inPipe for a task has no counterpart task with a outPipe.
 		 */
@@ -41,20 +49,21 @@ public class ParseException extends Exception {
 	}
 
 	private ErrorType type;
-	private String message;
-	
+	private Object[] messageValues;
+
 	/**
 	 * Creates a new {@link ParseException} with a given {@link ErrorType}.
 	 * 
-	 * @param type corresponding type for the {@link ParseException}
+	 * @param type
+	 *            corresponding type for the {@link ParseException}
 	 */
 	public ParseException(ErrorType type) {
 		this(type, null);
 	}
-	
-	public ParseException(ErrorType type, String message) {
+
+	public ParseException(ErrorType type, Object... messageValues) {
 		this.type = type;
-		this.message = message;
+		this.messageValues = messageValues;
 	}
 
 	/**
@@ -65,9 +74,10 @@ public class ParseException extends Exception {
 	public ErrorType getType() {
 		return type;
 	}
-	
+
 	@Override
 	public String getMessage() {
-		return message;
+		return I18N.getInstance().getString(
+				"Model.Parser.Exceptions." + this.toString(), messageValues);
 	}
 }
