@@ -3,7 +3,9 @@ package de.osmembrane.model.preset;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sun.awt.SunHints.Value;
 
@@ -48,7 +50,12 @@ public class PresetPrototype extends AbstractPresetPrototype {
 	
 	@Override
 	public PresetItem[] getNodes() {
-		return nodeList.toArray(new PresetItem[nodeList.size()]);
+		return getFilteredNodes("");
+	}
+
+	@Override
+	public PresetItem[] getNodeKeys() {
+		return filterDoubleKeys(getNodes());
 	}
 
 	@Override
@@ -62,12 +69,22 @@ public class PresetPrototype extends AbstractPresetPrototype {
 		
 		return items.toArray(new PresetItem[items.size()]);
 	}
-	
+
+	@Override
+	public PresetItem[] getFilteredNodeKeys(String filter) {
+		return filterDoubleKeys(getFilteredNodeKeys(filter));
+	}
+
 	@Override
 	public PresetItem[] getWays() {
-		return wayList.toArray(new PresetItem[wayList.size()]);
+		return getFilteredWays("");
 	}
 	
+	@Override
+	public PresetItem[] getWayKeys() {
+		return filterDoubleKeys(getWays());
+	}
+
 	@Override
 	public PresetItem[] getFilteredWays(String filter) {
 		List<PresetItem> items = new ArrayList<PresetItem>();
@@ -79,7 +96,12 @@ public class PresetPrototype extends AbstractPresetPrototype {
 		
 		return items.toArray(new PresetItem[items.size()]);
 	}
-	
+
+	@Override
+	public PresetItem[] getFilteredWayKeys(String filter) {
+		return filterDoubleKeys(getFilteredWays(filter));
+	}
+
 	private void createLists(List<Object> objects) {
 		for (Object obj : objects) {
 			if(obj instanceof Item) {
@@ -111,5 +133,14 @@ public class PresetPrototype extends AbstractPresetPrototype {
 				wayList.add(presetItem);
 			}
 		}
+	}
+
+	private PresetItem[] filterDoubleKeys(PresetItem[] items) {
+		Map<String, PresetItem> keyMap = new HashMap<String, PresetItem>();
+		for(PresetItem item : items) {
+			keyMap.put(item.getKey(), item);
+		}
+		
+		return keyMap.values().toArray(new PresetItem[keyMap.values().size()]);
 	}
 }

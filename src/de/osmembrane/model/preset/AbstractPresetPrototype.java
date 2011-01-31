@@ -24,6 +24,8 @@ public abstract class AbstractPresetPrototype {
 	 */
 	public abstract PresetItem[] getWays();
 	
+	public abstract PresetItem[] getWayKeys();
+	
 	/**
 	 * Returns only the way-items which matches to the given String-filter.
 	 * 
@@ -31,6 +33,8 @@ public abstract class AbstractPresetPrototype {
 	 * @return an array of filtered way-items
 	 */
 	public abstract PresetItem[] getFilteredWays(String filter);
+	
+	public abstract PresetItem[] getFilteredWayKeys(String filter);
 
 	/**
 	 * Returns the node-items.
@@ -39,6 +43,8 @@ public abstract class AbstractPresetPrototype {
 	 */
 	public abstract PresetItem[] getNodes();
 	
+	public abstract PresetItem[] getNodeKeys();
+	
 	/**
 	 * Returns only the node-items which matches to the given String-filter.
 	 * 
@@ -46,4 +52,6 @@ public abstract class AbstractPresetPrototype {
 	 * @return an array of filtered node-items
 	 */
 	public abstract PresetItem[] getFilteredNodes(String filter);
+	
+	public abstract PresetItem[] getFilteredNodeKeys(String filter);
 }
