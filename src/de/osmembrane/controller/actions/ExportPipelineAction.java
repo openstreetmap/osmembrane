@@ -35,9 +35,18 @@ public class ExportPipelineAction extends AbstractAction {
 	 * Creates a new {@link ExportPipelineAction}
 	 */
 	public ExportPipelineAction() {
-		putValue(Action.NAME, "Export Pipeline");
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("export_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("export_pipeline.png", Size.NORMAL));
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.ExportPipeline.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.ExportPipeline.Description"));
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+				"export_pipeline.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+				"export_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
@@ -70,10 +79,10 @@ public class ExportPipelineAction extends AbstractAction {
 								FileType.fileTypeFor(fileChooser
 										.getSelectedFile()));
 			} catch (FileException e1) {
-				String message  = I18N.getInstance().getString(
-							"Controller.Actions.Save.Failed." + e1.getType(),
-							e1.getParentException().getMessage());
-				
+				String message = I18N.getInstance().getString(
+						"Controller.Actions.Save.Failed." + e1.getType(),
+						e1.getParentException().getMessage());
+
 				Application.handleException(new ControlledException(this,
 						ExceptionSeverity.WARNING, e1, message));
 			}

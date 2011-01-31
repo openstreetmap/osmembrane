@@ -24,9 +24,6 @@ public class EditFilePropertyAction extends AbstractAction {
 	 * Creates a new {@link EditFilePropertyAction}
 	 */
 	public EditFilePropertyAction() {
-		putValue(Action.NAME, "Edit File Property");
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("file_property_edit.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("file_property_edit.png", Size.NORMAL));
 	}
 
 	@Override

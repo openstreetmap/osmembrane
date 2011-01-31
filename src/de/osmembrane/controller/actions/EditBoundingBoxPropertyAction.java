@@ -35,11 +35,6 @@ public class EditBoundingBoxPropertyAction extends AbstractAction {
 	 * Creates a new {@link EditBoundingBoxPropertyAction}
 	 */
 	public EditBoundingBoxPropertyAction() {
-		putValue(Action.NAME, "Edit BBox Property");
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
-				"bbox_property_edit.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
-				"bbox_property_edit.png", Size.NORMAL));
 	}
 
 	@Override

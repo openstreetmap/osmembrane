@@ -29,7 +29,14 @@ public class NewPipelineAction extends AbstractAction {
 	 * Creates a new {@link NewPipelineAction}
 	 */
 	public NewPipelineAction() {
-		putValue(Action.NAME, "New Pipeline");
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.NewPipeline.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.NewPipeline.Description"));
 		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
 				"new_pipeline.png", Size.SMALL));
 		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
@@ -52,7 +59,7 @@ public class NewPipelineAction extends AbstractAction {
 		}
 		ModelProxy.getInstance().accessPipeline().clear();
 
-		ActionRegistry.getInstance().get(StandardViewAction.class)
+		ActionRegistry.getInstance().get(ResetViewAction.class)
 				.actionPerformed(null);
 	}
 }

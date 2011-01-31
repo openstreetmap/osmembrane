@@ -15,38 +15,40 @@ import de.osmembrane.view.frames.MainFrame;
 import de.osmembrane.view.interfaces.IMainFrame;
 
 /**
- * Action to nonchalantly zoom in.
+ * Action to return to the initial view.
  * 
  * @author tobias_kuhn
  * 
  */
-public class ZoomInAction extends AbstractAction {
+public class ResetViewAction extends AbstractAction {
 
-	private static final long serialVersionUID = 5671603148720489921L;
+	private static final long serialVersionUID = 3090041670794938671L;
 
 	/**
-	 * Creates a new {@link ZoomInAction}
+	 * Creates a new {@link ResetViewAction}
 	 */
-	public ZoomInAction() {
-		putValue(Action.NAME,
-				I18N.getInstance().getString("Controller.Actions.ZoomIn.Name"));
+	public ResetViewAction() {
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.ResetView.Name"));
 		putValue(
 				Action.SHORT_DESCRIPTION,
 				I18N.getInstance().getString(
-						"Controller.Actions.ZoomIn.Description"));
-		putValue(Action.SMALL_ICON,
-				Resource.PROGRAM_ICON.getImageIcon("zoom_in.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY,
-				Resource.PROGRAM_ICON.getImageIcon("zoom_in.png", Size.NORMAL));
+						"Controller.Actions.ResetView.Description"));
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+				"zoom_reset.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+				"zoom_reset.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, 0));
+				KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
 				MainFrame.class, IMainFrame.class);
-		mainFrame.getZoomDevice().zoomIn();
+		mainFrame.getZoomDevice().resetView();
 	}
 
 }

@@ -3,8 +3,10 @@ package de.osmembrane.controller.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import de.osmembrane.controller.events.ContainingLocationEvent;
+import de.osmembrane.tools.I18N;
 
 /**
  * Action to save properties as a preset for a specific function. Gets a
@@ -21,6 +23,14 @@ public class SaveFunctionPresetAction extends AbstractAction {
 	 * Creates a new {@link SaveFunctionPresetAction}
 	 */
 	public SaveFunctionPresetAction() {
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.SaveFunctionPreset.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.SaveFunctionPreset.Description"));
 		// TODO some saving icon ?
 	}
 

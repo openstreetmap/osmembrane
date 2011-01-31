@@ -37,7 +37,14 @@ public class ImportPipelineAction extends AbstractAction {
 	 * Creates a new {@link ImportPipelineAction}
 	 */
 	public ImportPipelineAction() {
-		putValue(Action.NAME, "Import Pipeline");
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.ImportPipeline.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.ImportPipeline.Description"));
 		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
 				"import_pipeline.png", Size.SMALL));
 		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
@@ -73,7 +80,7 @@ public class ImportPipelineAction extends AbstractAction {
 								file,
 								FileType.fileTypeFor(fileChooser
 										.getSelectedFile()));
-				
+
 				ActionRegistry.getInstance().get(ViewAllAction.class)
 						.actionPerformed(null);
 			} catch (FileException e1) {

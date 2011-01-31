@@ -13,6 +13,7 @@ import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.CopyType;
 import de.osmembrane.resources.Resource;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;
@@ -34,7 +35,14 @@ public class DuplicateFunctionAction extends AbstractAction {
 	 * Creates a new {@link DuplicateFunctionAction}
 	 */
 	public DuplicateFunctionAction() {
-		putValue(Action.NAME, "Duplicate Function");
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.DuplicateFunction.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.DuplicateFunction.Description"));
 		putValue(Action.SMALL_ICON,
 				Resource.PROGRAM_ICON.getImageIcon("duplicate.png", Size.SMALL));
 		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
@@ -46,7 +54,8 @@ public class DuplicateFunctionAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(MainFrame.class, IMainFrame.class);
+		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
+				MainFrame.class, IMainFrame.class);
 		Object selected = mainFrame.getSelected();
 
 		if (selected != null) {

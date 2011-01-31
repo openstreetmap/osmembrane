@@ -35,9 +35,18 @@ public class SaveAsPipelineAction extends AbstractAction {
 	 * Creates a new {@link SaveAsPipelineAction}
 	 */
 	public SaveAsPipelineAction() {
-		putValue(Action.NAME, "Save Pipeline as");
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("save_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("save_pipeline.png", Size.NORMAL));
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.SaveAsPipeline.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.SaveAsPipeline.Description"));
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+				"save_pipeline.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+				"save_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		setEnabled(false);
@@ -52,13 +61,13 @@ public class SaveAsPipelineAction extends AbstractAction {
 		int result = fileChooser.showSaveDialog(null);
 
 		if (result == JFileChooser.APPROVE_OPTION) {
-			
+
 			/* check if the .osmembrane extension is missing */
 			String filePath = fileChooser.getSelectedFile().getAbsolutePath();
 			if (!filePath.endsWith(FileType.OSMEMBRANE.getExtension())) {
 				filePath = filePath + FileType.OSMEMBRANE.getExtension();
 			}
-			
+
 			URL file;
 			try {
 				file = new URL("file:" + filePath);

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
+import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.AboutDialog;
 
@@ -22,7 +23,9 @@ public class ShowAboutAction extends AbstractAction {
 	 * Creates a new {@link ShowAboutAction}
 	 */
 	public ShowAboutAction() {
-		putValue(Action.NAME, "About");
+		putValue(Action.NAME, I18N.getInstance().getString("Controller.Actions.ShowAbout.Name"));
+		putValue(Action.SHORT_DESCRIPTION, I18N.getInstance().getString("Controller.Actions.ShowAbout.Description"));
+		// TODO icon here or so?
 	}
 
 	@Override

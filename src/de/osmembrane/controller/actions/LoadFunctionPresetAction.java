@@ -3,8 +3,10 @@ package de.osmembrane.controller.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import de.osmembrane.controller.events.ContainingLocationEvent;
+import de.osmembrane.tools.I18N;
 
 /**
  * Action to load saved presets for a specific function. Gets a
@@ -21,6 +23,14 @@ public class LoadFunctionPresetAction extends AbstractAction {
 	 * Creates a new {@link LoadFunctionPresetAction}
 	 */
 	public LoadFunctionPresetAction() {
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.LoadFunctionPreset.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.LoadFunctionPreset.Description"));
 		// TODO some loading icon ?
 	}
 

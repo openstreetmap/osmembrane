@@ -10,6 +10,7 @@ import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 
 /**
@@ -26,7 +27,14 @@ public class ArrangePipelineAction extends AbstractAction {
 	 * Creates a new {@link ArrangePipelineAction}
 	 */
 	public ArrangePipelineAction() {
-		putValue(Action.NAME, "Arrange Pipeline");
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.ArrangePipeline.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.ArrangePipeline.Description"));
 		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("arrange_pipeline.png", Size.SMALL));
 		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("arrange_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A,

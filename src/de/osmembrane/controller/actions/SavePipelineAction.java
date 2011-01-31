@@ -32,7 +32,14 @@ public class SavePipelineAction extends AbstractAction {
 	 * Creates a new {@link SavePipelineAction}
 	 */
 	public SavePipelineAction() {
-		putValue(Action.NAME, "Save Pipeline");
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.SavePipeline.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.SavePipeline.Description"));
 		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
 				"save_pipeline.png", Size.SMALL));
 		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(

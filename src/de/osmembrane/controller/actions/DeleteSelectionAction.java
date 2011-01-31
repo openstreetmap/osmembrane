@@ -9,6 +9,7 @@ import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;
@@ -31,7 +32,14 @@ public class DeleteSelectionAction extends AbstractAction {
 	 * Creates a new {@link DeleteSelectionAction}
 	 */
 	public DeleteSelectionAction() {
-		putValue(Action.NAME, "Delete Selection");
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.DeleteSelection.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.DeleteSelection.Description"));
 		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
 				"delete_function.png", Size.SMALL));
 		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
@@ -43,7 +51,8 @@ public class DeleteSelectionAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(MainFrame.class, IMainFrame.class);
+		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
+				MainFrame.class, IMainFrame.class);
 		Object selected = mainFrame.getSelected();
 
 		if (selected != null) {

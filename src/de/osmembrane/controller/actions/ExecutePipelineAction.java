@@ -9,6 +9,7 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.resources.Resource;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 
 /**
@@ -25,9 +26,18 @@ public class ExecutePipelineAction extends AbstractAction {
 	 * Creates a new {@link ExecutePipelineAction}
 	 */
 	public ExecutePipelineAction() {
-		putValue(Action.NAME, "Execute Pipeline");
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("execute_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("execute_pipeline.png", Size.NORMAL));
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.ExecutePipeline.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.ExecutePipeline.Description"));
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+				"execute_pipeline.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+				"execute_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}

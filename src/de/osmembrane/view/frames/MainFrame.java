@@ -45,7 +45,7 @@ import de.osmembrane.controller.actions.SaveAsPipelineAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
 import de.osmembrane.controller.actions.ShowAboutAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
-import de.osmembrane.controller.actions.StandardViewAction;
+import de.osmembrane.controller.actions.ResetViewAction;
 import de.osmembrane.controller.actions.UndoAction;
 import de.osmembrane.controller.actions.ViewAllAction;
 import de.osmembrane.controller.actions.ZoomInAction;
@@ -163,7 +163,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		 * register all actions that are specific for *this* view and not the
 		 * data flow to the model
 		 */
-		ActionRegistry.getInstance().register(new StandardViewAction());
+		ActionRegistry.getInstance().register(new ResetViewAction());
 		ActionRegistry.getInstance().register(new ViewAllAction());
 		ActionRegistry.getInstance().register(new ZoomInAction());
 		ActionRegistry.getInstance().register(new ZoomOutAction());
@@ -202,7 +202,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 		JMenu viewMenu = new JMenu(I18N.getInstance().getString(
 				"View.Menu.View"));
-		viewMenu.add(ActionRegistry.getInstance().get(StandardViewAction.class));
+		viewMenu.add(ActionRegistry.getInstance().get(ResetViewAction.class));
 		viewMenu.add(ActionRegistry.getInstance().get(ViewAllAction.class));
 		viewMenu.add(new JSeparator());
 		viewMenu.add(ActionRegistry.getInstance().get(ZoomInAction.class));
@@ -303,7 +303,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		toolsButtons.put(connectTool, Tool.CONNECTION_TOOL);
 
 		toolsBar.add(new JSeparator(SwingConstants.VERTICAL));
-		toolsBar.add(ActionRegistry.getInstance().get(StandardViewAction.class));
+		toolsBar.add(ActionRegistry.getInstance().get(ResetViewAction.class));
 		toolsBar.add(ActionRegistry.getInstance().get(ViewAllAction.class));
 		toolsBar.add(new JSeparator(SwingConstants.VERTICAL));
 		toolsBar.add(ActionRegistry.getInstance().get(ZoomInAction.class));

@@ -8,6 +8,7 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.resources.Resource;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 
 /**
@@ -24,11 +25,19 @@ public class ShowHelpAction extends AbstractAction {
 	 * Creates a new {@link ShowHelpAction}
 	 */
 	public ShowHelpAction() {
-		putValue(Action.NAME, "Show Help");
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("help.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("help.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1,
-				0));
+		putValue(Action.NAME,
+				I18N.getInstance()
+						.getString("Controller.Actions.ShowHelp.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.ShowHelp.Description"));
+		putValue(Action.SMALL_ICON,
+				Resource.PROGRAM_ICON.getImageIcon("help.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY,
+				Resource.PROGRAM_ICON.getImageIcon("help.png", Size.NORMAL));
+		putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 	}
 
 	@Override
