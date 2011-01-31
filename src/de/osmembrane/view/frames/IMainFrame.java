@@ -3,6 +3,7 @@ package de.osmembrane.view.frames;
 import java.awt.Point;
 
 import de.osmembrane.view.IView;
+import de.osmembrane.view.panels.IZoomDevice;
 
 /**
  * Interface for {@link MainFrame}
@@ -37,5 +38,11 @@ public interface IMainFrame extends IView {
 	 * @return whether or not the point is valid drag and drop target
 	 */
 	public boolean isDragAndDropTarget(Point at); 
+	
+	/**
+	 * Returns the {@link IZoomDevice} capable of performing zooms
+	 * @return the corresponding IZoomDevice or null, if none present
+	 */
+	public IZoomDevice getZoomDevice();
 
 }

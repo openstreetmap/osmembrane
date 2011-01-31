@@ -82,7 +82,7 @@ import de.osmembrane.view.ViewRegistry;
  * @author tobias_kuhn
  * 
  */
-public class PipelinePanel extends JPanel implements Observer {
+public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 	private static final long serialVersionUID = 2544369818627179591L;
 
@@ -546,16 +546,12 @@ public class PipelinePanel extends JPanel implements Observer {
 		return new Point((int) result.getX(), (int) result.getY());
 	}
 
-	/**
-	 * Zooms in
-	 */
+	@Override
 	public void zoomIn() {
 		zoom(new Point(getWidth() / 2, getHeight() / 2), STANDARD_ZOOM_IN);
 	}
 
-	/**
-	 * Zooms out
-	 */
+	@Override
 	public void zoomOut() {
 		zoom(new Point(getWidth() / 2, getHeight() / 2), STANDARD_ZOOM_OUT);
 	}
@@ -598,17 +594,13 @@ public class PipelinePanel extends JPanel implements Observer {
 		repaint();
 	}
 
-	/**
-	 * Resets the view to standard
-	 */
+	@Override
 	public void resetView() {
 		objectToWindow.setToIdentity();
 		arrange();
 	}
-
-	/**
-	 * Shows the entire pipeline
-	 */
+	
+	@Override
 	public void showEntireView() {
 		if (functions.size() < 1) {
 			Application.handleException(new ControlledException(this,

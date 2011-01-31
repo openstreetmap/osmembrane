@@ -10,6 +10,7 @@ import javax.swing.KeyStroke;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.IMainFrame;
 import de.osmembrane.view.frames.MainFrame;
 
 /**
@@ -35,8 +36,8 @@ public class ZoomInAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		MainFrame mainFrame = ViewRegistry.getInstance().getMainFrameByPass();
-		mainFrame.getPipeline().zoomIn();
+		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(MainFrame.class, IMainFrame.class);
+		mainFrame.getZoomDevice().zoomIn();
 	}
 
 }

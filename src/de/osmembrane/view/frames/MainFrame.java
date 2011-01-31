@@ -56,6 +56,7 @@ import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.AbstractFrame;
+import de.osmembrane.view.panels.IZoomDevice;
 import de.osmembrane.view.panels.InspectorPanel;
 import de.osmembrane.view.panels.LibraryPanel;
 import de.osmembrane.view.panels.LibraryPanelGroup;
@@ -374,6 +375,11 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 	@Override
 	public boolean isDragAndDropTarget(Point at) {
 		return pipelineView.getLayeredPane().equals(findComponentAt(at));
+	}
+
+	@Override
+	public IZoomDevice getZoomDevice() {
+		return pipelineView;
 	}
 
 }
