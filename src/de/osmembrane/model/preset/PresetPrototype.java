@@ -2,6 +2,7 @@ package de.osmembrane.model.preset;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import sun.awt.SunHints.Value;
@@ -88,6 +89,8 @@ public class PresetPrototype extends AbstractPresetPrototype {
 				createLists(((Group) obj).getGroupOrItemOrSeparator());
 			}
 		}
+		Collections.sort(nodeList);
+		Collections.sort(wayList);
 	}
 	
 	private void processItem(Item item) {

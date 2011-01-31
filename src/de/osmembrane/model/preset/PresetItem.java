@@ -14,7 +14,7 @@ import de.osmembrane.tools.IconLoader.Size;
  * 
  * @author jakob_jarosch
  */
-public class PresetItem {
+public class PresetItem implements Comparable<PresetItem> {
 
 	private Item item;
 	
@@ -143,5 +143,10 @@ public class PresetItem {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public int compareTo(PresetItem o) {
+		return (getKey() + "." + getValue()).compareTo(o.getKey() + "." + o.getValue());
 	}
 }
