@@ -164,7 +164,7 @@ public class TarjanAlgorithm {
 		if (nodeLowlink.get(node1) < nodeIndex.get(node2)) {
 			return nodeLowlink.get(node1);
 		} else {
-			return nodeLowlink.get(node2);
+			return nodeIndex.get(node2);
 		}
 	}
 
