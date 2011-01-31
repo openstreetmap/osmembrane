@@ -353,6 +353,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 					connectionPreview.regenerateLine();
 					repaint();
 				}
+				PipelinePanel.this.connectionPreview.setVisible(PipelinePanel.this.connectionStart != null);
 			}
 
 			@Override
@@ -741,6 +742,8 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 				connectors.clear();
 				layeredPane.removeAll();
 				System.gc();
+				
+				layeredPane.add(connectionPreview);
 
 				for (AbstractFunction af : ModelProxy.getInstance()
 						.accessPipeline().getFunctions()) {
@@ -1045,8 +1048,6 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 					.actionPerformed(cfe);
 			this.connectionStart = null;
 		}
-
-		this.connectionPreview.setVisible(this.connectionStart != null);
 	}
 
 	/**
