@@ -3,8 +3,10 @@ package de.osmembrane.model.algorithms;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
@@ -26,7 +28,7 @@ public class TarjanAlgorithm {
 	/**
 	 * Internal store for functions.
 	 */
-	private Set<AbstractFunction> notYetVisistedFunctions = new HashSet<AbstractFunction>();
+	private Queue<AbstractFunction> notYetVisistedFunctions = new LinkedList<AbstractFunction>();
 
 	/**
 	 * Set to check duplicate visited functions.
@@ -72,7 +74,8 @@ public class TarjanAlgorithm {
 	public void run() {
 		reset();
 
-		for (AbstractFunction node : notYetVisistedFunctions) {
+		while(notYetVisistedFunctions.size() > 0) {
+			AbstractFunction node = notYetVisistedFunctions.peek();
 			if (nodeIndex.get(node) == null) {
 				tarjan(node);
 			}
@@ -112,6 +115,7 @@ public class TarjanAlgorithm {
 	 *            Node with which should be started.
 	 */
 	private void tarjan(AbstractFunction node) {
+		notYetVisistedFunctions.remove(node);
 		nodeIndex.put(node, index);
 		nodeLowlink.put(node, index);
 		index++;

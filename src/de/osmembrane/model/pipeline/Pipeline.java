@@ -345,6 +345,9 @@ public class Pipeline extends AbstractPipeline {
 		undoStack.push(currentState);
 		redoStack.clear();
 		currentState = new PipelineMemento(functions, savedState);
+		if(undoStack.size() > Constants.MAXIMUM_UNDO_STEPS) {
+			undoStack.remove(0);
+		}
 	}
 
 	private void restoreMemento(PipelineMemento memento) {
