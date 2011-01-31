@@ -1,6 +1,5 @@
 package de.osmembrane.view.interfaces;
 
-import de.osmembrane.view.IView;
 import de.osmembrane.view.dialogs.BoundingBoxDialog;
 import de.unistuttgart.iev.osm.bboxchooser.Bounds;
 

@@ -1,5 +1,6 @@
-package de.osmembrane.view;
+package de.osmembrane.view.interfaces;
 
+import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.ExceptionDialog;
 
 /**

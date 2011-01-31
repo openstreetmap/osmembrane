@@ -5,6 +5,8 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 
+import de.osmembrane.view.interfaces.IView;
+
 /**
  * An abstract class interface to be used for dialog frame elements.
  * 

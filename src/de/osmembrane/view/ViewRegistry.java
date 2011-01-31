@@ -14,6 +14,7 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.dialogs.ExceptionDialog;
 import de.osmembrane.view.frames.MainFrame;
+import de.osmembrane.view.interfaces.IView;
 
 /**
  * The view registry implements the View-Handler pattern to organize the

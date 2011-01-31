@@ -1,7 +1,6 @@
 package de.osmembrane.view.interfaces;
 
 import de.osmembrane.model.pipeline.AbstractParameter;
-import de.osmembrane.view.IView;
 import de.osmembrane.view.dialogs.ListDialog;
 
 /**

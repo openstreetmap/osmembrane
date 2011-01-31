@@ -9,6 +9,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
+import de.osmembrane.view.interfaces.IView;
+
 /**
  * An abstract class interface to be used for dialog view elements.
  * 

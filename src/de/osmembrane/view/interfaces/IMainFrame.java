@@ -2,7 +2,6 @@ package de.osmembrane.view.interfaces;
 
 import java.awt.Point;
 
-import de.osmembrane.view.IView;
 import de.osmembrane.view.frames.MainFrame;
 import de.osmembrane.view.frames.MainFrameGlassPane;
 

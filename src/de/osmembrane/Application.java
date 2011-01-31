@@ -5,8 +5,8 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
-import de.osmembrane.view.IView;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.interfaces.IView;
 
 /**
  * The one and only OO instance of the main program
