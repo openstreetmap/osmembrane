@@ -72,7 +72,7 @@ public class PresetPrototype extends AbstractPresetPrototype {
 
 	@Override
 	public PresetItem[] getFilteredNodeKeys(String filter) {
-		return filterDoubleKeys(getFilteredNodeKeys(filter));
+		return filterDoubleKeys(getFilteredNodes(filter));
 	}
 
 	@Override
