@@ -19,6 +19,7 @@ import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.ExportPipelineAction;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
+import de.osmembrane.view.interfaces.ICommandLineDialog;
 
 /**
  * Simple dialog to display the generated command line, export it, or copy it to

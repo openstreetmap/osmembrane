@@ -14,7 +14,7 @@ import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.CommandLineDialog;
-import de.osmembrane.view.dialogs.ICommandLineDialog;
+import de.osmembrane.view.interfaces.ICommandLineDialog;
 
 /**
  * Action to generate the pipeline command line and display the {@link CommandLineDialog}.

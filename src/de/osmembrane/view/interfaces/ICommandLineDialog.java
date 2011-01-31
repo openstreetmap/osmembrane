@@ -1,6 +1,7 @@
-package de.osmembrane.view.dialogs;
+package de.osmembrane.view.interfaces;
 
 import de.osmembrane.view.IView;
+import de.osmembrane.view.dialogs.CommandLineDialog;
 
 /**
  * Interface for {@link CommandLineDialog}.

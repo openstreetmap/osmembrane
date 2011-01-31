@@ -43,6 +43,7 @@ import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.interfaces.IZoomDevice;
 
 /**
  * This is the pipeline view, i.e. the panel that shows the entire pipeline with

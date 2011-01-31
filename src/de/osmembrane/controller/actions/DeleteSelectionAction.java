@@ -11,8 +11,8 @@ import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.frames.IMainFrame;
 import de.osmembrane.view.frames.MainFrame;
+import de.osmembrane.view.interfaces.IMainFrame;
 import de.osmembrane.view.panels.PipelineFunction;
 import de.osmembrane.view.panels.PipelineLink;
 

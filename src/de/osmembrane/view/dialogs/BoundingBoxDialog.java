@@ -3,6 +3,7 @@ package de.osmembrane.view.dialogs;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 
+import de.osmembrane.view.interfaces.IBoundingBoxDialog;
 import de.unistuttgart.iev.osm.bboxchooser.BBoxChooserDialog;
 import de.unistuttgart.iev.osm.bboxchooser.Bounds;
 import de.unistuttgart.iev.osm.bboxchooser.DialogResponse;

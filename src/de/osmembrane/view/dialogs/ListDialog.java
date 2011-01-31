@@ -30,7 +30,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -40,6 +39,7 @@ import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.preset.PresetItem;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
+import de.osmembrane.view.interfaces.IListDialog;
 
 /**
  * 
@@ -738,6 +738,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 			} /* for */
 		}
 
-	}
+	} /* AutoCompleteComboBoxModel */
 
 }

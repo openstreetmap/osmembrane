@@ -23,9 +23,9 @@ import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.Function;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.frames.IMainFrame;
 import de.osmembrane.view.frames.MainFrame;
 import de.osmembrane.view.frames.MainFrameGlassPane;
+import de.osmembrane.view.interfaces.IMainFrame;
 
 /**
  * The view function, i.e. the visual representation of a model function on the

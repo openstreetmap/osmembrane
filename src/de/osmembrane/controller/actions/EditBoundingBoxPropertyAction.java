@@ -17,7 +17,7 @@ import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.BoundingBoxDialog;
-import de.osmembrane.view.dialogs.IBoundingBoxDialog;
+import de.osmembrane.view.interfaces.IBoundingBoxDialog;
 import de.unistuttgart.iev.osm.bboxchooser.Bounds;
 
 /**

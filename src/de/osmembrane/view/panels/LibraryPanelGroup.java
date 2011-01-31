@@ -18,8 +18,8 @@ import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
 import de.osmembrane.model.pipeline.FunctionGroup;
 import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.frames.IMainFrame;
 import de.osmembrane.view.frames.MainFrame;
+import de.osmembrane.view.interfaces.IMainFrame;
 
 /**
  * A group panel that is placed for each {@link FunctionGroup} on the

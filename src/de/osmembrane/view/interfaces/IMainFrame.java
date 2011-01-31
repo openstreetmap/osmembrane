@@ -1,9 +1,10 @@
-package de.osmembrane.view.frames;
+package de.osmembrane.view.interfaces;
 
 import java.awt.Point;
 
 import de.osmembrane.view.IView;
-import de.osmembrane.view.panels.IZoomDevice;
+import de.osmembrane.view.frames.MainFrame;
+import de.osmembrane.view.frames.MainFrameGlassPane;
 
 /**
  * Interface for {@link MainFrame}

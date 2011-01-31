@@ -1,4 +1,4 @@
-package de.osmembrane.view.panels;
+package de.osmembrane.view.interfaces;
 
 /**
  * An interface that can be implemented for the use of receiving zooming actions
