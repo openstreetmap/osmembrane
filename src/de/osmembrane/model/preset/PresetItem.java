@@ -80,6 +80,15 @@ public class PresetItem implements Comparable<PresetItem> {
 	public String getValue() {
 		return value;
 	}
+	
+	/**
+	 * Returns the key.value of the item.
+	 * 
+	 * @return key.value of the item
+	 */
+	public String getKeyValue() {
+		return key + "." + value;
+	}
 
 	/**
 	 * Returns if the item is a node or not.

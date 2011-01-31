@@ -365,11 +365,46 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 					public void keyReleased(KeyEvent e) {
 						if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 							addButton.doClick();
-						} else {
+						} else if ((e.getKeyCode() != KeyEvent.VK_ESCAPE)) {
+							// auto complete
 							JTextField editorField = (JTextField) editField
 									.getEditor().getEditorComponent();
-							editFieldModel.regenerate(editorField.getText());
+							editFieldModel.setSelectedItem(editorField
+									.getText());
 
+							/* assume only English characters present */
+							switch (e.getKeyCode()) {
+							case KeyEvent.VK_PERIOD:
+							case KeyEvent.VK_A:
+							case KeyEvent.VK_B:
+							case KeyEvent.VK_C:
+							case KeyEvent.VK_D:
+							case KeyEvent.VK_E:
+							case KeyEvent.VK_F:
+							case KeyEvent.VK_G:
+							case KeyEvent.VK_H:
+							case KeyEvent.VK_I:
+							case KeyEvent.VK_J:
+							case KeyEvent.VK_K:
+							case KeyEvent.VK_L:
+							case KeyEvent.VK_M:
+							case KeyEvent.VK_N:
+							case KeyEvent.VK_O:
+							case KeyEvent.VK_P:
+							case KeyEvent.VK_Q:
+							case KeyEvent.VK_R:
+							case KeyEvent.VK_S:
+							case KeyEvent.VK_T:
+							case KeyEvent.VK_U:
+							case KeyEvent.VK_V:
+							case KeyEvent.VK_W:
+							case KeyEvent.VK_X:
+							case KeyEvent.VK_Y:
+							case KeyEvent.VK_Z:
+								editFieldModel.doAutoCompleteSelection();
+							}
+
+							editField.hidePopup();
 							editField.showPopup();
 						}
 					}
@@ -391,12 +426,23 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		this.listParam = list;
 		this.editListModel.regenerate(list.getValue());
 		this.applyChanges = false;
+
 		if (listParam.getListType().toLowerCase().contains("node")) {
 			this.listType = ListType.NODE;
 		} else if (listParam.getListType().toLowerCase().contains("way")) {
 			this.listType = ListType.WAY;
 		} else {
 			this.listType = ListType.INVALID;
+		}
+
+		// note: order important
+		if (listParam.getListType().toLowerCase().contains("key")
+				&& listParam.getListType().toLowerCase().contains("value")) {
+			this.listContentType = ListContentType.KEY_VALUE;
+		} else if (listParam.getListType().toLowerCase().contains("key")) {
+			this.listContentType = ListContentType.KEY;
+		} else {
+			this.listContentType = ListContentType.INVALID;
 		}
 
 		setWindowTitle(I18N.getInstance().getString("View.ListDialog",
@@ -412,6 +458,23 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 	@Override
 	public String getEdits() {
 		return editListModel.getContent();
+	}
+
+	/**
+	 * Sets the current editList editor value to full and selects all parts of
+	 * full, that are after contentLen.
+	 * 
+	 * @param full
+	 *            the String you most likely want to enter
+	 * @param contentLen
+	 *            the length of the content you have entered so far
+	 */
+	public void setEditorValue(String full, int contentLen) {
+		JTextField editorField = (JTextField) editField.getEditor()
+				.getEditorComponent();
+		editorField.setText(full);
+		editorField.setSelectionStart(contentLen);
+		editorField.setSelectionEnd(full.length());
 	}
 
 	/**
@@ -494,7 +557,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		public int getRowCount() {
 			if (parameters != null) {
 				return parameters.size();
-
 			} else {
 				return 0;
 			}
@@ -550,10 +612,16 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		 * The set of preset items that are the current auto complete contents
 		 * filter
 		 */
-		private List<String> autoComplete;
+		private List<PresetItem> autoComplete;
+
+		/**
+		 * The currently "selected" element, i.e. the one where you type in
+		 */
+		private String element;
 
 		public AutoCompleteComboBoxModel() {
-			autoComplete = new ArrayList<String>();
+			autoComplete = new ArrayList<PresetItem>();
+			element = new String();
 		}
 
 		/**
@@ -563,30 +631,51 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		 */
 		public void regenerate(String filter) {
 			PresetItem[] items;
-			if (listType == ListType.NODE) {
-				items = ModelProxy.getInstance().accessPreset()
-						.getFilteredNodes(filter);
-			} else if (listType == ListType.WAY) {
-				items = ModelProxy.getInstance().accessPreset()
-						.getFilteredWays(filter);
-			} else {
+			switch (listType) {
+			case NODE:
+				switch (listContentType) {
+				case KEY:
+					items = ModelProxy.getInstance().accessPreset()
+							.getFilteredNodeKeys(filter);
+					break;
+				case KEY_VALUE:
+					items = ModelProxy.getInstance().accessPreset()
+							.getFilteredNodes(filter);
+					break;
+				default:
+					items = new PresetItem[0];
+				}
+				break;
+
+			case WAY:
+				switch (listContentType) {
+				case KEY:
+					items = ModelProxy.getInstance().accessPreset()
+							.getFilteredWayKeys(filter);
+					break;
+				case KEY_VALUE:
+					items = ModelProxy.getInstance().accessPreset()
+							.getFilteredWays(filter);
+					break;
+				default:
+					items = new PresetItem[0];
+				}
+				break;
+
+			default:
 				items = new PresetItem[0];
+
 			}
+
+			int oldSize = autoComplete.size();
+			autoComplete.clear();
+			fireIntervalRemoved(this, 0, oldSize);
 
 			for (PresetItem pi : items) {
-				String toAdd;
-				if (listContentType == ListContentType.KEY) {
-					toAdd = pi.getKey();
-				} else {
-					toAdd = pi.getKey() + "." + pi.getValue();
-				}
-				// add, if not already present
-				if (!autoComplete.contains(toAdd)) {
-					autoComplete.add(toAdd);
-				}
+				autoComplete.add(pi);
 			}
 
-			fireContentsChanged(this, -1, -1);
+			fireIntervalAdded(this, 0, autoComplete.size());
 		}
 
 		@Override
@@ -596,7 +685,47 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		@Override
 		public Object getElementAt(int index) {
-			return autoComplete.get(index);
+			if (listContentType == ListContentType.KEY) {
+				return autoComplete.get(index).getKey();
+			} else if (listContentType == ListContentType.KEY_VALUE) {
+				return autoComplete.get(index).getKeyValue();
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public Object getSelectedItem() {
+			return element;
+		}
+
+		@Override
+		public void setSelectedItem(Object anObject) {
+			String content = (String) anObject;
+			element = content;
+			regenerate(content);
+		}
+
+		/**
+		 * Performs the writing and selection of the most likely auto complete
+		 * item.
+		 * 
+		 */
+		public void doAutoCompleteSelection() {
+			for (PresetItem pi : autoComplete) {
+				String check = new String();
+				if (listContentType == ListContentType.KEY) {
+					check = pi.getKey();
+				} else if (listContentType == ListContentType.KEY_VALUE) {
+					check = pi.getKeyValue();
+				}
+
+				String content = (String) getSelectedItem();
+				if (check.startsWith(content)) {
+					setEditorValue(check, content.length());
+					break;
+				}
+			} /* for */
 		}
 
 	}
