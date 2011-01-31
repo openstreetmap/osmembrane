@@ -134,8 +134,9 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	/**
 	 * The standard zoom values.
 	 */
-	private final static double STANDARD_ZOOM_IN = 1.25;
-	private final static double STANDARD_ZOOM_OUT = 0.80;
+	private final static double DEFAULT_ZOOM_IN = 1.25;
+	private final static double DEFAULT_ZOOM_OUT = 0.80;
+	private static final double DEFAULT_ZOOM = 0.64;
 	private final static double PIXEL_PER_ZOOM_LEVEL = 100.00;
 
 	/**
@@ -228,6 +229,8 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		this.connectionPreview = new PipelinePreviewLink(this);
 
 		this.objectToWindow = new AffineTransform();
+		this.objectToWindow.setToScale(PipelinePanel.DEFAULT_ZOOM,
+				PipelinePanel.DEFAULT_ZOOM);
 		this.currentDisplay = new AffineTransform();
 
 		this.layeredPane = new JLayeredPane();
@@ -247,9 +250,9 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				// zoom with mouse wheel
 				if (e.getWheelRotation() < 0) {
-					zoom(e.getPoint(), STANDARD_ZOOM_IN);
+					zoom(e.getPoint(), DEFAULT_ZOOM_IN);
 				} else {
-					zoom(e.getPoint(), STANDARD_ZOOM_OUT);
+					zoom(e.getPoint(), DEFAULT_ZOOM_OUT);
 				}
 			}
 		});
@@ -549,12 +552,12 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 	@Override
 	public void zoomIn() {
-		zoom(new Point(getWidth() / 2, getHeight() / 2), STANDARD_ZOOM_IN);
+		zoom(new Point(getWidth() / 2, getHeight() / 2), DEFAULT_ZOOM_IN);
 	}
 
 	@Override
 	public void zoomOut() {
-		zoom(new Point(getWidth() / 2, getHeight() / 2), STANDARD_ZOOM_OUT);
+		zoom(new Point(getWidth() / 2, getHeight() / 2), DEFAULT_ZOOM_OUT);
 	}
 
 	/**
@@ -597,10 +600,11 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 	@Override
 	public void resetView() {
-		objectToWindow.setToIdentity();
+		objectToWindow.setToScale(PipelinePanel.DEFAULT_ZOOM,
+				PipelinePanel.DEFAULT_ZOOM);
 		arrange();
 	}
-	
+
 	@Override
 	public void showEntireView() {
 		if (functions.size() < 1) {

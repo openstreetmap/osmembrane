@@ -89,7 +89,6 @@ public class Constants {
 	 */
 	public static final String BBOX_SEPERATOR = ",";
 
-
 	/**
 	 * static method
 	 */
