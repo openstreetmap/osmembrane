@@ -153,7 +153,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
-		
+
 		this.addMouseMotionListener(new MouseMotionListener() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -161,21 +161,37 @@ public class PipelineConnector extends DisplayTemplatePanel {
 						PipelineConnector.this, e, pipeline);
 				pipeline.dispatchEvent(pipelineEvent);
 			}
-			
+
 			@Override
 			public void mouseDragged(MouseEvent e) {
 			}
 		});
 
-		// find right color
-		Color color = modelConnector.getType().getColor();
-		this.setOpaque(false);
+		/*
+		 * use DisplayTemplatePanel prerender capabilites in this case we store
+		 * it for *CONNECTOR TYPES ONLY* if you ever want images/connector,
+		 * change this
+		 */
+		List<Image> prerender = DisplayTemplatePanel
+				.givePrerender(modelConnector.getType());
+		if (prerender != null) {
+			// prender exists, use it
+			display = prerender.get(0);
+		} else {
+			// find right color
 
-		display = derivateDisplay(displayTemplate, color, null);
+			Color color = modelConnector.getType().getColor();
+			this.setOpaque(false);
 
-		// do not create outLinks here, we don't know if we are done with all
-		// other
-		// connectors yet
+			// create it
+			display = DisplayTemplatePanel.prerenderDisplay(
+					modelConnector.getType(), displayTemplate, color, null);
+		}
+
+		/*
+		 * do not create outLinks here already, we don't know if we are done
+		 * with all other connectors yet
+		 */
 	}
 
 	/**
@@ -193,8 +209,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	private void createLinks() {
 		for (AbstractConnector ac : modelConnector.getConnections()) {
 			PipelineConnector toCon = pipeline.findConnector(ac);
-			PipelineLink pl = new PipelineLink(pipeline, this,
-					toCon);
+			PipelineLink pl = new PipelineLink(pipeline, this, toCon);
 
 			// out link here
 			outLinks.add(pl);
@@ -285,7 +300,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	public List<PipelineLink> getOutLinks() {
 		return this.outLinks;
 	}
-	
+
 	/**
 	 * @return the list of {@link PipelineLink}s coming in to this connector
 	 */
@@ -316,7 +331,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 	 */
 	public PipelineLink removeLinkTo(PipelineConnector toConnector) {
 		PipelineLink result = null;
-		
+
 		// out from here
 		for (int i = 0; i < outLinks.size(); i++) {
 			result = outLinks.get(i);
@@ -326,7 +341,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 				break;
 			}
 		}
-		
+
 		// in to there
 		for (int i = 0; i < toConnector.inLinks.size(); i++) {
 			if (toConnector.inLinks.get(i).equals(result)) {
@@ -334,7 +349,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 				break;
 			}
 		}
-		
+
 		return result;
 	}
 

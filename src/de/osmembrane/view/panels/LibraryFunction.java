@@ -101,45 +101,62 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	public LibraryFunction(final PipelinePanel pipeline,
 			final AbstractFunction modelFunctionPrototype,
 			final boolean canDragAndDrop) {
+
 		this.modelFunctionPrototype = modelFunctionPrototype;
+		/*
+		 * use DisplayTemplatePanel prerender capabilites in this case we store
+		 * it for *FUNCTION GROUPS ONLY* if you ever want images/function,
+		 * change this
+		 */
 		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
 				displayTemplate.getIconHeight()));
 
-		Color color = modelFunctionPrototype.getParent().getColor();
-		float[] colorRGB = color.getComponents(null);
-		Color highlightColor = new Color(Math.min(1.0f, colorRGB[0] + 0.25f),
-				Math.min(1.0f, colorRGB[1] + 0.25f), Math.min(1.0f,
-						colorRGB[2] + 0.25f));
-		this.setOpaque(false);
+		List<Image> prerender = DisplayTemplatePanel
+				.givePrerender(modelFunctionPrototype.getParent());
+		if (prerender != null) {
+			// images are prerendered, use them
+			display = prerender.get(0);
+			displayHighlight = prerender.get(1);
 
-		display = derivateDisplay(displayTemplate, color,
-				modelFunctionPrototype.getIcon());
-		displayHighlight = derivateDisplay(displayTemplate, highlightColor,
-				modelFunctionPrototype.getIcon());
+		} else {
+			// images are not prerendered, create them
+			Color color = modelFunctionPrototype.getParent().getColor();
+			float[] colorRGB = color.getComponents(null);
+			Color highlightColor = new Color(
+					Math.min(1.0f, colorRGB[0] + 0.25f), Math.min(1.0f,
+							colorRGB[1] + 0.25f), Math.min(1.0f,
+							colorRGB[2] + 0.25f));
+			this.setOpaque(false);
+
+			display = DisplayTemplatePanel.prerenderDisplay(
+					modelFunctionPrototype.getParent(), displayTemplate, color,
+					modelFunctionPrototype.getIcon());
+
+			displayHighlight = DisplayTemplatePanel.prerenderDisplay(
+					modelFunctionPrototype.getParent(), displayTemplate,
+					highlightColor, modelFunctionPrototype.getIcon());
+		}
 		highlighted = false;
 		dragging = false;
 
-			if (pipeline != null) {
+		if (pipeline != null) {
 			addMouseListener(new MouseListener() {
-	
+
 				// drag & drop
-	
+
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					dragging = false;
-	
+
 					if (canDragAndDrop) {
 						IMainFrame mainFrame = ViewRegistry.getInstance()
 								.getCasted(MainFrame.class, IMainFrame.class);
-						mainFrame.getMainGlassPane().endDragAndDrop(); // necessary
-																		// to make
-																		// the glass
-						// pane go
-						// away
-	
+						mainFrame.getMainGlassPane().endDragAndDrop();
+						// necessary to make the glass pane go away
+
 						// subtract the offset where it got clicked
 						e.translatePoint(-dragOffset.x, -dragOffset.y);
-	
+
 						// convert the mouse event into the mainFrame and
 						// pipeline panel components
 						MouseEvent mainFrameEvent = SwingUtilities
@@ -148,55 +165,58 @@ public class LibraryFunction extends DisplayTemplatePanel {
 						MouseEvent pipelineEvent = SwingUtilities
 								.convertMouseEvent(LibraryFunction.this, e,
 										pipeline);
-	
-						if (mainFrame
-								.isDragAndDropTarget(mainFrameEvent.getPoint())) {
+
+						if (mainFrame.isDragAndDropTarget(mainFrameEvent
+								.getPoint())) {
 							pipeline.draggedOnto(LibraryFunction.this,
 									pipelineEvent.getPoint());
 						} else {
-							Application.handleException(new ControlledException(
-									this, ExceptionSeverity.WARNING,
-									I18N.getInstance().getString(
-											"View.Library.CannotDropFunction")));
+							Application
+									.handleException(new ControlledException(
+											this,
+											ExceptionSeverity.WARNING,
+											I18N.getInstance()
+													.getString(
+															"View.Library.CannotDropFunction")));
 						}
 					}
 				}
-	
+
 				@Override
 				public void mousePressed(MouseEvent e) {
 					dragging = true;
 					dragOffset = e.getPoint();
 				}
-	
+
 				// mouse move hint
-	
+
 				@Override
 				public void mouseExited(MouseEvent e) {
 					// show no hint
 					pipeline.setHint(InspectorPanel.VALID_EMPTY_HINT);
-	
+
 					if (canDragAndDrop) {
 						highlighted = false;
 						repaint();
 					}
 				}
-	
+
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					// show hint for this function
 					pipeline.setHint(modelFunctionPrototype.getDescription());
-	
+
 					if (canDragAndDrop) {
 						highlighted = true;
 						repaint();
 					}
 				}
-	
+
 				@Override
 				public void mouseClicked(MouseEvent e) {
 				}
 			});
-			}
+		}
 
 		// nice drag & drop animation
 		if (canDragAndDrop) {
