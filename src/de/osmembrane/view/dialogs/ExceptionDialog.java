@@ -141,6 +141,8 @@ public class ExceptionDialog extends AbstractDialog {
 		}
 		add(buttons, gbc);
 
+		setResizable(false);
+		
 		pack();
 		centerWindow();
 	}
