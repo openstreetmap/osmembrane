@@ -66,7 +66,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 	};
 
 	/**
-	 * Allocates the correct content type fo rthe listContentType
+	 * Allocates the correct content type for the listContentType
 	 * 
 	 * @author tobias_kuhn
 	 * 
@@ -149,6 +149,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
+				// close the annoying JTable editor when we're leaving
 				editList.removeEditor();
 			}
 
@@ -218,6 +219,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// reset field, add to model
 				editListModel.insert(editField.getSelectedItem().toString());
 				editField.setSelectedItem("");
 			}
@@ -229,6 +231,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// delete rows from model
 				int[] rowsToDelete = editList.getSelectedRows();
 				Arrays.sort(rowsToDelete);
 				for (int i = rowsToDelete.length - 1; i >= 0; i--) {
@@ -253,6 +256,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		resetButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// regenerate model with parameter data
 				editListModel.regenerate(listParam.getValue());
 			}
 		});
@@ -263,6 +267,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// load from file
 				if (fileChooser.showOpenDialog(ListDialog.this) == JFileChooser.APPROVE_OPTION) {
 					try {
 						FileReader fr = new FileReader(fileChooser
@@ -291,6 +296,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// save to file
 				if (fileChooser.showSaveDialog(ListDialog.this) == JFileChooser.APPROVE_OPTION) {
 					try {
 						String saveTo = fileChooser.getSelectedFile()
@@ -323,6 +329,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		buttonEditFlow.add(buttonEditGrid);
 		add(buttonEditFlow, BorderLayout.EAST);
 
+		// data holders
 		editListModel = new ListDialogTableModel();
 		editList = new JTable(editListModel);
 		editList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -334,6 +341,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
+				// do not edit on delete, do delete the item
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					editList.removeEditor();
 					deleteButton.doClick();
@@ -366,6 +374,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 					public void keyReleased(KeyEvent e) {
 						if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 							addButton.doClick();
+							
 						} else if ((e.getKeyCode() != KeyEvent.VK_ESCAPE)) {
 							// auto complete
 							JTextField editorField = (JTextField) editField
@@ -428,6 +437,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		this.editListModel.regenerate(list.getValue());
 		this.applyChanges = false;
 
+		// determine listType and listContentType
 		if (listParam.getListType().toLowerCase().contains("node")) {
 			this.listType = ListType.NODE;
 		} else if (listParam.getListType().toLowerCase().contains("way")) {
@@ -466,7 +476,8 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 	/**
 	 * Sets the current editList editor value to full and selects all parts of
 	 * full, that are after contentLen. Needs to be synchronized, so setText()
-	 * and setSelection() are performed atomic.
+	 * and setSelection() are performed somewhat atomic. Still fails for very
+	 * quick typings.
 	 * 
 	 * @param full
 	 *            the String you most likely want to enter
@@ -548,12 +559,14 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		 */
 		public String getContent() {
 			StringBuilder result = new StringBuilder();
+			
 			for (int i = 0; i < parameters.size() - 1; i++) {
 				result.append(parameters.get(i) + ",");
 			}
 			if (parameters.size() > 0) {
 				result.append(parameters.get(parameters.size() - 1));
 			}
+			
 			return result.toString();
 		}
 
@@ -671,6 +684,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 			}
 
+			// update the models correctly
 			int oldSize = autoComplete.size();
 			autoComplete.clear();
 			fireIntervalRemoved(this, 0, oldSize);
@@ -723,6 +737,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		 */
 		public void doAutoCompleteSelection() {
 			for (PresetItem pi : autoComplete) {
+				// retrieve the correct item
 				String check = new String();
 				if (listContentType == ListContentType.KEY) {
 					check = pi.getKey();
@@ -730,8 +745,10 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 					check = pi.getKeyValue();
 				}
 
+				// if it fits with the user input
 				String content = (String) getSelectedItem();
 				if (check.startsWith(content)) {
+					// tell the editor to write that
 					setEditorValue(check, content.length());
 					break;
 				}
