@@ -129,6 +129,12 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	@Override
 	public AbstractFunction[] getFilteredFunctions(String matching) {
 		matching = matching.toLowerCase().trim();
+
+		/* remove all pre dashes, to optimize search results */
+		while (matching.length() > 0 && matching.substring(0, 1).equals("-")) {
+			matching = matching.substring(1);
+		}
+
 		List<AbstractFunction> matchingFunctions = new ArrayList<AbstractFunction>();
 
 		for (AbstractFunctionGroup group : getFunctionGroups()) {
@@ -165,27 +171,29 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	@Override
 	public AbstractFunction getMatchingFunctionForTaskName(String taskName) {
 		AbstractTask foundTask = null;
-		
+
 		for (AbstractFunctionGroup group : getFunctionGroups()) {
 			for (AbstractFunction function : group.getFunctions()) {
-				
+
 				for (AbstractTask task : function.getAvailableTasks()) {
 					if (task.getName().toLowerCase()
 							.equals(taskName.toLowerCase())) {
 						foundTask = task;
 					}
-					if(task.getShortName() != null) {
-						if(task.getShortName().toLowerCase().equals(taskName.toLowerCase())) {
+					if (task.getShortName() != null) {
+						if (task.getShortName().toLowerCase()
+								.equals(taskName.toLowerCase())) {
 							foundTask = task;
 						}
 					}
 				}
-				
-				if(foundTask != null) {
-					
-					AbstractFunction functionCopy = function.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
+
+				if (foundTask != null) {
+
+					AbstractFunction functionCopy = function
+							.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
 					for (AbstractTask task : functionCopy.getAvailableTasks()) {
-						if(task.getName().equals(foundTask.getName())) {
+						if (task.getName().equals(foundTask.getName())) {
 							functionCopy.setActiveTask(task);
 						}
 					}
@@ -193,7 +201,7 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 				}
 			}
 		}
-		
+
 		return null;
 	}
 
