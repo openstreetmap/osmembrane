@@ -15,3 +15,9 @@ Commandline-Icon (Show Commandline):
 Source:         Crystal-Project
 Released under: GNU
 Website:        http://www.everaldo.com/crystal/
+
+
+Presets-Icons:
+Source:			JOSM
+Released under	GPL v3
+Website:		http://josm.openstreetmap.de/svn/trunk/images/presets/
