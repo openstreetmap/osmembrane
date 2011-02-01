@@ -1,6 +1,8 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.Application;
 import de.osmembrane.model.pipeline.FunctionGroup;
+import de.osmembrane.view.components.JTextFieldWithButton;
 
 /**
  * The function library panel that lists all the {@link FunctionGroup}s as
@@ -72,7 +75,7 @@ public class LibraryPanel extends JPanel {
 	/**
 	 * Filter text field to filter the functions
 	 */
-	private JTextField editFilter;
+	private JTextFieldWithButton editFilter;
 
 	/**
 	 * Initializes a new {@link LibraryPanel}
@@ -86,24 +89,32 @@ public class LibraryPanel extends JPanel {
 		this.groups = new ArrayList<LibraryPanelGroup>();
 		
 		// TODO
+		
 		final String filtering = "(No filtering)";
-		this.editFilter = new JTextField();
+		this.editFilter = new JTextFieldWithButton();
 		editFilter.setLocation(3, 3);		
-		editFilter.setText(filtering);
-		editFilter.setHorizontalAlignment(JTextField.CENTER);
-		editFilter.addFocusListener(new FocusListener() {
+		editFilter.setValue(filtering);
+		editFilter.setCaption("x");
+		editFilter.addButtonActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editFilter.setValue(filtering);				
+			}
+		});
+		editFilter.setValueHorizontalAlignment(JTextField.CENTER);
+		editFilter.addFieldFocusListener(new FocusListener() {
 			
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (editFilter.getText().trim().isEmpty()) {
-					editFilter.setText(filtering);
+				if (editFilter.getValue().trim().isEmpty()) {
+					editFilter.setValue(filtering);
 				}
 			}
 			
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (editFilter.getText().equals(filtering)) {
-					editFilter.setText("");
+				if (editFilter.getValue().equals(filtering)) {
+					editFilter.setValue("");
 				}				
 			}
 		});

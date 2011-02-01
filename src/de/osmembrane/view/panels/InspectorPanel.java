@@ -329,6 +329,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				case BBOX:
 					JTextFieldWithButton jtfwbBB = new JTextFieldWithButton(
 							ap.getValue(), EDIT_BUTTON_CAPTION);
+					jtfwbBB.fieldNoBorders();
 					jtfwbBB.addButtonActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -344,7 +345,8 @@ public class InspectorPanel extends JPanel implements Observer {
 				
 				case LIST:
 					JTextFieldWithButton jtwbList = new JTextFieldWithButton(
-							ap.getValue(), EDIT_BUTTON_CAPTION);					
+							ap.getValue(), EDIT_BUTTON_CAPTION);
+					jtwbList.fieldNoBorders();
 					jtwbList.addButtonActionListener(new ActionListener() {
 						
 						@Override

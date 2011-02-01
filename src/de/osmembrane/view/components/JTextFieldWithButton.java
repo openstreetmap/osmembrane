@@ -2,6 +2,7 @@ package de.osmembrane.view.components;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -52,8 +53,6 @@ public class JTextFieldWithButton extends JPanel {
 	 */
 	public JTextFieldWithButton(String value, String caption) {
 		field = (value != null) ? new JTextField(value) : new JTextField();
-		field.setOpaque(true);
-		field.setBorder(null);
 		button = (caption != null) ? new JButton(caption) : new JButton();
 
 		this.setLayout(new BorderLayout());
@@ -72,10 +71,18 @@ public class JTextFieldWithButton extends JPanel {
 	public JTextFieldWithButton(String value, Action action) {
 		field = (value != null) ? new JTextField(value) : new JTextField();
 		button = (action != null) ? new JButton(action) : new JButton();
-		
+
 		this.setLayout(new BorderLayout());
 		this.add(field, BorderLayout.CENTER);
 		this.add(button, BorderLayout.EAST);
+	}
+
+	/**
+	 * Unsets the borders of the field
+	 */
+	public void fieldNoBorders() {
+		field.setOpaque(true);
+		field.setBorder(null);
 	}
 
 	/**
@@ -86,12 +93,13 @@ public class JTextFieldWithButton extends JPanel {
 	public void setValue(String value) {
 		field.setText(value);
 	}
-	
+
 	/**
 	 * Sets the content value to value
 	 * 
 	 * @param value
-	 * @param fixed whether the value shall be editable
+	 * @param fixed
+	 *            whether the value shall be editable
 	 */
 	public void setValue(String value, boolean fixed) {
 		field.setEditable(!fixed);
@@ -128,6 +136,23 @@ public class JTextFieldWithButton extends JPanel {
 	 */
 	public void addButtonActionListener(ActionListener al) {
 		button.addActionListener(al);
+	}
+
+	/**
+	 * Adds the {@link FocusListener} fl to the field component
+	 * 
+	 * @param fl
+	 */
+	public void addFieldFocusListener(FocusListener fl) {
+		field.addFocusListener(fl);
+	}
+
+	/**
+	 * @see {@link JTextField#setHorizontalAlignment(int)}
+	 */
+	public void setValueHorizontalAlignment(int align) {
+		field.setHorizontalAlignment(align);
+
 	}
 
 }
