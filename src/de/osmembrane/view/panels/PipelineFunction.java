@@ -212,7 +212,7 @@ public class PipelineFunction extends LibraryFunction {
 		g.setFont(g.getFont().deriveFont(Font.PLAIN)
 				.deriveFont((int) (g.getFont().getSize() * 0.9)));					
 		printCenteredString(g, modelFunction.getActiveTask().getName(), 0,
-				0 + 0.5 * getHeight());
+				0 + 0.33 * getHeight());
 	}
 
 	/**
