@@ -1,11 +1,14 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.Application;
@@ -16,8 +19,8 @@ import de.osmembrane.model.pipeline.FunctionGroup;
  * {@link LibraryPanelGroup}s in a register style and gives you the ability to
  * drag & drop them onto the {@link PipelinePanel}.
  * 
- * Would have been fancy to be generic, but was not possible due to time constraints.
- * Note smelly calls to getMainFrameByPass().getPipeline(). 
+ * Would have been fancy to be generic, but was not possible due to time
+ * constraints. Note smelly calls to getMainFrameByPass().getPipeline().
  * 
  * @see Spezifikation.pdf, chapter 2.1.4
  * 
@@ -67,6 +70,11 @@ public class LibraryPanel extends JPanel {
 	private List<LibraryPanelGroup> groups;
 
 	/**
+	 * Filter text field to filter the functions
+	 */
+	private JTextField editFilter;
+
+	/**
 	 * Initializes a new {@link LibraryPanel}
 	 */
 	public LibraryPanel() {
@@ -76,6 +84,30 @@ public class LibraryPanel extends JPanel {
 		this.contracting = -1;
 		this.expandingThread = null;
 		this.groups = new ArrayList<LibraryPanelGroup>();
+		
+		// TODO
+		final String filtering = "(No filtering)";
+		this.editFilter = new JTextField();
+		editFilter.setLocation(3, 3);		
+		editFilter.setText(filtering);
+		editFilter.setHorizontalAlignment(JTextField.CENTER);
+		editFilter.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (editFilter.getText().trim().isEmpty()) {
+					editFilter.setText(filtering);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (editFilter.getText().equals(filtering)) {
+					editFilter.setText("");
+				}				
+			}
+		});
+		add(editFilter);
 
 		// display
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -216,7 +248,7 @@ public class LibraryPanel extends JPanel {
 		super.setSize(d);
 		rearrange(false);
 	}
-	
+
 	/**
 	 * @see {@link JPanel#setSize}
 	 */
@@ -230,7 +262,11 @@ public class LibraryPanel extends JPanel {
 	 * Manager)
 	 */
 	private void rearrange(boolean setSize) {
-		int y = 3;
+		// bring the filter to its width
+		editFilter.setSize(this.getPreferredSize().width - 6,
+				editFilter.getPreferredSize().height);
+
+		int y = 3 + editFilter.getHeight();
 		for (LibraryPanelGroup lpg : groups) {
 			// determine top
 			lpg.setLocation(3, y);
