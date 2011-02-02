@@ -22,12 +22,14 @@ import de.osmembrane.controller.actions.ExitAction;
 import de.osmembrane.controller.actions.ExportPipelineAction;
 import de.osmembrane.controller.actions.GeneratePipelineAction;
 import de.osmembrane.controller.actions.ImportPipelineAction;
+import de.osmembrane.controller.actions.LoadFunctionPresetAction;
 import de.osmembrane.controller.actions.LoadPipelineAction;
 import de.osmembrane.controller.actions.MoveFunctionAction;
 import de.osmembrane.controller.actions.NewPipelineAction;
 import de.osmembrane.controller.actions.PreviewPipelineAction;
 import de.osmembrane.controller.actions.RedoAction;
 import de.osmembrane.controller.actions.SaveAsPipelineAction;
+import de.osmembrane.controller.actions.SaveFunctionPresetAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
 import de.osmembrane.controller.actions.ShowAboutAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
@@ -95,6 +97,10 @@ public class ActionRegistry implements Observer {
 		// undo, redo actions
 		register(new UndoAction());
 		register(new RedoAction());
+		
+		// function presets
+		register(new LoadFunctionPresetAction());
+		register(new SaveFunctionPresetAction());
 
 		// other actions
 		register(new ShowHelpAction());

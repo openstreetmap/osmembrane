@@ -3,11 +3,10 @@ package de.osmembrane.model.settings;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Observable;
-
-import java.util.List;
 
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;

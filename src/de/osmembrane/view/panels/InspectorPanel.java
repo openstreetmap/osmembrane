@@ -3,7 +3,7 @@ package de.osmembrane.view.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridLayout;
@@ -16,9 +16,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.Action;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -34,13 +34,14 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.EditBoundingBoxPropertyAction;
 import de.osmembrane.controller.actions.EditListPropertyAction;
 import de.osmembrane.controller.actions.EditPropertyAction;
+import de.osmembrane.controller.actions.LoadFunctionPresetAction;
+import de.osmembrane.controller.actions.SaveFunctionPresetAction;
 import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.controller.events.ContainingFunctionChangeParameterEvent;
 import de.osmembrane.exceptions.ControlledException;
@@ -98,7 +99,7 @@ public class InspectorPanel extends JPanel implements Observer {
 	 * Useful {@link Color} definitions
 	 */
 	private static final Color LIGHT_BLUE = new Color(0.9f, 0.9f, 1.0f);
-	//private static final Color LIGHTER_BLUE = new Color(0.95f, 0.95f, 1.0f);
+	// private static final Color LIGHTER_BLUE = new Color(0.95f, 0.95f, 1.0f);
 	private static final Color LIGHT_WHITE = new Color(0.95f, 0.95f, 0.95f);
 	private static final Color LIGHTER_WHITE = new Color(1.0f, 1.0f, 1.0f);
 
@@ -134,6 +135,17 @@ public class InspectorPanel extends JPanel implements Observer {
 		functionName.setFont(functionName.getFont().deriveFont(Font.BOLD,
 				1.2f * functionName.getFont().getSize()));
 		functionName.setHorizontalAlignment(SwingConstants.CENTER);
+		JPanel functionCaption = new JPanel();
+		functionCaption.setLayout(new BorderLayout());
+		functionCaption.add(functionName, BorderLayout.CENTER);
+
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new GridLayout(1, 2));
+		buttons.add(new JButton(ActionRegistry.getInstance().get(
+				LoadFunctionPresetAction.class)));
+		buttons.add(new JButton(ActionRegistry.getInstance().get(
+				SaveFunctionPresetAction.class)));
+		functionCaption.add(buttons, BorderLayout.EAST);
 
 		// display
 		taskComboModel = new InspectorPanelTableTaskComboBoxModel();
@@ -221,8 +233,8 @@ public class InspectorPanel extends JPanel implements Observer {
 
 		// align this to look good
 		setLayout(new BorderLayout());
-		add(functionName, BorderLayout.NORTH);		
-		
+		add(functionCaption, BorderLayout.NORTH);
+
 		JSplitPane propertiesAndHints = new JSplitPane(
 				JSplitPane.VERTICAL_SPLIT, true,
 				new JScrollPane(propertyTable), hint);
@@ -323,8 +335,9 @@ public class InspectorPanel extends JPanel implements Observer {
 				case BOOLEAN:
 					JCheckBox jcb = new JCheckBox();
 					jcb.setModel(new InspectorPanelTableBooleanCheckBoxModel(ap));
-					jcb.setSelected(ap.getValue().equals(Boolean.TRUE.toString()));
-					
+					jcb.setSelected(ap.getValue().equals(
+							Boolean.TRUE.toString()));
+
 					DefaultCellEditor dceBoolean = new DefaultCellEditor(jcb);
 					rowEditorModel.setEditorRow(i + 1, dceBoolean);
 					break;
@@ -345,19 +358,20 @@ public class InspectorPanel extends JPanel implements Observer {
 					rowEditorModel.setEditorRow(i + 1,
 							new JTextFieldWithButtonCellEditor(jtfwbBB));
 					break;
-				
+
 				case LIST:
 					JTextFieldWithButton jtwbList = new JTextFieldWithButton(
 							ap.getValue(), EDIT_BUTTON_CAPTION);
 					jtwbList.fieldNoBorders();
 					jtwbList.addButtonActionListener(new ActionListener() {
-						
+
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							Action aList = ActionRegistry.getInstance().get(
 									EditListPropertyAction.class);
-							ContainingEvent ceList = new ContainingEvent(this, ap);
-							aList.actionPerformed(ceList);						
+							ContainingEvent ceList = new ContainingEvent(this,
+									ap);
+							aList.actionPerformed(ceList);
 						}
 					});
 					rowEditorModel.setEditorRow(i + 1,

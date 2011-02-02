@@ -6,7 +6,9 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 
 import de.osmembrane.controller.events.ContainingLocationEvent;
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
+import de.osmembrane.tools.IconLoader.Size;
 
 /**
  * Action to load saved presets for a specific function. Gets a
@@ -31,11 +33,13 @@ public class LoadFunctionPresetAction extends AbstractAction {
 				Action.SHORT_DESCRIPTION,
 				I18N.getInstance().getString(
 						"Controller.Actions.LoadFunctionPreset.Description"));
-		// TODO some loading icon ?
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+				"load_pipeline.png", Size.SMALL));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO do some fancy model stuff
+		throw new UnsupportedOperationException();
 	}
 }
