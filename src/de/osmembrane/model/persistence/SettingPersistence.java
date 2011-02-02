@@ -16,7 +16,7 @@ import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.settings.SettingType;
-import de.osmembrane.resources.Constants;
+import de.osmembrane.model.settings.SettingsObserverObject;
 import de.osmembrane.tools.I18N;
 
 /**
@@ -73,16 +73,17 @@ public class SettingPersistence extends AbstractPersistence {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (arg instanceof Map) {
+		if (arg instanceof SettingsObserverObject) {
 			try {
-				save(Constants.DEFAULT_SETTINGS_FILE, arg);
-			} catch (Exception e) {
+				SettingsObserverObject soo = (SettingsObserverObject) arg;
+				soo.getSettingsModel().saveSettings();
+			} catch (FileException e) {
 				/* forward the exception to the view */
 				Application
 						.handleException(new ControlledException(this,
 								ExceptionSeverity.WARNING, e,
 								I18N.getInstance().getString(
-										"Exception.AutosaveSettingsFailed")));
+										"Model.Settings.AutosaveSettingsFailed")));
 			}
 		}
 	}

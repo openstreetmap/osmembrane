@@ -20,6 +20,8 @@ import de.osmembrane.resources.Constants;
  */
 public class Settings extends AbstractSettings {
 
+	private static final long serialVersionUID = 2011020217010001L;
+
 	Map<SettingType, Object> settingsMap = new HashMap<SettingType, Object>();
 
 	@Override
@@ -27,13 +29,20 @@ public class Settings extends AbstractSettings {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(SettingPersistence.class);
 
+		/*
+		 * register the persistence as observer for automatic saving of the
+		 * settings
+		 */
+		addObserver(PersistenceFactory.getInstance());
+
 		try {
 			File file = new File(Constants.DEFAULT_SETTINGS_FILE.toString()
 					.replace("file:", ""));
-			if (!file.isFile()) {
-				persistence.save(Constants.DEFAULT_SETTINGS_FILE, settingsMap);
-			}
 			
+			if (!file.isFile()) {
+				saveSettings();
+			}
+
 			Object obj = persistence.load(Constants.DEFAULT_SETTINGS_FILE);
 
 			/* is checked by persistence */
@@ -59,6 +68,7 @@ public class Settings extends AbstractSettings {
 	@Override
 	public void setValue(SettingType type, Object value) {
 		settingsMap.put(type, value);
+		changedNotifyObservers(new SettingsObserverObject(type));
 
 	}
 
@@ -68,7 +78,22 @@ public class Settings extends AbstractSettings {
 	}
 
 	@Override
+	public void saveSettings() throws FileException {
+		AbstractPersistence persistence = PersistenceFactory.getInstance()
+				.getPersistence(SettingPersistence.class);
+
+		persistence.save(Constants.DEFAULT_SETTINGS_FILE, settingsMap);
+	}
+
+	@Override
 	public void update(Observable o, Object arg) {
 		notifyObservers(settingsMap);
+	}
+
+	@Override
+	protected void changedNotifyObservers(SettingsObserverObject soo) {
+		soo.setSettingsModel(this);
+		setChanged();
+		notifyObservers(soo);
 	}
 }

@@ -44,7 +44,7 @@ public class Pipeline extends AbstractPipeline {
 	 * In the silent-mode the pipeline will not inform any observers.
 	 */
 	private boolean silent;
-	
+
 	/**
 	 * Says if the pipeline uses undo-redo or not.<br/>
 	 * in disabled mode the pipeline does not save any undo redo steps.
@@ -53,19 +53,22 @@ public class Pipeline extends AbstractPipeline {
 
 	/**
 	 * Creates a default pipeline with<br/>
+	 * 
 	 * @link {@link Pipeline#silent} = false
 	 */
 	public Pipeline() {
 		this(false);
 	}
-	
+
 	/**
 	 * Creates a default pipeline with<br/>
+	 * 
 	 * @link {@link Pipeline#undoRedoDisabled} = false
 	 */
 	public Pipeline(boolean silent) {
 		this(silent, false);
 	}
+
 	/**
 	 * Constructor for {@link Pipeline}.
 	 */
@@ -75,13 +78,13 @@ public class Pipeline extends AbstractPipeline {
 		this.redoStack = new Stack<PipelineMemento>();
 		this.silent = silent;
 		this.undoRedoDisabled = undoRedoDisabled;
-		
+
 		/* register the Observer of Persistence to the Pipeline */
 		addObserver(PersistenceFactory.getInstance());
 
 		clear();
 	}
-	
+
 	@Override
 	public void clear() {
 		this.functions.clear();
@@ -220,7 +223,7 @@ public class Pipeline extends AbstractPipeline {
 		}
 
 		changeSavedState(true);
-		
+
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null).setCreateUndoStep(false));
@@ -326,31 +329,15 @@ public class Pipeline extends AbstractPipeline {
 
 	@Override
 	protected void changedNotifyObservers(PipelineObserverObject poo) {
-		long timeStart = System.currentTimeMillis();
-		
 		poo.setPipeline(this);
 
-		if (poo.createUndoStep()) {
+		/* check if the undo-step is really required, or disabled. */
+		if (poo.createUndoStep() && !undoRedoDisabled) {
 			/* any changes made, set savedState to false */
 			changeSavedState(false);
 		}
 
-		/* Debug output, TODO remove that at final release */
-		// Integer stackPeekSize = (Integer) null;
-		// if (undoStack.size() > 0) {
-		// stackPeekSize = undoStack.peek().getFunctions().size();
-		// }
-		//
-		// System.out.println("undoStack.size = " + undoStack.size()
-		// + "; redoStack.size = " + redoStack.size()
-		// + "; functions.size = " + functions.size()
-		// + "\ncurrentState.functions.size = "
-		// + currentState.getFunctions().size()
-		// + "; undoStack.peek.functions.size = " + stackPeekSize
-		// + "\n lastAction = " + poo.getType() + "\n");
-		/* End of Debug output */
-		
-		if(!silent) {
+		if (!silent) {
 			this.setChanged();
 			this.notifyObservers(poo);
 		}
@@ -359,17 +346,14 @@ public class Pipeline extends AbstractPipeline {
 	private void changeSavedState(boolean state) {
 		this.savedState = state;
 
-		/* check if the undo-step is really required, or disabled. */
-		if(!undoRedoDisabled) {
-			if (state == false) {
-				saveStep();
-			} else {
-				/*
-				 * Update the savedState for the current item (nothing changed in
-				 * the pipeline only the state should be updated.
-				 */
-				currentState = new PipelineMemento(functions, savedState);
-			}
+		if (state == false) {
+			saveStep();
+		} else {
+			/*
+			 * Update the savedState for the current item (nothing changed in
+			 * the pipeline only the state should be updated.
+			 */
+			currentState = new PipelineMemento(functions, savedState);
 		}
 	}
 
@@ -396,6 +380,11 @@ public class Pipeline extends AbstractPipeline {
 	}
 }
 
+/**
+ * Private internal class of the memento of the undo-/redo-feature.
+ * 
+ * @author jakob_jarosch
+ */
 class PipelineMemento {
 
 	private List<AbstractFunction> functions = new ArrayList<AbstractFunction>();
@@ -416,6 +405,7 @@ class PipelineMemento {
 
 	private List<AbstractFunction> deepCopyFunctions(
 			List<AbstractFunction> functions) {
+		/* Use serialization to create a copy of the functions in the pipeline */
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
