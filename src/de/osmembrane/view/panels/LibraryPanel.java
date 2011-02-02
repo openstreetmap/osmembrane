@@ -147,7 +147,6 @@ public class LibraryPanel extends JPanel {
 					AbstractFunction[] result = ModelProxy.getInstance()
 							.accessFunctions()
 							.getFilteredFunctions(editFilter.getValue());
-					System.out.println(result.length + " got it");
 					filterGroup.populate(result, pipeline);
 									
 					for (LibraryPanelGroup lpg : groups) {
