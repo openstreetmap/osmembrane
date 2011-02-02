@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -20,6 +21,7 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
 import de.osmembrane.view.interfaces.ISettingsDialog;
@@ -59,6 +61,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 	 * Components to edit the language / locale
 	 */
 	private JComboBox language;
+	private Locale[] locales;
 
 	/**
 	 * Components to edit whether short task names shall be used
@@ -125,38 +128,52 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 
 		gbc.gridy = 0;
 		gbc.gridx = 0;
-		settings.add(new JLabel("Osmosis pfad"), gbc);
+		settings.add(
+				new JLabel(I18N.getInstance().getString(
+						"View.Settings.OsmosisPath")
+						+ ":"), gbc);
 		gbc.gridx = 1;
 		osmosisPath = new JTextField();
 		osmosisPath.setPreferredSize(new Dimension(minFieldWidth, osmosisPath
 				.getPreferredSize().height));
+		osmosisPath.setToolTipText(I18N.getInstance().getString(
+				"View.Settings.OsmosisPath.Description"));
 		settings.add(osmosisPath, gbc);
 
 		gbc.gridy = 1;
 		gbc.gridx = 0;
-		settings.add(new JLabel("JOSM pfad"), gbc);
+		settings.add(
+				new JLabel(I18N.getInstance().getString(
+						"View.Settings.JOSMPath")
+						+ ":"), gbc);
 		gbc.gridx = 1;
 		josmPath = new JTextField();
 		josmPath.setPreferredSize(new Dimension(minFieldWidth, josmPath
 				.getPreferredSize().height));
+		josmPath.setToolTipText(I18N.getInstance().getString(
+				"View.Settings.JOSMPath.Description"));
 		settings.add(josmPath, gbc);
 
 		gbc.gridy = 2;
 		gbc.gridx = 0;
-		settings.add(new JLabel("Sprache"), gbc);
+		settings.add(
+				new JLabel(I18N.getInstance().getString(
+						"View.Settings.Language")
+						+ ":"), gbc);
 		gbc.gridx = 1;
-		String[] locales = new String[Locale.getAvailableLocales().length];
-		for (int i = 0; i < Locale.getAvailableLocales().length; i++) {
-			locales[i] = Locale.getAvailableLocales()[i].getDisplayLanguage();
-		}
-		language = new JComboBox(locales);
+		language = new JComboBox();
 		language.setPreferredSize(new Dimension(minFieldWidth, language
 				.getPreferredSize().height));
+		language.setToolTipText(I18N.getInstance().getString(
+				"View.Settings.Language.Description"));
 		settings.add(language, gbc);
 
 		gbc.gridy = 3;
 		gbc.gridx = 0;
-		settings.add(new JLabel("Default zoom"), gbc);
+		settings.add(
+				new JLabel(I18N.getInstance().getString(
+						"View.Settings.DefaultZoom")
+						+ ":"), gbc);
 		gbc.gridx = 1;
 		defaultZoomDisplay = new JLabel("10.0x");
 		settings.add(defaultZoomDisplay, gbc);
@@ -165,30 +182,45 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		gbc.gridx = 0;
 		gbc.gridwidth = 2;
 		defaultZoom = new JSlider();
+		defaultZoom.setToolTipText(I18N.getInstance().getString(
+				"View.Settings.DefaultZoom.Description"));
 		settings.add(defaultZoom, gbc);
 		gbc.gridwidth = 1;
 
 		gbc.gridy = 0;
 		gbc.gridx = 2;
 		gbc.gridwidth = 2;
-		shortTasks = new JCheckBox("Kurze Tasknamen");
+		shortTasks = new JCheckBox(I18N.getInstance().getString(
+				"View.Settings.ShortTasks")
+				+ ":");
+		shortTasks.setToolTipText(I18N.getInstance().getString(
+				"View.Settings.ShortTasks.Description"));
 		settings.add(shortTasks, gbc);
 		gbc.gridwidth = 1;
 
 		gbc.gridy = 1;
 		gbc.gridx = 2;
 		gbc.gridwidth = 2;
-		defaultParamExport = new JCheckBox("Default Paramamen");
+		defaultParamExport = new JCheckBox(I18N.getInstance().getString(
+				"View.Settings.DefaultParamExport")
+				+ ":");
+		defaultParamExport.setToolTipText(I18N.getInstance().getString(
+				"View.Settings.DefaultParamExport.Description"));
 		settings.add(defaultParamExport, gbc);
 		gbc.gridwidth = 1;
 
 		gbc.gridy = 2;
 		gbc.gridx = 2;
-		settings.add(new JLabel("Max Undo"), gbc);
+		settings.add(
+				new JLabel(I18N.getInstance().getString(
+						"View.Settings.MaxUndoSteps")
+						+ ":"), gbc);
 		gbc.gridx = 3;
 		maxUndoSteps = new JSpinner();
 		maxUndoSteps.setPreferredSize(new Dimension(minSpinnerWidth,
 				maxUndoSteps.getPreferredSize().height));
+		maxUndoSteps.setToolTipText(I18N.getInstance().getString(
+				"View.Settings.MaxUndoSteps.Description"));
 		settings.add(maxUndoSteps, gbc);
 
 		add(settings, BorderLayout.CENTER);
@@ -203,82 +235,87 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 	}
 
 	@Override
-	public String getOsmosisPath() {
-		return this.osmosisPath.getText();
+	public void setLocales(Locale[] locales) {
+		this.locales = locales;
+		String[] localeStrings = new String[locales.length];
+		for (int i = 0; i < locales.length; i++) {
+			localeStrings[i] = locales[i].getDisplayLanguage();
+		}
+		language.setModel(new DefaultComboBoxModel(localeStrings));
 	}
 
 	@Override
-	public void setOsmosisPath(String osmosisPath) {
-		this.osmosisPath.setText(osmosisPath);
-	}
+	public Object getValue(SettingType type) {
+		switch (type) {
+		case DEFAULT_OSMOSIS_PATH:
+			return this.osmosisPath.getText();
 
-	@Override
-	public String getJosmPath() {
-		return this.josmPath.getText();
-	}
+		case DEFAULT_JOSM_PATH:
+			return this.josmPath.getText();
 
-	@Override
-	public void setJosmPath(String josmPath) {
-		this.josmPath.setText(josmPath);
-	}
+		case ACTIVE_LANGUAGE:
+			int selected = this.language.getSelectedIndex();
+			return (selected >= 0) ? this.locales[this.language
+					.getSelectedIndex()] : null;
 
-	@Override
-	public double getDefaultZoom() {
-		double x = 0;
-		// TODO arithmetics here
-		return x;
-	}
+		case DEFAULT_ZOOM_SIZE:
+			// arithmetics
+			return 1.0;
 
-	@Override
-	public void setDefaultZoom(double defaultZoom) {
-		// TODO arithmetics here
+		case USE_SHORT_TASK_NAMES_IF_AVAILABLE:
+			return this.shortTasks.isSelected();
 
-	}
+		case EXPORT_PARAMETERS_WITH_DEFAULT_VALUES:
+			return this.defaultParamExport.isSelected();
 
-	@Override
-	public Locale getLanguage() {
-		return Locale.getAvailableLocales()[this.language.getSelectedIndex()];
-	}
+		case MAXIMUM_UNDO_STEPS:
+			return this.maxUndoSteps.getValue();
 
-	@Override
-	public void setLanguage(Locale language) {
-		for (int i = 0; i < Locale.getAvailableLocales().length; i++) {
-			Locale l = Locale.getAvailableLocales()[i];
+		case PIPELINE_RASTER_SIZE:
 
-			if (l.equals(language)) {
-				this.language.setSelectedIndex(i);
-			}
+		default:
+			return null;
 		}
 	}
 
 	@Override
-	public boolean getShortTasks() {
-		return this.shortTasks.isSelected();
-	}
+	public void setValue(SettingType type, Object value) {
+		switch (type) {
+		case DEFAULT_OSMOSIS_PATH:
+			this.osmosisPath.setText((String) value);
+			break;
 
-	@Override
-	public void setShortTasks(boolean shortTasks) {
-		this.shortTasks.setSelected(shortTasks);
-	}
+		case DEFAULT_JOSM_PATH:
+			this.osmosisPath.setText((String) value);
+			break;
 
-	@Override
-	public boolean getDefaultParamExport() {
-		return this.defaultParamExport.isSelected();
-	}
+		case ACTIVE_LANGUAGE:
+			Locale newLocale = (Locale) value;
+			for (int i = 0; i < locales.length; i++) {
+				if (locales[i].equals(newLocale)) {
+					language.setSelectedIndex(i);
+					return;
+				}
+			}
+			language.setSelectedIndex(-1);
+			break;
 
-	@Override
-	public void setDefaultParamExport(boolean defaultParamExport) {
-		this.defaultParamExport.setSelected(defaultParamExport);
-	}
+		case DEFAULT_ZOOM_SIZE:
+			// arithmetics
+			break;
 
-	@Override
-	public int getMaxUndoSteps() {
-		return (Integer) this.maxUndoSteps.getValue();
-	}
+		case USE_SHORT_TASK_NAMES_IF_AVAILABLE:
+			this.shortTasks.setSelected((Boolean) value);
+			break;
 
-	@Override
-	public void setMaxUndoSteps(int maxUndoSteps) {
-		this.maxUndoSteps.setValue(maxUndoSteps);
+		case EXPORT_PARAMETERS_WITH_DEFAULT_VALUES:
+			this.defaultParamExport.setSelected((Boolean) value);
+			break;
+
+		case MAXIMUM_UNDO_STEPS:
+			this.maxUndoSteps.setValue((Integer) value);
+			break;
+		}
 	}
 
 }
