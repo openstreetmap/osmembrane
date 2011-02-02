@@ -101,6 +101,9 @@ public class ActionRegistry implements Observer {
 		register(new ShowAboutAction());
 		register(new ChangeSettingsAction());
 		register(new ExitAction());
+		
+		// set setEnabled() values
+		update(null, null);
 	}
 
 	/**
@@ -144,6 +147,11 @@ public class ActionRegistry implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// update all actions and their enabled state
+
+		boolean pipelineFull = (ModelProxy.getInstance().getPipeline()
+				.getFunctions().length > 0);
+		boolean isSaved = ModelProxy.getInstance().getPipeline().isSaved();
+
 		ActionRegistry
 				.getInstance()
 				.get(UndoAction.class)
@@ -156,9 +164,21 @@ public class ActionRegistry implements Observer {
 						ModelProxy.getInstance().getPipeline().redoAvailable());
 
 		ActionRegistry.getInstance().get(SaveAsPipelineAction.class)
-				.setEnabled(!ModelProxy.getInstance().getPipeline().isSaved());
+				.setEnabled(!isSaved && pipelineFull);
 
 		ActionRegistry.getInstance().get(SavePipelineAction.class)
-				.setEnabled(!ModelProxy.getInstance().getPipeline().isSaved());
+				.setEnabled(!isSaved && pipelineFull);
+
+		ActionRegistry.getInstance().get(ArrangePipelineAction.class)
+				.setEnabled(pipelineFull);
+
+		ActionRegistry.getInstance().get(ExecutePipelineAction.class)
+				.setEnabled(pipelineFull);
+		
+		ActionRegistry.getInstance().get(ExportPipelineAction.class)
+		.setEnabled(pipelineFull);
+		
+		ActionRegistry.getInstance().get(GeneratePipelineAction.class)
+		.setEnabled(pipelineFull);
 	}
 }

@@ -46,7 +46,6 @@ public class SavePipelineAction extends AbstractAction {
 				"save_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		setEnabled(false);
 	}
 
 	@Override

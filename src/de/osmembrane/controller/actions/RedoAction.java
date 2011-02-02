@@ -39,7 +39,6 @@ public class RedoAction extends AbstractAction {
 				Resource.PROGRAM_ICON.getImageIcon("redo.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		setEnabled(false);
 	}
 
 	@Override
