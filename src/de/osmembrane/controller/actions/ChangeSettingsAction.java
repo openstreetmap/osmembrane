@@ -94,7 +94,7 @@ public class ChangeSettingsAction extends AbstractAction {
 						Application
 								.handleException(new ControlledException(
 										this,
-										ExceptionSeverity.INVALID,
+										ExceptionSeverity.WARNING,
 										I18N.getInstance()
 												.getString(
 														"Controller.ChangeSettings.UnparsableFormatException",

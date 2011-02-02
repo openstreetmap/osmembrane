@@ -1,19 +1,24 @@
 package de.osmembrane.model.settings;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Observable;
 
-import org.omg.IOP.CodecPackage.FormatMismatch;
+import java.util.List;
 
 import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.persistence.AbstractPersistence;
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.PersistenceFactory;
 import de.osmembrane.model.persistence.SettingPersistence;
+import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.resources.Constants;
+import de.osmembrane.tools.I18N;
 
 /**
  * 
@@ -24,12 +29,17 @@ public class Settings extends AbstractSettings {
 
 	private static final long serialVersionUID = 2011020217010001L;
 
-	Map<SettingType, Object> settingsMap = new HashMap<SettingType, Object>();
+	private static final String FUNCTION_PRESET_KEY = "functionPresetKey";
+
+	Map<Object, Object> settingsMap = new HashMap<Object, Object>();
 
 	@Override
 	public void initiate() {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(SettingPersistence.class);
+
+		File file = new File(Constants.DEFAULT_SETTINGS_FILE.toString()
+				.replace("file:", ""));
 
 		/*
 		 * register the persistence as observer for automatic saving of the
@@ -38,9 +48,6 @@ public class Settings extends AbstractSettings {
 		addObserver(PersistenceFactory.getInstance());
 
 		try {
-			File file = new File(Constants.DEFAULT_SETTINGS_FILE.toString()
-					.replace("file:", ""));
-
 			if (!file.isFile()) {
 				saveSettings();
 			}
@@ -49,11 +56,12 @@ public class Settings extends AbstractSettings {
 
 			/* is checked by persistence */
 			@SuppressWarnings("unchecked")
-			Map<SettingType, Object> settingsMap = (Map<SettingType, Object>) obj;
+			Map<Object, Object> settingsMap = (Map<Object, Object>) obj;
 			this.settingsMap = settingsMap;
 		} catch (FileException e) {
-			/* TODO Implement the correct exception handling for Settings */
-			Application.handleException(e);
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.WARNING, I18N.getInstance().getString(
+							"Model.Settings.FileException", file)));
 		}
 	}
 
@@ -74,6 +82,7 @@ public class Settings extends AbstractSettings {
 			value = type.parse(value);
 		}
 
+		/* perform required actions as change the localization */
 		type.doRequiredActions(value);
 
 		settingsMap.put(type, value);
@@ -94,6 +103,34 @@ public class Settings extends AbstractSettings {
 	}
 
 	@Override
+	public void saveFunctionPreset(String name, AbstractFunction function) {
+		FunctionPreset preset = new FunctionPreset(name, function);
+		getFPList().add(preset);
+		
+		changedNotifyObservers(new SettingsObserverObject());
+	}
+
+	@Override
+	public AbstractFunctionPreset[] getAllFunctionPresets(
+			AbstractFunction function) {
+		List<AbstractFunctionPreset> fpList = new ArrayList<AbstractFunctionPreset>();
+		for(FunctionPreset preset : getFPList()) {
+			if(preset.getInheritedFunction().getId().equals(function.getId())) {
+				fpList.add(preset);
+			}
+		}
+		
+		return fpList.toArray(new AbstractFunctionPreset[fpList.size()]);
+	}
+
+	@Override
+	public void deleteFunctionPreset(AbstractFunctionPreset preset) {
+		getFPList().remove(preset);
+		
+		changedNotifyObservers(new SettingsObserverObject());
+	}
+
+	@Override
 	public void update(Observable o, Object arg) {
 		notifyObservers(settingsMap);
 	}
@@ -103,5 +140,19 @@ public class Settings extends AbstractSettings {
 		soo.setSettingsModel(this);
 		setChanged();
 		notifyObservers(soo);
+	}
+
+	private List<FunctionPreset> getFPList() {
+		Object result = settingsMap.get(FUNCTION_PRESET_KEY);
+
+		if (result == null || !(result instanceof List)) {
+			settingsMap.put(FUNCTION_PRESET_KEY,
+					new ArrayList<FunctionPreset>());
+		}
+
+		List<FunctionPreset> presetMap = (List<FunctionPreset>) settingsMap
+				.get(FUNCTION_PRESET_KEY);
+
+		return presetMap;
 	}
 }

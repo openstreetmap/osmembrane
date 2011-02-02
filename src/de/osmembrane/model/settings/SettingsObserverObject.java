@@ -11,6 +11,13 @@ public class SettingsObserverObject {
 	private AbstractSettings settingsModel;
 
 	/**
+	 * @see SettingsObserverObject#SettingsObserverObject(SettingType)
+	 */
+	public SettingsObserverObject() {
+		this.changedEntry = null;
+	}
+	
+	/**
 	 * Creates a new {@link SettingsObserverObject} with given changed type of
 	 * the entry.
 	 * 

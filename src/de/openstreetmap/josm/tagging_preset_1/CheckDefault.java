@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "check_default")
 @XmlEnum
+@SuppressWarnings(value = "all")
 public enum CheckDefault {
 
     @XmlEnumValue("on")

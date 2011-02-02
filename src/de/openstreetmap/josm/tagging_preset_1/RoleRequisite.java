@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "role_requisite")
 @XmlEnum
+@SuppressWarnings(value = "all")
 public enum RoleRequisite {
 
     @XmlEnumValue("required")

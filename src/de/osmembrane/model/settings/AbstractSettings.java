@@ -7,6 +7,7 @@ import java.util.Observer;
 
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileException;
+import de.osmembrane.model.pipeline.AbstractFunction;
 
 /**
  * Interface for accessing the {@link Settings} through the {@link ModelProxy}.
@@ -22,6 +23,14 @@ public abstract class AbstractSettings extends Observable implements
 	 * Initiates the Settings-model.
 	 */
 	public abstract void initiate();
+
+	/**
+	 * Save the settings to its settings file.
+	 * 
+	 * @throws FileException
+	 *             is thrown if the settings could not be saved
+	 */
+	public abstract void saveSettings() throws FileException;
 
 	/**
 	 * Returns a value.
@@ -52,13 +61,15 @@ public abstract class AbstractSettings extends Observable implements
 	 */
 	public abstract Locale[] getLanguages();
 
+	public abstract void saveFunctionPreset(String name, AbstractFunction function);
+	
+	public abstract AbstractFunctionPreset[] getAllFunctionPresets(AbstractFunction function);
+	
+	public abstract void deleteFunctionPreset(AbstractFunctionPreset preset);
+	
 	/**
-	 * Save the settings to its settings file.
-	 * 
-	 * @throws FileException
-	 *             is thrown if the settings could not be saved
+	 * Notifies all observers.
+	 * @param soo a {@link SettingsObserverObject}
 	 */
-	public abstract void saveSettings() throws FileException;
-
 	protected abstract void changedNotifyObservers(SettingsObserverObject soo);
 }
