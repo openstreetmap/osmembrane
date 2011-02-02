@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
@@ -109,6 +110,28 @@ public class PipelineLink extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+			}
+		});
+		
+		addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
+						PipelineLink.this, e, pipeline);
+				pipeline.dispatchEvent(pipelineEvent);
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
+						PipelineLink.this, e, pipeline);
+
+				switch (pipeline.getActiveTool()) {
+				case VIEW_TOOL:
+					pipeline.dispatchEvent(pipelineEvent);
+					break;
+				}
 			}
 		});
 	}
