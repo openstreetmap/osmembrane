@@ -284,7 +284,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 			break;
 
 		case DEFAULT_JOSM_PATH:
-			this.osmosisPath.setText((String) value);
+			this.josmPath.setText((String) value);
 			break;
 
 		case ACTIVE_LANGUAGE:

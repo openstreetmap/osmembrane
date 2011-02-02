@@ -89,6 +89,13 @@ public enum SettingType {
 		}
 	}
 
+	/**
+	 * Tries to parse the object to the equivalent Type-Object.
+	 * 
+	 * @param value
+	 * @return
+	 * @throws UnparsableFormatException
+	 */
 	public Object parse(Object value) throws UnparsableFormatException {
 		Object returnValue;
 		

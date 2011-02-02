@@ -78,7 +78,6 @@ public class Settings extends AbstractSettings {
 
 		settingsMap.put(type, value);
 		changedNotifyObservers(new SettingsObserverObject(type));
-
 	}
 
 	@Override
