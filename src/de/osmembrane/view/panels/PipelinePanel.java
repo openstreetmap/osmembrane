@@ -41,6 +41,7 @@ import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
+import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.interfaces.IZoomDevice;
@@ -432,6 +433,9 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 			} /* mouseDragged */
 		});
+		
+		// necessary to initialize with correct model reflection
+		update(null, new PipelineObserverObject(ChangeType.FULLCHANGE, null));
 	}
 
 	/**

@@ -75,18 +75,6 @@ public class ChangeSettingsAction extends AbstractAction {
 
 				if ((newValue != null)
 						&& (!newValue.equals(settings.getValue(setting)))) {
-					if ((setting == SettingType.ACTIVE_LANGUAGE)
-							&& (JOptionPane
-									.showConfirmDialog(
-											null,
-											I18N.getInstance()
-													.getString(
-															"Controller.Actions.ChangeSettings.ChangeLocale"),
-											I18N.getInstance().getString(
-													"osmembrane"),
-											JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)) {
-						continue;
-					}
 
 					try {
 						settings.setValue(setting, newValue);

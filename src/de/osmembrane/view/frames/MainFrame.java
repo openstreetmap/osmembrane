@@ -318,7 +318,6 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		
 		// function inspector
 		InspectorPanel functionInspector = new InspectorPanel();
-		JScrollPane paneInspector = new JScrollPane(functionInspector);
 		
 		// pipeline view
 		pipelineView = new PipelinePanel(functionInspector);
@@ -346,7 +345,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 				JSplitPane.HORIZONTAL_SPLIT, true, paneLibrary, panePipeline);
 
 		JSplitPane splitMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				true, splitLibAndView, paneInspector);
+				true, splitLibAndView, functionInspector);
 		splitMain.setResizeWeight(1.0);
 		getContentPane().add(splitMain);
 

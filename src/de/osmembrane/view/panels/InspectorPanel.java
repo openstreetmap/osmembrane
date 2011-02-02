@@ -1,7 +1,9 @@
 package de.osmembrane.view.panels;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridLayout;
@@ -28,9 +30,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton.ToggleButtonModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
@@ -129,7 +133,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				"View.Inspector.NoSelection"));
 		functionName.setFont(functionName.getFont().deriveFont(Font.BOLD,
 				1.2f * functionName.getFont().getSize()));
-		functionName.setAlignmentX(Component.CENTER_ALIGNMENT);
+		functionName.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// display
 		taskComboModel = new InspectorPanelTableTaskComboBoxModel();
@@ -216,14 +220,13 @@ public class InspectorPanel extends JPanel implements Observer {
 		hint.add(hintLabel);
 
 		// align this to look good
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(functionName);
-
+		setLayout(new BorderLayout());
+		add(functionName, BorderLayout.NORTH);		
+		
 		JSplitPane propertiesAndHints = new JSplitPane(
 				JSplitPane.VERTICAL_SPLIT, true,
-				new JScrollPane(propertyTable), (hint));
-		propertiesAndHints.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(propertiesAndHints);
+				new JScrollPane(propertyTable), hint);
+		add(propertiesAndHints, BorderLayout.CENTER);
 	}
 
 	/**
