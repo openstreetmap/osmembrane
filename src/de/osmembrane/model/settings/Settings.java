@@ -67,6 +67,12 @@ public class Settings extends AbstractSettings {
 
 	@Override
 	public void setValue(SettingType type, Object value) {
+		if(!type.getType().isInstance(value)) {
+			/* TODO protect the SettingsModel form other objects than the desired one */
+		}
+		
+		type.doRequiredActions(value);
+		
 		settingsMap.put(type, value);
 		changedNotifyObservers(new SettingsObserverObject(type));
 

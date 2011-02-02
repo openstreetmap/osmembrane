@@ -21,6 +21,10 @@ public class Main {
 
 		// create the models
 		application.createModels();
+		
+		// set the correct locale
+		application.setLocale();
+		
 		// initiate the most basic stuff
 		application.initiate();
 

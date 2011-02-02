@@ -82,7 +82,7 @@ public class I18N extends Observable {
 	 * @param locale
 	 *            new defaultLocale for {@see XMLHasDescription}
 	 */
-	public void setDefaultLocale(Locale locale) {
+	protected void setDefaultLocale(Locale locale) {
 		this.defaultLocale = locale;
 		
 		/* notify the observers that possibly the language has been changed */

@@ -90,6 +90,11 @@ public class Constants {
 	public static final String BBOX_SEPERATOR = ",";
 
 	/**
+	 * The default zoom-size of the view.
+	 */
+	public static final double DEFAULT_ZOOM_SIZE = 1.0;
+
+	/**
 	 * static method
 	 */
 	static {

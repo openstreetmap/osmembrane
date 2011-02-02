@@ -1,8 +1,11 @@
 package de.osmembrane;
 
+import java.util.Locale;
+
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
@@ -23,11 +26,11 @@ public class Application {
 		try {
 			// connect model and view
 			ModelProxy.getInstance().addObserver(ViewRegistry.getInstance());
-			
+
 			// set the EDT Exception handler
 			System.setProperty("sun.awt.exception.handler",
 					EDTExceptionHandler.class.getName());
-			
+
 		} catch (Exception e) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
@@ -43,9 +46,12 @@ public class Application {
 		try {
 			ModelProxy.getInstance().accessFunctions()
 					.initiate(Resource.OSMEMBRANE_XML.getURL());
+
 			ModelProxy.getInstance().accessPreset()
-			.initiate(Resource.PRESET_XML.getURL());
+					.initiate(Resource.PRESET_XML.getURL());
+
 			ModelProxy.getInstance().accessSettings().initiate();
+
 			ModelProxy.getInstance().accessPipeline().clear();
 		} catch (Exception e) {
 			Application.handleException(new ControlledException(this,
@@ -53,6 +59,16 @@ public class Application {
 							.getInstance().getString(
 									"GenericInitializationCriticalError")));
 		}
+	}
+
+	/**
+	 * Sets the active locale.
+	 */
+	public void setLocale() {
+		Locale activeLocale = (Locale) ModelProxy.getInstance().accessSettings()
+				.getValue(SettingType.ACTIVE_LANGUAGE);
+		
+		I18N.getInstance().setLocale(activeLocale);
 	}
 
 	/**
@@ -80,7 +96,7 @@ public class Application {
 		if (t instanceof ControlledException) {
 			ControlledException ce = (ControlledException) t;
 
-			Throwable toShow = t;			
+			Throwable toShow = t;
 			if ((ce.getCause() != null) && (ce.getMessage() == null)) {
 				toShow = ce.getCause();
 			}
