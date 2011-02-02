@@ -2,7 +2,6 @@ package de.osmembrane.model.settings;
 
 import java.util.Locale;
 
-
 import de.osmembrane.resources.Constants;
 
 public enum SettingType {

@@ -2,12 +2,9 @@ package de.osmembrane.model.settings;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Observable;
-import java.util.Set;
 
 import de.osmembrane.Application;
 import de.osmembrane.model.persistence.AbstractPersistence;

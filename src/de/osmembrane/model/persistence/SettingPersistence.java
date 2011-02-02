@@ -2,7 +2,6 @@ package de.osmembrane.model.persistence;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,7 +15,6 @@ import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.persistence.FileException.Type;
-import de.osmembrane.model.settings.AbstractSettings;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;

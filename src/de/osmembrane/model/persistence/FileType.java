@@ -1,7 +1,6 @@
 package de.osmembrane.model.persistence;
 
 import java.io.File;
-import java.net.URL;
 
 import javax.swing.filechooser.FileFilter;
 

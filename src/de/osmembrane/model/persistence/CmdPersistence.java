@@ -14,7 +14,6 @@ import java.util.Observable;
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
-import de.osmembrane.model.parser.CmdParser;
 import de.osmembrane.model.parser.IParser;
 import de.osmembrane.model.parser.ParseException;
 import de.osmembrane.model.parser.ParserFactory;

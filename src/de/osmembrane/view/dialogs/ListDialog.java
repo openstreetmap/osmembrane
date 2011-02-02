@@ -613,7 +613,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 			}
 		}
 
-	}
+	} /* ListDialogTableModel */
 
 	/**
 	 * The combobox model used for the auto complete functionality

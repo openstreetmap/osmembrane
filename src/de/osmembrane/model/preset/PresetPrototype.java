@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sun.awt.SunHints.Value;
-
 import de.openstreetmap.josm.tagging_preset_1.Group;
 import de.openstreetmap.josm.tagging_preset_1.Item;
 import de.openstreetmap.josm.tagging_preset_1.Key;

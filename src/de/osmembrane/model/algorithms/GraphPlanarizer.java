@@ -1,12 +1,10 @@
 package de.osmembrane.model.algorithms;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.model.pipeline.AbstractParameter;
 
 public class GraphPlanarizer {
 

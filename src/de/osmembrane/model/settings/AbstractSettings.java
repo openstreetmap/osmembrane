@@ -2,10 +2,8 @@ package de.osmembrane.model.settings;
 
 import java.io.Serializable;
 import java.util.Locale;
-import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 
 import de.osmembrane.model.ModelProxy;
 

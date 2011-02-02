@@ -10,6 +10,9 @@ import javax.swing.KeyStroke;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
+import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.dialogs.SettingsDialog;
+import de.osmembrane.view.interfaces.ISettingsDialog;
 
 /**
  * Action to open the change settings dialog.
@@ -43,7 +46,13 @@ public class ChangeSettingsAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		throw new UnsupportedOperationException();
-		// TODO implement
+		ISettingsDialog settingsDialog = ViewRegistry.getInstance().getCasted(
+				SettingsDialog.class, ISettingsDialog.class);
+		
+		settingsDialog.showWindow();
+		
+		if (settingsDialog.shallApplyChanges()) {
+			
+		}
 	}
 }
