@@ -88,4 +88,30 @@ public enum SettingType {
 			break;
 		}
 	}
+
+	public Object parse(Object value) throws UnparsableFormatException {
+		Object returnValue;
+		
+		if(value == null) {
+			throw new UnparsableFormatException(this);
+		}
+		
+		try {
+			if(this.getType() == Integer.class) {
+				returnValue = (Integer) Integer.parseInt(value.toString());
+			} else if(this.getType() == Double.class) {
+				returnValue = (Double) Double.parseDouble(value.toString());
+			} else if (this.getType() == Locale.class) {
+				returnValue = (Locale) value;
+			} else if (this.getType() == Boolean.class) {
+				returnValue = (Boolean) Boolean.parseBoolean(value.toString());
+			} else {
+				returnValue = (String) value.toString();
+			}
+		} catch (Exception e) {
+			throw new UnparsableFormatException(this);
+		}
+		
+		return returnValue;
+	}
 }

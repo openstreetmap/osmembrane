@@ -17,41 +17,46 @@ public abstract class AbstractSettings extends Observable implements
 		Serializable, Observer {
 
 	private static final long serialVersionUID = 2010122714350001L;
-	
+
 	/**
 	 * Initiates the Settings-model.
 	 */
 	public abstract void initiate();
-	
+
 	/**
 	 * Returns a value.
 	 * 
-	 * @param type type of the value which should be returned
+	 * @param type
+	 *            type of the value which should be returned
 	 * 
 	 * @return the requested value or the default value for it
 	 */
 	public abstract Object getValue(SettingType type);
-	
+
 	/**
 	 * Sets the value for a given type.
 	 * 
-	 * @param type type which should be set
+	 * @param type
+	 *            type which should be set
 	 * 
-	 * @param value value which should be assigned to the type
+	 * @param value
+	 *            value which should be assigned to the type
 	 */
-	public abstract void setValue(SettingType type, Object value);
-	
+	public abstract void setValue(SettingType type, Object value)
+			throws UnparsableFormatException;
+
 	/**
 	 * Returns all available languages.
 	 * 
 	 * @return all available languages
 	 */
 	public abstract Locale[] getLanguages();
-	
+
 	/**
 	 * Save the settings to its settings file.
 	 * 
-	 * @throws FileException is thrown if the settings could not be saved
+	 * @throws FileException
+	 *             is thrown if the settings could not be saved
 	 */
 	public abstract void saveSettings() throws FileException;
 

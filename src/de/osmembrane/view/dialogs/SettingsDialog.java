@@ -130,49 +130,49 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		gbc.gridx = 0;
 		settings.add(
 				new JLabel(I18N.getInstance().getString(
-						"View.Settings.OsmosisPath")
+						"Model.Settings.Type.DEFAULT_OSMOSIS_PATH")
 						+ ":"), gbc);
 		gbc.gridx = 1;
 		osmosisPath = new JTextField();
 		osmosisPath.setPreferredSize(new Dimension(minFieldWidth, osmosisPath
 				.getPreferredSize().height));
 		osmosisPath.setToolTipText(I18N.getInstance().getString(
-				"View.Settings.OsmosisPath.Description"));
+				"Model.Settings.Type.DEFAULT_OSMOSIS_PATH.Description"));
 		settings.add(osmosisPath, gbc);
 
 		gbc.gridy = 1;
 		gbc.gridx = 0;
 		settings.add(
 				new JLabel(I18N.getInstance().getString(
-						"View.Settings.JOSMPath")
+						"Model.Settings.Type.DEFAULT_JOSM_PATH")
 						+ ":"), gbc);
 		gbc.gridx = 1;
 		josmPath = new JTextField();
 		josmPath.setPreferredSize(new Dimension(minFieldWidth, josmPath
 				.getPreferredSize().height));
 		josmPath.setToolTipText(I18N.getInstance().getString(
-				"View.Settings.JOSMPath.Description"));
+				"Model.Settings.Type.DEFAULT_JOSM_PATH.Description"));
 		settings.add(josmPath, gbc);
 
 		gbc.gridy = 2;
 		gbc.gridx = 0;
 		settings.add(
 				new JLabel(I18N.getInstance().getString(
-						"View.Settings.Language")
+						"Model.Settings.Type.ACTIVE_LANGUAGE")
 						+ ":"), gbc);
 		gbc.gridx = 1;
 		language = new JComboBox();
 		language.setPreferredSize(new Dimension(minFieldWidth, language
 				.getPreferredSize().height));
 		language.setToolTipText(I18N.getInstance().getString(
-				"View.Settings.Language.Description"));
+				"Model.Settings.Type.ACTIVE_LANGUAGE.Description"));
 		settings.add(language, gbc);
 
 		gbc.gridy = 3;
 		gbc.gridx = 0;
 		settings.add(
 				new JLabel(I18N.getInstance().getString(
-						"View.Settings.DefaultZoom")
+						"Model.Settings.Type.DEFAULT_ZOOM_SIZE")
 						+ ":"), gbc);
 		gbc.gridx = 1;
 		defaultZoomDisplay = new JLabel("10.0x");
@@ -183,7 +183,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		gbc.gridwidth = 2;
 		defaultZoom = new JSlider();
 		defaultZoom.setToolTipText(I18N.getInstance().getString(
-				"View.Settings.DefaultZoom.Description"));
+				"Model.Settings.Type.DEFAULT_ZOOM_SIZE.Description"));
 		settings.add(defaultZoom, gbc);
 		gbc.gridwidth = 1;
 
@@ -191,10 +191,9 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		gbc.gridx = 2;
 		gbc.gridwidth = 2;
 		shortTasks = new JCheckBox(I18N.getInstance().getString(
-				"View.Settings.ShortTasks")
-				+ ":");
+				"Model.Settings.Type.USE_SHORT_TASK_NAMES_IF_AVAILABLE"));
 		shortTasks.setToolTipText(I18N.getInstance().getString(
-				"View.Settings.ShortTasks.Description"));
+				"Model.Settings.Type.USE_SHORT_TASK_NAMES_IF_AVAILABLE.Description"));
 		settings.add(shortTasks, gbc);
 		gbc.gridwidth = 1;
 
@@ -202,10 +201,9 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		gbc.gridx = 2;
 		gbc.gridwidth = 2;
 		defaultParamExport = new JCheckBox(I18N.getInstance().getString(
-				"View.Settings.DefaultParamExport")
-				+ ":");
+				"Model.Settings.Type.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES"));
 		defaultParamExport.setToolTipText(I18N.getInstance().getString(
-				"View.Settings.DefaultParamExport.Description"));
+				"Model.Settings.Type.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES.Description"));
 		settings.add(defaultParamExport, gbc);
 		gbc.gridwidth = 1;
 
@@ -213,14 +211,14 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		gbc.gridx = 2;
 		settings.add(
 				new JLabel(I18N.getInstance().getString(
-						"View.Settings.MaxUndoSteps")
+						"Model.Settings.Type.MAXIMUM_UNDO_STEPS")
 						+ ":"), gbc);
 		gbc.gridx = 3;
 		maxUndoSteps = new JSpinner();
 		maxUndoSteps.setPreferredSize(new Dimension(minSpinnerWidth,
 				maxUndoSteps.getPreferredSize().height));
 		maxUndoSteps.setToolTipText(I18N.getInstance().getString(
-				"View.Settings.MaxUndoSteps.Description"));
+				"Model.Settings.Type.MAXIMUM_UNDO_STEPS.Description"));
 		settings.add(maxUndoSteps, gbc);
 
 		add(settings, BorderLayout.CENTER);

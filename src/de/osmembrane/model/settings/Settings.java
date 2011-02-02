@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Observable;
 
+import org.omg.IOP.CodecPackage.FormatMismatch;
+
 import de.osmembrane.Application;
 import de.osmembrane.model.persistence.AbstractPersistence;
 import de.osmembrane.model.persistence.FileException;
@@ -38,7 +40,7 @@ public class Settings extends AbstractSettings {
 		try {
 			File file = new File(Constants.DEFAULT_SETTINGS_FILE.toString()
 					.replace("file:", ""));
-			
+
 			if (!file.isFile()) {
 				saveSettings();
 			}
@@ -66,13 +68,14 @@ public class Settings extends AbstractSettings {
 	}
 
 	@Override
-	public void setValue(SettingType type, Object value) {
-		if(!type.getType().isInstance(value)) {
-			/* TODO protect the SettingsModel form other objects than the desired one */
+	public void setValue(SettingType type, Object value)
+			throws UnparsableFormatException {
+		if (!type.getType().isInstance(value)) {
+			value = type.parse(value);
 		}
-		
+
 		type.doRequiredActions(value);
-		
+
 		settingsMap.put(type, value);
 		changedNotifyObservers(new SettingsObserverObject(type));
 

@@ -8,9 +8,13 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.settings.AbstractSettings;
 import de.osmembrane.model.settings.SettingType;
+import de.osmembrane.model.settings.UnparsableFormatException;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
@@ -84,7 +88,27 @@ public class ChangeSettingsAction extends AbstractAction {
 						continue;
 					}
 
-					settings.setValue(setting, newValue);
+					try {
+						settings.setValue(setting, newValue);
+					} catch (UnparsableFormatException e1) {
+						Application
+								.handleException(new ControlledException(
+										this,
+										ExceptionSeverity.INVALID,
+										I18N.getInstance()
+												.getString(
+														"Controller.ChangeSettings.UnparsableFormatException",
+														I18N.getInstance()
+																.getString(
+																		"Model.Settings.Type."
+																				+ e1.getType()),
+														I18N.getInstance()
+																.getString(
+																		"Model.Settings.Format."
+																				+ e1.getType()
+																						.getDeclaringClass()
+																						.getSimpleName()))));
+					}
 				}
 			}
 		} /* if apply changes */
