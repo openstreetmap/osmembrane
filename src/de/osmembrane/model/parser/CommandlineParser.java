@@ -72,7 +72,7 @@ public class CommandlineParser implements IParser {
 			throws ParseException {
 
 		/** A temporary silent pipeline to check loop freeness */
-		AbstractPipeline pipeline = new Pipeline(true);
+		AbstractPipeline pipeline = new Pipeline(true, true);
 
 		/** A map for listing all connections belongs to its function */
 		Map<String, AbstractFunction> connectionMap = new HashMap<String, AbstractFunction>();

@@ -40,21 +40,48 @@ public class Pipeline extends AbstractPipeline {
 	private boolean savedState = true;
 
 	/**
-	 * Constructor for {@link Pipeline}.
+	 * Says if the pipeline is silent or not.<br/>
+	 * In the silent-mode the pipeline will not inform any observers.
+	 */
+	private boolean silent;
+	
+	/**
+	 * Says if the pipeline uses undo-redo or not.<br/>
+	 * in disabled mode the pipeline does not save any undo redo steps.
+	 */
+	private boolean undoRedoDisabled;
+
+	/**
+	 * Creates a default pipeline with<br/>
+	 * @link {@link Pipeline#silent} = false
+	 */
+	public Pipeline() {
+		this(false);
+	}
+	
+	/**
+	 * Creates a default pipeline with<br/>
+	 * @link {@link Pipeline#undoRedoDisabled} = false
 	 */
 	public Pipeline(boolean silent) {
+		this(silent, false);
+	}
+	/**
+	 * Constructor for {@link Pipeline}.
+	 */
+	public Pipeline(boolean silent, boolean undoRedoDisabled) {
 		this.functions = new ArrayList<AbstractFunction>();
 		this.undoStack = new Stack<PipelineMemento>();
 		this.redoStack = new Stack<PipelineMemento>();
-
+		this.silent = silent;
+		this.undoRedoDisabled = undoRedoDisabled;
+		
 		/* register the Observer of Persistence to the Pipeline */
-		if (!silent) {
-			addObserver(PersistenceFactory.getInstance());
-		}
+		addObserver(PersistenceFactory.getInstance());
 
 		clear();
 	}
-
+	
 	@Override
 	public void clear() {
 		this.functions.clear();
@@ -301,6 +328,8 @@ public class Pipeline extends AbstractPipeline {
 
 	@Override
 	protected void changedNotifyObservers(PipelineObserverObject poo) {
+		long timeStart = System.currentTimeMillis();
+		
 		poo.setPipeline(this);
 
 		if (poo.createUndoStep()) {
@@ -322,22 +351,27 @@ public class Pipeline extends AbstractPipeline {
 		// + "; undoStack.peek.functions.size = " + stackPeekSize
 		// + "\n lastAction = " + poo.getType() + "\n");
 		/* End of Debug output */
-
-		this.setChanged();
-		this.notifyObservers(poo);
+		
+		if(!silent) {
+			this.setChanged();
+			this.notifyObservers(poo);
+		}
 	}
 
 	private void changeSavedState(boolean state) {
 		this.savedState = state;
 
-		if (state == false) {
-			saveStep();
-		} else {
-			/*
-			 * Update the savedState for the current item (nothing changed in
-			 * the pipeline only the state should be updated.
-			 */
-			currentState = new PipelineMemento(functions, savedState);
+		/* check if the undo-step is really required, or disabled. */
+		if(!undoRedoDisabled) {
+			if (state == false) {
+				saveStep();
+			} else {
+				/*
+				 * Update the savedState for the current item (nothing changed in
+				 * the pipeline only the state should be updated.
+				 */
+				currentState = new PipelineMemento(functions, savedState);
+			}
 		}
 	}
 
@@ -345,7 +379,7 @@ public class Pipeline extends AbstractPipeline {
 		undoStack.push(currentState);
 		redoStack.clear();
 		currentState = new PipelineMemento(functions, savedState);
-		if(undoStack.size() > Constants.MAXIMUM_UNDO_STEPS) {
+		if (undoStack.size() > Constants.MAXIMUM_UNDO_STEPS) {
 			undoStack.remove(0);
 		}
 	}
