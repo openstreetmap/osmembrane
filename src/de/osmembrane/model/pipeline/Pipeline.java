@@ -220,9 +220,7 @@ public class Pipeline extends AbstractPipeline {
 		}
 
 		changeSavedState(true);
-
-		arrangePipeline();
-
+		
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
 				ChangeType.FULLCHANGE, null).setCreateUndoStep(false));

@@ -265,6 +265,9 @@ public class CommandlineParser implements IParser {
 				}
 			}
 		}
+		
+		/* use the pipeline algorithm to arrange the functions */
+		pipeline.arrangePipeline();
 
 		/* create the output List */
 		List<AbstractFunction> returnList = new ArrayList<AbstractFunction>();
