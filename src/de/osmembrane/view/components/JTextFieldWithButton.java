@@ -3,6 +3,7 @@ package de.osmembrane.view.components;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyListener;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -153,6 +154,16 @@ public class JTextFieldWithButton extends JPanel {
 	public void setValueHorizontalAlignment(int align) {
 		field.setHorizontalAlignment(align);
 
+	}
+	/**
+	 * Adds the {@link java.awt.event.KeyListener} kl to the field component
+	 * 
+	 * @param kl
+	 */
+
+	public void addFieldKeyListener(KeyListener kl) {
+		field.addKeyListener(kl);
+		
 	}
 
 }

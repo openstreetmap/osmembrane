@@ -126,7 +126,6 @@ public class LibraryFunction extends DisplayTemplatePanel {
 					Math.min(1.0f, colorRGB[0] + 0.25f), Math.min(1.0f,
 							colorRGB[1] + 0.25f), Math.min(1.0f,
 							colorRGB[2] + 0.25f));
-			this.setOpaque(false);
 
 			display = DisplayTemplatePanel.prerenderDisplay(
 					modelFunctionPrototype.getParent(), displayTemplate, color,
@@ -138,6 +137,7 @@ public class LibraryFunction extends DisplayTemplatePanel {
 		}
 		highlighted = false;
 		dragging = false;
+		this.setOpaque(false);
 
 		if (pipeline != null) {
 			addMouseListener(new MouseListener() {

@@ -181,12 +181,13 @@ public class PipelineConnector extends DisplayTemplatePanel {
 			// find right color
 
 			Color color = modelConnector.getType().getColor();
-			this.setOpaque(false);
 
 			// create it
 			display = DisplayTemplatePanel.prerenderDisplay(
 					modelConnector.getType(), displayTemplate, color, null);
 		}
+		
+		this.setOpaque(false);
 
 		/*
 		 * do not create outLinks here already, we don't know if we are done

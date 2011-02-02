@@ -60,7 +60,8 @@ public class LibraryPanelGroup extends JPanel {
 	private List<LibraryFunction> content;
 
 	/**
-	 * Initializes a new {@link LibraryPanelGroup}
+	 * Initializes a new {@link LibraryPanelGroup} for an
+	 * {@link AbstractFunctionGroup}.
 	 * 
 	 * @param lp
 	 *            the parent {@link LibraryPanel} on which this group will be
@@ -81,10 +82,6 @@ public class LibraryPanelGroup extends JPanel {
 		// best decision ever <- do not touch
 		setLayout(null);
 
-		int y = 3;
-		// find the preferred width by using the maximum of all child objects
-		int maxPreferredWidth = 0;
-
 		// header button
 		headerButton = new JButton();
 		headerButton.setText(afg.getFriendlyName());
@@ -92,10 +89,8 @@ public class LibraryPanelGroup extends JPanel {
 		headerButton.setBackground(color);
 
 		// determine size, etc.
-		headerButton.setLocation(3, y);
+		headerButton.setLocation(3, 3);
 		headerButton.setSize(headerButton.getPreferredSize());
-		maxPreferredWidth = headerButton.getPreferredSize().width;
-		y += headerButton.getHeight() + 6;
 
 		// action listener
 		headerButton.addActionListener(new ActionListener() {
@@ -141,25 +136,52 @@ public class LibraryPanelGroup extends JPanel {
 
 		content = new ArrayList<LibraryFunction>();
 		// all functions available in the function group
-		for (AbstractFunction af : afg.getFunctions()) {
-			LibraryFunction vf = new LibraryFunction(pipeline, af, true);
+		populate(afg.getFunctions(), pipeline);
+	}
 
-			// determine the top
-			vf.setLocation(3, y);
-			// display them fully
-			vf.setSize(vf.getPreferredSize());
-			// find the maximum necessary width
-			maxPreferredWidth = Math.max(maxPreferredWidth,
-					vf.getPreferredSize().width + 24);
-			y += vf.getHeight() + 6;
+	/**
+	 * Initializes a new empty {@link LibraryPanelGroup}.
+	 * 
+	 * @param lp
+	 *            the parent {@link LibraryPanel} on which this group will be
+	 *            displayed
+	 * @param pipeline
+	 *            the {@link PipelinePanel} that shall later be able to identify
+	 *            drags from the {@link LibraryFunction}s stored here.
+	 * @param title
+	 *            title for the group (mainly to display the header button)
+	 * @param color
+	 *            color for the group (mainly to display the header button)
+	 */
+	public LibraryPanelGroup(final LibraryPanel lp, PipelinePanel pipeline,
+			String title, Color color) {
+		this.functionGroup = null;
 
-			contentHeight += vf.getPreferredSize().height + 7;
+		// display
+		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		// best decision ever <- do not touch
+		setLayout(null);
 
-			content.add(vf);
-			add(vf);
-		}
+		// header button
+		headerButton = new JButton();
+		headerButton.setText(title);
+		headerButton.setBackground(color);
 
-		setPreferredSize(new Dimension(maxPreferredWidth, 0));
+		// determine size, etc.
+		headerButton.setLocation(3, 3);
+		headerButton.setSize(headerButton.getPreferredSize());
+
+		// action listener
+		headerButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lp.groupClicked(id);
+			}
+		});
+
+		add(headerButton);
+
+		content = new ArrayList<LibraryFunction>();
 	}
 
 	/**
@@ -209,6 +231,54 @@ public class LibraryPanelGroup extends JPanel {
 		for (LibraryFunction vf : content) {
 			vf.setLocation((getWidth() - vf.getWidth()) / 2, vf.getLocation().y);
 		}
+	}
+
+	/**
+	 * Removes all functions currently present in this {@link LibraryPanelGroup}
+	 * and instead uses the functions functions. Also adjusts the size.
+	 * 
+	 * @param functions
+	 *            the functions to display now
+	 */
+	public void populate(AbstractFunction[] functions, PipelinePanel pipeline) {
+		for (LibraryFunction lf : content) {
+			remove(lf);
+		}
+		content.clear();
+
+		// find the preferred width by using the maximum of all child objects
+		int maxPreferredWidth = headerButton.getPreferredSize().width;
+		// running through the current height
+		int y = 3 + headerButton.getHeight() + 6;
+
+		// all functions available in the array
+		for (AbstractFunction af : functions) {
+			LibraryFunction lf = new LibraryFunction(pipeline, af, true);
+
+			// determine the top
+			lf.setLocation(3, y);
+			// display them fully
+			lf.setSize(lf.getPreferredSize());
+			// find the maximum necessary width
+			maxPreferredWidth = Math.max(maxPreferredWidth,
+					lf.getPreferredSize().width + 24);
+			y += lf.getHeight() + 6;
+
+			contentHeight += lf.getPreferredSize().height + 7;
+
+			content.add(lf);
+			add(lf);
+		}
+
+		setPreferredSize(new Dimension(maxPreferredWidth, 0));
+	}
+
+	/**
+	 * @return the id, i.e. the id this {@link LibraryPanelGroup} has in its
+	 *         main {@link LibraryPanel}
+	 */
+	protected int getId() {
+		return id;
 	}
 
 }

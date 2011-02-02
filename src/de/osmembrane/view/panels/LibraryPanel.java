@@ -1,10 +1,13 @@
 package de.osmembrane.view.panels;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +17,10 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.Application;
+import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.FunctionGroup;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.view.components.JTextFieldWithButton;
 
 /**
@@ -76,46 +82,104 @@ public class LibraryPanel extends JPanel {
 	 * Filter text field to filter the functions
 	 */
 	private JTextFieldWithButton editFilter;
-
+	
+	/**
+	 * {@link LibraryPanelGroup} for the filtered functions by editFilter.
+	 */
+	private LibraryPanelGroup filterGroup;
+	
 	/**
 	 * Initializes a new {@link LibraryPanel}
+	 * 
+	 * @param pipeline
+	 *            pipeline to use for drag & drop
 	 */
-	public LibraryPanel() {
+	public LibraryPanel(final PipelinePanel pipeline) {
 		// internal logic
 		this.expanded = -1;
 		this.expanding = -1;
 		this.contracting = -1;
 		this.expandingThread = null;
 		this.groups = new ArrayList<LibraryPanelGroup>();
-		
-		// TODO
-		
-		final String filtering = "(No filtering)";
+
+		final String noFiltering = "(" + I18N.getInstance().getString("View.Library.NoFiltering") + ")";
 		this.editFilter = new JTextFieldWithButton();
-		editFilter.setLocation(3, 3);		
-		editFilter.setValue(filtering);
+		editFilter.setLocation(3, 3);
+		editFilter.setValue(noFiltering);
 		editFilter.setCaption("x");
-		editFilter.addButtonActionListener(new ActionListener() {			
+		editFilter.addButtonActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				editFilter.setValue(filtering);				
+				editFilter.setValue(noFiltering);
+				
+				expanded = -1;
+				expanding = -1;
+				contracting = -1;
+				
+				for (LibraryPanelGroup lpg : groups) {
+					lpg.setVisible(true);
+				}
+				filterGroup.setVisible(false);
+				rearrange(true);
 			}
 		});
 		editFilter.setValueHorizontalAlignment(JTextField.CENTER);
 		editFilter.addFieldFocusListener(new FocusListener() {
-			
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (editFilter.getValue().trim().isEmpty()) {
-					editFilter.setValue(filtering);
+					editFilter.setValue(noFiltering);
 				}
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (editFilter.getValue().equals(filtering)) {
+				if (editFilter.getValue().equals(noFiltering)) {
 					editFilter.setValue("");
-				}				
+				}
+			}
+		});
+		editFilter.addFieldKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (!editFilter.getValue().trim().isEmpty() && !editFilter.getValue().equals(noFiltering)) {
+					// show filtered state
+					AbstractFunction[] result = ModelProxy.getInstance()
+							.accessFunctions()
+							.getFilteredFunctions(editFilter.getValue());
+					System.out.println(result.length + " got it");
+					filterGroup.populate(result, pipeline);
+									
+					for (LibraryPanelGroup lpg : groups) {
+						lpg.setVisible(false);
+					}
+					filterGroup.setVisible(true);
+					filterGroup.setContentHeight(filterGroup.getFullContentHeight());
+					
+					expanded = filterGroup.getId();
+					expanding = -1;
+					contracting = -1;
+				} else {			
+					// show normal state
+					for (LibraryPanelGroup lpg : groups) {
+						lpg.setVisible(true);
+					}
+					filterGroup.setVisible(false);
+
+					expanded = -1;
+					expanding = -1;
+					contracting = -1;
+				}			
+				
+				rearrange(true);
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
 			}
 		});
 		add(editFilter);
@@ -124,6 +188,11 @@ public class LibraryPanel extends JPanel {
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		// best decision ever <- do not touch
 		setLayout(null);
+		
+		filterGroup = new LibraryPanelGroup(this, pipeline, I18N.getInstance()
+				.getString("View.Library.Filter"), Color.WHITE);
+		filterGroup.setVisible(false);
+		addGroup(filterGroup);
 	}
 
 	/**
@@ -279,14 +348,16 @@ public class LibraryPanel extends JPanel {
 
 		int y = 3 + editFilter.getHeight();
 		for (LibraryPanelGroup lpg : groups) {
-			// determine top
-			lpg.setLocation(3, y);
-			// give it the width of the library & the height it needs
-			lpg.setSize(this.getWidth() - 6, lpg.getHeight());
-			// notify the arrangement
-			lpg.rearranged();
-
-			y += lpg.getHeight() + 6;
+			if (lpg.isVisible()) {
+				// determine top
+				lpg.setLocation(3, y);
+				// give it the width of the library & the height it needs
+				lpg.setSize(this.getWidth() - 6, lpg.getHeight());
+				// notify the arrangement
+				lpg.rearranged();
+	
+				y += lpg.getHeight() + 6;
+			}
 		}
 
 		// update for the scroll bar

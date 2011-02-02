@@ -329,7 +329,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 				.add(pipelineView.getHorizontalScroll(), BorderLayout.SOUTH);
 
 		// function library
-		LibraryPanel functionLibrary = new LibraryPanel();
+		LibraryPanel functionLibrary = new LibraryPanel(pipelineView);
 
 		for (AbstractFunctionGroup afg : ModelProxy.getInstance()
 				.accessFunctions().getFunctionGroups()) {
