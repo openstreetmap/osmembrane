@@ -73,7 +73,7 @@ public class ExportPipelineAction extends AbstractAction {
 			try {
 				ModelProxy
 						.getInstance()
-						.accessPipeline()
+						.getPipeline()
 						.exportPipeline(
 								file,
 								FileType.fileTypeFor(fileChooser

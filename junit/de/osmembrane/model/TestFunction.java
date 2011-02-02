@@ -269,4 +269,9 @@ public class TestFunction extends AbstractFunction {
 		contained.addObserver(o);
 	}
 
+	@Override
+	public Point2D getUnrasteredCoordinate() {
+		return contained.getUnrasteredCoordinate();
+	}
+
 }

@@ -47,7 +47,7 @@ public class NewPipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (!ModelProxy.getInstance().accessPipeline().isSaved()) {
+		if (!ModelProxy.getInstance().getPipeline().isSaved()) {
 			int result = JOptionPane.showConfirmDialog(null, I18N.getInstance()
 					.getString("Controller.Actions.NewPipeline.NotSaved"),
 					"Controller.Actions.NewPipeline.NotSaved.Title",
@@ -56,7 +56,7 @@ public class NewPipelineAction extends AbstractAction {
 				return;
 			}
 		}
-		ModelProxy.getInstance().accessPipeline().clear();
+		ModelProxy.getInstance().getPipeline().clear();
 
 		ActionRegistry.getInstance().get(ResetViewAction.class)
 				.actionPerformed(null);

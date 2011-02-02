@@ -104,6 +104,12 @@ public abstract class AbstractFunction extends Observable implements Observer,
 	public abstract Point2D getCoordinate();
 
 	/**
+	 * @see AbstractFunction#getCoordinate() but without using the rastered
+	 *      coordinates.
+	 */
+	public abstract Point2D getUnrasteredCoordinate();
+
+	/**
 	 * Sets the Coordinates in the Pipeline of the current Function.
 	 * 
 	 * @param coordinate

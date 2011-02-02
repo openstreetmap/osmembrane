@@ -42,7 +42,7 @@ public class AddFunctionAction extends AbstractAction {
 
 			// add the function at the location
 			newFunc.setCoordinate(cle.getLocation());
-			ModelProxy.getInstance().accessPipeline().addFunction(newFunc);
+			ModelProxy.getInstance().getPipeline().addFunction(newFunc);
 		} else {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N.getInstance()

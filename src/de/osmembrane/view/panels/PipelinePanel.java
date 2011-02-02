@@ -746,7 +746,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 				layeredPane.add(connectionPreview);
 
 				for (AbstractFunction af : ModelProxy.getInstance()
-						.accessPipeline().getFunctions()) {
+						.getPipeline().getFunctions()) {
 					PipelineFunction pfFullChange = new PipelineFunction(af,
 							this);
 

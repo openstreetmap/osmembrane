@@ -52,12 +52,12 @@ public class SavePipelineAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if (ModelProxy.getInstance().accessPipeline().getFilename() == null) {
+		if (ModelProxy.getInstance().getPipeline().getFilename() == null) {
 			ActionRegistry.getInstance().get(SaveAsPipelineAction.class)
 					.actionPerformed(null);
 		} else {
 			try {
-				ModelProxy.getInstance().accessPipeline().savePipeline();
+				ModelProxy.getInstance().getPipeline().savePipeline();
 			} catch (FileException e1) {
 				Application.handleException(new ControlledException(this,
 						ExceptionSeverity.WARNING, e1, I18N.getInstance()

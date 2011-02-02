@@ -44,6 +44,6 @@ public class UndoAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ModelProxy.getInstance().accessPipeline().undo();
+		ModelProxy.getInstance().getPipeline().undo();
 	}
 }

@@ -54,7 +54,7 @@ public class ChangeSettingsAction extends AbstractAction {
 				SettingsDialog.class, ISettingsDialog.class);
 		
 		// set the display components
-		AbstractSettings as = ModelProxy.getInstance().accessSettings();		
+		AbstractSettings as = ModelProxy.getInstance().getSettings();		
 		
 		sd.setOsmosisPath((String) as.getValue(SettingType.DEFAULT_OSMOSIS_PATH));
 		sd.setJosmPath((String) as.getValue(SettingType.DEFAULT_JOSM_PATH));

@@ -94,7 +94,7 @@ public class ActionRegistry implements Observer {
 		register(new ChangeSettingsAction());
 		register(new ExitAction());
 		
-		ModelProxy.getInstance().accessPipeline().addObserver(this);
+		ModelProxy.getInstance().getPipeline().addObserver(this);
 	}
 
 	/**
@@ -133,25 +133,25 @@ public class ActionRegistry implements Observer {
 				.getInstance()
 				.get(UndoAction.class)
 				.setEnabled(
-						ModelProxy.getInstance().accessPipeline()
+						ModelProxy.getInstance().getPipeline()
 								.undoAvailable());
 		ActionRegistry
 				.getInstance()
 				.get(RedoAction.class)
 				.setEnabled(
-						ModelProxy.getInstance().accessPipeline()
+						ModelProxy.getInstance().getPipeline()
 								.redoAvailable());
 
 		ActionRegistry
 				.getInstance()
 				.get(SaveAsPipelineAction.class)
 				.setEnabled(
-						!ModelProxy.getInstance().accessPipeline().isSaved());
+						!ModelProxy.getInstance().getPipeline().isSaved());
 
 		ActionRegistry
 				.getInstance()
 				.get(SavePipelineAction.class)
 				.setEnabled(
-						!ModelProxy.getInstance().accessPipeline().isSaved());
+						!ModelProxy.getInstance().getPipeline().isSaved());
 	}
 }

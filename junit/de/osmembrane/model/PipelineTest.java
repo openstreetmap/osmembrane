@@ -83,10 +83,10 @@ public class PipelineTest {
 		a.createModels();
 		a.initiate();
 
-		pl = ModelProxy.getInstance().accessPipeline();
+		pl = ModelProxy.getInstance().getPipeline();
 
 		AbstractFunctionPrototype afp = ModelProxy.getInstance()
-				.accessFunctions();
+				.getFunctions();
 
 		for (AbstractFunctionGroup afg : afp.getFunctionGroups()) {
 			for (AbstractFunction af : afg.getFunctions()) {
@@ -136,7 +136,7 @@ public class PipelineTest {
 	 */
 	@After
 	public void tearDown() {
-		ModelProxy.getInstance().accessPipeline().clear();
+		ModelProxy.getInstance().getPipeline().clear();
 	}
 
 	/**

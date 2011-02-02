@@ -652,11 +652,11 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 			case NODE:
 				switch (listContentType) {
 				case KEY:
-					items = ModelProxy.getInstance().accessPreset()
+					items = ModelProxy.getInstance().getPreset()
 							.getFilteredNodeKeys(filter);
 					break;
 				case KEY_VALUE:
-					items = ModelProxy.getInstance().accessPreset()
+					items = ModelProxy.getInstance().getPreset()
 							.getFilteredNodes(filter);
 					break;
 				default:
@@ -667,11 +667,11 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 			case WAY:
 				switch (listContentType) {
 				case KEY:
-					items = ModelProxy.getInstance().accessPreset()
+					items = ModelProxy.getInstance().getPreset()
 							.getFilteredWayKeys(filter);
 					break;
 				case KEY_VALUE:
-					items = ModelProxy.getInstance().accessPreset()
+					items = ModelProxy.getInstance().getPreset()
 							.getFilteredWays(filter);
 					break;
 				default:

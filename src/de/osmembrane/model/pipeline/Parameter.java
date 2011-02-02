@@ -51,7 +51,7 @@ public class Parameter extends AbstractParameter {
 		this.xmlParam = xmlParam;
 		
 		/* set the identifiers */
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlParamIdentifier = afp.getMatchingXMLParameterIdentifier(this.xmlParam);
 		
 		/* create enum values */
@@ -152,7 +152,7 @@ public class Parameter extends AbstractParameter {
 	}
 	
 	private Object readResolve() throws ObjectStreamException {
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlParam = afp.getMatchingXMLParameter(this.xmlParamIdentifier);
 		
 		return this;

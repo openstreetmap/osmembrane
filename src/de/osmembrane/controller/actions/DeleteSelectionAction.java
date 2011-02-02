@@ -59,7 +59,7 @@ public class DeleteSelectionAction extends AbstractAction {
 			if (selected instanceof PipelineFunction) {
 				// delete selected function
 				PipelineFunction pf = (PipelineFunction) selected;
-				ModelProxy.getInstance().accessPipeline()
+				ModelProxy.getInstance().getPipeline()
 						.deleteFunction(pf.getModelFunction());
 
 			} else if (selected instanceof PipelineLink) {

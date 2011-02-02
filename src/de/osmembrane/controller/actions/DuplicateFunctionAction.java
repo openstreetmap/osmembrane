@@ -73,7 +73,7 @@ public class DuplicateFunctionAction extends AbstractAction {
 						* pf.getPreferredSize().height));
 
 				// add it
-				ModelProxy.getInstance().accessPipeline()
+				ModelProxy.getInstance().getPipeline()
 						.addFunction(duplicate);
 			}
 		}

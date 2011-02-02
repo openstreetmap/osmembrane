@@ -5,7 +5,6 @@ import java.io.File;
 import javax.swing.ImageIcon;
 
 import de.openstreetmap.josm.tagging_preset_1.Item;
-import de.openstreetmap.josm.tagging_preset_1.Key;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.IconLoader.Size;
 
@@ -138,20 +137,6 @@ public class PresetItem implements Comparable<PresetItem> {
 		return item.getType().matches(
 				"^(" + type + "|" + type + ",.+|.+," + type + ",.+|.+," + type
 						+ ")$");
-	}
-
-	/**
-	 * Returns the {@link Key} of the item.
-	 * 
-	 * @return {@link Key} of th item.
-	 */
-	private Key getObjKey() {
-		for (Object obj : item.getLabelOrSpaceOrLink()) {
-			if (obj instanceof Key) {
-				return (Key) obj;
-			}
-		}
-		return null;
 	}
 
 	@Override

@@ -75,7 +75,7 @@ public class ImportPipelineAction extends AbstractAction {
 			try {
 				ModelProxy
 						.getInstance()
-						.accessPipeline()
+						.getPipeline()
 						.importPipeline(
 								file,
 								FileType.fileTypeFor(fileChooser

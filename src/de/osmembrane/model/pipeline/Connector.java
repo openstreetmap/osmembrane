@@ -42,7 +42,7 @@ public class Connector extends AbstractConnector {
 		this.xmlPipe = xmlPipe;
 
 		/* set the identifier */
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlPipeIdentifier = afp.getMatchingXMLPipeIdentifier(this.xmlPipe);
 	}
 
@@ -115,7 +115,7 @@ public class Connector extends AbstractConnector {
 	}
 	
 	private Object readResolve() throws ObjectStreamException {
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlPipe = afp.getMatchingXMLPipe(this.xmlPipeIdentifier);
 		
 		return this;

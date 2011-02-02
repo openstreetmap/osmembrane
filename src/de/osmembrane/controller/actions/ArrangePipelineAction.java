@@ -43,6 +43,6 @@ public class ArrangePipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ModelProxy.getInstance().accessPipeline().arrangePipeline();
+		ModelProxy.getInstance().getPipeline().arrangePipeline();
 	}
 }

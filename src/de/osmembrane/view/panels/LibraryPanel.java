@@ -145,7 +145,7 @@ public class LibraryPanel extends JPanel {
 				if (!editFilter.getValue().trim().isEmpty() && !editFilter.getValue().equals(noFiltering)) {
 					// show filtered state
 					AbstractFunction[] result = ModelProxy.getInstance()
-							.accessFunctions()
+							.getFunctions()
 							.getFilteredFunctions(editFilter.getValue());
 					filterGroup.populate(result, pipeline);
 									

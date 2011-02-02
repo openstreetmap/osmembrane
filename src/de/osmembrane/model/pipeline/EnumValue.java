@@ -31,7 +31,7 @@ public class EnumValue extends AbstractEnumValue {
 		this.xmlEnum = xmlEnum;
 		
 		/* set the identifiers */
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlEnumIdentifier = afp.getMatchingXMLEnumValueIdentifier(this.xmlEnum);
 	}
 
@@ -51,7 +51,7 @@ public class EnumValue extends AbstractEnumValue {
 	}
 	
 	private Object readResolve() throws ObjectStreamException {
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlEnum = afp.getMatchingXMLEnumValue(this.xmlEnumIdentifier);
 		
 		return this;

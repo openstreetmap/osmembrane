@@ -76,7 +76,7 @@ public class SaveAsPipelineAction extends AbstractAction {
 			}
 
 			try {
-				ModelProxy.getInstance().accessPipeline().savePipeline(file);
+				ModelProxy.getInstance().getPipeline().savePipeline(file);
 			} catch (FileException e1) {
 				Application.handleException(new ControlledException(this,
 						ExceptionSeverity.WARNING, e1, I18N.getInstance()

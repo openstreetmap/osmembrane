@@ -44,6 +44,6 @@ public class RedoAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ModelProxy.getInstance().accessPipeline().redo();
+		ModelProxy.getInstance().getPipeline().redo();
 	}
 }

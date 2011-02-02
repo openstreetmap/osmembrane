@@ -44,15 +44,15 @@ public class Application {
 	 */
 	public void createModels() {
 		try {
-			ModelProxy.getInstance().accessFunctions()
+			ModelProxy.getInstance().getFunctions()
 					.initiate(Resource.OSMEMBRANE_XML.getURL());
 
-			ModelProxy.getInstance().accessPreset()
+			ModelProxy.getInstance().getPreset()
 					.initiate(Resource.PRESET_XML.getURL());
 
-			ModelProxy.getInstance().accessSettings().initiate();
+			ModelProxy.getInstance().getSettings().initiate();
 
-			ModelProxy.getInstance().accessPipeline().clear();
+			ModelProxy.getInstance().getPipeline().clear();
 		} catch (Exception e) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
@@ -65,7 +65,7 @@ public class Application {
 	 * Sets the active locale.
 	 */
 	public void setLocale() {
-		Locale activeLocale = (Locale) ModelProxy.getInstance().accessSettings()
+		Locale activeLocale = (Locale) ModelProxy.getInstance().getSettings()
 				.getValue(SettingType.ACTIVE_LANGUAGE);
 		
 		I18N.getInstance().setLocale(activeLocale);

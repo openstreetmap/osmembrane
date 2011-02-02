@@ -162,7 +162,7 @@ public class CommandlineParser implements IParser {
 				}
 			} else {
 				AbstractFunction function = ModelProxy.getInstance()
-						.accessFunctions()
+						.getFunctions()
 						.getMatchingFunctionForTaskName(taskName);
 
 				if (function == null) {

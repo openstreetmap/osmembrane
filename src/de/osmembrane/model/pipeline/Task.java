@@ -41,7 +41,7 @@ public class Task extends AbstractTask {
 		this.xmlTask = xmlTask;
 		
 		/* set the identifier */
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlTaskIdentifier = afp.getMatchingXMLTaskIdentifier(this.xmlTask);
 		
 		for (XMLParameter xmlParam : xmlTask.getParameter()) {
@@ -120,7 +120,7 @@ public class Task extends AbstractTask {
 	}
 	
 	private Object readResolve() throws ObjectStreamException {
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlTask = afp.getMatchingXMLTask(this.xmlTaskIdentifier);
 		
 		/* create the observers */

@@ -43,7 +43,12 @@ public enum SettingType {
 	/**
 	 * Maximum count of undo-steps.
 	 */
-	MAXIMUM_UNDO_STEPS(Integer.class, Constants.MAXIMUM_UNDO_STEPS);
+	MAXIMUM_UNDO_STEPS(Integer.class, Constants.MAXIMUM_UNDO_STEPS),
+	
+	/**
+	 * Coordinate raster size.
+	 */
+	PIPELINE_RASTER_SIZE(Integer.class, Constants.DEFAULT_PIPELINE_RASTER_SIZE);
 
 	private Class<?> clazz;
 	private Object defaultValue;

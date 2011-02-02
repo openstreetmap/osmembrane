@@ -94,6 +94,12 @@ public class Constants {
 	 */
 	public static final double DEFAULT_ZOOM_SIZE = 1.0;
 
+	
+	/**
+	 * The default raster size of the pipeline.
+	 */
+	public static final int DEFAULT_PIPELINE_RASTER_SIZE = 5;
+
 	/**
 	 * static method
 	 */

@@ -60,7 +60,7 @@ public class ModelProxy extends Observable implements Observer {
 	 * 
 	 * @return give back the active {@link AbstractPipeline}
 	 */
-	public AbstractPipeline accessPipeline() {
+	public AbstractPipeline getPipeline() {
 		return pipeline;
 	}
 
@@ -69,7 +69,7 @@ public class ModelProxy extends Observable implements Observer {
 	 * 
 	 * @return give back the active {@link AbstractSettings}
 	 */
-	public AbstractSettings accessSettings() {
+	public AbstractSettings getSettings() {
 		return settings;
 	}
 
@@ -78,7 +78,7 @@ public class ModelProxy extends Observable implements Observer {
 	 * 
 	 * @return give back the active {@link AbstractFunctionPrototype}
 	 */
-	public AbstractFunctionPrototype accessFunctions() {
+	public AbstractFunctionPrototype getFunctions() {
 		return functionPrototype;
 	}
 	
@@ -87,7 +87,7 @@ public class ModelProxy extends Observable implements Observer {
 	 * 
 	 * @return give back the active {@link AbstractPresetPrototype}
 	 */
-	public AbstractPresetPrototype accessPreset() {
+	public AbstractPresetPrototype getPreset() {
 		return presetPrototype;
 	}
 	

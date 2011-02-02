@@ -16,6 +16,7 @@ import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractConnector.ConnectorPosition;
 import de.osmembrane.model.pipeline.ConnectorException.Type;
 import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.model.xml.XMLFunction;
 import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.model.xml.XMLTask;
@@ -71,7 +72,7 @@ public class Function extends AbstractFunction {
 
 		/* set the identifiers */
 		AbstractFunctionPrototype afp = ModelProxy.getInstance()
-				.accessFunctions();
+				.getFunctions();
 		this.parentIdentifier = this.parent.getIdentifier();
 		this.xmlFunctionIdentifier = afp
 				.getMatchingXMLFunctionIdentifier(this.xmlFunction);
@@ -171,8 +172,9 @@ public class Function extends AbstractFunction {
 							 * Now check if the oldParam is the default value,
 							 * if that is so, don't copy.
 							 */
-							if (oldParam.getValue() != null && !oldParam.getValue().equals(
-									oldParam.getDefaultValue())) {
+							if (oldParam.getValue() != null
+									&& !oldParam.getValue().equals(
+											oldParam.getDefaultValue())) {
 								/* oldParam has a real non-default value. */
 								newParam.setValue(oldParam.getValue());
 							}
@@ -194,6 +196,21 @@ public class Function extends AbstractFunction {
 	@Override
 	public Point2D getCoordinate() {
 		return coordinate;
+	}
+
+	@Override
+	public Point2D getUnrasteredCoordinate() {
+		Integer raster = (Integer) ModelProxy.getInstance().getSettings()
+				.getValue(SettingType.PIPELINE_RASTER_SIZE);
+		if (raster < 1) {
+			return coordinate;
+		} else {
+			/* TODO Filter the coordinate to the raster. */
+			Point2D coord = new Point2D.Double(coordinate.getX(),
+					coordinate.getY());
+			return coord;
+		}
+
 	}
 
 	@Override
@@ -226,19 +243,18 @@ public class Function extends AbstractFunction {
 			for (AbstractConnector connectorIn : function.getInConnectors()) {
 				if (connectorOut.getType() == connectorIn.getType()) {
 					/* found equal Connectors */
-					
+
 					/*
-					 * check if already a connection between these two
-					 * function exists
+					 * check if already a connection between these two function
+					 * exists
 					 */
-					for (AbstractConnector con : connectorOut
-							.getConnections()) {
+					for (AbstractConnector con : connectorOut.getConnections()) {
 						if (con == connectorIn) {
 							throw new ConnectorException(
 									Type.CONNECTION_ALREADY_EXISTS);
 						}
 					}
-					
+
 					if (!connectorOut.isFull() && !connectorIn.isFull()) {
 						/* first, add connections */
 						connectorIn.addConnection(connectorOut);
@@ -360,7 +376,7 @@ public class Function extends AbstractFunction {
 
 	private Object readResolve() throws ObjectStreamException {
 		AbstractFunctionPrototype afp = ModelProxy.getInstance()
-				.accessFunctions();
+				.getFunctions();
 		this.parent = afp.getMatchingFunctionGroup(this.parentIdentifier);
 		this.xmlFunction = afp
 				.getMatchingXMLFunction(this.xmlFunctionIdentifier);

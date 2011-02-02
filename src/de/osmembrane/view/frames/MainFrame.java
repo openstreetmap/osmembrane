@@ -332,7 +332,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		LibraryPanel functionLibrary = new LibraryPanel(pipelineView);
 
 		for (AbstractFunctionGroup afg : ModelProxy.getInstance()
-				.accessFunctions().getFunctionGroups()) {
+				.getFunctions().getFunctionGroups()) {
 			LibraryPanelGroup lpg = new LibraryPanelGroup(functionLibrary, pipelineView, afg);
 			functionLibrary.addGroup(lpg);
 		}

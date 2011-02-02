@@ -58,7 +58,7 @@ public class ConnectorTest {
 		a.initiate();
 
 		AbstractFunctionPrototype afp = ModelProxy.getInstance()
-				.accessFunctions();
+				.getFunctions();
 
 		for (AbstractFunctionGroup afg : afp.getFunctionGroups()) {
 			for (AbstractFunction af : afg.getFunctions()) {
@@ -104,7 +104,7 @@ public class ConnectorTest {
 	public void setUp() throws Exception {
 		for (int i = 0; i < 3; i++) {
 			funcs[i] = prototype.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
-			ModelProxy.getInstance().accessPipeline().addFunction(funcs[i]);
+			ModelProxy.getInstance().getPipeline().addFunction(funcs[i]);
 		}
 
 		conOut = funcs[0].getOutConnectors()[0];
@@ -116,7 +116,7 @@ public class ConnectorTest {
 	 */
 	@After
 	public void tearDown() {
-		ModelProxy.getInstance().accessPipeline().clear();
+		ModelProxy.getInstance().getPipeline().clear();
 	}
 
 	/**
@@ -266,7 +266,7 @@ public class ConnectorTest {
 		funcs[0].addConnectionTo(funcs[1]);
 		funcs[1].addConnectionTo(funcs[2]);
 
-		ModelProxy.getInstance().accessPipeline().deleteFunction(funcs[1]);
+		ModelProxy.getInstance().getPipeline().deleteFunction(funcs[1]);
 
 		assertTrue("f0 still has outgoing connections",
 				funcs[0].getOutConnectors()[0].getConnections().length == 0);

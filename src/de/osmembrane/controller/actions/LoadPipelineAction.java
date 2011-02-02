@@ -70,7 +70,7 @@ public class LoadPipelineAction extends AbstractAction {
 			}
 
 			try {
-				ModelProxy.getInstance().accessPipeline().loadPipeline(file);
+				ModelProxy.getInstance().getPipeline().loadPipeline(file);
 
 				ActionRegistry.getInstance().get(ViewAllAction.class)
 						.actionPerformed(null);

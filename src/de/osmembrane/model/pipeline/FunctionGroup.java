@@ -34,7 +34,7 @@ public class FunctionGroup extends AbstractFunctionGroup {
 		this.xmlGroup = xmlGroup;
 		
 		/* create identifier */
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().accessFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		identifier = afp.pushFGToMap(this, xmlGroup);
 		
 		for (XMLFunction xmlFunction : xmlGroup.getFunction()) {
