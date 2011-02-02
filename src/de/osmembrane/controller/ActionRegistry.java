@@ -28,12 +28,16 @@ import de.osmembrane.controller.actions.MoveFunctionAction;
 import de.osmembrane.controller.actions.NewPipelineAction;
 import de.osmembrane.controller.actions.PreviewPipelineAction;
 import de.osmembrane.controller.actions.RedoAction;
+import de.osmembrane.controller.actions.ResetViewAction;
 import de.osmembrane.controller.actions.SaveAsPipelineAction;
 import de.osmembrane.controller.actions.SaveFunctionPresetAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
 import de.osmembrane.controller.actions.ShowAboutAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
 import de.osmembrane.controller.actions.UndoAction;
+import de.osmembrane.controller.actions.ViewAllAction;
+import de.osmembrane.controller.actions.ZoomInAction;
+import de.osmembrane.controller.actions.ZoomOutAction;
 import de.osmembrane.model.ModelProxy;
 
 /**
@@ -101,6 +105,12 @@ public class ActionRegistry implements Observer {
 		// function presets
 		register(new LoadFunctionPresetAction());
 		register(new SaveFunctionPresetAction());
+		
+		// view actions
+		register(new ResetViewAction());
+		register(new ViewAllAction());
+		register(new ZoomInAction());
+		register(new ZoomOutAction());
 
 		// other actions
 		register(new ShowHelpAction());

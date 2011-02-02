@@ -159,15 +159,6 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 			}
 		}
 
-		/*
-		 * register all actions that are specific for *this* view and not the
-		 * data flow to the model
-		 */
-		ActionRegistry.getInstance().register(new ResetViewAction());
-		ActionRegistry.getInstance().register(new ViewAllAction());
-		ActionRegistry.getInstance().register(new ZoomInAction());
-		ActionRegistry.getInstance().register(new ZoomOutAction());
-
 		// menu bar
 		JMenuBar menuBar = new JMenuBar();
 
