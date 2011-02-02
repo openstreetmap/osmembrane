@@ -10,6 +10,8 @@ import javax.swing.SwingUtilities;
  */
 public class Main {
 
+	private static Application application;
+
 	/**
 	 * Initial routine of the program
 	 * 
@@ -17,7 +19,7 @@ public class Main {
 	 *            command-line arguments
 	 */
 	public static void main(String[] args) {
-		final Application application = new Application();
+		application = new Application();
 
 		// create the models
 		application.createModels();
@@ -36,5 +38,12 @@ public class Main {
 			}
 		});
 
+	}
+	
+	/**
+	 * @return the currently running application
+	 */
+	public static Application getApplication() {
+		return application;
 	}
 }

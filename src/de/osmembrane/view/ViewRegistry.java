@@ -5,12 +5,17 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import de.osmembrane.Application;
+import de.osmembrane.Main;
+import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
+import de.osmembrane.model.settings.SettingType;
+import de.osmembrane.model.settings.SettingsObserverObject;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.dialogs.ExceptionDialog;
 import de.osmembrane.view.frames.MainFrame;
@@ -137,6 +142,30 @@ public class ViewRegistry extends Observable implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		// if this means language change, do your worst
+		if (arg instanceof SettingsObserverObject) {
+			SettingsObserverObject soo = (SettingsObserverObject) arg;
+			if (soo.getChangedEntry() == SettingType.ACTIVE_LANGUAGE) {
+				exceptionDialog = null;
+				for (IView iv : views.values()) {
+					iv.hideWindow();					
+				}				
+				views.clear();
+				deleteObservers();								
+				// if Java GC understands that, I'm impressed
+				System.gc();		
+				
+				ActionRegistry.getInstance().reinitialize();
+				
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						Main.getApplication().showMainFrame();
+					}
+				});
+			}
+		}
+		
 		// forward update() for Model classes
 		setChanged();
 		notifyObservers(arg);

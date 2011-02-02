@@ -57,6 +57,14 @@ public class ActionRegistry implements Observer {
 	 * controller component has
 	 */
 	private ActionRegistry() {
+		initialize();
+		ModelProxy.getInstance().getPipeline().addObserver(this);
+	}
+
+	/**
+	 * Initializes the {@link ActionRegistry} by adding all actions to it.
+	 */
+	private void initialize() {
 		// pipeline actions
 		register(new NewPipelineAction());
 		register(new SavePipelineAction());
@@ -93,8 +101,6 @@ public class ActionRegistry implements Observer {
 		register(new ShowAboutAction());
 		register(new ChangeSettingsAction());
 		register(new ExitAction());
-		
-		ModelProxy.getInstance().getPipeline().addObserver(this);
 	}
 
 	/**
@@ -126,6 +132,15 @@ public class ActionRegistry implements Observer {
 		return actions.get(clazz);
 	}
 
+	/**
+	 * Reinitializes the {@link ActionRegistry} after a language change.
+	 */
+	public void reinitialize() {
+		actions.clear();
+		System.gc();
+		initialize();
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		// update all actions and their enabled state
@@ -133,25 +148,17 @@ public class ActionRegistry implements Observer {
 				.getInstance()
 				.get(UndoAction.class)
 				.setEnabled(
-						ModelProxy.getInstance().getPipeline()
-								.undoAvailable());
+						ModelProxy.getInstance().getPipeline().undoAvailable());
 		ActionRegistry
 				.getInstance()
 				.get(RedoAction.class)
 				.setEnabled(
-						ModelProxy.getInstance().getPipeline()
-								.redoAvailable());
+						ModelProxy.getInstance().getPipeline().redoAvailable());
 
-		ActionRegistry
-				.getInstance()
-				.get(SaveAsPipelineAction.class)
-				.setEnabled(
-						!ModelProxy.getInstance().getPipeline().isSaved());
+		ActionRegistry.getInstance().get(SaveAsPipelineAction.class)
+				.setEnabled(!ModelProxy.getInstance().getPipeline().isSaved());
 
-		ActionRegistry
-				.getInstance()
-				.get(SavePipelineAction.class)
-				.setEnabled(
-						!ModelProxy.getInstance().getPipeline().isSaved());
+		ActionRegistry.getInstance().get(SavePipelineAction.class)
+				.setEnabled(!ModelProxy.getInstance().getPipeline().isSaved());
 	}
 }
