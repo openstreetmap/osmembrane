@@ -21,7 +21,7 @@ import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 
 /**
- * 
+ * Implementation of {@link AbstractSettings}.
  * 
  * @author jakob_jarosch
  */
@@ -124,10 +124,32 @@ public class Settings extends AbstractSettings {
 	}
 
 	@Override
-	public void deleteFunctionPreset(AbstractFunctionPreset preset) {
-		getFPList().remove(preset);
+	public boolean deleteFunctionPreset(AbstractFunctionPreset preset) {
+		boolean returnValue = getFPList().remove(preset);
 		
 		changedNotifyObservers(new SettingsObserverObject());
+		
+		return returnValue;
+	}
+
+	/**
+	 * Returns the FunctionPreset list.
+	 * 
+	 * @return the {@link FunctionPreset} list.
+	 */
+	private List<FunctionPreset> getFPList() {
+		Object result = settingsMap.get(FUNCTION_PRESET_KEY);
+
+		if (result == null || !(result instanceof List)) {
+			settingsMap.put(FUNCTION_PRESET_KEY,
+					new ArrayList<FunctionPreset>());
+		}
+
+		@SuppressWarnings("unchecked")
+		List<FunctionPreset> presetMap = (List<FunctionPreset>) settingsMap
+				.get(FUNCTION_PRESET_KEY);
+
+		return presetMap;
 	}
 
 	@Override
@@ -140,19 +162,5 @@ public class Settings extends AbstractSettings {
 		soo.setSettingsModel(this);
 		setChanged();
 		notifyObservers(soo);
-	}
-
-	private List<FunctionPreset> getFPList() {
-		Object result = settingsMap.get(FUNCTION_PRESET_KEY);
-
-		if (result == null || !(result instanceof List)) {
-			settingsMap.put(FUNCTION_PRESET_KEY,
-					new ArrayList<FunctionPreset>());
-		}
-
-		List<FunctionPreset> presetMap = (List<FunctionPreset>) settingsMap
-				.get(FUNCTION_PRESET_KEY);
-
-		return presetMap;
 	}
 }

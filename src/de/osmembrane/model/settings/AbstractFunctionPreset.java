@@ -5,8 +5,9 @@ import java.io.Serializable;
 import de.osmembrane.model.pipeline.AbstractFunction;
 
 /**
+ * Simple preset which saves a name and the function which should be saved.
+ * 
  * @author jakob_jarosch
- *
  */
 public abstract class AbstractFunctionPreset implements Serializable {
 	
