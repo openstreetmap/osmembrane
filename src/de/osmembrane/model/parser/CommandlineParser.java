@@ -280,7 +280,7 @@ public class CommandlineParser implements IParser {
 										connectionExceptionMessage);
 							}
 							/* remove the openConnector from the map */
-							openOutConnectors.remove(connector.getType());
+							functions.remove(function);
 						}
 					}
 				}
