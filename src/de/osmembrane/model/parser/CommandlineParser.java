@@ -81,7 +81,10 @@ public class CommandlineParser implements IParser {
 		 * Map saves for each ConnectorType a function which has such an outPipe
 		 * but none explicit defined in the commandline.
 		 */
-		Map<ConnectorType, AbstractFunction> openOutConnectors = new HashMap<ConnectorType, AbstractFunction>();
+		Map<ConnectorType, Queue<AbstractFunction>> openOutConnectors = new HashMap<ConnectorType, Queue<AbstractFunction>>();
+		for (ConnectorType type : ConnectorType.values()) {
+			openOutConnectors.put(type, new LinkedList<AbstractFunction>());
+		}
 
 		input = input.replace(breaklineSymbol, " ");
 
@@ -140,25 +143,51 @@ public class CommandlineParser implements IParser {
 			 */
 			if (taskName.equals("tee") || taskName.equals("tee-change")) {
 				AbstractFunction function = null;
+
+				/* get the count of outPipes defined in the tee-task */
+				int countOutPipes = 2;
+				if (parameters.get(DEFAULT_KEY) != null) {
+					countOutPipes = Integer.parseInt(parameters
+							.get(DEFAULT_KEY));
+				} else if (parameters.get("outputCount") != null) {
+					countOutPipes = Integer.parseInt(parameters
+							.get("outputCount"));
+				}
+
 				for (Integer pipeId : inPipes.keySet()) {
 					function = connectionMap.get(inPipes.get(pipeId));
 				}
+
 				/* check if that could be also an implicit function */
 				if (function == null) {
-					function = openOutConnectors
+					Queue<AbstractFunction> functions = openOutConnectors
 							.get((taskName.equals("tee") ? ConnectorType.ENTITY
 									: ConnectorType.CHANGE));
+					function = functions.poll();
 				}
 
 				if (function == null) {
-					throw new ParseException(ErrorType.UNKNOWN_PIPE_STREAM, taskName);
+					throw new ParseException(ErrorType.UNKNOWN_PIPE_STREAM,
+							taskName);
 				}
 
+				/* add all specified outPipes */
+				int countedOutPipes = 0;
 				for (Integer pipeId : outPipes.keySet()) {
+					countedOutPipes++;
 					String pipeName = outPipes.get(pipeId);
 					if (function != null) {
 						connectionMap.put(pipeName, function);
 					}
+				}
+
+				/* now add all unspecified outPipes */
+				while (countedOutPipes < countOutPipes) {
+					countedOutPipes++;
+					Queue<AbstractFunction> functions = openOutConnectors
+							.get((taskName.equals("tee") ? ConnectorType.ENTITY
+									: ConnectorType.CHANGE));
+					functions.add(function);
 				}
 			} else {
 				AbstractFunction function = ModelProxy.getInstance()
@@ -186,9 +215,13 @@ public class CommandlineParser implements IParser {
 					}
 					if (!foundKey) {
 						if (key.equals(DEFAULT_KEY)) {
-							throw new ParseException(ErrorType.NO_DEFAULT_PARAMETER_FOUND, taskName, key);
+							throw new ParseException(
+									ErrorType.NO_DEFAULT_PARAMETER_FOUND,
+									taskName, key);
 						} else {
-							throw new ParseException(ErrorType.UNKNOWN_TASK_FORMAT, taskName, key);
+							throw new ParseException(
+									ErrorType.UNKNOWN_TASK_FORMAT, taskName,
+									key);
 						}
 					}
 				}
@@ -197,12 +230,14 @@ public class CommandlineParser implements IParser {
 				for (Integer pipeId : inPipes.keySet()) {
 					String pipeName = inPipes.get(pipeId);
 					AbstractFunction outFunction = connectionMap.get(pipeName);
-					
+
 					/* check if the inPipe has no counterpart as a outPipe */
-					if(outFunction == null) {
-						throw new ParseException(ErrorType.COUNTERPART_PIPE_MISSING, taskName, pipeId);
+					if (outFunction == null) {
+						throw new ParseException(
+								ErrorType.COUNTERPART_PIPE_MISSING, taskName,
+								pipeId);
 					}
-					
+
 					try {
 						outFunction.addConnectionTo(function);
 					} catch (ConnectorException e) {
@@ -212,9 +247,9 @@ public class CommandlineParser implements IParser {
 												+ e.getType());
 
 						throw new ParseException(
-								ErrorType.CONNECTION_NOT_PERMITTED,
-								outFunction.getActiveTask().getName(),
-								function.getActiveTask().getName(),
+								ErrorType.CONNECTION_NOT_PERMITTED, outFunction
+										.getActiveTask().getName(), function
+										.getActiveTask().getName(),
 								connectionExceptionMessage);
 					}
 				}
@@ -225,8 +260,10 @@ public class CommandlineParser implements IParser {
 					 * pipe.
 					 */
 					if (inPipes.get(connector.getConnectorIndex()) == null) {
-						AbstractFunction outFunction = openOutConnectors
+						Queue<AbstractFunction> functions = openOutConnectors
 								.get(connector.getType());
+						AbstractFunction outFunction = functions.poll();
+						
 						if (outFunction != null) {
 							try {
 								outFunction.addConnectionTo(function);
@@ -260,12 +297,15 @@ public class CommandlineParser implements IParser {
 					 * pipe.
 					 */
 					if (outPipes.get(connector.getConnectorIndex()) == null) {
-						openOutConnectors.put(connector.getType(), function);
+						Queue<AbstractFunction> functions = openOutConnectors
+						.get(connector.getType());
+						
+						functions.add(function);
 					}
 				}
 			}
 		}
-		
+
 		/* use the pipeline algorithm to arrange the functions */
 		pipeline.arrangePipeline();
 

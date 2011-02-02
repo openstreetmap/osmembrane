@@ -69,7 +69,7 @@ public class GraphPlanarizer {
 	private double orderFunctions(AbstractFunction function, double xOffsetFactor, double yOffsetFactor) {
 		xOffsetFactor++;
 		
-		function.getCoordinate().setLocation(X_OFFSET * xOffsetFactor, Y_OFFSET * yOffsetFactor);
+		function.getUnrasteredCoordinate().setLocation(X_OFFSET * xOffsetFactor, Y_OFFSET * yOffsetFactor);
 		
 		boolean moreThanOneConnection = false;
 		for(AbstractConnector connector : function.getOutConnectors()) {
