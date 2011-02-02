@@ -98,7 +98,7 @@ public class Constants {
 	/**
 	 * The default raster size of the pipeline.
 	 */
-	public static final int DEFAULT_PIPELINE_RASTER_SIZE = 5;
+	public static final int DEFAULT_PIPELINE_RASTER_SIZE = 30;
 
 	/**
 	 * static method

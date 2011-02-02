@@ -71,8 +71,7 @@ public class Function extends AbstractFunction {
 		this.xmlFunction = xmlFunction;
 
 		/* set the identifiers */
-		AbstractFunctionPrototype afp = ModelProxy.getInstance()
-				.getFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.parentIdentifier = this.parent.getIdentifier();
 		this.xmlFunctionIdentifier = afp
 				.getMatchingXMLFunctionIdentifier(this.xmlFunction);
@@ -195,22 +194,33 @@ public class Function extends AbstractFunction {
 
 	@Override
 	public Point2D getCoordinate() {
-		return coordinate;
+		Integer rasterInt = (Integer) ModelProxy.getInstance().getSettings()
+				.getValue(SettingType.PIPELINE_RASTER_SIZE);
+		double raster = (double) rasterInt.intValue();
+		if (raster < 1) {
+			return coordinate;
+		} else {
+			/* filter the coordinates, use the modulo function,
+			 * round to the next raster-value.
+			 */
+			double x = coordinate.getX();
+			double y = coordinate.getY();
+			double xSub = x % (double) raster;
+			double ySub = y % (double) raster;
+			double xAdd = raster - xSub;
+			double yAdd = raster - ySub;
+			
+			x = x + ((xSub < xAdd) ? -xSub : xAdd);
+			y = y + ((ySub < yAdd) ? -ySub : yAdd);
+			
+			return new Point2D.Double(x, y);
+		}
+
 	}
 
 	@Override
 	public Point2D getUnrasteredCoordinate() {
-		Integer raster = (Integer) ModelProxy.getInstance().getSettings()
-				.getValue(SettingType.PIPELINE_RASTER_SIZE);
-		if (raster < 1) {
-			return coordinate;
-		} else {
-			/* TODO Filter the coordinate to the raster. */
-			Point2D coord = new Point2D.Double(coordinate.getX(),
-					coordinate.getY());
-			return coord;
-		}
-
+		return coordinate;
 	}
 
 	@Override
@@ -375,8 +385,7 @@ public class Function extends AbstractFunction {
 	}
 
 	private Object readResolve() throws ObjectStreamException {
-		AbstractFunctionPrototype afp = ModelProxy.getInstance()
-				.getFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.parent = afp.getMatchingFunctionGroup(this.parentIdentifier);
 		this.xmlFunction = afp
 				.getMatchingXMLFunction(this.xmlFunctionIdentifier);
