@@ -6,8 +6,10 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
@@ -45,6 +47,21 @@ public class ExitAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO implement
+
+		/* Ask if the Pipeline should be saved, if that is not so. */
+		if (!ModelProxy.getInstance().getPipeline().isSaved()) {
+			int result = JOptionPane.showConfirmDialog(
+					null,
+					I18N.getInstance().getString(
+							"Controller.Actions.NewPipeline.NotSaved"),
+					I18N.getInstance().getString(
+							"Controller.Actions.NewPipeline.NotSaved.Title"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (result == JOptionPane.NO_OPTION) {
+				ActionRegistry.getInstance().get(SavePipelineAction.class)
+						.actionPerformed(null);
+			}
+		}
 
 		/*
 		 * Remove the backup, 'cause otherwise startup will ask to load the
