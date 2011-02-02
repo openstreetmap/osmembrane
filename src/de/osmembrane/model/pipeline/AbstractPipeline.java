@@ -99,6 +99,25 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	public abstract void backupPipeline() throws FileException;
 
 	/**
+	 * Returns if a backup is available or not.
+	 * 
+	 * @return true if a backup is available, otherwise false
+	 */
+	public abstract boolean isBackupAvailable();
+
+	/**
+	 * Loads the backup into the pipeline.
+	 * 
+	 * @throws FileException when something with the IO went wrong
+	 */
+	public abstract void loadBackup() throws FileException;
+
+	/**
+	 * Deletes the local backup file.
+	 */
+	public abstract void clearBackup();
+
+	/**
 	 * Loads a pipeline from a OSMembrane file.
 	 * 
 	 * @param filename

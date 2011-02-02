@@ -8,6 +8,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
@@ -44,6 +45,13 @@ public class ExitAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO implement
+
+		/*
+		 * Remove the backup, 'cause otherwise startup will ask to load the
+		 * backup everytime.
+		 */
+		ModelProxy.getInstance().getPipeline().clearBackup();
+
 		System.exit(0);
 	}
 }

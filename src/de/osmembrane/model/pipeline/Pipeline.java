@@ -2,6 +2,7 @@ package de.osmembrane.model.pipeline;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -35,9 +36,9 @@ public class Pipeline extends AbstractPipeline {
 
 	private List<AbstractFunction> functions;
 
-	private URL pipelineFilename = null;
+	private URL pipelineFilename;
 
-	private boolean savedState = true;
+	private boolean savedState;
 
 	/**
 	 * Says if the pipeline is silent or not.<br/>
@@ -78,11 +79,11 @@ public class Pipeline extends AbstractPipeline {
 		this.redoStack = new Stack<PipelineMemento>();
 		this.silent = silent;
 		this.undoRedoDisabled = undoRedoDisabled;
+		this.savedState = true;
+		this.pipelineFilename = null;
 
 		/* register the Observer of Persistence to the Pipeline */
 		addObserver(PersistenceFactory.getInstance());
-
-		clear();
 	}
 
 	@Override
@@ -201,6 +202,26 @@ public class Pipeline extends AbstractPipeline {
 				.getPersistence(OSMembranePersistence.class);
 
 		persistence.save(Constants.DEFAULT_BACKUP_FILE, functions);
+	}
+
+	@Override
+	public boolean isBackupAvailable() {
+		File file = new File(Constants.DEFAULT_BACKUP_FILE.toString().replace(
+				"file:", ""));
+		return file.isFile();
+	}
+
+	@Override
+	public void loadBackup() throws FileException {
+		loadPipeline(Constants.DEFAULT_BACKUP_FILE);
+	}
+
+	@Override
+	public void clearBackup() {
+		if (isBackupAvailable()) {
+			new File(Constants.DEFAULT_BACKUP_FILE.toString().replace("file:",
+					"")).delete();
+		}
 	}
 
 	@Override

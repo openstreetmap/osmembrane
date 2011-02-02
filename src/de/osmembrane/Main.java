@@ -2,6 +2,8 @@ package de.osmembrane;
 
 import javax.swing.SwingUtilities;
 
+import de.osmembrane.model.ModelProxy;
+
 /**
  * the Main class for java to contain the static main() method
  * 
@@ -26,6 +28,9 @@ public class Main {
 		
 		// set the correct locale
 		application.setLocale();
+		
+		// check if a backup file is available
+		application.checkForBackup();
 		
 		// initiate the most basic stuff
 		application.initiate();

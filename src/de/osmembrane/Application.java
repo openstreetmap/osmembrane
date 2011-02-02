@@ -2,9 +2,12 @@ package de.osmembrane;
 
 import java.util.Locale;
 
+import javax.swing.JOptionPane;
+
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
@@ -51,8 +54,6 @@ public class Application {
 					.initiate(Resource.PRESET_XML.getURL());
 
 			ModelProxy.getInstance().getSettings().initiate();
-
-			ModelProxy.getInstance().getPipeline().clear();
 		} catch (Exception e) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
@@ -67,7 +68,7 @@ public class Application {
 	public void setLocale() {
 		Locale activeLocale = (Locale) ModelProxy.getInstance().getSettings()
 				.getValue(SettingType.ACTIVE_LANGUAGE);
-		
+
 		I18N.getInstance().setLocale(activeLocale);
 	}
 
@@ -106,6 +107,37 @@ public class Application {
 			// else the view will handle it (e.g. finding out about error cause
 			// etc.)
 			ViewRegistry.showException(t, null, null);
+		}
+	}
+
+	public void checkForBackup() {
+		boolean backupAvailable = ModelProxy.getInstance().getPipeline()
+				.isBackupAvailable();
+
+		boolean skippedLoad = false;
+		
+		if (backupAvailable) {
+			int result = JOptionPane.showConfirmDialog(null, I18N.getInstance()
+					.getString("Application.BackupPipelineFound"),
+					"Application.BackupPipelineFound.Title",
+					JOptionPane.YES_NO_OPTION);
+			if (result == JOptionPane.NO_OPTION) {
+				skippedLoad = true;
+			}
+
+			try {
+				ModelProxy.getInstance().getPipeline().loadBackup();
+			} catch (FileException e) {
+				Application.handleException(new ControlledException(this,
+						ExceptionSeverity.WARNING, e, I18N.getInstance()
+								.getString(
+										"Controller.Actions.Load.Failed."
+												+ e.getType())));
+			}
+		}
+		
+		if (skippedLoad || !backupAvailable) {
+			ModelProxy.getInstance().getPipeline().clear();
 		}
 	}
 }

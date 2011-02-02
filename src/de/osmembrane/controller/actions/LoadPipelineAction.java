@@ -85,7 +85,6 @@ public class LoadPipelineAction extends AbstractAction {
 				ActionRegistry.getInstance().get(ViewAllAction.class)
 						.actionPerformed(null);
 			} catch (FileException e1) {
-				e1.getParentException().printStackTrace();
 				Application.handleException(new ControlledException(this,
 						ExceptionSeverity.WARNING, e1, I18N.getInstance()
 								.getString(
