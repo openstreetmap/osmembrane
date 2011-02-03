@@ -14,6 +14,7 @@ import de.osmembrane.controller.actions.ChangeSettingsAction;
 import de.osmembrane.controller.actions.DeleteSelectionAction;
 import de.osmembrane.controller.actions.DuplicateFunctionAction;
 import de.osmembrane.controller.actions.EditBoundingBoxPropertyAction;
+import de.osmembrane.controller.actions.EditDirectoryPropertyAction;
 import de.osmembrane.controller.actions.EditFilePropertyAction;
 import de.osmembrane.controller.actions.EditListPropertyAction;
 import de.osmembrane.controller.actions.EditPropertyAction;
@@ -96,6 +97,7 @@ public class ActionRegistry implements Observer {
 		register(new EditPropertyAction());
 		register(new EditListPropertyAction());
 		register(new EditFilePropertyAction());
+		register(new EditDirectoryPropertyAction());
 		register(new EditBoundingBoxPropertyAction());
 
 		// undo, redo actions

@@ -10,20 +10,20 @@ import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.model.pipeline.AbstractParameter;
 
 /**
- * Action to edit a parameter which is a file path and therefore open the file
- * path dialog. Receives a {@link ContainingEvent}.
+ * Action to edit a parameter which is a directory path and therefore open the
+ * directory path dialog. Receives a {@link ContainingEvent}.
  * 
  * @author tobias_kuhn
  * 
  */
-public class EditFilePropertyAction extends AbstractAction {
+public class EditDirectoryPropertyAction extends AbstractAction {
 
-	private static final long serialVersionUID = 1481319711002406388L;
+	private static final long serialVersionUID = -1358550319488735885L;
 
 	/**
-	 * Creates a new {@link EditFilePropertyAction}
+	 * Creates a new {@link EditDirectoryPropertyAction}
 	 */
-	public EditFilePropertyAction() {
+	public EditDirectoryPropertyAction() {
 	}
 
 	@Override
@@ -32,15 +32,17 @@ public class EditFilePropertyAction extends AbstractAction {
 		AbstractParameter ap = (AbstractParameter) ce.getContained();
 		
 		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setAcceptAllFileFilterUsed(false);
 		
 		String value = ap.getValue();
 		if ((value == null) || (value.isEmpty())) {
 			value = ".";
 		}
-		fileChooser.setSelectedFile(new File(value));
+		fileChooser.setCurrentDirectory(new File(value));
 		
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			ap.setValue(fileChooser.getSelectedFile().getAbsolutePath());
+			ap.setValue(fileChooser.getCurrentDirectory().getAbsolutePath());
 		}
 	}
 }

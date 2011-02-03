@@ -37,6 +37,8 @@ import javax.swing.table.TableCellEditor;
 import de.osmembrane.Application;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.EditBoundingBoxPropertyAction;
+import de.osmembrane.controller.actions.EditDirectoryPropertyAction;
+import de.osmembrane.controller.actions.EditFilePropertyAction;
 import de.osmembrane.controller.actions.EditListPropertyAction;
 import de.osmembrane.controller.actions.EditPropertyAction;
 import de.osmembrane.controller.actions.LoadFunctionPresetAction;
@@ -324,6 +326,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				switch (ap.getType()) {
 
 				case ENUM:
+					// use ComboBox with enum values
 					InspectorPanelTableCustomEnumComboBoxModel iptcecbm = new InspectorPanelTableCustomEnumComboBoxModel(
 							ap);
 					DefaultCellEditor dceEnum = new DefaultCellEditor(
@@ -332,6 +335,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					break;
 
 				case BOOLEAN:
+					// use CheckBox with true/false
 					JCheckBox jcb = new JCheckBox();
 					jcb.setModel(new InspectorPanelTableBooleanCheckBoxModel(ap));
 					jcb.setSelected(ap.getValue().equals(
@@ -342,6 +346,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					break;
 
 				case BBOX:
+					// use JTFWB with EditBBAction
 					JTextFieldWithButton jtfwbBB = new JTextFieldWithButton(
 							ap.getValue(), EDIT_BUTTON_CAPTION);
 					jtfwbBB.fieldNoBorders();
@@ -359,6 +364,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					break;
 
 				case LIST:
+					// use JTFWB with EditListAction
 					JTextFieldWithButton jtwbList = new JTextFieldWithButton(
 							ap.getValue(), EDIT_BUTTON_CAPTION);
 					jtwbList.fieldNoBorders();
@@ -376,8 +382,49 @@ public class InspectorPanel extends JPanel implements Observer {
 					rowEditorModel.setEditorRow(i + 1,
 							new JTextFieldWithButtonCellEditor(jtwbList));
 					break;
+					
+				case FILENAME:
+					// use JTFWB with EditFileAction
+					JTextFieldWithButton jtwbFile = new JTextFieldWithButton(
+							ap.getValue(), EDIT_BUTTON_CAPTION);
+					jtwbFile.fieldNoBorders();
+					jtwbFile.addButtonActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Action aList = ActionRegistry.getInstance().get(
+									EditFilePropertyAction.class);
+							ContainingEvent ceFile = new ContainingEvent(this,
+									ap);
+							aList.actionPerformed(ceFile);
+						}
+					});
+					rowEditorModel.setEditorRow(i + 1,
+							new JTextFieldWithButtonCellEditor(jtwbFile));
+					break;
+					
+				case DIRECTORY:
+					// use JTFWB with EditDirectoryAction
+					JTextFieldWithButton jtwbDir = new JTextFieldWithButton(
+							ap.getValue(), EDIT_BUTTON_CAPTION);
+					jtwbDir.fieldNoBorders();
+					jtwbDir.addButtonActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Action aList = ActionRegistry.getInstance().get(
+									EditDirectoryPropertyAction.class);
+							ContainingEvent ceDir = new ContainingEvent(this,
+									ap);
+							aList.actionPerformed(ceDir);
+						}
+					});
+					rowEditorModel.setEditorRow(i + 1,
+							new JTextFieldWithButtonCellEditor(jtwbDir));
+					break;
 
 				default:
+					// use a plain string JTextField
 					JTextField textField = new JTextField(ap.getValue());
 					textField.setOpaque(true);
 					textField.setBorder(null);
