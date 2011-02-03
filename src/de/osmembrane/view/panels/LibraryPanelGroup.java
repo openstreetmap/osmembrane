@@ -203,8 +203,10 @@ public class LibraryPanelGroup extends JPanel {
 
 	@Override
 	public Dimension getPreferredSize() {
+		Dimension headBtn = headerButton.getPreferredSize();
 		Dimension result = super.getPreferredSize();
-		result.height = headerButton.getPreferredSize().height;
+
+		result.height = (headBtn != null) ? headBtn.height : 0;
 		return result;
 	}
 
@@ -215,7 +217,9 @@ public class LibraryPanelGroup extends JPanel {
 	 *            0, if contracted, getFullHeight() if expanded
 	 */
 	protected void setContentHeight(int newHeight) {
-		setSize(getWidth(), headerButton.getPreferredSize().height + 6
+		Dimension headBtn = headerButton.getPreferredSize();
+
+		setSize(getWidth(), ((headBtn != null) ? headBtn.height : 0) + 6
 				+ newHeight);
 	}
 

@@ -167,7 +167,8 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		fileMenu.add(ActionRegistry.getInstance().get(NewPipelineAction.class));
 		fileMenu.add(ActionRegistry.getInstance().get(LoadPipelineAction.class));
 		fileMenu.add(ActionRegistry.getInstance().get(SavePipelineAction.class));
-		fileMenu.add(ActionRegistry.getInstance().get(SaveAsPipelineAction.class));
+		fileMenu.add(ActionRegistry.getInstance().get(
+				SaveAsPipelineAction.class));
 		fileMenu.add(new JSeparator());
 		fileMenu.add(ActionRegistry.getInstance().get(
 				ImportPipelineAction.class));
@@ -266,14 +267,16 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 		JToggleButton magicTool = new JToggleButton(
 				toolsImages.get(Tool.DEFAULT_MAGIC_TOOL), true);
-		magicTool.setToolTipText(I18N.getInstance().getString("View.Tools.Magic"));
+		magicTool.setToolTipText(I18N.getInstance().getString(
+				"View.Tools.Magic"));
 		magicTool.addActionListener(toolsButtonsActionListener);
 		tools.add(magicTool);
 		toolsBar.add(magicTool);
 
 		JToggleButton selectTool = new JToggleButton(
 				toolsImages.get(Tool.SELECTION_TOOL));
-		selectTool.setToolTipText(I18N.getInstance().getString("View.Tools.Select"));
+		selectTool.setToolTipText(I18N.getInstance().getString(
+				"View.Tools.Select"));
 		selectTool.addActionListener(toolsButtonsActionListener);
 		tools.add(selectTool);
 		toolsBar.add(selectTool);
@@ -287,7 +290,8 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 		JToggleButton connectTool = new JToggleButton(
 				toolsImages.get(Tool.CONNECTION_TOOL));
-		connectTool.setToolTipText(I18N.getInstance().getString("View.Tools.Connect"));
+		connectTool.setToolTipText(I18N.getInstance().getString(
+				"View.Tools.Connect"));
 		connectTool.addActionListener(toolsButtonsActionListener);
 		tools.add(connectTool);
 		toolsBar.add(connectTool);
@@ -304,12 +308,12 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		toolsBar.add(ActionRegistry.getInstance().get(ZoomInAction.class));
 		toolsBar.add(ActionRegistry.getInstance().get(ZoomOutAction.class));
 		toolBar.add(toolsBar);
-		
+
 		/* yes the order is important */
-		
+
 		// function inspector
 		InspectorPanel functionInspector = new InspectorPanel();
-		
+
 		// pipeline view
 		pipelineView = new PipelinePanel(functionInspector);
 		JPanel panePipeline = new JPanel(new BorderLayout());
@@ -323,7 +327,8 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 		for (AbstractFunctionGroup afg : ModelProxy.getInstance()
 				.getFunctions().getFunctionGroups()) {
-			LibraryPanelGroup lpg = new LibraryPanelGroup(functionLibrary, pipelineView, afg);
+			LibraryPanelGroup lpg = new LibraryPanelGroup(functionLibrary,
+					pipelineView, afg);
 			functionLibrary.addGroup(lpg);
 		}
 		JScrollPane paneLibrary = new JScrollPane(functionLibrary);
@@ -337,6 +342,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 		JSplitPane splitMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				true, splitLibAndView, functionInspector);
+
 		splitMain.setResizeWeight(1.0);
 		getContentPane().add(splitMain);
 
@@ -350,6 +356,11 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		pack();
 		centerWindow();
 		setExtendedState(Frame.MAXIMIZED_BOTH);
+
+		// correct width
+		splitMain.setDividerLocation(splitMain.getSize().width
+				- splitMain.getInsets().right - splitMain.getDividerSize()
+				- 384);
 	}
 
 	@Override

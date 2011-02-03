@@ -6,7 +6,6 @@ import java.util.Observable;
 import java.util.ResourceBundle;
 
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.model.xml.XMLHasDescription.Description;
