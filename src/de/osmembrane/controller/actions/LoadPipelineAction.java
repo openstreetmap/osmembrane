@@ -56,17 +56,20 @@ public class LoadPipelineAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (!ModelProxy.getInstance().getPipeline().isSaved()) {
-			int result = JOptionPane.showConfirmDialog(null, I18N.getInstance()
-					.getString("Controller.Actions.NewPipeline.NotSaved"),
-					I18N.getInstance()
-					.getString("Controller.Actions.NewPipeline.NotSaved.Title"),
+			int result = JOptionPane.showConfirmDialog(
+					null,
+					I18N.getInstance().getString(
+							"Controller.Actions.NewPipeline.NotSaved"),
+					I18N.getInstance().getString(
+							"Controller.Actions.NewPipeline.NotSaved.Title"),
 					JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.NO_OPTION) {
 				return;
 			}
 		}
-		
+
 		JFileChooser fileChooser = new JFileChooser();
+		
 		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
 
 		int result = fileChooser.showOpenDialog(null);

@@ -2,8 +2,6 @@ package de.osmembrane;
 
 import javax.swing.SwingUtilities;
 
-import de.osmembrane.model.ModelProxy;
-
 /**
  * the Main class for java to contain the static main() method
  * 

@@ -101,11 +101,11 @@ public class ActionRegistry implements Observer {
 		// undo, redo actions
 		register(new UndoAction());
 		register(new RedoAction());
-		
+
 		// function presets
 		register(new LoadFunctionPresetAction());
 		register(new SaveFunctionPresetAction());
-		
+
 		// view actions
 		register(new ResetViewAction());
 		register(new ViewAllAction());
@@ -117,7 +117,7 @@ public class ActionRegistry implements Observer {
 		register(new ShowAboutAction());
 		register(new ChangeSettingsAction());
 		register(new ExitAction());
-		
+
 		// set setEnabled() values
 		update(null, null);
 	}
@@ -168,33 +168,24 @@ public class ActionRegistry implements Observer {
 				.getFunctions().length > 0);
 		boolean isSaved = ModelProxy.getInstance().getPipeline().isSaved();
 
-		ActionRegistry
-				.getInstance()
-				.get(UndoAction.class)
-				.setEnabled(
-						ModelProxy.getInstance().getPipeline().undoAvailable());
-		ActionRegistry
-				.getInstance()
-				.get(RedoAction.class)
-				.setEnabled(
-						ModelProxy.getInstance().getPipeline().redoAvailable());
-
-		ActionRegistry.getInstance().get(SaveAsPipelineAction.class)
-				.setEnabled(!isSaved && pipelineFull);
-
-		ActionRegistry.getInstance().get(SavePipelineAction.class)
-				.setEnabled(!isSaved && pipelineFull);
-
-		ActionRegistry.getInstance().get(ArrangePipelineAction.class)
-				.setEnabled(pipelineFull);
-
-		ActionRegistry.getInstance().get(ExecutePipelineAction.class)
-				.setEnabled(pipelineFull);
+		get(UndoAction.class).setEnabled(
+				ModelProxy.getInstance().getPipeline().undoAvailable());
 		
-		ActionRegistry.getInstance().get(ExportPipelineAction.class)
-		.setEnabled(pipelineFull);
+		get(RedoAction.class).setEnabled(
+				ModelProxy.getInstance().getPipeline().redoAvailable());
+
+		get(SaveAsPipelineAction.class).setEnabled(!isSaved && pipelineFull);
+
+		get(SavePipelineAction.class).setEnabled(!isSaved && pipelineFull);
+
+		get(ArrangePipelineAction.class).setEnabled(pipelineFull);
+
+		get(ExecutePipelineAction.class).setEnabled(pipelineFull);
+
+		get(ExportPipelineAction.class).setEnabled(pipelineFull);
 		
-		ActionRegistry.getInstance().get(GeneratePipelineAction.class)
-		.setEnabled(pipelineFull);
+		get(PreviewPipelineAction.class).setEnabled(pipelineFull);
+
+		get(GeneratePipelineAction.class).setEnabled(pipelineFull);
 	}
 }

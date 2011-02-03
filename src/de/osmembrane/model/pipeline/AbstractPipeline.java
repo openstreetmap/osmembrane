@@ -179,7 +179,7 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	/**
 	 * Returns the save-state of the pipeline.
 	 * 
-	 * @return true when pipline is saved
+	 * @return true when pipeline is saved
 	 */
 	public abstract boolean isSaved();
 
