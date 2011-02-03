@@ -42,6 +42,7 @@ import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.Connector;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.interfaces.IZoomDevice;
@@ -230,8 +231,10 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		this.connectionPreview = new PipelinePreviewLink(this);
 
 		this.objectToWindow = new AffineTransform();
-		this.objectToWindow.setToScale(PipelinePanel.DEFAULT_ZOOM,
-				PipelinePanel.DEFAULT_ZOOM);
+		double zoomFactor = PipelinePanel.DEFAULT_ZOOM
+				* (Double) ModelProxy.getInstance().getSettings()
+						.getValue(SettingType.DEFAULT_ZOOM_SIZE);
+		this.objectToWindow.setToScale(zoomFactor, zoomFactor);
 		this.currentDisplay = new AffineTransform();
 
 		this.layeredPane = new JLayeredPane();
@@ -354,7 +357,8 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 					connectionPreview.regenerateLine();
 					repaint();
 				}
-				PipelinePanel.this.connectionPreview.setVisible(PipelinePanel.this.connectionStart != null);
+				PipelinePanel.this.connectionPreview
+						.setVisible(PipelinePanel.this.connectionStart != null);
 			}
 
 			@Override
@@ -433,7 +437,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 			} /* mouseDragged */
 		});
-		
+
 		// necessary to initialize with correct model reflection
 		update(null, new PipelineObserverObject(ChangeType.FULLCHANGE, null));
 	}
@@ -605,8 +609,10 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 	@Override
 	public void resetView() {
-		objectToWindow.setToScale(PipelinePanel.DEFAULT_ZOOM,
-				PipelinePanel.DEFAULT_ZOOM);
+		double zoomFactor = PipelinePanel.DEFAULT_ZOOM
+		* (Double) ModelProxy.getInstance().getSettings()
+				.getValue(SettingType.DEFAULT_ZOOM_SIZE);
+		objectToWindow.setToScale(zoomFactor, zoomFactor);
 		arrange();
 	}
 
@@ -746,7 +752,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 				connectors.clear();
 				layeredPane.removeAll();
 				System.gc();
-				
+
 				layeredPane.add(connectionPreview);
 
 				for (AbstractFunction af : ModelProxy.getInstance()
