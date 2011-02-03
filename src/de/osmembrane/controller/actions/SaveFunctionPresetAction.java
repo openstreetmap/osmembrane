@@ -4,8 +4,12 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 
+import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.controller.events.ContainingLocationEvent;
+import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
@@ -39,7 +43,13 @@ public class SaveFunctionPresetAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO do some fancy model stuff
-		throw new UnsupportedOperationException();
+		ContainingEvent event = (ContainingEvent) e;
+		AbstractFunction function = (AbstractFunction) event.getContained();
+		
+		/* Request a name for the preset */
+		String name = JOptionPane.showInputDialog(null, "Name dafür?", "Function Preset Name", JOptionPane.QUESTION_MESSAGE);
+		if(name != null) {
+			ModelProxy.getInstance().getSettings().saveFunctionPreset(name, function);
+		}
 	}
 }
