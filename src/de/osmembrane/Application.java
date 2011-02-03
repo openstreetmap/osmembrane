@@ -115,11 +115,14 @@ public class Application {
 				.isBackupAvailable();
 
 		boolean skippedLoad = false;
-		
+
 		if (backupAvailable) {
-			int result = JOptionPane.showConfirmDialog(null, I18N.getInstance()
-					.getString("Application.BackupPipelineFound"),
-					"Application.BackupPipelineFound.Title",
+			int result = JOptionPane.showConfirmDialog(
+					null,
+					I18N.getInstance().getString(
+							"Application.BackupPipelineFound"),
+					I18N.getInstance().getString(
+							"Application.BackupPipelineFound.Title"),
 					JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.NO_OPTION) {
 				skippedLoad = true;
@@ -135,7 +138,7 @@ public class Application {
 												+ e.getType())));
 			}
 		}
-		
+
 		if (skippedLoad || !backupAvailable) {
 			ModelProxy.getInstance().getPipeline().clear();
 		}
