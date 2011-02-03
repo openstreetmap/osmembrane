@@ -5,6 +5,9 @@ import java.util.Locale;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+
 import de.osmembrane.model.xml.XMLHasDescription;
 import de.osmembrane.model.xml.XMLHasDescription.Description;
 import de.osmembrane.resources.Constants;
@@ -71,6 +74,8 @@ public class I18N extends Observable {
 		this.resourceBundle = ResourceBundle.getBundle(
 				Constants.RESOURCE_BUNDLE_PATH, this.activeLocale);
 
+		setSwingLocale(locale);
+		
 		/* notify the observers that possibly the language has been changed */
 		setChanged();
 		notifyObservers();
@@ -139,5 +144,14 @@ public class I18N extends Observable {
 
 		/* No translation found, return NULL */
 		return null;
+	}
+	
+	/**
+	 * Sets the language to all swing components.
+	 * @param locale language to be set
+	 */
+	private void setSwingLocale(Locale locale) {
+		JComponent.setDefaultLocale(locale);
+		
 	}
 }

@@ -110,6 +110,9 @@ public class Application {
 		}
 	}
 
+	/**
+	 * Checks if a backup is needed to be load.
+	 */
 	public void checkForBackup() {
 		boolean backupAvailable = ModelProxy.getInstance().getPipeline()
 				.isBackupAvailable();
