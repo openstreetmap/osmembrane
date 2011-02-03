@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
@@ -77,6 +79,10 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 	 * Components to edit how much undo steps shall be available
 	 */
 	private JSpinner maxUndoSteps;
+
+	private JLabel rasterSizeDisplay;
+
+	private JSlider rasterSize;
 
 	/**
 	 * Generates a new {@link SettingsDialog}.
@@ -175,15 +181,27 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 						"Model.Settings.Type.DEFAULT_ZOOM_SIZE")
 						+ ":"), gbc);
 		gbc.gridx = 1;
-		defaultZoomDisplay = new JLabel("10.0x");
+		defaultZoomDisplay = new JLabel("");
 		settings.add(defaultZoomDisplay, gbc);
 
 		gbc.gridy = 4;
 		gbc.gridx = 0;
 		gbc.gridwidth = 2;
-		defaultZoom = new JSlider();
+		defaultZoom = new JSlider(1, 2000);
+		defaultZoom.setMajorTickSpacing(1000);
+		defaultZoom.setMinorTickSpacing(50);
+		defaultZoom.setPaintTicks(true);
+		defaultZoom.setPaintLabels(false);
 		defaultZoom.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.DEFAULT_ZOOM_SIZE.Description"));
+		defaultZoom.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				double x = defaultZoomToModel(defaultZoom.getValue());
+				defaultZoomDisplay.setText(String.format("%.3fx", x));
+			}
+		});
 		settings.add(defaultZoom, gbc);
 		gbc.gridwidth = 1;
 
@@ -220,6 +238,38 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		maxUndoSteps.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.MAXIMUM_UNDO_STEPS.Description"));
 		settings.add(maxUndoSteps, gbc);
+		
+		gbc.gridy = 3;
+		gbc.gridx = 2;
+		settings.add(
+				new JLabel(I18N.getInstance().getString(
+						"Model.Settings.Type.PIPELINE_RASTER_SIZE")
+						+ ":"), gbc);
+		gbc.gridx = 3;
+		rasterSizeDisplay = new JLabel("");
+		settings.add(rasterSizeDisplay, gbc);
+		
+		gbc.gridy = 4;
+		gbc.gridx = 2;
+		gbc.gridwidth = 2;
+		rasterSize = new JSlider(0, 11);
+		rasterSize.setMajorTickSpacing(4);
+		rasterSize.setMinorTickSpacing(1);
+		rasterSize.setPaintTicks(true);
+		rasterSize.setPaintLabels(false);
+		rasterSize.setSnapToTicks(true);
+		rasterSize.setToolTipText(I18N.getInstance().getString(
+				"Model.Settings.Type.PIPELINE_RASTER_SIZE.Description"));
+		rasterSize.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				double x = rasterSizeToModel(rasterSize.getValue());
+				rasterSizeDisplay.setText(String.valueOf(x));
+			}
+		});
+		settings.add(rasterSize, gbc);
+		gbc.gridwidth = 1;
 
 		add(settings, BorderLayout.CENTER);
 
@@ -241,6 +291,50 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		}
 		language.setModel(new DefaultComboBoxModel(localeStrings));
 	}
+	
+	/**
+	 * Translates a JSlider value in [1,2000] to a modelValue of (0,10].
+	 * @param viewValue the slider position in [1,2000]
+	 * @return the modelValue in (0,2]
+	 */
+	private double defaultZoomToModel(int viewValue) {
+		return (double) viewValue / 1000.0;
+	}
+	
+	/**
+	 * Translates a modelValue of (0,2] to a JSlider value in [1,2000].
+	 * @param modelValue the modelValue in (0,2]
+	 * @return the slider position in [0,2000]
+	 */
+	private int defaultZoomFromModel(double modelValue) {
+		return (int) (1000.0 * modelValue);
+	}
+	
+	/**
+	 * Translates a JSlider value of [0,11] to a model value in [0,1024]
+	 * @param viewValue JSlider value in [0,11]
+	 * @return the the modelValue in [0,1024]
+	 */
+	private int rasterSizeToModel(int viewValue) {
+		if (viewValue == 0) {
+			return 0;
+		} else {
+			return (int) Math.pow(2.0, viewValue - 1);
+		}
+	}
+	
+	/**
+	 * Translates a modelValue of [0,1024] to a JSlider value in [0,11]
+	 * @param viewValue the modelValue in [0,1024]
+	 * @return the JSlider value in [0,11]
+	 */
+	private int rasterSizeFromModel(int modelValue) {
+		if ((int) modelValue == 0) {
+			return 0;
+		} else {
+			return (int) (Math.log(modelValue) / Math.log(2.0)) - 1;
+		}
+	}
 
 	@Override
 	public Object getValue(SettingType type) {
@@ -257,8 +351,8 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 					.getSelectedIndex()] : null;
 
 		case DEFAULT_ZOOM_SIZE:
-			// arithmetics
-			return 1.0;
+			int x = defaultZoom.getValue();
+			return defaultZoomToModel(x);
 
 		case USE_SHORT_TASK_NAMES_IF_AVAILABLE:
 			return this.shortTasks.isSelected();
@@ -270,6 +364,8 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 			return this.maxUndoSteps.getValue();
 
 		case PIPELINE_RASTER_SIZE:
+			int y = this.rasterSize.getValue(); 
+			return rasterSizeToModel(y);
 
 		default:
 			return null;
@@ -299,7 +395,8 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 			break;
 
 		case DEFAULT_ZOOM_SIZE:
-			// arithmetics
+			double x = (Double) value;
+			defaultZoom.setValue(defaultZoomFromModel(x));
 			break;
 
 		case USE_SHORT_TASK_NAMES_IF_AVAILABLE:
@@ -313,6 +410,10 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		case MAXIMUM_UNDO_STEPS:
 			this.maxUndoSteps.setValue((Integer) value);
 			break;
+			
+		case PIPELINE_RASTER_SIZE:
+			int y = (Integer) value;
+			this.rasterSize.setValue(rasterSizeFromModel(y));
 		}
 	}
 
