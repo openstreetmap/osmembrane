@@ -11,6 +11,8 @@ import de.osmembrane.model.preset.AbstractPresetPrototype;
 import de.osmembrane.model.preset.PresetPrototype;
 import de.osmembrane.model.settings.AbstractSettings;
 import de.osmembrane.model.settings.Settings;
+import de.osmembrane.model.statusbar.AbstractStatusbar;
+import de.osmembrane.model.statusbar.Statusbar;
 
 /**
  * The ModelProxy is the connection to the whole Model of OSMembrane.
@@ -24,6 +26,7 @@ public class ModelProxy extends Observable implements Observer {
 	private AbstractPipeline pipeline;
 	private AbstractFunctionPrototype functionPrototype;
 	private AbstractPresetPrototype presetPrototype;
+	private AbstractStatusbar statusbar;
 	
 	/**
 	 * Implements the Singleton pattern.
@@ -42,6 +45,9 @@ public class ModelProxy extends Observable implements Observer {
 		
 		functionPrototype = new FunctionPrototype();
 		functionPrototype.addObserver(this);
+		
+		statusbar = new Statusbar();
+		statusbar.addObserver(this);
 		
 		presetPrototype = new PresetPrototype();
 	}
@@ -80,6 +86,15 @@ public class ModelProxy extends Observable implements Observer {
 	 */
 	public AbstractFunctionPrototype getFunctions() {
 		return functionPrototype;
+	}
+	
+	/**
+	 * Returns the {@link AbstractStatusbar}.
+	 * 
+	 * @return give back the active {@link AbstractStatusbar}
+	 */
+	public AbstractStatusbar getStatusbar() {
+		return statusbar;
 	}
 	
 	/**

@@ -31,8 +31,7 @@ public class Constants {
 	 * All available Locales.
 	 */
 	public static final Locale[] AVAILABLE_LOCALES = new Locale[] {
-			Locale.ENGLISH, Locale.GERMAN
-	};
+			Locale.ENGLISH, Locale.GERMAN };
 
 	/**
 	 * Default Backup filename (for {@link Pipeline}.
@@ -78,7 +77,7 @@ public class Constants {
 	 * The default path to the osmosis binaries.
 	 */
 	public static final String DEFAULT_OSMOSIS_PATH = "osmosis";
-	
+
 	/**
 	 * The default path to the JOSM binaries.
 	 */
@@ -94,11 +93,16 @@ public class Constants {
 	 */
 	public static final double DEFAULT_ZOOM_SIZE = 1.0;
 
-	
 	/**
 	 * The default raster size of the pipeline.
 	 */
 	public static final int DEFAULT_PIPELINE_RASTER_SIZE = 30;
+
+	/**
+	 * Maximum amount of entries in the statusbar before the oldest one is
+	 * being removed.
+	 */
+	public static final int MAXIMUM_STATUSBAR_ENTRIES = 10;
 
 	/**
 	 * static method
