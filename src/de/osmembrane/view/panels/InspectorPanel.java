@@ -452,7 +452,7 @@ public class InspectorPanel extends JPanel implements Observer {
 		private String[] columns = new String[2];
 
 		/**
-		 * Creates a new {@link InspectorPanelTableModel	
+		 * Creates a new {@link InspectorPanelTableModel}	
 		 */
 		public InspectorPanelTableModel() {
 			columns[0] = I18N.getInstance().getString("View.Parameter");
@@ -734,7 +734,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					.actionPerformed(cfcpe);
 		}
 
-	}
+	} /* InspectorPanelTableBooleanCheckBoxModel */
 
 	/**
 	 * The custom cell renderer for the display table of the
