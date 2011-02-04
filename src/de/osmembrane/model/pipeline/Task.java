@@ -116,10 +116,10 @@ public class Task extends AbstractTask {
 		}
 
 		if (left != null && right != null && top != null && bottom != null) {
-			return left.getValue() + Constants.BBOX_SEPERATOR
-					+ right.getValue() + Constants.BBOX_SEPERATOR
+			return bottom.getValue() + Constants.BBOX_SEPERATOR
+					+ left.getValue() + Constants.BBOX_SEPERATOR
 					+ top.getValue() + Constants.BBOX_SEPERATOR
-					+ bottom.getValue();
+					+ right.getValue();
 		} else {
 			return null;
 		}
@@ -133,10 +133,10 @@ public class Task extends AbstractTask {
 					"bbox should have 4 comma separated parameters.");
 		}
 
-		String left = bboxArray[0];
-		String right = bboxArray[1];
+		String bottom = bboxArray[0];
+		String left = bboxArray[1];
 		String top = bboxArray[2];
-		String bottom = bboxArray[3];
+		String right = bboxArray[3];
 
 		for (Parameter param : getParameters()) {
 			if (param.getType() == ParameterType.BBOX) {

@@ -92,7 +92,7 @@ public class GraphPlanarizer {
 	}
 	
 	private void calculateGridSize() {
-		pipelineRasterSize = new Double((Integer) ModelProxy.getInstance().getSettings().getValue(SettingType.PIPELINE_RASTER_SIZE));
+		pipelineRasterSize = Math.max(1.0, new Double((Integer) ModelProxy.getInstance().getSettings().getValue(SettingType.PIPELINE_RASTER_SIZE)));
 		X_OFFSET = 0.0;
 		Y_OFFSET = 0.0;
 		

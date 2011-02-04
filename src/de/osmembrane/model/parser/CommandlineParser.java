@@ -30,9 +30,10 @@ public class CommandlineParser implements IParser {
 
 	protected String breaklineSymbol = "<linebreak>";
 	protected String breaklineCommand = "\n";
+	protected String quotationSymbol = "\"";
 
 	protected String DEFAULT_KEY = "DEFAULTKEY";
-	
+
 	/**
 	 * If it is not set, the osmosis path will not be added to the pipeline.
 	 */
@@ -45,8 +46,8 @@ public class CommandlineParser implements IParser {
 	protected static final Pattern PATTERN_PIPE = Pattern
 			.compile("^(in|out)pipe\\.([0-9+])$");
 
-	protected static final Pattern PATTERN_SPLIT_SPACES_PARAMETER = Pattern.compile(
-			"(inPipe|outPipe)", Pattern.CASE_INSENSITIVE
+	protected static final Pattern PATTERN_SPLIT_SPACES_PARAMETER = Pattern
+			.compile("(inPipe|outPipe)", Pattern.CASE_INSENSITIVE
 					| Pattern.MULTILINE);
 
 	/**
@@ -226,7 +227,8 @@ public class CommandlineParser implements IParser {
 				}
 
 				if (spacesParam != null) {
-					String[] results = PATTERN_SPLIT_SPACES_PARAMETER.split(taskParameters);
+					String[] results = PATTERN_SPLIT_SPACES_PARAMETER
+							.split(taskParameters);
 					spacesParam.setValue(results[0].trim());
 
 					/*
@@ -381,10 +383,11 @@ public class CommandlineParser implements IParser {
 		}
 
 		/* add the path to the osmosis binary */
-		if(addOsmosisPath) {
-			builder.append("\""
+		if (addOsmosisPath) {
+			builder.append(quotationSymbol
 					+ (String) ModelProxy.getInstance().getSettings()
-							.getValue(SettingType.DEFAULT_OSMOSIS_PATH) + "\"");
+							.getValue(SettingType.DEFAULT_OSMOSIS_PATH)
+					+ quotationSymbol);
 		}
 
 		/* do the parsing while a function is in the queue */
@@ -452,14 +455,15 @@ public class CommandlineParser implements IParser {
 									.getSettings()
 									.getValue(
 											SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES)) {
-						
+
 						/* look up if it is a parameter with set "hasSpaces" */
 						if (parameter.hasSpaces()
 								&& parameter.isDefaultParameter()) {
 							builder.append(" " + parameter.getValue());
 						} else {
-							builder.append(" " + parameter.getName() + "=\""
-									+ parameter.getValue() + "\"");
+							builder.append(" " + parameter.getName() + "="
+									+ quotationSymbol + parameter.getValue()
+									+ quotationSymbol);
 						}
 					}
 				}
@@ -542,6 +546,18 @@ public class CommandlineParser implements IParser {
 		this.breaklineCommand = breaklineCommand;
 	}
 
+	protected void setQuotationSymbol(String symbol) {
+		this.quotationSymbol = symbol;
+	}
+	
+	/**
+	 * Sets if the omsosis path should be added or not
+	 * @param addOsmosisPath boolean
+	 */
+	protected void addOsmosisPath(boolean addOsmosisPath) {
+		this.addOsmosisPath = addOsmosisPath;
+	}
+
 	/**
 	 * Returns the offset between the first outPipe of otherConnecor to the
 	 * connector. Useful for connection to the correct --tee outPipe.
@@ -600,10 +616,6 @@ public class CommandlineParser implements IParser {
 		builder.append(" ");
 		builder.append(breaklineSymbol);
 		builder.append(breaklineCommand);
-	}
-
-	public void addOsmosisPath(boolean addOsmosisPath) {
-		this.addOsmosisPath = addOsmosisPath;
 	}
 
 }

@@ -11,6 +11,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
@@ -60,9 +62,6 @@ public class PreviewPipelineAction extends AbstractAction {
 		FileType type = FileType.EXECUTION_FILETYPE;
 		String pipeline = ModelProxy.getInstance().getPipeline().generate(type);
 
-		/* the parameters for execution */
-		String[] parameters = pipeline.split("<NEWPARAMETER>");
-
 		/* the path to osmosis */
 		String osmosisPath = (String) ModelProxy.getInstance().getSettings()
 				.getValue(SettingType.DEFAULT_OSMOSIS_PATH);
@@ -78,9 +77,9 @@ public class PreviewPipelineAction extends AbstractAction {
 		/* execute... */
 		try {
 			OsmosisExecutor exec = new OsmosisExecutor(osmosisPath);
-			
+
 			OsmosisResult result = exec
-					.executeOsmosisSynchronously(Arrays.asList(parameters),
+					.executeOsmosisSynchronously(Arrays.asList(pipeline),
 							new File(workingDirectory), null);
 			System.out.println("Osmosis done.");
 			System.out.println("Osmosis exit value was: "
