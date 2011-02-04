@@ -18,6 +18,7 @@ import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorType;
 import de.osmembrane.model.pipeline.Pipeline;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
 
 public class CommandlineParser implements IParser {
@@ -263,7 +264,7 @@ public class CommandlineParser implements IParser {
 						Queue<AbstractFunction> functions = openOutConnectors
 								.get(connector.getType());
 						AbstractFunction outFunction = functions.poll();
-						
+
 						if (outFunction != null) {
 							try {
 								outFunction.addConnectionTo(function);
@@ -298,8 +299,8 @@ public class CommandlineParser implements IParser {
 					 */
 					if (outPipes.get(connector.getConnectorIndex()) == null) {
 						Queue<AbstractFunction> functions = openOutConnectors
-						.get(connector.getType());
-						
+								.get(connector.getType());
+
 						functions.add(function);
 					}
 				}
@@ -342,8 +343,10 @@ public class CommandlineParser implements IParser {
 			functionQueue.add(function);
 		}
 
-		/* TODO get the real path to osmosis from SettingsModel */
-		builder.append("osmosis");
+		/* add the path to the osmosis binary */
+		builder.append("\""
+				+ (String) ModelProxy.getInstance().getSettings()
+						.getValue(SettingType.DEFAULT_OSMOSIS_PATH) + "\"");
 
 		/* do the parsing while a function is in the queue */
 		while (!functionQueue.isEmpty()) {
@@ -386,24 +389,30 @@ public class CommandlineParser implements IParser {
 				String tn = function.getActiveTask().getName();
 
 				/* write the task(-short)-name */
-				// builder.append("--" + (stn != null ? stn : tn));
-
-				/*
-				 * TODO Inform osmosis developers that there is an error with
-				 * --write-pbf --wb, so long we should use only the long version
-				 * of task names.
-				 */
-				builder.append("--" + tn);
+				if ((Boolean) ModelProxy
+						.getInstance()
+						.getSettings()
+						.getValue(SettingType.USE_SHORT_TASK_NAMES_IF_AVAILABLE)
+						&& stn != null) {
+					builder.append("--" + stn);
+				} else {
+					builder.append("--" + tn);
+				}
 
 				/* write all parameters of the task */
 				for (AbstractParameter parameter : function.getActiveTask()
 						.getParameters()) {
 
 					/*
-					 * only add a parameter when there is not a default value
-					 * assigned
+					 * Only add a parameter when there is not a default value
+					 * assigned, or settings say that they are needed.
 					 */
-					if (!parameter.isDefaultValue()) {
+					if (!parameter.isDefaultValue()
+							|| (Boolean) ModelProxy
+									.getInstance()
+									.getSettings()
+									.getValue(
+											SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES)) {
 						builder.append(" " + parameter.getName() + "=\""
 								+ parameter.getValue() + "\"");
 					}

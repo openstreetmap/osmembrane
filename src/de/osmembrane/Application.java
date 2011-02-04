@@ -129,16 +129,17 @@ public class Application {
 					JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.NO_OPTION) {
 				skippedLoad = true;
-			}
-
-			try {
-				ModelProxy.getInstance().getPipeline().loadBackup();
-			} catch (FileException e) {
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.WARNING, e, I18N.getInstance()
-								.getString(
-										"Controller.Actions.Load.Failed."
-												+ e.getType())));
+			} else {
+				/* load the pipeline */
+				try {
+					ModelProxy.getInstance().getPipeline().loadBackup();
+				} catch (FileException e) {
+					Application.handleException(new ControlledException(this,
+							ExceptionSeverity.WARNING, e, I18N.getInstance()
+									.getString(
+											"Controller.Actions.Load.Failed."
+													+ e.getType())));
+				}
 			}
 		}
 

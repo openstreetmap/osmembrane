@@ -15,6 +15,7 @@ public enum SettingType {
 	 * The default path to osmosis binaries.
 	 */
 	DEFAULT_OSMOSIS_PATH(String.class, Constants.DEFAULT_OSMOSIS_PATH),
+	
 	/**
 	 * The default path to JOSM binaries.
 	 */
@@ -92,9 +93,9 @@ public enum SettingType {
 	/**
 	 * Tries to parse the object to the equivalent Type-Object.
 	 * 
-	 * @param value
-	 * @return
-	 * @throws UnparsableFormatException
+	 * @param value value which should be parsed
+	 * @return the parsed value as an object
+	 * @throws UnparsableFormatException if the value was not parsable
 	 */
 	public Object parse(Object value) throws UnparsableFormatException {
 		Object returnValue;
@@ -119,6 +120,20 @@ public enum SettingType {
 			throw new UnparsableFormatException(this);
 		}
 		
-		return returnValue;
+		return formatValue(returnValue);
+	}
+
+	/**
+	 * Does automatic formation.
+	 * 
+	 * @param value value which should be formatted
+	 * @return formatted value
+	 */
+	private Object formatValue(Object value) {
+		switch(this) {
+
+		}
+		
+		return value;
 	}
 }

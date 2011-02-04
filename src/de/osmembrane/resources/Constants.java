@@ -99,10 +99,22 @@ public class Constants {
 	public static final int DEFAULT_PIPELINE_RASTER_SIZE = 30;
 
 	/**
-	 * Maximum amount of entries in the statusbar before the oldest one is
-	 * being removed.
+	 * Maximum amount of entries in the statusbar before the oldest one is being
+	 * removed.
 	 */
 	public static final int MAXIMUM_STATUSBAR_ENTRIES = 10;
+
+	/**
+	 * Minimal x distance between two functions in the pipeline view, needed for
+	 * graph planarization.
+	 */
+	public static final double PIPELINE_FUNCTION_MINIMAL_X_DISTANCE = 300.0;
+
+	/**
+	 * Minimal y distance between two functions in the pipeline view, needed for
+	 * graph planarization.
+	 */
+	public static final double PIPELINE_FUNCTION_MINIMAL_Y_DISTANCE = 130.0;
 
 	/**
 	 * static method

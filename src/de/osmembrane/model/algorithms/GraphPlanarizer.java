@@ -3,15 +3,19 @@ package de.osmembrane.model.algorithms;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.settings.SettingType;
+import de.osmembrane.resources.Constants;
 
 public class GraphPlanarizer {
 
 	private List<AbstractFunction> functions;
 
-	private static final double X_OFFSET = 300.0;
-	private static final double Y_OFFSET = 150.0;
+	private double pipelineRasterSize;
+	private double X_OFFSET;
+	private double Y_OFFSET;
 
 	public GraphPlanarizer(List<AbstractFunction> functions) {
 		this.functions = functions;
@@ -20,6 +24,7 @@ public class GraphPlanarizer {
 	public void planarize() {
 		/* Reset all function to their zero-position */
 		resetAllFunctions();
+		calculateGridSize();
 
 		List<AbstractFunction> primaryFunctions = getPrimaryFunctions();
 
@@ -84,5 +89,19 @@ public class GraphPlanarizer {
 		}
 
 		return yOffsetFactor;
+	}
+	
+	private void calculateGridSize() {
+		pipelineRasterSize = new Double((Integer) ModelProxy.getInstance().getSettings().getValue(SettingType.PIPELINE_RASTER_SIZE));
+		X_OFFSET = 0.0;
+		Y_OFFSET = 0.0;
+		
+		while (X_OFFSET < Constants.PIPELINE_FUNCTION_MINIMAL_X_DISTANCE) {
+			X_OFFSET += pipelineRasterSize;
+		}
+		
+		while (Y_OFFSET < Constants.PIPELINE_FUNCTION_MINIMAL_Y_DISTANCE) {
+			Y_OFFSET += pipelineRasterSize;
+		}
 	}
 }

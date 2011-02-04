@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
 
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.algorithms.GraphPlanarizer;
 import de.osmembrane.model.algorithms.TarjanAlgorithm;
 import de.osmembrane.model.parser.ParserFactory;
@@ -21,6 +22,7 @@ import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.model.persistence.OSMembranePersistence;
 import de.osmembrane.model.persistence.PersistenceFactory;
 import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Constants;
 
 /**
@@ -382,7 +384,12 @@ public class Pipeline extends AbstractPipeline {
 		undoStack.push(currentState);
 		redoStack.clear();
 		currentState = new PipelineMemento(functions, savedState);
-		if (undoStack.size() > Constants.MAXIMUM_UNDO_STEPS) {
+
+		int maximumStackSize = ((Integer) ModelProxy.getInstance()
+				.getSettings().getValue(SettingType.MAXIMUM_UNDO_STEPS))
+				.intValue();
+		
+		while (undoStack.size() > maximumStackSize) {
 			undoStack.remove(0);
 		}
 	}
