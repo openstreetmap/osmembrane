@@ -10,6 +10,7 @@ import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.model.xml.XMLPipe;
 import de.osmembrane.model.xml.XMLTask;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 
 /**
@@ -22,7 +23,7 @@ public class Task extends AbstractTask {
 	private static final long serialVersionUID = 2011011821570001L;
 
 	private AbstractFunction parentFunction;
-	
+
 	/**
 	 * The {@link XMLTask} which is represented by this instance.
 	 */
@@ -59,7 +60,7 @@ public class Task extends AbstractTask {
 	public AbstractFunction getParent() {
 		return parentFunction;
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return I18N.getInstance().getDescription(xmlTask);
@@ -115,8 +116,10 @@ public class Task extends AbstractTask {
 		}
 
 		if (left != null && right != null && top != null && bottom != null) {
-			return left.getValue() + "," + right.getValue() + ","
-					+ top.getValue() + "," + bottom.getValue();
+			return left.getValue() + Constants.BBOX_SEPERATOR
+					+ right.getValue() + Constants.BBOX_SEPERATOR
+					+ top.getValue() + Constants.BBOX_SEPERATOR
+					+ bottom.getValue();
 		} else {
 			return null;
 		}
@@ -124,16 +127,17 @@ public class Task extends AbstractTask {
 
 	@Override
 	public boolean setBBox(String bbox) {
-		String[] bboxArray = bbox.split(",");
+		String[] bboxArray = bbox.split(Constants.BBOX_SEPERATOR);
 		if (bboxArray.length != 4) {
-			throw new ArrayStoreException("bbox should have 4 comma separated parameters.");
+			throw new ArrayStoreException(
+					"bbox should have 4 comma separated parameters.");
 		}
-		
+
 		String left = bboxArray[0];
 		String right = bboxArray[1];
 		String top = bboxArray[2];
 		String bottom = bboxArray[3];
-		
+
 		for (Parameter param : getParameters()) {
 			if (param.getType() == ParameterType.BBOX) {
 				if (param.getName().toLowerCase().equals("left")) {
@@ -151,7 +155,7 @@ public class Task extends AbstractTask {
 				}
 			}
 		}
-		
+
 		return (left == null && right == null && top == null && bottom == null);
 	}
 

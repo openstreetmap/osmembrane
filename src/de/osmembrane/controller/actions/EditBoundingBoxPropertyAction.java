@@ -44,9 +44,9 @@ public class EditBoundingBoxPropertyAction extends AbstractAction {
 				IBoundingBoxDialog ibbd = ViewRegistry.getInstance().getCasted(
 						BoundingBoxDialog.class, IBoundingBoxDialog.class);
 				
-				if (p.getValue() != null) {
+				if (p.getParent().getBBox() != null) {
 					try {
-						ibbd.setBoundingBox(new Bounds(p.getValue(), Constants.BBOX_SEPERATOR));
+						ibbd.setBoundingBox(new Bounds(p.getParent().getBBox(), Constants.BBOX_SEPERATOR));
 					} catch (IllegalArgumentException e1) {
 						ibbd.setBoundingBox(null);
 					}
@@ -58,7 +58,7 @@ public class EditBoundingBoxPropertyAction extends AbstractAction {
 				
 				Bounds b = ibbd.getBoundingBox();
 				if (b != null) {
-					p.setValue(b.encodeAsString(Constants.BBOX_SEPERATOR));
+					p.getParent().setBBox(b.encodeAsString(Constants.BBOX_SEPERATOR));
 				}
 			}
 		} else {

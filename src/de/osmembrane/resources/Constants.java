@@ -86,7 +86,7 @@ public class Constants {
 	/**
 	 * Seperator char of the bbox parameter
 	 */
-	public static final String BBOX_SEPERATOR = ",";
+	public static final String BBOX_SEPERATOR = ";";
 
 	/**
 	 * The default zoom-size of the view.
