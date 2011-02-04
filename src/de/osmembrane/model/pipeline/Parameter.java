@@ -151,6 +151,11 @@ public class Parameter extends AbstractParameter {
 	}
 
 	@Override
+	public boolean hasSpaces() {
+		return xmlParam.isHasSpaces();
+	}
+
+	@Override
 	public Parameter copy(CopyType type, AbstractTask task) {
 		Parameter newParam = new Parameter(task,  this.xmlParam);
 		

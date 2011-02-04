@@ -110,6 +110,13 @@ public abstract class AbstractParameter extends Observable implements
 	 * the processing is undefined.
 	 */
 	public abstract boolean isDefaultParameter();
+	
+	/**
+	 * Returns if the parameter has spaces.
+	 * 
+	 * @return true if the parameter has spaces, otherwise false
+	 */
+	public abstract boolean hasSpaces();
 
 	/**
 	 * Copies the parameter.

@@ -98,8 +98,6 @@ public class CommandlineParser implements IParser {
 			Map<Integer, String> inPipes = new HashMap<Integer, String>();
 			Map<Integer, String> outPipes = new HashMap<Integer, String>();
 
-			// System.out.println(taskName);
-
 			Matcher paramMatcher = PATTERN_PARAMETER.matcher(taskParameters);
 			while (paramMatcher.find()) {
 				String[] keyValuePair = getParameter(paramMatcher);
@@ -190,6 +188,10 @@ public class CommandlineParser implements IParser {
 									: ConnectorType.CHANGE));
 					functions.add(function);
 				}
+
+				/*
+				 * no tee, try to get a real function
+				 */
 			} else {
 				AbstractFunction function = ModelProxy.getInstance()
 						.getFunctions()
@@ -201,28 +203,53 @@ public class CommandlineParser implements IParser {
 					pipeline.addFunction(function);
 				}
 
-				/* copy parameters to the function */
-				for (String key : parameters.keySet()) {
-					boolean foundKey = false;
-					for (AbstractParameter parameter : function.getActiveTask()
-							.getParameters()) {
-						if (parameter.getName().toLowerCase()
-								.equals(key.toLowerCase())
-								|| (key.equals(DEFAULT_KEY) && parameter
-										.isDefaultParameter())) {
-							parameter.setValue(parameters.get(key));
-							foundKey = true;
-						}
+				/*
+				 * We have to check if the function does contain a parameter
+				 * with "hasSpaces" set, if that is so, we have to parse the
+				 * parameters again.
+				 */
+				AbstractParameter spacesParam = null;
+				for (AbstractParameter param : function.getActiveTask()
+						.getParameters()) {
+					if (param.hasSpaces()) {
+						spacesParam = param;
 					}
-					if (!foundKey) {
-						if (key.equals(DEFAULT_KEY)) {
-							throw new ParseException(
-									ErrorType.NO_DEFAULT_PARAMETER_FOUND,
-									taskName, key);
-						} else {
-							throw new ParseException(
-									ErrorType.UNKNOWN_TASK_FORMAT, taskName,
-									key);
+				}
+
+				if (spacesParam != null) {
+					String[] params = taskParameters.split("inPipe|outPipe");
+					if (params.length > 0) {
+						spacesParam.setValue(params[0].trim());
+					}
+
+					/*
+					 * Okay it seems not to be so, that there is a spaces param,
+					 * do it the normal way.
+					 */
+				} else {
+					/* copy parameters to the function */
+					for (String key : parameters.keySet()) {
+						boolean foundKey = false;
+						for (AbstractParameter parameter : function
+								.getActiveTask().getParameters()) {
+							if (parameter.getName().toLowerCase()
+									.equals(key.toLowerCase())
+									|| (key.equals(DEFAULT_KEY) && parameter
+											.isDefaultParameter())) {
+								parameter.setValue(parameters.get(key));
+								foundKey = true;
+							}
+						}
+						if (!foundKey) {
+							if (key.equals(DEFAULT_KEY)) {
+								throw new ParseException(
+										ErrorType.NO_DEFAULT_PARAMETER_FOUND,
+										taskName, key);
+							} else {
+								throw new ParseException(
+										ErrorType.UNKNOWN_TASK_FORMAT,
+										taskName, key);
+							}
 						}
 					}
 				}
@@ -321,6 +348,9 @@ public class CommandlineParser implements IParser {
 		return returnList;
 	}
 
+	/* ************************* */
+	/* String-Pipeline Generator */
+	/* ************************* */
 	@Override
 	public String parsePipeline(List<AbstractFunction> pipeline) {
 		/* Queue where functions are stored, that haven't been parsed yet. */
@@ -413,8 +443,15 @@ public class CommandlineParser implements IParser {
 									.getSettings()
 									.getValue(
 											SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES)) {
-						builder.append(" " + parameter.getName() + "=\""
-								+ parameter.getValue() + "\"");
+
+						/* look up if it is a parameter with set "hasSpaces" */
+						if (parameter.hasSpaces()
+								&& parameter.isDefaultParameter()) {
+							builder.append(" " + parameter.getValue());
+						} else {
+							builder.append(" " + parameter.getName() + "=\""
+									+ parameter.getValue() + "\"");
+						}
 					}
 				}
 
