@@ -176,7 +176,7 @@ public class ActionRegistry implements Observer {
 		get(RedoAction.class).setEnabled(
 				ModelProxy.getInstance().getPipeline().redoAvailable());
 
-		get(SaveAsPipelineAction.class).setEnabled(!isSaved && pipelineFull);
+		get(SaveAsPipelineAction.class).setEnabled(pipelineFull);
 
 		get(SavePipelineAction.class).setEnabled(!isSaved && pipelineFull);
 

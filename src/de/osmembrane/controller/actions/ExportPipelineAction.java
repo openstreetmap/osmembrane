@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.Application;
@@ -58,6 +59,7 @@ public class ExportPipelineAction extends AbstractAction {
 		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
 		fileChooser.addChoosableFileFilter(FileType.BASH.getFileFilter());
 		fileChooser.addChoosableFileFilter(FileType.CMD.getFileFilter());
+		fileChooser.addChoosableFileFilter(FileType.ALLTYPES.getFileFilter());
 
 		int result = fileChooser.showSaveDialog(null);
 
@@ -71,13 +73,24 @@ public class ExportPipelineAction extends AbstractAction {
 			}
 
 			try {
-				ModelProxy
-						.getInstance()
-						.getPipeline()
-						.exportPipeline(
-								file,
-								FileType.fileTypeFor(fileChooser
-										.getSelectedFile()));
+				FileType type = FileType.fileTypeFor(fileChooser
+						.getSelectedFile());
+
+				if (type == null) {
+					JOptionPane
+							.showMessageDialog(
+									null,
+									I18N.getInstance()
+											.getString(
+													"Controller.Actions.ExportPipeline.NoValidFileExtension"),
+									I18N.getInstance()
+											.getString(
+													"Controller.Actions.ExportPipeline.NoValidFileExtension.Title"),
+									JOptionPane.WARNING_MESSAGE);
+				} else {
+					ModelProxy.getInstance().getPipeline()
+							.exportPipeline(file, type);
+				}
 			} catch (FileException e1) {
 				String message = I18N.getInstance().getString(
 						"Controller.Actions.Save.Failed." + e1.getType(),

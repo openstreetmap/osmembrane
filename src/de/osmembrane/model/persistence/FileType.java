@@ -43,6 +43,8 @@ public enum FileType {
 	 */
 	EXECUTION_FILETYPE(null, null, ExecutionParser.class);
 	
+	private static final FileType[] autoselectableFileTypes = {BASH, CMD, OSMEMBRANE};
+	
 	/**
 	 * {@link FileType} as a string.
 	 */
@@ -52,7 +54,7 @@ public enum FileType {
 	 * Matching persistence for the {@link FileType}.
 	 */
 	private Class<? extends AbstractPersistence> persistenceClass;
-
+	
 	/**
 	 * Matching parser for the {@link FileType}.
 	 */
@@ -93,6 +95,10 @@ public enum FileType {
 
 			@Override
 			public boolean accept(File f) {
+				if (getAllExtensions() == null) {
+					return false;
+				}
+				
 				for(String extension : getAllExtensions()) {
 					if (f.getName().toLowerCase().endsWith(extension) || f.isDirectory()) {
 						return true;
@@ -153,7 +159,7 @@ public enum FileType {
 	 * @return filetype if a matching one is found, otherwise NULL
 	 */
 	public static FileType fileTypeFor(File file) {
-		for(FileType fileType : FileType.values()) {
+		for(FileType fileType : autoselectableFileTypes) {
 			if (fileType.getFileFilter().accept((file)) && fileType != ALLTYPES) {
 				return fileType;
 			}
