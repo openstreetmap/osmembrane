@@ -10,18 +10,18 @@ import de.osmembrane.controller.ICallable;
 public interface IExecutionStateDialog {
 	
 	/**
-	 * Sets the status of the execution action.
+	 * Sets the shown status of the execution action.
 	 * 
 	 * @param status status to be set
 	 */
 	public void setStatus(String status);
 	
 	/**
-	 * Sets the progress of the bar.
+	 * Sets the progress of a status bar.
 	 * 
-	 * @param progress progress to be set
+	 * @param progress 0 <= progress <= 100 to be set
 	 */
-	public void setProgress(double progress);
+	public void setProgress(int progress);
 	
 	/**
 	 * Adds a line to the output.
@@ -31,20 +31,16 @@ public interface IExecutionStateDialog {
 	public void addOutputLine(String outputLine);
 	
 	/**
-	 * Clears the window.
+	 * Clears the contents of the window.
 	 */
 	public void clear();
-	
-	/**
-	 * Closes the window.
-	 */
-	public void dispose();
 	
 	/**
 	 * Adds a callback object, which is called if the window is closed.<br/>
 	 * Callback should be replied with the instance-object of the dialog.
 	 * 
 	 * @param callable which should be called if the windows was closed
+	 * @deprecated to be replaced with other function
 	 */
 	public void setCallbackObject(ICallable callable);
 }
