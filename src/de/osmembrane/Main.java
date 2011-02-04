@@ -27,12 +27,12 @@ public class Main {
 		// set the correct locale
 		application.setLocale();
 		
+		// initiate the most basic stuff
+		application.initiate();
+		
 		// check if a backup file is available
 		application.checkForBackup();
 		
-		// initiate the most basic stuff
-		application.initiate();
-
 		// standard method to start Swing GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

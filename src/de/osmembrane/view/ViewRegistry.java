@@ -65,7 +65,6 @@ public class ViewRegistry extends Observable implements Observer {
 			// if setLookAndFeel() failed
 			Application.handleException(e);
 		}
-
 	}
 
 	/**

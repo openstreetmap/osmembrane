@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
+import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
@@ -30,6 +31,12 @@ public class Application {
 			// connect model and view
 			ModelProxy.getInstance().addObserver(ViewRegistry.getInstance());
 
+			// guarantee the View is initialized
+			ViewRegistry.getInstance();
+			
+			// guarantee the Controller is initialized
+			ActionRegistry.getInstance();
+			
 			// set the EDT Exception handler
 			System.setProperty("sun.awt.exception.handler",
 					EDTExceptionHandler.class.getName());
