@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
+import de.osmembrane.controller.events.ContainingEvent;
+import de.osmembrane.controller.events.ContainingLocationEvent;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.settings.AbstractFunctionPreset;
