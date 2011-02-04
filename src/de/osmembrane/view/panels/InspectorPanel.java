@@ -124,6 +124,12 @@ public class InspectorPanel extends JPanel implements Observer {
 	private AbstractFunction inspecting = null;
 
 	/**
+	 * Buttons to load and save FunctionPresets.
+	 */
+	private JButton savePreset;
+	private JButton loadPreset;
+
+	/**
 	 * Initializes the {@link InspectorPanel} and display
 	 */
 	public InspectorPanel() {
@@ -142,10 +148,12 @@ public class InspectorPanel extends JPanel implements Observer {
 
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(1, 2));
-		buttons.add(new JButton(ActionRegistry.getInstance().get(
-				LoadFunctionPresetAction.class)));
-		buttons.add(new JButton(ActionRegistry.getInstance().get(
-				SaveFunctionPresetAction.class)));
+		loadPreset = new JButton(ActionRegistry.getInstance().get(
+				LoadFunctionPresetAction.class));
+		buttons.add(loadPreset);
+		savePreset = new JButton(ActionRegistry.getInstance().get(
+				SaveFunctionPresetAction.class));
+		buttons.add(savePreset);
 		functionCaption.add(buttons, BorderLayout.EAST);
 
 		// display
@@ -437,6 +445,8 @@ public class InspectorPanel extends JPanel implements Observer {
 			} /* for */
 		}
 
+		loadPreset.setEnabled((inspect != null));
+		savePreset.setEnabled((inspect != null));
 		propertyTableModel.fireTableDataChanged();
 	}
 

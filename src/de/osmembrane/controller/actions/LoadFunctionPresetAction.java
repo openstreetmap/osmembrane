@@ -13,10 +13,13 @@ import de.osmembrane.model.settings.AbstractFunctionPreset;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
+import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.MainFrame;
+import de.osmembrane.view.interfaces.IMainFrame;
+import de.osmembrane.view.panels.PipelineFunction;
 
 /**
- * Action to load saved presets for a specific function. Gets a
- * {@link ContainingLocationEvent} with the function to be edited.
+ * Action to load saved presets for a specific function. 
  * 
  * @author tobias_kuhn
  * 
@@ -43,8 +46,12 @@ public class LoadFunctionPresetAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ContainingEvent event = (ContainingEvent) e;
-		AbstractFunction function = (AbstractFunction) event.getContained();
+		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(MainFrame.class, IMainFrame.class);
+		Object select = mainFrame.getSelected();
+		if ((select == null) || !(select instanceof PipelineFunction)) {
+			return;
+		}				
+		AbstractFunction function = ((PipelineFunction) select).getModelFunction();
 		
 		AbstractFunctionPreset afp[] = ModelProxy.getInstance().getSettings().getAllFunctionPresets(function);
 		
