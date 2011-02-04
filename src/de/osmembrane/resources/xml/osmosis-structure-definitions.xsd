@@ -175,6 +175,11 @@
             <documentation>The type of the list, only required if type is list.</documentation>
           </annotation>
         </attribute>
+		<attribute name="hasSpaces" type="boolean" default="false">
+          <annotation>
+            <documentation>If hasSpaces is activated the parameter is the only one 'cause also spaces are allowed inside the parameter value.</documentation>
+          </annotation>
+        </attribute>
         <attribute name="booleanEncoding" default="yesno">
           <annotation>
             <documentation>Specifies the encoding of the boolean values on the Osmosis command line for boolean parameters.</documentation>

@@ -61,6 +61,21 @@ public abstract class AbstractTask extends Observable implements Observer,
 	public abstract AbstractParameter[] getParameters();
 
 	/**
+	 * Returns the bbox string.
+	 * @return the bbox string, and if task has no bbox parameter NULL
+	 */
+	public abstract String getBBox();
+	
+	/**
+	 * Sets the bbox value to the given one.
+	 * 
+	 * @param bbox given bbox string
+	 * 
+	 * @throws ArrayStoreException if bbox has not not 4 comma separated parameters
+	 */
+	public abstract boolean setBBox(String bbox);
+	
+	/**
 	 * Returns the input pipes for the {@link XMLTask} (required for {@link AbstractFunction}).
 	 * 
 	 * @return input pipes of the {@link XMLTask}

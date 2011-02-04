@@ -26,24 +26,25 @@ public class Task extends AbstractTask {
 	 */
 	transient private XMLTask xmlTask;
 	private Identifier xmlTaskIdentifier;
-	
+
 	/**
 	 * Parameters which are bound to this Task.
 	 */
 	private List<Parameter> parameters = new ArrayList<Parameter>();
-	
+
 	/**
 	 * Creates a new Task.
 	 * 
-	 * @param xmlTask {@link XMLTask} which will be represented by this instance.
+	 * @param xmlTask
+	 *            {@link XMLTask} which will be represented by this instance.
 	 */
 	public Task(XMLTask xmlTask) {
 		this.xmlTask = xmlTask;
-		
+
 		/* set the identifier */
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlTaskIdentifier = afp.getMatchingXMLTaskIdentifier(this.xmlTask);
-		
+
 		for (XMLParameter xmlParam : xmlTask.getParameter()) {
 			Parameter param = new Parameter(xmlParam);
 			param.addObserver(this);
@@ -77,16 +78,75 @@ public class Task extends AbstractTask {
 		if (xmlTask.getFriendlyName() == null) {
 			return getName();
 		}
-		
+
 		return getName() + " (" + xmlTask.getFriendlyName() + ")";
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		Parameter[] parameters = new Parameter[this.parameters.size()];
 		return this.parameters.toArray(parameters);
 	}
-	
+
+	@Override
+	public String getBBox() {
+		Parameter left = null, right = null, top = null, bottom = null;
+
+		for (Parameter param : getParameters()) {
+			if (param.getType() == ParameterType.BBOX) {
+				if (param.getName().toLowerCase().equals("left")) {
+					left = param;
+				} else if (param.getName().toLowerCase().equals("right")) {
+					right = param;
+				} else if (param.getName().toLowerCase().equals("top")) {
+					top = param;
+				} else if (param.getName().toLowerCase().equals("bottom")) {
+					bottom = param;
+				}
+			}
+		}
+
+		if (left != null && right != null && top != null && bottom != null) {
+			return left.getValue() + "," + right.getValue() + ","
+					+ top.getValue() + "," + bottom.getValue();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public boolean setBBox(String bbox) {
+		String[] bboxArray = bbox.split(",");
+		if (bboxArray.length != 4) {
+			throw new ArrayStoreException("bbox should have 4 comma separated parameters.");
+		}
+		
+		String left = bboxArray[0];
+		String right = bboxArray[1];
+		String top = bboxArray[2];
+		String bottom = bboxArray[3];
+		
+		for (Parameter param : getParameters()) {
+			if (param.getType() == ParameterType.BBOX) {
+				if (param.getName().toLowerCase().equals("left")) {
+					param.setValue(left);
+					left = null;
+				} else if (param.getName().toLowerCase().equals("right")) {
+					param.setValue(right);
+					right = null;
+				} else if (param.getName().toLowerCase().equals("top")) {
+					param.setValue(top);
+					top = null;
+				} else if (param.getName().toLowerCase().equals("bottom")) {
+					param.setValue(bottom);
+					bottom = null;
+				}
+			}
+		}
+		
+		return (left == null && right == null && top == null && bottom == null);
+	}
+
 	@Override
 	protected List<XMLPipe> getInputPipe() {
 		return xmlTask.getInputPipe();
@@ -96,7 +156,7 @@ public class Task extends AbstractTask {
 	protected List<XMLPipe> getOutputPipe() {
 		return xmlTask.getOutputPipe();
 	}
-	
+
 	@Override
 	public void update(Observable o, Object arg) {
 		/* A parameter got a change (anything changed) */
@@ -107,27 +167,27 @@ public class Task extends AbstractTask {
 	@Override
 	public Task copy(CopyType type) {
 		Task newTask = new Task(this.xmlTask);
-		
+
 		/* copy the parameters */
 		newTask.parameters.clear();
-		for(Parameter param : this.parameters) {
+		for (Parameter param : this.parameters) {
 			Parameter newParam = param.copy(type);
 			newParam.addObserver(newTask);
 			newTask.parameters.add(newParam);
 		}
-		
+
 		return newTask;
 	}
-	
+
 	private Object readResolve() throws ObjectStreamException {
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlTask = afp.getMatchingXMLTask(this.xmlTaskIdentifier);
-		
+
 		/* create the observers */
 		for (Parameter param : parameters) {
 			param.addObserver(this);
 		}
-		
+
 		return this;
 	}
 }
