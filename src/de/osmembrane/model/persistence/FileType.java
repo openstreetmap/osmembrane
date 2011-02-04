@@ -6,6 +6,7 @@ import javax.swing.filechooser.FileFilter;
 
 import de.osmembrane.model.parser.BashParser;
 import de.osmembrane.model.parser.CmdParser;
+import de.osmembrane.model.parser.ExecutionParser;
 import de.osmembrane.model.parser.IParser;
 import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.tools.I18N;
@@ -35,7 +36,12 @@ public enum FileType {
 	/**
 	 * All filetypes together.
 	 */
-	ALLTYPES(new String[]{".osmembrane", ".bat", ".cmd", ".sh"}, null, null);
+	ALLTYPES(new String[]{".osmembrane", ".bat", ".cmd", ".sh"}, null, null),
+	
+	/**
+	 * Only used to generate a pipeline compatible with the execution library.
+	 */
+	EXECUTION_FILETYPE(null, null, ExecutionParser.class);
 	
 	/**
 	 * {@link FileType} as a string.

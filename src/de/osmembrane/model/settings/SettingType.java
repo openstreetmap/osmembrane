@@ -49,7 +49,12 @@ public enum SettingType {
 	/**
 	 * Coordinate raster size.
 	 */
-	PIPELINE_RASTER_SIZE(Integer.class, Constants.DEFAULT_PIPELINE_RASTER_SIZE);
+	PIPELINE_RASTER_SIZE(Integer.class, Constants.DEFAULT_PIPELINE_RASTER_SIZE),
+	
+	/**
+	 * The working directory for execution and preview.
+	 */
+	DEFAULT_WORKING_DIRECTORY(String.class, Constants.DEFAULT_WORKING_DIRECTORY);
 
 	private Class<?> clazz;
 	private Object defaultValue;

@@ -117,6 +117,11 @@ public class Constants {
 	public static final double PIPELINE_FUNCTION_MINIMAL_Y_DISTANCE = 130.0;
 
 	/**
+	 * The default working directory.
+	 */
+	public static final String DEFAULT_WORKING_DIRECTORY = System.getProperty("java.io.tmpdir");
+
+	/**
 	 * static method
 	 */
 	static {

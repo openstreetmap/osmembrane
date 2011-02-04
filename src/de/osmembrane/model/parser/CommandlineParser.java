@@ -32,6 +32,11 @@ public class CommandlineParser implements IParser {
 	protected String breaklineCommand = "\n";
 
 	protected String DEFAULT_KEY = "DEFAULTKEY";
+	
+	/**
+	 * If it is not set, the osmosis path will not be added to the pipeline.
+	 */
+	private boolean addOsmosisPath = true;
 
 	protected static final Pattern PATTERN_TASK = Pattern.compile(
 			"--([^ ]+)(.*?)((?=--)|$)", Pattern.CASE_INSENSITIVE
@@ -376,9 +381,11 @@ public class CommandlineParser implements IParser {
 		}
 
 		/* add the path to the osmosis binary */
-		builder.append("\""
-				+ (String) ModelProxy.getInstance().getSettings()
-						.getValue(SettingType.DEFAULT_OSMOSIS_PATH) + "\"");
+		if(addOsmosisPath) {
+			builder.append("\""
+					+ (String) ModelProxy.getInstance().getSettings()
+							.getValue(SettingType.DEFAULT_OSMOSIS_PATH) + "\"");
+		}
 
 		/* do the parsing while a function is in the queue */
 		while (!functionQueue.isEmpty()) {
@@ -593,6 +600,10 @@ public class CommandlineParser implements IParser {
 		builder.append(" ");
 		builder.append(breaklineSymbol);
 		builder.append(breaklineCommand);
+	}
+
+	public void addOsmosisPath(boolean addOsmosisPath) {
+		this.addOsmosisPath = addOsmosisPath;
 	}
 
 }
