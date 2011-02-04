@@ -19,6 +19,13 @@ public abstract class AbstractTask extends Observable implements Observer,
 	private static final long serialVersionUID = 2011011821110001L;
 
 	/**
+	 * Returns the parent function to which the task belongs to.
+	 * 
+	 * @return the parental function
+	 */
+	public abstract AbstractFunction getParent();
+	
+	/**
 	 * Returns the description of the {@link AbstractTask}.
 	 * 
 	 * @return description of the task
@@ -92,5 +99,5 @@ public abstract class AbstractTask extends Observable implements Observer,
 	/**
 	 * Copies the task.
 	 */
-	public abstract AbstractTask copy(CopyType type);
+	public abstract AbstractTask copy(CopyType type, AbstractFunction newFunction);
 }

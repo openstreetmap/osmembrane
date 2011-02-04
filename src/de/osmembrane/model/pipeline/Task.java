@@ -21,6 +21,8 @@ public class Task extends AbstractTask {
 
 	private static final long serialVersionUID = 2011011821570001L;
 
+	private AbstractFunction parentFunction;
+	
 	/**
 	 * The {@link XMLTask} which is represented by this instance.
 	 */
@@ -38,20 +40,26 @@ public class Task extends AbstractTask {
 	 * @param xmlTask
 	 *            {@link XMLTask} which will be represented by this instance.
 	 */
-	public Task(XMLTask xmlTask) {
+	public Task(AbstractFunction parentFunction, XMLTask xmlTask) {
 		this.xmlTask = xmlTask;
+		this.parentFunction = parentFunction;
 
 		/* set the identifier */
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlTaskIdentifier = afp.getMatchingXMLTaskIdentifier(this.xmlTask);
 
 		for (XMLParameter xmlParam : xmlTask.getParameter()) {
-			Parameter param = new Parameter(xmlParam);
+			Parameter param = new Parameter(this, xmlParam);
 			param.addObserver(this);
 			parameters.add(param);
 		}
 	}
 
+	@Override
+	public AbstractFunction getParent() {
+		return parentFunction;
+	}
+	
 	@Override
 	public String getDescription() {
 		return I18N.getInstance().getDescription(xmlTask);
@@ -165,13 +173,13 @@ public class Task extends AbstractTask {
 	}
 
 	@Override
-	public Task copy(CopyType type) {
-		Task newTask = new Task(this.xmlTask);
+	public Task copy(CopyType type, AbstractFunction newFunction) {
+		Task newTask = new Task(parentFunction, this.xmlTask);
 
 		/* copy the parameters */
 		newTask.parameters.clear();
 		for (Parameter param : this.parameters) {
-			Parameter newParam = param.copy(type);
+			Parameter newParam = param.copy(type, newTask);
 			newParam.addObserver(newTask);
 			newTask.parameters.add(newParam);
 		}

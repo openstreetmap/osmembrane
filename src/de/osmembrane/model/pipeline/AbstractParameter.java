@@ -14,6 +14,13 @@ public abstract class AbstractParameter extends Observable implements
 	private static final long serialVersionUID = 2011011820530001L;
 
 	/**
+	 * Returns the task which this parameter belongs to.
+	 * 
+	 * @return the parental task
+	 */
+	public abstract AbstractTask getParent();
+	
+	/**
 	 * Returns the name of the task.
 	 * 
 	 * @return name of the task
@@ -107,5 +114,5 @@ public abstract class AbstractParameter extends Observable implements
 	/**
 	 * Copies the parameter.
 	 */
-	public abstract AbstractParameter copy(CopyType type);
+	public abstract AbstractParameter copy(CopyType type, AbstractTask task);
 }

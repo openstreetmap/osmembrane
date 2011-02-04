@@ -11,7 +11,7 @@ import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.tools.I18N;
 
 /**
- * Implemenation of {@link AbstractParameter}.
+ * Implementation of {@link AbstractParameter}.
  * 
  * @author jakob_jarosch
  */
@@ -31,6 +31,11 @@ public class Parameter extends AbstractParameter {
 	private List<EnumValue> enumValues = new ArrayList<EnumValue>();
 	
 	/**
+	 * Parent task.
+	 */
+	private AbstractTask parentTask;
+	
+	/**
 	 * Type of the parameter.
 	 */
 	private ParameterType type;
@@ -45,10 +50,11 @@ public class Parameter extends AbstractParameter {
 	 * 
 	 * @param xmlParam XML counterpart which should be represented by the {@link Parameter}.
 	 */
-	public Parameter(XMLParameter xmlParam) {
+	public Parameter(AbstractTask parentTask, XMLParameter xmlParam) {
 		this.type = ParameterType.parseString(xmlParam.getType());
 		this.value = xmlParam.getDefaultValue();
 		this.xmlParam = xmlParam;
+		this.parentTask = parentTask;
 		
 		/* set the identifiers */
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
@@ -58,6 +64,11 @@ public class Parameter extends AbstractParameter {
 		for(XMLEnumValue xmlEnum : xmlParam.getEnumValue()) {
 			enumValues.add(new EnumValue(xmlEnum));
 		}
+	}
+
+	@Override
+	public AbstractTask getParent() {
+		return parentTask;
 	}
 
 	@Override
@@ -140,8 +151,8 @@ public class Parameter extends AbstractParameter {
 	}
 
 	@Override
-	public Parameter copy(CopyType type) {
-		Parameter newParam = new Parameter(this.xmlParam);
+	public Parameter copy(CopyType type, AbstractTask task) {
+		Parameter newParam = new Parameter(task,  this.xmlParam);
 		
 		/* copy the param-value */
 		if(type.copyValues()) {

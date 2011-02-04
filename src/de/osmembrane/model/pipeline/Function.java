@@ -78,7 +78,7 @@ public class Function extends AbstractFunction {
 
 		/* add task observers */
 		for (XMLTask xmlTask : xmlFunction.getTask()) {
-			Task task = new Task(xmlTask);
+			Task task = new Task(this, xmlTask);
 			task.addObserver(this);
 			tasks.add(task);
 		}
@@ -372,7 +372,7 @@ public class Function extends AbstractFunction {
 		/* copy the tasks */
 		newFunction.tasks.clear();
 		for (Task task : this.tasks) {
-			Task newTask = task.copy(type);
+			Task newTask = task.copy(type, newFunction);
 			newTask.addObserver(newFunction);
 			newFunction.tasks.add(newTask);
 
