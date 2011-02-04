@@ -9,12 +9,14 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -22,10 +24,12 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileFilter;
 
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
+import de.osmembrane.view.components.JTextFieldWithButton;
 import de.osmembrane.view.interfaces.ISettingsDialog;
 
 /**
@@ -46,12 +50,17 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 	/**
 	 * Components to edit the Osmosis default path
 	 */
-	private JTextField osmosisPath;
+	private JTextFieldWithButton osmosisPath;
 
 	/**
 	 * Components to edit the JOSM default path
 	 */
-	private JTextField josmPath;
+	private JTextFieldWithButton josmPath;
+
+	/**
+	 * Components to edit the working path
+	 */
+	private JTextFieldWithButton workingPath;
 
 	/**
 	 * Components to edit the default zoom
@@ -80,9 +89,12 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 	 */
 	private JSpinner maxUndoSteps;
 
+	/**
+	 * Components to edit the grid size
+	 */
 	private JLabel rasterSizeDisplay;
-
 	private JSlider rasterSize;
+	private JCheckBox rasterSizeEnable;
 
 	/**
 	 * Generates a new {@link SettingsDialog}.
@@ -132,6 +144,37 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		final int minFieldWidth = 256;
 		final int minSpinnerWidth = 64;
 
+		ActionListener selectFiles = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final JTextFieldWithButton jtfwb = (JTextFieldWithButton) ((JButton) e
+						.getSource()).getParent();
+
+				JFileChooser fc = new JFileChooser();
+				fc.setSelectedFile(new File(jtfwb.getValue()));
+				if (jtfwb.equals(workingPath)) {
+					fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					fc.setAcceptAllFileFilterUsed(false);
+				}
+				fc.setFileFilter(new FileFilter() {
+
+					@Override
+					public String getDescription() {
+						return jtfwb.getToolTipText();
+					}
+
+					@Override
+					public boolean accept(File f) {
+						return (jtfwb.equals(workingPath)) ? f.isDirectory()
+								: f.canExecute();
+					}
+				});
+				if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+					jtfwb.setValue(fc.getSelectedFile().getAbsolutePath());
+				}
+			}
+		};
+
 		gbc.gridy = 0;
 		gbc.gridx = 0;
 		settings.add(
@@ -139,11 +182,12 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 						"Model.Settings.Type.DEFAULT_OSMOSIS_PATH")
 						+ ":"), gbc);
 		gbc.gridx = 1;
-		osmosisPath = new JTextField();
+		osmosisPath = new JTextFieldWithButton("", "...");
 		osmosisPath.setPreferredSize(new Dimension(minFieldWidth, osmosisPath
 				.getPreferredSize().height));
 		osmosisPath.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.DEFAULT_OSMOSIS_PATH.Description"));
+		osmosisPath.addButtonActionListener(selectFiles);
 		settings.add(osmosisPath, gbc);
 
 		gbc.gridy = 1;
@@ -153,14 +197,30 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 						"Model.Settings.Type.DEFAULT_JOSM_PATH")
 						+ ":"), gbc);
 		gbc.gridx = 1;
-		josmPath = new JTextField();
+		josmPath = new JTextFieldWithButton("", "...");
 		josmPath.setPreferredSize(new Dimension(minFieldWidth, josmPath
 				.getPreferredSize().height));
 		josmPath.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.DEFAULT_JOSM_PATH.Description"));
+		josmPath.addButtonActionListener(selectFiles);
 		settings.add(josmPath, gbc);
 
 		gbc.gridy = 2;
+		gbc.gridx = 0;
+		settings.add(
+				new JLabel(I18N.getInstance().getString(
+						"Model.Settings.Type.DEFAULT_WORKING_DIRECTORY")
+						+ ":"), gbc);
+		gbc.gridx = 1;
+		workingPath = new JTextFieldWithButton("", "...");
+		workingPath.setPreferredSize(new Dimension(minFieldWidth, workingPath
+				.getPreferredSize().height));
+		workingPath.setToolTipText(I18N.getInstance().getString(
+				"Model.Settings.Type.DEFAULT_WORKING_DIRECTORY.Description"));
+		workingPath.addButtonActionListener(selectFiles);
+		settings.add(workingPath, gbc);
+
+		gbc.gridy = 3;
 		gbc.gridx = 0;
 		settings.add(
 				new JLabel(I18N.getInstance().getString(
@@ -174,7 +234,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 				"Model.Settings.Type.ACTIVE_LANGUAGE.Description"));
 		settings.add(language, gbc);
 
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		gbc.gridx = 0;
 		settings.add(
 				new JLabel(I18N.getInstance().getString(
@@ -184,18 +244,20 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		defaultZoomDisplay = new JLabel("");
 		settings.add(defaultZoomDisplay, gbc);
 
-		gbc.gridy = 4;
+		gbc.gridy = 5;
 		gbc.gridx = 0;
 		gbc.gridwidth = 2;
-		defaultZoom = new JSlider(1, 2000);
-		defaultZoom.setMajorTickSpacing(1000);
-		defaultZoom.setMinorTickSpacing(50);
+		defaultZoom = new JSlider(1, 200);
+		defaultZoom.setMajorTickSpacing(10);
+		defaultZoom.setMinorTickSpacing(1);
 		defaultZoom.setPaintTicks(true);
 		defaultZoom.setPaintLabels(false);
+		defaultZoom.setPreferredSize(new Dimension(minFieldWidth, defaultZoom
+				.getPreferredSize().height));
 		defaultZoom.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.DEFAULT_ZOOM_SIZE.Description"));
 		defaultZoom.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				double x = defaultZoomToModel(defaultZoom.getValue());
@@ -210,8 +272,11 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		gbc.gridwidth = 2;
 		shortTasks = new JCheckBox(I18N.getInstance().getString(
 				"Model.Settings.Type.USE_SHORT_TASK_NAMES_IF_AVAILABLE"));
-		shortTasks.setToolTipText(I18N.getInstance().getString(
-				"Model.Settings.Type.USE_SHORT_TASK_NAMES_IF_AVAILABLE.Description"));
+		shortTasks
+				.setToolTipText(I18N
+						.getInstance()
+						.getString(
+								"Model.Settings.Type.USE_SHORT_TASK_NAMES_IF_AVAILABLE.Description"));
 		settings.add(shortTasks, gbc);
 		gbc.gridwidth = 1;
 
@@ -220,8 +285,11 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		gbc.gridwidth = 2;
 		defaultParamExport = new JCheckBox(I18N.getInstance().getString(
 				"Model.Settings.Type.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES"));
-		defaultParamExport.setToolTipText(I18N.getInstance().getString(
-				"Model.Settings.Type.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES.Description"));
+		defaultParamExport
+				.setToolTipText(I18N
+						.getInstance()
+						.getString(
+								"Model.Settings.Type.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES.Description"));
 		settings.add(defaultParamExport, gbc);
 		gbc.gridwidth = 1;
 
@@ -238,22 +306,28 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		maxUndoSteps.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.MAXIMUM_UNDO_STEPS.Description"));
 		settings.add(maxUndoSteps, gbc);
-		
-		gbc.gridy = 3;
+
+		gbc.gridy = 4;
 		gbc.gridx = 2;
-		settings.add(
-				new JLabel(I18N.getInstance().getString(
-						"Model.Settings.Type.PIPELINE_RASTER_SIZE")
-						+ ":"), gbc);
+		rasterSizeEnable = new JCheckBox(I18N.getInstance().getString(
+				"Model.Settings.Type.PIPELINE_RASTER_SIZE")
+				+ ":");
+		rasterSizeEnable.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				rasterSize.setEnabled(rasterSizeEnable.isSelected());
+			}
+		});
+		settings.add(rasterSizeEnable, gbc);
 		gbc.gridx = 3;
 		rasterSizeDisplay = new JLabel("");
 		settings.add(rasterSizeDisplay, gbc);
-		
-		gbc.gridy = 4;
+
+		gbc.gridy = 5;
 		gbc.gridx = 2;
 		gbc.gridwidth = 2;
-		rasterSize = new JSlider(0, 11);
-		rasterSize.setMajorTickSpacing(4);
+		rasterSize = new JSlider(1, 100);
+		rasterSize.setMajorTickSpacing(10);
 		rasterSize.setMinorTickSpacing(1);
 		rasterSize.setPaintTicks(true);
 		rasterSize.setPaintLabels(false);
@@ -261,11 +335,11 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		rasterSize.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.PIPELINE_RASTER_SIZE.Description"));
 		rasterSize.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				double x = rasterSizeToModel(rasterSize.getValue());
-				rasterSizeDisplay.setText(String.valueOf(x));
+				int x = rasterSizeToModel(rasterSize.getValue());
+				rasterSizeDisplay.setText(String.valueOf(x) + " px");
 			}
 		});
 		settings.add(rasterSize, gbc);
@@ -291,59 +365,66 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		}
 		language.setModel(new DefaultComboBoxModel(localeStrings));
 	}
-	
+
 	/**
-	 * Translates a JSlider value in [1,2000] to a modelValue of (0,10].
-	 * @param viewValue the slider position in [1,2000]
+	 * Translates a JSlider value in [1,200] to a modelValue of (0,10].
+	 * 
+	 * @param viewValue
+	 *            the slider position in [1,200]
 	 * @return the modelValue in (0,2]
 	 */
 	private double defaultZoomToModel(int viewValue) {
-		return (double) viewValue / 1000.0;
+		return (double) viewValue / 100.0;
 	}
-	
+
 	/**
-	 * Translates a modelValue of (0,2] to a JSlider value in [1,2000].
-	 * @param modelValue the modelValue in (0,2]
-	 * @return the slider position in [0,2000]
+	 * Translates a modelValue of (0,2] to a JSlider value in [1,200].
+	 * 
+	 * @param modelValue
+	 *            the modelValue in (0,2]
+	 * @return the slider position in [0,200]
 	 */
 	private int defaultZoomFromModel(double modelValue) {
-		return (int) (1000.0 * modelValue);
+		return (int) (100.0 * modelValue);
 	}
-	
+
 	/**
-	 * Translates a JSlider value of [0,11] to a model value in [0,1024]
-	 * @param viewValue JSlider value in [0,11]
-	 * @return the the modelValue in [0,1024]
+	 * Translates a JSlider value of [0,100] to a model value in [0,500]
+	 * 
+	 * @param viewValue
+	 *            JSlider value in [0,100]
+	 * @return the the modelValue in [0,500]
 	 */
 	private int rasterSizeToModel(int viewValue) {
-		if (viewValue == 0) {
+		if (!rasterSizeEnable.isSelected()) {
 			return 0;
 		} else {
-			return (int) Math.pow(2.0, viewValue - 1);
+			return 5 * rasterSize.getValue();
 		}
 	}
-	
+
 	/**
-	 * Translates a modelValue of [0,1024] to a JSlider value in [0,11]
-	 * @param viewValue the modelValue in [0,1024]
-	 * @return the JSlider value in [0,11]
+	 * Translates a modelValue of [0,500] to a JSlider value in [0,100]
+	 * 
+	 * @param viewValue
+	 *            the modelValue in [0,500]
+	 * @return the JSlider value in [0,100]
 	 */
 	private int rasterSizeFromModel(int modelValue) {
-		if ((int) modelValue == 0) {
-			return 0;
-		} else {
-			return (int) (Math.log(modelValue) / Math.log(2.0)) - 1;
-		}
+		return modelValue / 5;
 	}
 
 	@Override
 	public Object getValue(SettingType type) {
 		switch (type) {
 		case DEFAULT_OSMOSIS_PATH:
-			return this.osmosisPath.getText();
+			return this.osmosisPath.getValue();
 
 		case DEFAULT_JOSM_PATH:
-			return this.josmPath.getText();
+			return this.josmPath.getValue();
+
+		case DEFAULT_WORKING_DIRECTORY:
+			return this.workingPath.getValue();
 
 		case ACTIVE_LANGUAGE:
 			int selected = this.language.getSelectedIndex();
@@ -364,7 +445,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 			return this.maxUndoSteps.getValue();
 
 		case PIPELINE_RASTER_SIZE:
-			int y = this.rasterSize.getValue(); 
+			int y = this.rasterSize.getValue();
 			return rasterSizeToModel(y);
 
 		default:
@@ -376,27 +457,32 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 	public void setValue(SettingType type, Object value) {
 		switch (type) {
 		case DEFAULT_OSMOSIS_PATH:
-			this.osmosisPath.setText((String) value);
+			this.osmosisPath.setValue((String) value);
 			break;
 
 		case DEFAULT_JOSM_PATH:
-			this.josmPath.setText((String) value);
+			this.josmPath.setValue((String) value);
+			break;
+
+		case DEFAULT_WORKING_DIRECTORY:
+			this.workingPath.setValue((String) value);
 			break;
 
 		case ACTIVE_LANGUAGE:
 			Locale newLocale = (Locale) value;
 			for (int i = 0; i < locales.length; i++) {
 				if (locales[i].equals(newLocale)) {
-					language.setSelectedIndex(i);
+					this.language.setSelectedIndex(i);
 					return;
 				}
 			}
-			language.setSelectedIndex(-1);
+			this.language.setSelectedIndex(-1);
 			break;
 
 		case DEFAULT_ZOOM_SIZE:
 			double x = (Double) value;
-			defaultZoom.setValue(defaultZoomFromModel(x));
+			this.defaultZoom.setValue(0);
+			this.defaultZoom.setValue(defaultZoomFromModel(x));
 			break;
 
 		case USE_SHORT_TASK_NAMES_IF_AVAILABLE:
@@ -410,10 +496,14 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		case MAXIMUM_UNDO_STEPS:
 			this.maxUndoSteps.setValue((Integer) value);
 			break;
-			
+
 		case PIPELINE_RASTER_SIZE:
-			int y = (Integer) value;
-			this.rasterSize.setValue(rasterSizeFromModel(y));
+			int rasterSize = rasterSizeFromModel((Integer) value);
+			this.rasterSizeEnable.setSelected(rasterSize != 0);
+			this.rasterSize.setEnabled(rasterSize != 0);
+			this.rasterSize.setValue(0);
+			this.rasterSize.setValue(rasterSize);
+			break;
 		}
 	}
 

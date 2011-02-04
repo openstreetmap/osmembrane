@@ -350,6 +350,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					JTextFieldWithButton jtfwbBB = new JTextFieldWithButton(
 							ap.getValue(), EDIT_BUTTON_CAPTION);
 					jtfwbBB.fieldNoBorders();
+					//jtfwbBB.setValue("(Bounding Box)", false);
 					jtfwbBB.addButtonActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
