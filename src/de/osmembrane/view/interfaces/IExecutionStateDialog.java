@@ -1,7 +1,5 @@
 package de.osmembrane.view.interfaces;
 
-import de.osmembrane.controller.ICallable;
-
 /**
  * Interface for {@link ExecutionStateDialog}.
  * 
@@ -42,5 +40,5 @@ public interface IExecutionStateDialog {
 	 * @param callable which should be called if the windows was closed
 	 * @deprecated to be replaced with other function
 	 */
-	public void setCallbackObject(ICallable callable);
+	public void setCallbackObject();
 }

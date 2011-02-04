@@ -164,6 +164,14 @@ public class PipelineConnector extends DisplayTemplatePanel {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
+				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
+						PipelineConnector.this, e, pipeline);
+
+				switch (pipeline.getActiveTool()) {
+				case VIEW_TOOL:
+					pipeline.dispatchEvent(pipelineEvent);
+					break;
+				}
 			}
 		});
 
