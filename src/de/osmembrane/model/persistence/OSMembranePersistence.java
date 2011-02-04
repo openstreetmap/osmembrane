@@ -26,6 +26,14 @@ import de.osmembrane.tools.I18N;
  */
 public class OSMembranePersistence extends AbstractPersistence {
 
+	private Thread autosaveThread = new Thread() {
+		
+		@Override
+		public void run() {
+			
+		}
+	};
+	
 	@Override
 	public void save(URL file, Object data) throws FileException {
 		if (!(data instanceof List<?>)) {

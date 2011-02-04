@@ -197,7 +197,7 @@ public class Function extends AbstractFunction {
 		Integer rasterInt = (Integer) ModelProxy.getInstance().getSettings()
 				.getValue(SettingType.PIPELINE_RASTER_SIZE);
 		double raster = (double) rasterInt.intValue();
-		if (raster < 1) {
+		if (raster < 1.0) {
 			return coordinate;
 		} else {
 			/* filter the coordinates, use the modulo function,

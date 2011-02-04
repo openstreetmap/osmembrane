@@ -13,7 +13,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.SwingWorker;
 
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
