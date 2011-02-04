@@ -46,8 +46,6 @@ public class ExitAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO implement
-
 		/* Ask if the Pipeline should be saved, if that is not so. */
 		if (!ModelProxy.getInstance().getPipeline().isSaved()) {
 			int result = JOptionPane.showConfirmDialog(
@@ -58,8 +56,7 @@ public class ExitAction extends AbstractAction {
 							"Controller.Actions.NewPipeline.NotSaved.Title"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (result == JOptionPane.NO_OPTION) {
-				ActionRegistry.getInstance().get(SavePipelineAction.class)
-						.actionPerformed(null);
+				return;
 			}
 		}
 
