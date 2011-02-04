@@ -9,7 +9,6 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;

@@ -11,8 +11,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;

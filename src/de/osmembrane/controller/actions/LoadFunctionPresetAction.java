@@ -9,7 +9,6 @@ import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.controller.events.ContainingLocationEvent;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.model.preset.AbstractPresetPrototype;
 import de.osmembrane.model.settings.AbstractFunctionPreset;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
