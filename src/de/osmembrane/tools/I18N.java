@@ -74,7 +74,7 @@ public class I18N extends Observable {
 				Constants.RESOURCE_BUNDLE_PATH, this.activeLocale);
 
 		setSwingLocale(locale);
-		
+
 		/* notify the observers that possibly the language has been changed */
 		setChanged();
 		notifyObservers();
@@ -88,7 +88,7 @@ public class I18N extends Observable {
 	 */
 	protected void setDefaultLocale(Locale locale) {
 		this.defaultLocale = locale;
-		
+
 		/* notify the observers that possibly the language has been changed */
 		setChanged();
 		notifyObservers();
@@ -105,12 +105,12 @@ public class I18N extends Observable {
 	 */
 	public String getString(String key, Object... values) {
 		String msg;
-			msg = resourceBundle.getString(key);
-		
+		msg = resourceBundle.getString(key);
+
 		if (values.length > 0) {
 			return MessageFormat.format(msg, values);
 		}
-		
+
 		return msg;
 	}
 
@@ -120,13 +120,20 @@ public class I18N extends Observable {
 	 * 
 	 * @param description
 	 *            which should be localized
-	 * @return String for the localized description or NULL if no localization
+	 * @return String for the localized description or null if no localization
 	 *         was found.
 	 */
 	public String getDescription(XMLHasDescription description) {
+
+		if (description.getDescription() == null) {
+			return null;
+		}
+
 		/* First try to find activeLocale. */
 		for (Description descriptionString : description.getDescription()) {
-			if (descriptionString.getLang().equals(activeLocale.getLanguage())) {
+			if (descriptionString.getLang() != null
+					&& descriptionString.getLang().equals(
+							activeLocale.getLanguage())) {
 				return descriptionString.getValue().trim();
 			}
 		}
@@ -141,16 +148,18 @@ public class I18N extends Observable {
 			}
 		}
 
-		/* No translation found, return NULL */
+		/* No translation found, return null */
 		return null;
 	}
-	
+
 	/**
 	 * Sets the language to all swing components.
-	 * @param locale language to be set
+	 * 
+	 * @param locale
+	 *            language to be set
 	 */
 	private void setSwingLocale(Locale locale) {
 		JComponent.setDefaultLocale(locale);
-		
+
 	}
 }

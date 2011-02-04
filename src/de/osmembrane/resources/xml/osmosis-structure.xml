@@ -1671,44 +1671,34 @@
 				<inputPipe count="single" index="0" type="entity" />
 				<outputPipe count="single" index="0" type="entity" />
 				
-				<parameter name="left" type="string">
-					<description> lang="en"><value>The longitude of the left edge of the box.</value></description>
-				</parameter>
-				
-				<parameter name="bbox" type="bbox" required="true">
-					<description lang="en">
-						<value>The bounding box to filter.</value>
-					</description>
-				</parameter>
-				
 				<parameter name="left" type="bbox">
-					<description> lang="en"><value>The longitude of the left edge of the box.</value></description>
+					<description lang="en"><value>The longitude of the left edge of the box.</value></description>
 				</parameter>
 				<parameter name="right" type="bbox">
-					<description> lang="en"><value>The longitude of the right edge of the box.</value></description>
+					<description lang="en"><value>The longitude of the right edge of the box.</value></description>
 				</parameter>
 				<parameter name="top" type="bbox">
-					<description> lang="en"><value>The latitude of the top edge of the box.</value></description>
+					<description lang="en"><value>The latitude of the top edge of the box.</value></description>
 				</parameter>
 				<parameter name="bottom" type="bbox">
-					<description> lang="en"><value>The latitude of the bottom edge of the box.</value></description>
+					<description lang="en"><value>The latitude of the bottom edge of the box.</value></description>
 				</parameter>
 
 				<parameter name="x1" type="string">
-					<description> lang="en"><value>Slippy map coordinate of the left edge of the box.</value></description>
+					<description lang="en"><value>Slippy map coordinate of the left edge of the box.</value></description>
 				</parameter>
 				<parameter name="y1" type="string">
-					<description> lang="en"><value>Slippy map coordinate of the top edge of the box.</value></description>
+					<description lang="en"><value>Slippy map coordinate of the top edge of the box.</value></description>
 				</parameter>
 				<parameter name="x2" type="string">
-					<description> lang="en"><value>Slippy map coordinate of the right edge of the box.</value></description>
+					<description lang="en"><value>Slippy map coordinate of the right edge of the box.</value></description>
 				</parameter>
 				<parameter name="y2" type="string">
-					<description> lang="en"><value>Slippy map coordinate of the bottom edge of the box.	</value></description>
+					<description lang="en"><value>Slippy map coordinate of the bottom edge of the box.	</value></description>
 				</parameter>
 				
 				<parameter name="zoom" type="string">
-					<description> lang="en"><value>Slippy map zoom.</value></description>
+					<description lang="en"><value>Slippy map zoom.</value></description>
 				</parameter>
 				
 				
