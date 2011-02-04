@@ -6,8 +6,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
-import de.osmembrane.controller.events.ContainingEvent;
-import de.osmembrane.controller.events.ContainingLocationEvent;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.resources.Resource;

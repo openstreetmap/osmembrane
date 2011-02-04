@@ -13,6 +13,8 @@ import java.awt.event.WindowListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -52,10 +54,14 @@ import de.osmembrane.controller.actions.ZoomInAction;
 import de.osmembrane.controller.actions.ZoomOutAction;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
+import de.osmembrane.model.settings.SettingsObserverObject;
+import de.osmembrane.model.statusbar.StatusbarEntry;
+import de.osmembrane.model.statusbar.StatusbarObserverObject;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.AbstractFrame;
+import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.interfaces.IMainFrame;
 import de.osmembrane.view.interfaces.IZoomDevice;
 import de.osmembrane.view.panels.InspectorPanel;
@@ -63,6 +69,7 @@ import de.osmembrane.view.panels.LibraryPanel;
 import de.osmembrane.view.panels.LibraryPanelGroup;
 import de.osmembrane.view.panels.PipelinePanel;
 import de.osmembrane.view.panels.Tool;
+import de.osmembrane.view.components.JStatusBar;
 
 /**
  * The Main window that is the center of OSMembrane and the first thing you'll
@@ -73,7 +80,7 @@ import de.osmembrane.view.panels.Tool;
  * @author tobias_kuhn
  * 
  */
-public class MainFrame extends AbstractFrame implements IMainFrame {
+public class MainFrame extends AbstractFrame implements IMainFrame, Observer {
 
 	private static final long serialVersionUID = 6464462774273555770L;
 
@@ -81,6 +88,11 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 	 * The {@link PipelinePanel} showing the pipeline
 	 */
 	private PipelinePanel pipelineView;
+
+	/**
+	 * the status bar
+	 */
+	private JStatusBar statusBar;
 
 	/**
 	 * The images, cursors and the selected item of the tools
@@ -94,6 +106,9 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 	public MainFrame() {
 		// window title
 		setWindowTitle(I18N.getInstance().getString("osmembrane"));
+
+		// register as observer
+		ViewRegistry.getInstance().addObserver(this);
 
 		// closing window listener
 		addWindowListener(new WindowListener() {
@@ -129,6 +144,8 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 			}
 
 		});
+
+		getContentPane().setLayout(new BorderLayout());
 
 		// set own glass pane used for drag & drop
 		setGlassPane(new MainFrameGlassPane());
@@ -344,7 +361,11 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 				true, splitLibAndView, functionInspector);
 
 		splitMain.setResizeWeight(1.0);
-		getContentPane().add(splitMain);
+		getContentPane().add(splitMain, BorderLayout.CENTER);
+
+		// the status bar
+		statusBar = new JStatusBar();
+		getContentPane().add(statusBar, BorderLayout.SOUTH);
 
 		// set the application icon
 		Image icon = getToolkit().getImage(
@@ -386,6 +407,16 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 	@Override
 	public IZoomDevice getZoomDevice() {
 		return pipelineView;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (arg instanceof StatusbarObserverObject) {
+			StatusbarEntry sbe = ModelProxy.getInstance().getStatusbar()
+					.getStatusbarEntries()[0];
+			statusBar.setText(sbe.getMessage());
+			statusBar.setProgress(sbe.getProgress());
+		}
 	}
 
 }
