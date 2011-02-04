@@ -384,10 +384,8 @@ public class CommandlineParser implements IParser {
 
 		/* add the path to the osmosis binary */
 		if (addOsmosisPath) {
-			builder.append(quotationSymbol
-					+ (String) ModelProxy.getInstance().getSettings()
-							.getValue(SettingType.DEFAULT_OSMOSIS_PATH)
-					+ quotationSymbol);
+			builder.append(quotate((String) ModelProxy.getInstance().getSettings()
+							.getValue(SettingType.DEFAULT_OSMOSIS_PATH)));
 		}
 
 		/* do the parsing while a function is in the queue */
@@ -462,8 +460,7 @@ public class CommandlineParser implements IParser {
 							builder.append(" " + parameter.getValue());
 						} else {
 							builder.append(" " + parameter.getName() + "="
-									+ quotationSymbol + parameter.getValue()
-									+ quotationSymbol);
+									+ quotate(parameter.getValue()));
 						}
 					}
 				}
@@ -618,4 +615,11 @@ public class CommandlineParser implements IParser {
 		builder.append(breaklineCommand);
 	}
 
+	private String quotate(String string) {
+		if (string.contains(" ")) {
+			return quotationSymbol + string + quotationSymbol;
+		} else {
+			return string;
+		}
+	}
 }
