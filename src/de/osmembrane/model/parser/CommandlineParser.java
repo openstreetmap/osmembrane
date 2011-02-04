@@ -21,6 +21,11 @@ import de.osmembrane.model.pipeline.Pipeline;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
 
+/**
+ * Commandline-parser for osmosis command lines.
+ * 
+ * @author jakob_jarosch
+ */
 public class CommandlineParser implements IParser {
 
 	protected String breaklineSymbol = "<linebreak>";
@@ -28,11 +33,16 @@ public class CommandlineParser implements IParser {
 
 	protected String DEFAULT_KEY = "DEFAULTKEY";
 
-	protected static final Pattern PATTERN_TASK = Pattern
-			.compile("--([^ ]+)(.*?)((?=--)|$)");
+	protected static final Pattern PATTERN_TASK = Pattern.compile(
+			"--([^ ]+)(.*?)((?=--)|$)", Pattern.CASE_INSENSITIVE
+					| Pattern.MULTILINE);
 
 	protected static final Pattern PATTERN_PIPE = Pattern
 			.compile("^(in|out)pipe\\.([0-9+])$");
+
+	protected static final Pattern PATTERN_SPLIT_SPACES_PARAMETER = Pattern.compile(
+			"(inPipe|outPipe)", Pattern.CASE_INSENSITIVE
+					| Pattern.MULTILINE);
 
 	/**
 	 * Returns a following group-matching:<br/>
@@ -66,7 +76,9 @@ public class CommandlineParser implements IParser {
 	/* should match on "value" */
 	+ "(\"([^\"]+)\")|"
 	/* should match on value */
-	+ "(([^ ]+))");
+	+ "(([^ ]+))",
+	/* case insensitive and multiline matching */
+	Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
 	@Override
 	public List<AbstractFunction> parseString(String input)
@@ -122,17 +134,9 @@ public class CommandlineParser implements IParser {
 					} else {
 						outPipes.put(pipeIndex, keyValuePair[1]);
 					}
-
-					// System.out.println("     Pipe: " + inOutPipe + " "
-					// + pipeIndex + " = " + keyValuePair[1]);
 				} else {
 					/* found a normal parameter */
 					parameters.put(keyValuePair[0], keyValuePair[1]);
-
-					// System.out.println("     Param: "
-					// + (keyValuePair[0].equals(DEFAULT_KEY) ? DEFAULT_KEY
-					// : keyValuePair[0]) + " = "
-					// + keyValuePair[1]);
 				}
 			}
 
@@ -217,10 +221,8 @@ public class CommandlineParser implements IParser {
 				}
 
 				if (spacesParam != null) {
-					String[] params = taskParameters.split("inPipe|outPipe");
-					if (params.length > 0) {
-						spacesParam.setValue(params[0].trim());
-					}
+					String[] results = PATTERN_SPLIT_SPACES_PARAMETER.split(taskParameters);
+					spacesParam.setValue(results[0].trim());
 
 					/*
 					 * Okay it seems not to be so, that there is a spaces param,
@@ -443,7 +445,7 @@ public class CommandlineParser implements IParser {
 									.getSettings()
 									.getValue(
 											SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES)) {
-
+						
 						/* look up if it is a parameter with set "hasSpaces" */
 						if (parameter.hasSpaces()
 								&& parameter.isDefaultParameter()) {

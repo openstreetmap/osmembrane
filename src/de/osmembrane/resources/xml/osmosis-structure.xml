@@ -2025,7 +2025,7 @@
 				<value>Filters all ways that do not have specific tags set. All nodes and relations are passed on unmodified. </value></description>
 		</function>
 
-		<function id="used-node" friendlyName="Universal Filter">
+		<function id="tag-filter" friendlyName="Universal Filter">
 			<task name="tag-filter" shortName="tf">
 				<description lang="en">
 					<value>
@@ -2037,7 +2037,7 @@
 				</description>
 				<inputPipe type="entity" count="single" index="0" />
 				<outputPipe type="entity" count="single" index="0" />
-				<parameter name="filter mode" type="string" hasSpaces="true">
+				<parameter name="filter mode" type="string" hasSpaces="true" defaultParameter="true">
 					<description lang="en">
 						<value>
 							A two-field dash-separated string which
