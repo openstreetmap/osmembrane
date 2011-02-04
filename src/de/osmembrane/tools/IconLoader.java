@@ -40,9 +40,14 @@ public class IconLoader {
 		NORMAL(32),
 
 		/**
-		 * Big icon in original size (64px).
+		 * Big icon in original size (256px).
 		 */
-		BIG(64);
+		BIG(256),
+		
+		/**
+		 * A very big icon (512px).
+		 */
+		VERYBIG(512);
 
 		/**
 		 * The size of the loaded icon.
@@ -95,7 +100,7 @@ public class IconLoader {
 			 */
 			Graphics2D g2 = image.createGraphics();
 			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
 			g2.drawImage(tempImg, 0, 0, size.getSize(), size.getSize(), null);
 		} catch (IOException e) {
