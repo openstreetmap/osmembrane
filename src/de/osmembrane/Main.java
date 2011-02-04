@@ -1,6 +1,11 @@
 package de.osmembrane;
 
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+
+import de.osmembrane.tools.I18N;
 
 /**
  * the Main class for java to contain the static main() method
@@ -23,16 +28,26 @@ public class Main {
 
 		// create the models
 		application.createModels();
-		
+
 		// set the correct locale
 		application.setLocale();
-		
+
 		// initiate the most basic stuff
 		application.initiate();
-		
+
+		// make sure we're the only one
+		try {
+			if (!application.checkOneInstance()) {
+				JOptionPane.showMessageDialog(null, I18N.getInstance()
+						.getString("ProgramAlreadyRunning"));
+				System.exit(0);
+			}
+		} catch (IOException e) {
+		}
+
 		// check if a backup file is available
 		application.checkForBackup();
-		
+
 		// standard method to start Swing GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -42,7 +57,7 @@ public class Main {
 		});
 
 	}
-	
+
 	/**
 	 * @return the currently running application
 	 */

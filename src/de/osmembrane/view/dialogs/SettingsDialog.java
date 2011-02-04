@@ -260,7 +260,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				double x = defaultZoomToModel(defaultZoom.getValue());
-				defaultZoomDisplay.setText(String.format("%.3fx", x));
+				defaultZoomDisplay.setText(String.format("%.2fx", x));
 			}
 		});
 		settings.add(defaultZoom, gbc);

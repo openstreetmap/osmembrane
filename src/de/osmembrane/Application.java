@@ -1,5 +1,8 @@
 package de.osmembrane;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 
 import javax.swing.JOptionPane;
@@ -33,10 +36,10 @@ public class Application {
 
 			// guarantee the View is initialized
 			ViewRegistry.getInstance();
-			
+
 			// guarantee the Controller is initialized
 			ActionRegistry.getInstance();
-			
+
 			// set the EDT Exception handler
 			System.setProperty("sun.awt.exception.handler",
 					EDTExceptionHandler.class.getName());
@@ -153,5 +156,40 @@ public class Application {
 		if (skippedLoad || !backupAvailable) {
 			ModelProxy.getInstance().getPipeline().clear();
 		}
+	}
+
+	/**
+	 * Checks whether this is the only instance of OSMembrane running.
+	 * 
+	 * @return true, if this is the only instance of OSMembrane running, false
+	 *         otherwise
+	 * @throws IOException
+	 *             when an internal call to the routine failed. Callers should
+	 *             kindly assume result was true.
+	 */
+	public boolean checkOneInstance() throws IOException {
+		// TODO replace this with jps
+		// Java sucks
+		// get our own temporary directory
+		String tempPath = System.getProperty("java.io.tmpdir") + "osmembrane/";
+		File tempDir = new File(tempPath);
+		if (!tempDir.isDirectory() && !tempDir.mkdir()) {
+			return false;
+		}
+		
+		// if everything is not writable, ok
+		for (String file : tempDir.list()) {
+			if (!new File(file).canWrite()) {
+				return false;
+			}
+		}
+		File tempFile = File.createTempFile("lock", ".tmp", tempDir);
+		tempFile.deleteOnExit();		
+		try {
+			new FileOutputStream(tempFile).getChannel().lock();
+		} catch (Exception e) {
+		}
+		return true;
+			
 	}
 }
