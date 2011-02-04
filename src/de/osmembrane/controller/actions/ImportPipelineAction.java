@@ -72,6 +72,7 @@ public class ImportPipelineAction extends AbstractAction {
 		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
 		fileChooser.addChoosableFileFilter(FileType.BASH.getFileFilter());
 		fileChooser.addChoosableFileFilter(FileType.CMD.getFileFilter());
+		fileChooser.addChoosableFileFilter(FileType.ALLTYPES.getFileFilter());
 
 		int result = fileChooser.showOpenDialog(null);
 

@@ -30,8 +30,13 @@ public enum FileType {
 	/**
 	 * OSMembrane filetype.
 	 */
-	OSMEMBRANE(new String[]{".osmembrane"}, OSMembranePersistence.class, null);
-
+	OSMEMBRANE(new String[]{".osmembrane"}, OSMembranePersistence.class, null),
+	
+	/**
+	 * All filetypes together.
+	 */
+	ALLTYPES(new String[]{".osmembrane", ".bat", ".cmd", ".sh"}, null, null);
+	
 	/**
 	 * {@link FileType} as a string.
 	 */
@@ -143,7 +148,7 @@ public enum FileType {
 	 */
 	public static FileType fileTypeFor(File file) {
 		for(FileType fileType : FileType.values()) {
-			if (fileType.getFileFilter().accept((file))) {
+			if (fileType.getFileFilter().accept((file)) && fileType != ALLTYPES) {
 				return fileType;
 			}
 		}
