@@ -1823,7 +1823,7 @@
 				</description>
 				<inputPipe count="single" index="0" type="entity" />
 				<outputPipe count="single" index="0" type="entity" />
-				<parameter name="file" type="filename" defaultValue="polygon.text">
+				<parameter name="file" type="filename" defaultValue="polygon.txt">
 					<description lang="en">
 						<value>
 							The file containing the polygon definition.
