@@ -1,14 +1,13 @@
 package de.osmembrane.view.components;
 
 import java.awt.Adjustable;
+import java.awt.event.AdjustmentListener;
 
 import javax.swing.JScrollBar;
 
 /**
  * A JScrollBar with the ability to not continously call its own
  * attributeChanged-Listener after setValue().
- * 
- * <b> DOES NOT WORK YET! </b>
  * 
  * Kind of a dirty hack, but this seems to be a bug in Swing ({@link Adjustable}
  * specifies that an AdjustmentEvent should *NOT* be thrown!) and there is not
@@ -24,17 +23,10 @@ public class JSilentScrollBar extends JScrollBar {
 	private static final long serialVersionUID = -8976816464093270469L;
 
 	/**
-	 * Whether to suppress the next unwanted setValue() property change fire and
-	 * call the fire brigade.
-	 */
-	private boolean shouldIgnoreAdjustmentEvent;
-
-	/**
 	 * @see {@link JScrollBar#JScrollBar()}
 	 */
 	public JSilentScrollBar() {
 		super();
-		shouldIgnoreAdjustmentEvent = false;
 	}
 
 	/**
@@ -42,7 +34,6 @@ public class JSilentScrollBar extends JScrollBar {
 	 */
 	public JSilentScrollBar(int orientation) {
 		super(orientation);
-		shouldIgnoreAdjustmentEvent = false;
 	}
 
 	/**
@@ -51,20 +42,58 @@ public class JSilentScrollBar extends JScrollBar {
 	public JSilentScrollBar(int orientation, int value, int extent, int min,
 			int max) {
 		super(orientation, value, extent, min, max);
-		shouldIgnoreAdjustmentEvent = false;
 	}
 
 	/**
-	 * @see JScrollBar#setValue(int), only silently
+	 * Removes all dirty listeners and returns them. Guarantees no events.
+	 * 
+	 * @return the listeners removed
 	 */
-	public void setValueSilently(int value) {
-		shouldIgnoreAdjustmentEvent = true;
-		setValue(value);
-		shouldIgnoreAdjustmentEvent = false;
+	private AdjustmentListener[] removeDirtyListeners() {
+		AdjustmentListener[] als = getAdjustmentListeners();
+		for (AdjustmentListener al : als) {
+			removeAdjustmentListener(al);
+		}
+		return als;
 	}
 
-	public boolean shouldIgnoreAdjustmentEvent() {
-		return this.shouldIgnoreAdjustmentEvent;
+	/**
+	 * Adds the dirty listeners saved in als
+	 * 
+	 * @param als
+	 *            the dirty listeners previously removed
+	 */
+	private void addDirtyListeners(AdjustmentListener[] als) {
+		for (AdjustmentListener al : als) {
+			addAdjustmentListener(al);
+		}
+	}
+
+	/**
+	 * @see {@link JScrollBar#setValue(int)}, only silently
+	 */
+	public void setValueSilently(int value) {
+		AdjustmentListener[] als = removeDirtyListeners();
+		setValue(value);
+		addDirtyListeners(als);
+	}
+
+	/**
+	 * @see {@link JScrollBar#setMinimum(int)}, only silently
+	 */
+	public void setMinimumSilently(int minimum) {
+		AdjustmentListener[] als = removeDirtyListeners();
+		setMinimum(minimum);
+		addDirtyListeners(als);
+	}
+
+	/**
+	 * @see {@link JScrollBar#setMinimum(int)}, only silently
+	 */
+	public void setMaximumSilently(int maximum) {
+		AdjustmentListener[] als = removeDirtyListeners();
+		setMaximum(maximum);
+		addDirtyListeners(als);
 	}
 
 }

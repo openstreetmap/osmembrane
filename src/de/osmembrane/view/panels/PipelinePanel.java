@@ -45,6 +45,7 @@ import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.components.JSilentScrollBar;
 import de.osmembrane.view.interfaces.IZoomDevice;
 
 /**
@@ -151,8 +152,8 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 * The vertical and horizontal {@link JScrollBar} that can be used for
 	 * moving the view.
 	 */
-	private JScrollBar verticalScroll;
-	private JScrollBar horizontalScroll;
+	private JSilentScrollBar verticalScroll;
+	private JSilentScrollBar horizontalScroll;
 
 	/**
 	 * The upper-left-most and the bottom-right-most point on the whole pipeline
@@ -198,29 +199,25 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		this.connectors = new HashMap<AbstractConnector, PipelineConnector>();
 		this.functionInspector = functionInspector;
 
-		this.verticalScroll = new JScrollBar(JScrollBar.VERTICAL, 0, 0, 0, 0);
-		this.horizontalScroll = new JScrollBar(JScrollBar.HORIZONTAL, 0, 0, 0,
-				0);
+		this.verticalScroll = new JSilentScrollBar(JScrollBar.VERTICAL, 0, 0,
+				0, 0);
+		this.horizontalScroll = new JSilentScrollBar(JScrollBar.HORIZONTAL, 0,
+				0, 0, 0);
 		AdjustmentListener al = new AdjustmentListener() {
 
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
-				/*
-				 * if (verticalScroll.shouldIgnoreAdjustmentEvent() ||
-				 * horizontalScroll.shouldIgnoreAdjustmentEvent()) { return; }
-				 */
-
 				if (e.getSource() == verticalScroll) {
-					moveTo(objectToWindow.getTranslateX(), e.getValue());
-					// arrange();
+					moveTopTo(e.getValue());
+					arrange(false);
 				} else if (e.getSource() == horizontalScroll) {
-					moveTo(e.getValue(), objectToWindow.getTranslateY());
-					// arrange();
+					moveLeftTo(e.getValue());
+					arrange(false);
 				}
 			}
 		};
-		// this.verticalScroll.addAdjustmentListener(al);
-		// this.horizontalScroll.addAdjustmentListener(al);
+		this.verticalScroll.addAdjustmentListener(al);
+		this.horizontalScroll.addAdjustmentListener(al);
 
 		this.objTopLeft = new Point2D.Double();
 		this.objBottomRight = new Point2D.Double();
@@ -282,7 +279,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 						objectToWindow.preConcatenate(currentDisplay);
 						currentDisplay.setToIdentity();
 					}
-					arrange();
+					arrange(true);
 					break;
 				}
 
@@ -399,7 +396,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 									objectToWindow.getScaleY()
 											* (draggingTo.getY() - draggingFrom
 													.getY()));
-							arrange();
+							arrange(true);
 						}
 					}
 					break;
@@ -449,18 +446,69 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	}
 
 	/**
-	 * Makes objectToWindow exactly the translation to the point (translateX,
-	 * translateY) independently from its previous translation.
+	 * Moves objectToWindow in a way, so that the left screen (window x = 0)
+	 * will result in the object coordinate to.
 	 * 
-	 * @param translateX
-	 * @param translateY
+	 * @param to
+	 *            the object position to move the left window edge to
 	 */
-	private void moveTo(double translateX, double translateY) {
-		double translatedX = objectToWindow.getTranslateX();
-		double translatedY = objectToWindow.getTranslateY();
-		objectToWindow.translate(translateX - translatedX, translateY
-				- translatedY);
+	private void moveLeftTo(double to) {
+		// if you can't read the Math below properly,
+		// some idiot used Eclipse/Java auto code formatter
+		/*
+		 * o2w.scale * to + o2w.translate = 0 
+		 * <=> o2w.translate = - o2w.scale * to
+		 */
+		double translateToX = -objectToWindow.getScaleX() * to;
 
+		/*
+		 * o2w * M = o2w_new, 
+		 *   where o2w is of the form scale(x,y) and translate(s,t)
+		 *   and M is a translation matrix from translate(u,v)
+		 *   and o2w_new.translate is of the form scale(x,y) and translateTo(translateToX,t)
+		 * <=> 
+		 *   u * x + s = translateToX
+		 *   v * y + t = t
+		 * <=>
+		 *   u = (translateToX - s) / x
+		 *   v = 0
+		 */
+		objectToWindow.translate(
+				(translateToX - objectToWindow.getTranslateX())
+						/ (objectToWindow.getScaleX()), 0.0);
+	}
+	
+	/**
+	 * Moves objectToWindow in a way, so that the top screen (window y = 0)
+	 * will result in the object coordinate to.
+	 * 
+	 * @param to
+	 *            the object position to move the top window edge to
+	 */
+	private void moveTopTo(double to) {
+		// if you can't read the Math below properly,
+		// some idiot used Eclipse/Java auto code formatter
+		/*
+		 * o2w.scale * to + o2w.translate = 0 
+		 * <=> o2w.translate = - o2w.scale * to
+		 */
+		double translateToY = -objectToWindow.getScaleY() * to;
+
+		/*
+		 * o2w * M = o2w_new, 
+		 *   where o2w is of the form scale(x,y) and translate(s,t)
+		 *   and M is a translation matrix from translate(u,v)
+		 *   and o2w_new.translate is of the form scale(x,y) and translateTo(s,translateToY)
+		 * <=> 
+		 *   u * x + s = s
+		 *   v * y + t = translateToY
+		 * <=>
+		 *   u = 0
+		 *   v = (translateToY - t) / y
+		 */
+		objectToWindow.translate(0.0,
+				(translateToY - objectToWindow.getTranslateY())
+						/ (objectToWindow.getScaleY()));
 	}
 
 	/**
@@ -591,7 +639,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		objectToWindow.scale(factor, factor);
 		objectToWindow.translate(-objCenter.getX(), -objCenter.getY());
 
-		arrange();
+		arrange(true);
 		repaint();
 	}
 
@@ -609,7 +657,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		currentDisplay.scale(factor, factor);
 		currentDisplay.translate(-objCenter.getX(), -objCenter.getY());
 
-		arrange();
+		arrange(true);
 		repaint();
 	}
 
@@ -619,7 +667,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 				* (Double) ModelProxy.getInstance().getSettings()
 						.getValue(SettingType.DEFAULT_ZOOM_SIZE);
 		objectToWindow.setToScale(zoomFactor, zoomFactor);
-		arrange();
+		arrange(true);
 	}
 
 	@Override
@@ -655,7 +703,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		objectToWindow.scale(zoom, zoom);
 		objectToWindow.translate(-left, -top);
 
-		arrange();
+		arrange(true);
 	}
 
 	/**
@@ -810,7 +858,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 			}
 		}
 
-		arrange();
+		arrange(true);
 		layeredPane.repaint();
 
 		// this is better reset here
@@ -857,25 +905,28 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		// current size of the window, not needed to be scrolled
 		Point2D winSize = windowToObjDelta(new Point(getWidth(), getHeight()));
 
-		horizontalScroll.setMinimum((int) objTopLeft.getX());
-		horizontalScroll.setMaximum((int) Math.max(0.0,
+		horizontalScroll.setMinimumSilently((int) objTopLeft.getX());
+		horizontalScroll.setMaximumSilently((int) Math.max(0.0,
 				(objBottomRight.getX() - winSize.getX())));
 
-		verticalScroll.setMinimum((int) objTopLeft.getY());
-		verticalScroll.setMaximum((int) Math.max(0.0,
+		verticalScroll.setMinimumSilently((int) objTopLeft.getY());
+		verticalScroll.setMaximumSilently((int) Math.max(0.0,
 				(objBottomRight.getY() - winSize.getY())));
 
 		Point2D objWindowZero = windowToObj(new Point(0, 0));
-		/*
-		 * horizontalScroll.setValueSilently((int) objWindowZero.getX());
-		 * verticalScroll.setValueSilently((int) objWindowZero.getY());
-		 */
+
+		horizontalScroll.setValueSilently((int) objWindowZero.getX());
+		verticalScroll.setValueSilently((int) objWindowZero.getY());
 	}
 
 	/**
 	 * Arranges all the {@link PipelineFunction}s after a move/zoom change
+	 * 
+	 * @param updateScrolls
+	 *            whether the scrollbars should be updated. necessary to prevent
+	 *            infinite recursion
 	 */
-	private void arrange() {
+	private void arrange(boolean updateScrolls) {
 		for (PipelineFunction pf : functions) {
 			arrange(pf);
 		}
@@ -886,7 +937,9 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		}
 
 		calculateEdges();
-		updateScrollbars();
+		if (updateScrolls) {
+			updateScrollbars();
+		}
 	}
 
 	/**
