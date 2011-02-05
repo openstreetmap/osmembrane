@@ -44,6 +44,12 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	private static final long serialVersionUID = 1663933392202927614L;
 
 	/**
+	 * The minimum amount a {@link LibraryFunction} must be dragged to activate
+	 * the drop event.
+	 */
+	protected static final double LIBRARY_FUNCTION_MIN_DRAG_DISTANCE = 32.0;
+
+	/**
 	 * The {@link ImageIcon} resource that keeps an image template used to
 	 * prerender the actual image that will be drawn on this function
 	 */
@@ -153,6 +159,11 @@ public class LibraryFunction extends DisplayTemplatePanel {
 								.getCasted(MainFrame.class, IMainFrame.class);
 						mainFrame.getMainGlassPane().endDragAndDrop();
 						// necessary to make the glass pane go away
+
+						// require movement of at least some pixels
+						if (e.getPoint().distance(dragOffset) < LIBRARY_FUNCTION_MIN_DRAG_DISTANCE) {
+							return;
+						}
 
 						// subtract the offset where it got clicked
 						e.translatePoint(-dragOffset.x, -dragOffset.y);

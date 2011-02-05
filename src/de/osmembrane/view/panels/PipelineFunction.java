@@ -29,6 +29,12 @@ import de.osmembrane.model.pipeline.Function;
 public class PipelineFunction extends LibraryFunction {
 
 	private static final long serialVersionUID = -7573627124702293974L;
+	
+	/**
+	 * The minimum amount a {@link PipelineFunction} must be dragged to activate
+	 * the drop event.
+	 */
+	protected static final double PIPELINE_FUNCTION_MIN_DRAG_DISTANCE = 8.0;
 
 	/**
 	 * The {@link Function} in the model that is represented by this

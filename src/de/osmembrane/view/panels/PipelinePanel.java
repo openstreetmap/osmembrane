@@ -265,6 +265,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+
 				// view tool and magic
 				switch (activeTool) {
 				case DEFAULT_MAGIC_TOOL:
@@ -305,6 +306,11 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 						Point2D newObjPosition = new Point2D.Double(
 								objPosition.getX() + objOffset.getX(),
 								objPosition.getY() + objOffset.getY());
+
+						// require a minimum distance to drag & drop
+						if (newObjPosition.distance(pf.getModelLocation()) < PipelineFunction.PIPELINE_FUNCTION_MIN_DRAG_DISTANCE) {
+							return;
+						}
 
 						// set position
 						Action a = ActionRegistry.getInstance().get(
@@ -610,8 +616,8 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	@Override
 	public void resetView() {
 		double zoomFactor = PipelinePanel.DEFAULT_ZOOM
-		* (Double) ModelProxy.getInstance().getSettings()
-				.getValue(SettingType.DEFAULT_ZOOM_SIZE);
+				* (Double) ModelProxy.getInstance().getSettings()
+						.getValue(SettingType.DEFAULT_ZOOM_SIZE);
 		objectToWindow.setToScale(zoomFactor, zoomFactor);
 		arrange();
 	}
