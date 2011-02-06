@@ -75,6 +75,7 @@ public class ExecutePipelineAction extends AbstractAction {
 		}
 
 		IExecutionStateDialog dialog = ViewRegistry.getInstance().getCasted(ExecutionStateDialog.class, IExecutionStateDialog.class);
+		dialog.showWindow();
 		
 		PipelineExecutor executor = new PipelineExecutor(osmosisPath, workingDirectory, parameters, dialog);
 		executor.start();

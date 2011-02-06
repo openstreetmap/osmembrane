@@ -44,6 +44,7 @@ public class PipelineExecutor extends Thread implements WindowListener {
 		this.workingDirectory = new File(workingDirectory);
 		this.parameters = parameters;
 		this.dialog = dialog;
+		dialog.addWindowListener(this);
 
 		dialog.setState(I18N.getInstance().getString(
 				"Tools.PipelineExecutor.ParametersSet"));
@@ -86,7 +87,9 @@ public class PipelineExecutor extends Thread implements WindowListener {
 					line = null;
 				}
 				
-				dialog.addOutputLine(line);
+				if (line != null) {
+					dialog.addOutputLine(line);
+				}
 			} while(line != null);
 
 			if(!interrupted()) {
@@ -150,6 +153,7 @@ public class PipelineExecutor extends Thread implements WindowListener {
 	@Override
 	public void windowClosing(WindowEvent e) {
 		this.interrupt();
+		dialog.removeWindowListener(this);
 	}
 
 	@Override
@@ -177,10 +181,15 @@ public class PipelineExecutor extends Thread implements WindowListener {
 	}
 }
 
+/**
+ * ReadThread which is able to be interrupted while reading a line.
+ * 
+ * @author jakob_jarosch
+ */
 class ReadThread extends Thread {
 	
 	private BufferedReader reader;
-	private String line = null;
+	private String line;
 	
 	public ReadThread(BufferedReader reader) {
 		this.reader = reader;
@@ -188,6 +197,7 @@ class ReadThread extends Thread {
 	
 	@Override
 	public void run() {
+		line = null;
 		try {
 			line = reader.readLine();
 		} catch (IOException e) {
