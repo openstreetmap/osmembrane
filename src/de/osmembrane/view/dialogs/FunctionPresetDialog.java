@@ -75,7 +75,6 @@ public class FunctionPresetDialog extends AbstractDialog implements
 		selection.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("ÄKSCHN");
 				loadButton.setEnabled(selection.getSelectedIndex() > 0);
 				deleteButton.setEnabled(selection.getSelectedIndex() > 0);
 			}
