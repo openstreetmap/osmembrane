@@ -140,10 +140,7 @@ public class PipelineExecutor extends Thread implements WindowListener {
 			throw new IllegalArgumentException();
 		}
 		File f = new File(osmosisPath);
-		if (!f.isFile()) {
-			throw new IllegalArgumentException();
-		}
-		if (!f.canRead()) {
+		if (!f.isFile() || !f.canExecute() || !f.canRead()) {
 			throw new IllegalArgumentException();
 		}
 		this.osmosisPath = osmosisPath;

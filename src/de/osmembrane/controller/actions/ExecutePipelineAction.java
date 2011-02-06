@@ -95,9 +95,13 @@ public class ExecutePipelineAction extends AbstractAction {
 			executor.start();
 			dialog.showWindow();
 		} catch (IllegalArgumentException e1) {
-			// TODO I18N
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.WARNING, "Pfad zu osmosis falsch..."));
+			Application
+					.handleException(new ControlledException(
+							this,
+							ExceptionSeverity.WARNING,
+							I18N.getInstance()
+									.getString(
+											"Controller.Actions.ExecutePipeline.OsmosisNotFound")));
 		}
 
 	}

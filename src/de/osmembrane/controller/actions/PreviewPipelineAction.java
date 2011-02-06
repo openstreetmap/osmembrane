@@ -70,6 +70,19 @@ public class PreviewPipelineAction extends AbstractAction {
 			final String josmPath = (String) ModelProxy.getInstance()
 					.getSettings().getValue(SettingType.DEFAULT_JOSM_PATH);
 
+			/* proof if the josm binaries are available */
+			File josmFile = new File(josmPath);
+			if(!josmFile.isFile() || !josmFile.canExecute() || !josmFile.canRead()) {
+				Application
+				.handleException(new ControlledException(
+						this,
+						ExceptionSeverity.WARNING,
+						I18N.getInstance()
+								.getString(
+										"Controller.Actions.PreviewPipeline.JOSMNotFound")));
+			}
+			
+			
 			/* the working directory */
 			final String workingDirectory = (String) ModelProxy.getInstance()
 					.getSettings()
