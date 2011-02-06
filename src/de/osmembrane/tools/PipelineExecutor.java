@@ -29,7 +29,7 @@ public class PipelineExecutor extends Thread implements WindowListener {
 	private File workingDirectory;
 	private List<String> parameters;
 	private IExecutionStateDialog dialog;
-	
+
 	private Class<? extends Action> callbackEvent;
 
 	/**
@@ -49,12 +49,13 @@ public class PipelineExecutor extends Thread implements WindowListener {
 		dialog.setState(I18N.getInstance().getString(
 				"Tools.PipelineExecutor.ParametersSet"));
 		dialog.setProgress(5);
+		dialog.setCloseButtonCaption(I18N.getInstance().getString("View.Cancel"));
 	}
 
 	public void setCallbackAction(Class<? extends Action> event) {
 		this.callbackEvent = event;
 	}
-	
+
 	@Override
 	public void run() {
 		dialog.setState(I18N.getInstance().getString(
@@ -70,8 +71,8 @@ public class PipelineExecutor extends Thread implements WindowListener {
 			Process process = processBuilder.directory(workingDirectory)
 					.redirectErrorStream(true).start();
 
-			final BufferedReader reader = new BufferedReader(new InputStreamReader(
-					process.getInputStream()));
+			final BufferedReader reader = new BufferedReader(
+					new InputStreamReader(process.getInputStream()));
 
 			String line = null;
 			do {
@@ -81,43 +82,39 @@ public class PipelineExecutor extends Thread implements WindowListener {
 					thread.join();
 					line = thread.getLine();
 				} catch (InterruptedException e) {
-					reader.close();
-					process.destroy();
 					interrupt();
 					line = null;
 				}
-				
+
 				if (line != null) {
 					dialog.addOutputLine(line);
 				}
-			} while(line != null);
+			} while (line != null && !isInterrupted());
 
-			if(!interrupted()) {
+			if (!isInterrupted()) {
 				int exitValue = -255;
 				try {
 					exitValue = process.waitFor();
-					if(exitValue == 0) {
+					if (exitValue == 0) {
 						dialog.setState(I18N.getInstance().getString(
-						"Tools.PipelineExecutor.Finished"));
+								"Tools.PipelineExecutor.Finished"));
+						dialog.setCloseButtonCaption(I18N.getInstance()
+								.getString("View.Ok"));
 						dialog.setProgress(100);
-						if(callbackEvent != null) {
-							ActionRegistry.getInstance().get(callbackEvent).actionPerformed(new ActionEvent(this, 0, "finished"));
-						}
 					} else {
 						dialog.setState(I18N.getInstance().getString(
-						"Tools.PipelineExecutor.Failed"));
+								"Tools.PipelineExecutor.Failed"));
+						dialog.setCloseButtonCaption(I18N.getInstance()
+								.getString("View.Close"));
 					}
 				} catch (InterruptedException e) {
-					reader.close();
-					process.destroy();
 					interrupt();
 				}
+			}else {
+				process.destroy();
+				reader.close();
 			}
 
-			if(interrupted()) {
-				/* dialog should already be disposed. */
-			}
-			
 		} catch (IOException e) {
 			dialog.setState(I18N.getInstance().getString(
 					"Tools.PipelineExecutor.IOExecption"));
@@ -152,8 +149,16 @@ public class PipelineExecutor extends Thread implements WindowListener {
 	 */
 	@Override
 	public void windowClosing(WindowEvent e) {
-		this.interrupt();
 		dialog.removeWindowListener(this);
+
+		if (this.isAlive()) {
+			this.interrupt();
+		} else {
+			if (callbackEvent != null) {
+				ActionRegistry.getInstance().get(callbackEvent)
+						.actionPerformed(new ActionEvent(this, 0, "finished"));
+			}
+		}
 	}
 
 	@Override
@@ -187,14 +192,14 @@ public class PipelineExecutor extends Thread implements WindowListener {
  * @author jakob_jarosch
  */
 class ReadThread extends Thread {
-	
+
 	private BufferedReader reader;
 	private String line;
-	
+
 	public ReadThread(BufferedReader reader) {
 		this.reader = reader;
 	}
-	
+
 	@Override
 	public void run() {
 		line = null;
@@ -204,7 +209,7 @@ class ReadThread extends Thread {
 			line = null;
 		}
 	}
-	
+
 	public String getLine() {
 		return line;
 	}

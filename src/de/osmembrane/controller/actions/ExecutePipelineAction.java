@@ -78,11 +78,11 @@ public class ExecutePipelineAction extends AbstractAction {
 		}
 
 		IExecutionStateDialog dialog = ViewRegistry.getInstance().getCasted(ExecutionStateDialog.class, IExecutionStateDialog.class);
-		dialog.showWindow();
 		
 		try {
 			PipelineExecutor executor = new PipelineExecutor(osmosisPath, workingDirectory, parameters, dialog);
 			executor.start();
+			dialog.showWindow();
 		} catch (IllegalArgumentException e1) {
 			// TODO I18N
 			Application.handleException(new ControlledException(this, ExceptionSeverity.WARNING, "Pfad zu osmosis falsch..."));
