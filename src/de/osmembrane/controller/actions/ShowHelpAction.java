@@ -1,12 +1,20 @@
 package de.osmembrane.controller.actions;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
@@ -42,7 +50,13 @@ public class ShowHelpAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO implement
-		throw new UnsupportedOperationException();
+		Desktop d = Desktop.getDesktop();
+		try {
+			d.open(Constants.HELP_FILE_PATH);
+		} catch (Exception e1) {
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.WARNING, I18N.getInstance().getString(
+							"Controller.Actions.ShowHelp.FileNotFound", Constants.HELP_FILE_PATH)));
+		}
 	}
 }

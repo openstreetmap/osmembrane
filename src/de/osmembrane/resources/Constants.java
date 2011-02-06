@@ -127,6 +127,11 @@ public class Constants {
 	public static final Boolean DEFAULT_SHOW_STARTUP_SCREEN = true;
 
 	/**
+	 * The default path to the helpfile pdf.
+	 */
+	public static final File HELP_FILE_PATH = new File("resources/pdf/manual.pdf");
+
+	/**
 	 * static method
 	 */
 	static {
