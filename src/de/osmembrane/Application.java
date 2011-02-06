@@ -54,13 +54,14 @@ public class Application {
 	 */
 	public void createModels() {
 		try {
+			ModelProxy.getInstance().getSettings().initiate();
+			
 			ModelProxy.getInstance().getFunctions()
 					.initiate(Resource.OSMEMBRANE_XML.getURL());
 
 			ModelProxy.getInstance().getPreset()
 					.initiate(Resource.PRESET_XML.getURL());
 
-			ModelProxy.getInstance().getSettings().initiate();
 		} catch (Exception e) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N

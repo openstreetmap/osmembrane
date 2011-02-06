@@ -3,9 +3,12 @@ package de.osmembrane.resources;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 
+import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.IconLoader;
 
 public enum Resource {
@@ -42,7 +45,16 @@ public enum Resource {
 	}
 	
 	public URL getURL(String file) {
-		URL url;
+		URL url = null;
+		url = selectURL(getLocalizedFile(file));
+		if (url == null) {
+			url = selectURL(file);
+		}
+		return url;
+	}
+	
+	private URL selectURL(String file) {
+		URL url = null;
 		if(externalPrefered) {
 			url = getExternalUrl(file);
 			if(url == null) {
@@ -56,6 +68,21 @@ public enum Resource {
 		}
 		
 		return url;
+	}
+	
+	private String getLocalizedFile(String file) {
+		Locale locale = (Locale) ModelProxy.getInstance().getSettings().getValue(SettingType.ACTIVE_LANGUAGE);
+		String newFile;
+		int lastDot = file.lastIndexOf(".");
+		
+		if(lastDot > 0) {
+			newFile = file.substring(0, lastDot);
+			newFile += "." + locale.getLanguage() + file.substring(lastDot);
+		} else {
+			newFile = file;
+		}
+		
+		return newFile;
 	}
 	
 	private URL getExternalUrl(String file) {
