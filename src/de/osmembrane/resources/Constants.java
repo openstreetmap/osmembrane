@@ -132,6 +132,11 @@ public class Constants {
 	public static final File HELP_FILE_PATH = new File("resources/pdf/manual.pdf");
 
 	/**
+	 * Default JOSM Heap size.
+	 */
+	public static final int JOSM_HEAP_SIZE = 256;
+
+	/**
 	 * static method
 	 */
 	static {

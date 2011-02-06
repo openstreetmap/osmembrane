@@ -15,13 +15,18 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.Application;
+import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileType;
+import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.settings.SettingType;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
+import de.osmembrane.tools.PipelineExecutor;
 import de.osmembrane.tools.IconLoader.Size;
 import de.unistuttgart.iev.osm.osmosiscontrol.JOSMExecutor;
 import de.unistuttgart.iev.osm.osmosiscontrol.OsmosisExecutor;
@@ -60,87 +65,53 @@ public class PreviewPipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		FileType type = FileType.EXECUTION_FILETYPE;
-		String pipeline = ModelProxy.getInstance().getPipeline().generate(type);
+		if (!(e.getSource() instanceof PipelineExecutor)) {
+			ActionRegistry.getInstance().get(ExecutePipelineAction.class)
+					.actionPerformed(null);
+		} else {
+			/* the path to josm */
+			final String josmPath = (String) ModelProxy.getInstance()
+					.getSettings().getValue(SettingType.DEFAULT_JOSM_PATH);
 
-		/* the path to osmosis */
-		final String osmosisPath = (String) ModelProxy.getInstance()
-				.getSettings().getValue(SettingType.DEFAULT_OSMOSIS_PATH);
+			/* the working directory */
+			final String workingDirectory = (String) ModelProxy.getInstance()
+					.getSettings()
+					.getValue(SettingType.DEFAULT_WORKING_DIRECTORY);
 
-		/* the path to josm */
-		final String josmPath = (String) ModelProxy.getInstance().getSettings()
-				.getValue(SettingType.DEFAULT_JOSM_PATH);
+			final List<String> toBeLoadedFilesByJosm = new ArrayList<String>();
+			for (AbstractFunction function : ModelProxy.getInstance()
+					.getPipeline().getFunctions()) {
+				if (function.getActiveTask().getName().toLowerCase()
+						.equals("write-xml")) {
+					for (AbstractParameter param : function.getActiveTask()
+							.getParameters()) {
+						if (param.getName().toLowerCase().equals("file")) {
+							toBeLoadedFilesByJosm.add(param.getValue());
+						}
+					}
 
-		/* the working directory */
-		final String workingDirectory = (String) ModelProxy.getInstance()
-				.getSettings().getValue(SettingType.DEFAULT_WORKING_DIRECTORY);
+				}
+			}
 
-		final String[] toBeLoadedFilesByJosm = { "test.osm" };
+			List<String> cmdLine = new ArrayList<String>(
+					toBeLoadedFilesByJosm.size() + 5);
+			String javaPath = System.getProperty("java.home") + "/bin/java";
+			cmdLine.add(javaPath);
+			cmdLine.add(String.format("-Xmx%sm", Constants.JOSM_HEAP_SIZE));
+			cmdLine.add("-jar");
+			cmdLine.add(josmPath);
+			cmdLine.addAll(toBeLoadedFilesByJosm);
 
-		final List<String> parameters = new ArrayList<String>();
+			ProcessBuilder processBuilder = new ProcessBuilder(cmdLine);
 
-		/* transform the params */
-		String[] params = pipeline.split(" +");
-		for (String param : params) {
-			if (param.length() > 0) {
-				parameters.add(param);
+			try {
+				processBuilder.directory(new File(workingDirectory))
+						.redirectErrorStream(false).start();
+			} catch (IOException e1) {
+				Application.handleException(new ControlledException(this,
+						ExceptionSeverity.WARNING, e1, I18N.getInstance()
+								.getString("Controller.Actions.PreviewPipelineAction.IOException")));
 			}
 		}
-		/* execute... */
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					OsmosisExecutor exec = new OsmosisExecutor(osmosisPath);
-
-					OsmosisResult result = exec.executeOsmosisSynchronously(
-							parameters, new File(workingDirectory), null);
-
-					/*
-					 * TODO don't use exception to show some informations,
-					 * prefer a own dialog instead!
-					 */
-					Application.handleException(new ControlledException(this,
-							ExceptionSeverity.UNEXPECTED_BEHAVIOR,
-							new Exception("Osmosis STDOUT/ERR output was:\n"
-									+ "------------------------------\n"
-									+ result.getOutput() + "\n"
-									+ "------------------------------"),
-							"Osmosis done.\n" + "Osmosis exit value was:\n"
-									+ result.getExitValue() + "\n"));
-					if (result.getExitValue() != 0) {
-						JOptionPane.showMessageDialog(null,
-								"Osmosis exit value != 0, aborting.");
-						return;
-					}
-				} catch (IllegalArgumentException e1) {
-					/* TODO internationlize the exception */
-					Application
-							.handleException(new ControlledException(this,
-									ExceptionSeverity.WARNING,
-									"Osmosis wurde unter dem angegebenen Pfad nicht gefunden"));
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-
-				System.out.println("Executing JOSM...");
-
-				try {
-					JOSMExecutor jexec = new JOSMExecutor(josmPath);
-
-					jexec.executeJOSM(Arrays.asList(toBeLoadedFilesByJosm),
-							new File(workingDirectory), null);
-				} catch (IllegalArgumentException e1) {
-					/* TODO internationlize the exception */
-					Application
-							.handleException(new ControlledException(this,
-									ExceptionSeverity.WARNING,
-									"JOSM wurde unter dem angegebenen Pfad nicht gefunden"));
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		}).start();
 	}
 }

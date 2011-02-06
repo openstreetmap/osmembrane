@@ -3,13 +3,10 @@ package de.osmembrane.controller.actions;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
-
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;

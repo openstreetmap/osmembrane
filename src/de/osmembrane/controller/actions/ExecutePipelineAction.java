@@ -3,14 +3,24 @@ package de.osmembrane.controller.actions;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.persistence.FileType;
+import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.AbstractParameter;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
+import de.osmembrane.tools.PipelineExecutor;
 import de.osmembrane.tools.IconLoader.Size;
+import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.interfaces.IExecutionStateDialog;
 
 /**
  * Action to directly execute the created pipeline on the local shell.
@@ -44,7 +54,30 @@ public class ExecutePipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO implement
-		throw new UnsupportedOperationException();
+		FileType type = FileType.EXECUTION_FILETYPE;
+		String pipeline = ModelProxy.getInstance().getPipeline().generate(type);
+
+		/* the path to osmosis */
+		final String osmosisPath = (String) ModelProxy.getInstance()
+				.getSettings().getValue(SettingType.DEFAULT_OSMOSIS_PATH);
+
+		/* the working directory */
+		final String workingDirectory = (String) ModelProxy.getInstance()
+				.getSettings().getValue(SettingType.DEFAULT_WORKING_DIRECTORY);
+
+		final List<String> parameters = new ArrayList<String>();
+
+		/* transform the params */
+		String[] params = pipeline.split(" +");
+		for (String param : params) {
+			if (param.length() > 0) {
+				parameters.add(param);
+			}
+		}
+
+		IExecutionStateDialog dialog = ViewRegistry.getInstance().getCasted(ExecutionStateDialog.class, IExecutionStateDialog.class);
+		
+		PipelineExecutor executor = new PipelineExecutor(osmosisPath, workingDirectory, parameters, dialog);
+		executor.start();
 	}
 }
