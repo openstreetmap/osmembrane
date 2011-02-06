@@ -38,11 +38,25 @@ public class ExecutionStateDialog extends AbstractDialog implements
 
 	private static final long serialVersionUID = 956559876768946717L;
 
+	/**
+	 * text field to display the state
+	 */
 	private JTextField stateField;
 
+	/**
+	 * progress bar to display the progress
+	 */
 	private JProgressBar progress;
 
+	/**
+	 * text area to display the output lines
+	 */
 	private JTextArea lines;
+
+	/**
+	 * button to close
+	 */
+	private JButton closeButton;
 
 	/**
 	 * Creates a new {@link ExecutionStateDialog}.
@@ -97,10 +111,9 @@ public class ExecutionStateDialog extends AbstractDialog implements
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-		JButton cancelButton = new JButton(I18N.getInstance().getString(
-				"View.Cancel"));
-		cancelButton.addKeyListener(returnButtonListener);
-		cancelButton.addActionListener(new ActionListener() {
+		closeButton = new JButton(I18N.getInstance().getString("View.Cancel"));
+		closeButton.addKeyListener(returnButtonListener);
+		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				hideWindow();
@@ -110,7 +123,7 @@ public class ExecutionStateDialog extends AbstractDialog implements
 				}
 			}
 		});
-		buttons.add(cancelButton);
+		buttons.add(closeButton);
 
 		add(buttons, BorderLayout.SOUTH);
 		setTitle(I18N.getInstance().getString("View.ExecutionStateDialog"));
@@ -127,6 +140,8 @@ public class ExecutionStateDialog extends AbstractDialog implements
 	@Override
 	public void setProgress(int progress) {
 		this.progress.setValue(progress);
+		closeButton.setText(progress == 100 ? I18N.getInstance().getString(
+				"View.OK") : I18N.getInstance().getString("View.Cancel"));
 	}
 
 	@Override
@@ -134,14 +149,14 @@ public class ExecutionStateDialog extends AbstractDialog implements
 		if ((outputLine == null) || (outputLine.isEmpty())) {
 			return;
 		}
-		
+
 		if (lines.getText().isEmpty()) {
 			lines.setText(outputLine);
 		} else {
 			lines.setText(lines.getText()
 					+ System.getProperty("line.separator") + outputLine);
 		}
-		
+
 		int lastChar = lines.getText().length() - 1;
 		if (lastChar < 0) {
 			lastChar = 0;
