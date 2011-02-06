@@ -148,12 +148,12 @@ public class PipelineExecutor extends Thread implements WindowListener {
 	 * The Windows-closed action of the dialog in the view.
 	 */
 	@Override
-	public void windowClosed(WindowEvent e) {
+	public void windowClosing(WindowEvent e) {
 		this.interrupt();
 	}
 
 	@Override
-	public void windowClosing(WindowEvent e) {
+	public void windowClosed(WindowEvent e) {
 	}
 
 	@Override
