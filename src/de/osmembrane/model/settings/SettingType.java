@@ -54,7 +54,12 @@ public enum SettingType {
 	/**
 	 * The working directory for execution and preview.
 	 */
-	DEFAULT_WORKING_DIRECTORY(String.class, Constants.DEFAULT_WORKING_DIRECTORY);
+	DEFAULT_WORKING_DIRECTORY(String.class, Constants.DEFAULT_WORKING_DIRECTORY),
+	
+	/**
+	 * Show the startup screen or not.
+	 */
+	SHOW_STARTUP_SCREEN(Boolean.class, Constants.DEFAULT_SHOW_STARTUP_SCREEN);
 
 	private Class<?> clazz;
 	private Object defaultValue;

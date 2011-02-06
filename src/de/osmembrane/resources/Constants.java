@@ -122,6 +122,11 @@ public class Constants {
 	public static final String DEFAULT_WORKING_DIRECTORY = System.getProperty("java.io.tmpdir");
 
 	/**
+	 * Show the startup screen or not.
+	 */
+	public static final Boolean DEFAULT_SHOW_STARTUP_SCREEN = true;
+
+	/**
 	 * static method
 	 */
 	static {
