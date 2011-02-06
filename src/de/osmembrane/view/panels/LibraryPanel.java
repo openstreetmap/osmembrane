@@ -290,7 +290,8 @@ public class LibraryPanel extends JPanel {
 								lpg.getFullContentHeight(), false));
 					}
 
-					rearrange(true);
+					// prevents weird flickering... don't know why
+					rearrange(false);
 
 					// might be inaccurate by several factors, but will still
 					// guarantee a fluent animation
@@ -332,7 +333,7 @@ public class LibraryPanel extends JPanel {
 	 * @see {@link JPanel#setSize}
 	 */
 	private void setSizeNoArrange(Dimension d) {
-		super.setSize(d);
+		super.setSize(d);		
 	}
 
 	/**
@@ -360,8 +361,8 @@ public class LibraryPanel extends JPanel {
 		}
 
 		// update for the scroll bar
-		setPreferredSize(new Dimension(this.getPreferredSize().width, y));
-		if (setSize) {
+		if (setSize) {	
+			setPreferredSize(new Dimension(this.getPreferredSize().width, y));
 			setSizeNoArrange(getPreferredSize());
 		}
 	}
