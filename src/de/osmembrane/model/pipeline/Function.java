@@ -376,9 +376,13 @@ public class Function extends AbstractFunction {
 			newTask.addObserver(newFunction);
 			newFunction.tasks.add(newTask);
 
-			if (task == activeTask && type.copyValues()) {
+			if (task == activeTask) {
 				newFunction.activeTask = newTask;
 			}
+		}
+		
+		if(!type.copyValues()) {
+			newFunction.activeTask = newFunction.getAvailableTasks()[0];
 		}
 
 		return newFunction;

@@ -8,6 +8,7 @@ import javax.swing.Action;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.settings.AbstractFunctionPreset;
+import de.osmembrane.model.settings.AbstractSettings;
 import de.osmembrane.model.settings.FunctionPreset;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
@@ -55,38 +56,24 @@ public class LoadFunctionPresetAction extends AbstractAction {
 		}
 		AbstractFunction function = ((PipelineFunction) select)
 				.getModelFunction();
-
-		AbstractFunctionPreset afp[] = ModelProxy.getInstance().getSettings()
-				.getAllFunctionPresets(function);
+		
+		AbstractSettings settings = ModelProxy.getInstance()
+		.getSettings();
 
 		IFunctionPresetDialog fpd = ViewRegistry.getInstance().getCasted(
 				FunctionPresetDialog.class, IFunctionPresetDialog.class);
-		
-		fpd.open(new FunctionPreset[0]);
 
-		// open the windows with afp
+		do {
+			AbstractFunctionPreset afp[] = settings.getAllFunctionPresets(function);
 
-		// return the action
-
-		/*
-		 * got delete:
-		 * 
-		 * need: AbstractFunctionPreset call:
-		 * ModelProxy.getInstance().getSettings
-		 * ().deleteFunctionPreset(AbstractFunctionPreset);
-		 */
-
-		/*
-		 * got load
-		 * 
-		 * need: AbstractFunctionPreset, AbstractFunction call:
-		 * AbstractFunctionPreset.loadPreset(AbstractFunction);
-		 */
-
-		/*
-		 * got cancel:
-		 * 
-		 * need: - call: break;
-		 */
+			fpd.open(afp);
+			
+			AbstractFunctionPreset preset = fpd.getSelectedPreset();
+			if(fpd.loadSelected()) {
+				preset.loadPreset(function);
+			} else if(fpd.deleteSelected()) {
+				settings.deleteFunctionPreset(preset);
+			}
+		} while (fpd.deleteSelected());
 	}
 }

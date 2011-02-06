@@ -162,6 +162,7 @@ public class Parameter extends AbstractParameter {
 		/* copy the param-value */
 		if(type.copyValues()) {
 			newParam.value = this.value;
+			System.out.println(getParent().getName() + " copyed value: " + value);
 		}
 		
 		return newParam;

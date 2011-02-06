@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import de.osmembrane.model.settings.AbstractFunctionPreset;
 import de.osmembrane.model.settings.FunctionPreset;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
@@ -51,7 +52,7 @@ public class FunctionPresetDialog extends AbstractDialog implements
 	/**
 	 * The presets to select from
 	 */
-	private FunctionPreset[] presets;
+	private AbstractFunctionPreset[] presets;
 
 	/**
 	 * Buttons for loading & deleting
@@ -130,7 +131,7 @@ public class FunctionPresetDialog extends AbstractDialog implements
 	}
 
 	@Override
-	public void open(FunctionPreset[] presets) {
+	public void open(AbstractFunctionPreset[] presets) {
 		this.presets = presets;
 
 		String[] selectables = new String[presets.length];
@@ -147,7 +148,7 @@ public class FunctionPresetDialog extends AbstractDialog implements
 	}
 
 	@Override
-	public FunctionPreset getSelectedPreset() {
+	public AbstractFunctionPreset getSelectedPreset() {
 		if (selection.getSelectedIndex() < 0) {
 			return null;
 		} else {
