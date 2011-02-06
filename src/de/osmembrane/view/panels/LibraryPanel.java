@@ -342,7 +342,7 @@ public class LibraryPanel extends JPanel {
 	 */
 	private void rearrange(boolean setSize) {
 		// bring the filter to its width
-		editFilter.setSize(this.getPreferredSize().width - 6,
+		editFilter.setSize(this.getWidth() - 6,
 				editFilter.getPreferredSize().height);
 
 		int y = 3 + editFilter.getHeight();

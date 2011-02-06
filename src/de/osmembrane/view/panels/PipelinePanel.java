@@ -139,7 +139,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 */
 	private final static double DEFAULT_ZOOM_IN = 1.25;
 	private final static double DEFAULT_ZOOM_OUT = 0.80;
-	private static final double DEFAULT_ZOOM = 0.64;
+	protected static final double DEFAULT_ZOOM = 1.0;
 	private final static double PIXEL_PER_ZOOM_LEVEL = 100.00;
 
 	/**

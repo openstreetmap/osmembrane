@@ -88,6 +88,12 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	protected Point dragOffset;
 
 	/**
+	 * All functions will have their size modified by this factor. This
+	 * automatically affects standard zoom and drag & drop size.
+	 */
+	private static final double DEFAULT_SIZE_FACTOR = 0.64;
+
+	/**
 	 * Initializes a new {@link LibraryFunction} for the given model prototype
 	 * function
 	 * 
@@ -114,8 +120,9 @@ public class LibraryFunction extends DisplayTemplatePanel {
 		 * it for *FUNCTION GROUPS ONLY* if you ever want images/function,
 		 * change this
 		 */
-		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
-				displayTemplate.getIconHeight()));
+		setPreferredSize(new Dimension(
+				(int) (displayTemplate.getIconWidth() * LibraryFunction.DEFAULT_SIZE_FACTOR),
+				(int) (displayTemplate.getIconHeight() * LibraryFunction.DEFAULT_SIZE_FACTOR)));
 
 		List<Image> prerender = DisplayTemplatePanel
 				.givePrerender(modelFunctionPrototype.getParent());

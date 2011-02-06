@@ -55,7 +55,7 @@ public class MainFrameGlassPane extends JComponent {
 			dragAndDrop = new LibraryFunction(null,
 					libraryFunction.getModelFunctionPrototype(), false);
 
-			dragAndDrop.setSize(dragAndDrop.getPreferredSize());
+			dragAndDrop.setSize(libraryFunction.getPreferredSize());
 			dragAndDrop.forceHighlight(true);
 			dragAndDrop.setCursor(DragSource.DefaultCopyDrop);
 
