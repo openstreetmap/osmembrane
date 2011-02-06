@@ -131,13 +131,22 @@ public class ExecutionStateDialog extends AbstractDialog implements
 
 	@Override
 	public void addOutputLine(String outputLine) {
+		if ((outputLine == null) || (outputLine.isEmpty())) {
+			return;
+		}
+		
 		if (lines.getText().isEmpty()) {
 			lines.setText(outputLine);
 		} else {
 			lines.setText(lines.getText()
 					+ System.getProperty("line.separator") + outputLine);
 		}
-		lines.setCaretPosition(lines.getText().length() - 1);
+		
+		int lastChar = lines.getText().length() - 1;
+		if (lastChar < 0) {
+			lastChar = 0;
+		}
+		lines.setCaretPosition(lastChar);
 	}
 
 	@Override
