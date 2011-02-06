@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.osmembrane.view.dialogs;
 
 import java.awt.BorderLayout;
@@ -135,18 +132,7 @@ public class TutorialDialog extends AbstractDialog {
 			}
 		});
 		buttonGrid.add(backButton);
-
-		JButton closeButton = new JButton(I18N.getInstance().getString(
-				"View.Close"));
-		closeButton.addKeyListener(returnButtonListener);
-		closeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				hideWindow();
-			}
-		});
-		buttonGrid.add(closeButton);
-
+		
 		nextButton = new JButton(I18N.getInstance().getString("View.Next"));
 		nextButton.addKeyListener(returnButtonListener);
 		nextButton.addActionListener(new ActionListener() {
@@ -159,13 +145,29 @@ public class TutorialDialog extends AbstractDialog {
 		});
 		buttonGrid.add(nextButton);
 
+		JButton closeButton = new JButton(I18N.getInstance().getString(
+				"View.Close"));
+		closeButton.addKeyListener(returnButtonListener);
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hideWindow();
+			}
+		});
+		buttonGrid.add(closeButton);
+
+		nextButton.requestFocus();
+
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		buttons.add(buttonGrid);
 		add(buttons, BorderLayout.SOUTH);
+		
+		setTitle(I18N.getInstance().getString("View.TutorialDialog"));
 
 		setCurrentlyShowing(0);
 		pack();
+		centerWindow();
 		setModal(false);
 	}
 

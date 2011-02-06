@@ -251,7 +251,7 @@ public class LibraryPanelGroup extends JPanel {
 		content.clear();
 
 		// find the preferred width by using the maximum of all child objects
-		int maxPreferredWidth = headerButton.getPreferredSize().width;
+		int maxPreferredWidth = headerButton.getPreferredSize().width + 12;
 		// running through the current height
 		int y = 3 + headerButton.getHeight() + 6;
 
@@ -265,7 +265,7 @@ public class LibraryPanelGroup extends JPanel {
 			lf.setSize(lf.getPreferredSize());
 			// find the maximum necessary width
 			maxPreferredWidth = Math.max(maxPreferredWidth,
-					lf.getPreferredSize().width + 24);
+					lf.getPreferredSize().width + 12);
 			y += lf.getHeight() + 6;
 
 			contentHeight += lf.getPreferredSize().height + 7;
