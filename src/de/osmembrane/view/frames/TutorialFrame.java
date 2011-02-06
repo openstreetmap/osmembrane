@@ -23,7 +23,7 @@ import de.osmembrane.view.AbstractFrame;
  * @author tobias_kuhn
  * 
  */
-public class TutorialDialog extends AbstractFrame {
+public class TutorialFrame extends AbstractFrame {
 
 	private static final long serialVersionUID = -370948835878778575L;
 
@@ -101,9 +101,9 @@ public class TutorialDialog extends AbstractFrame {
 	private JButton nextButton;
 
 	/**
-	 * Creates a new {@link TutorialDialog}.
+	 * Creates a new {@link TutorialFrame}.
 	 */
-	public TutorialDialog() {
+	public TutorialFrame() {
 		setLayout(new BorderLayout());
 
 		content = new JPanel();

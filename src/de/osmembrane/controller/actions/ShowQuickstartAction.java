@@ -11,7 +11,7 @@ import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.frames.TutorialDialog;
+import de.osmembrane.view.frames.TutorialFrame;
 
 /**
  * Action to show the quickstart tutorial
@@ -45,6 +45,6 @@ public class ShowQuickstartAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ViewRegistry.getInstance().get(TutorialDialog.class).showWindow();
+		ViewRegistry.getInstance().get(TutorialFrame.class).showWindow();
 	}
 }
