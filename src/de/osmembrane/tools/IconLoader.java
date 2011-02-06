@@ -59,8 +59,8 @@ public class IconLoader {
 		/**
 		 * The size of the loaded icon.
 		 */
-		private int sizeX;
-		private int sizeY;
+		private int width;
+		private int height;
 
 		/**
 		 * Creates a new Size enum.
@@ -68,22 +68,27 @@ public class IconLoader {
 		 * @param size
 		 *            of the icon.
 		 */
-		private Size(int sizeX, int sizeY) {
-			this.sizeX = sizeX;
-			this.sizeY = sizeY;
+		private Size(int width, int height) {
+			this.width = width;
+			this.height = height;
 		}
 
 		/**
-		 * Returns the size of the icon.
+		 * Returns the width of the icon.
 		 * 
-		 * @return size of the icon
+		 * @return size of the icon (x)
 		 */
-		public int getSizeX() {
-			return sizeX;
+		public int getWidth() {
+			return width;
 		}
 		
-		public int getSizeY() {
-			return sizeY;
+		/**
+		 * Returns the height of the icon.
+		 * 
+		 * @return size of the icon (y)
+		 */
+		public int getHeight() {
+			return height;
 		}
 	}
 
@@ -105,10 +110,10 @@ public class IconLoader {
 			/* Load the icon to an BufferedImage */
 			BufferedImage tempImg = ImageIO.read(file);
 			
-			int sizeX = (size.getSizeX() > 0) ? size.getSizeX() : tempImg.getWidth();
-			int sizeY = (size.getSizeY() > 0) ? size.getSizeY() : tempImg.getHeight();
+			int width = (size.getWidth() > 0) ? size.getWidth() : tempImg.getWidth();
+			int height = (size.getHeight() > 0) ? size.getHeight() : tempImg.getHeight();
 			
-			image = new BufferedImage(sizeX, sizeY,
+			image = new BufferedImage(width, height,
 					BufferedImage.TYPE_INT_ARGB);
 
 			/*
@@ -119,7 +124,7 @@ public class IconLoader {
 			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-			g2.drawImage(tempImg, 0, 0,sizeX, sizeY, null);
+			g2.drawImage(tempImg, 0, 0,width, height, null);
 		} catch (IOException e) {
 			/* do nothing, imageIcon would be null. */
 		}
