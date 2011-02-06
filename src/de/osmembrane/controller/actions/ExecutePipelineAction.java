@@ -10,6 +10,9 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.Application;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.model.settings.SettingType;
@@ -77,7 +80,13 @@ public class ExecutePipelineAction extends AbstractAction {
 		IExecutionStateDialog dialog = ViewRegistry.getInstance().getCasted(ExecutionStateDialog.class, IExecutionStateDialog.class);
 		dialog.showWindow();
 		
-		PipelineExecutor executor = new PipelineExecutor(osmosisPath, workingDirectory, parameters, dialog);
-		executor.start();
+		try {
+			PipelineExecutor executor = new PipelineExecutor(osmosisPath, workingDirectory, parameters, dialog);
+			executor.start();
+		} catch (IllegalArgumentException e1) {
+			// TODO I18N
+			Application.handleException(new ControlledException(this, ExceptionSeverity.WARNING, "Pfad zu osmosis falsch..."));
+		}
+		
 	}
 }
