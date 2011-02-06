@@ -53,6 +53,7 @@ import de.osmembrane.controller.actions.ZoomInAction;
 import de.osmembrane.controller.actions.ZoomOutAction;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunctionGroup;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
@@ -132,7 +133,8 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		});
 
 		// set own glass pane used for drag & drop
-		boolean showStartScreen = true;
+		boolean showStartScreen = (Boolean) ModelProxy.getInstance()
+				.getSettings().getValue(SettingType.SHOW_STARTUP_SCREEN);
 		setGlassPane(new MainFrameGlassPane(showStartScreen));
 		getGlassPane().setVisible(showStartScreen);
 
@@ -219,7 +221,8 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		JMenu aboutMenu = new JMenu(I18N.getInstance().getString(
 				"View.Menu.About"));
 		aboutMenu.add(ActionRegistry.getInstance().get(ShowHelpAction.class));
-		aboutMenu.add(ActionRegistry.getInstance().get(ShowQuickstartAction.class));
+		aboutMenu.add(ActionRegistry.getInstance().get(
+				ShowQuickstartAction.class));
 		aboutMenu.add(new JSeparator());
 		aboutMenu.add(ActionRegistry.getInstance().get(ShowAboutAction.class));
 		menuBar.add(aboutMenu);

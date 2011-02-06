@@ -96,6 +96,11 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 	private JCheckBox rasterSizeEnable;
 
 	/**
+	 * Components to edit whether the startup screen shall be displayed
+	 */
+	private JCheckBox showStartup;
+
+	/**
 	 * Generates a new {@link SettingsDialog}.
 	 */
 	public SettingsDialog() {
@@ -291,8 +296,18 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 								"Model.Settings.Type.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES.Description"));
 		settings.add(defaultParamExport, gbc);
 		gbc.gridwidth = 1;
-
+		
 		gbc.gridy = 2;
+		gbc.gridx = 2;
+		gbc.gridwidth = 2;
+		showStartup = new JCheckBox(I18N.getInstance().getString(
+		"Model.Settings.Type.SHOW_STARTUP_SCREEN"));
+		showStartup.setToolTipText(I18N.getInstance().getString(
+				"Model.Settings.Type.SHOW_STARTUP_SCREEN.Description"));
+		settings.add(showStartup, gbc);
+		gbc.gridwidth = 1;
+
+		gbc.gridy = 3;
 		gbc.gridx = 2;
 		settings.add(
 				new JLabel(I18N.getInstance().getString(
@@ -446,6 +461,9 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		case PIPELINE_RASTER_SIZE:
 			int y = this.rasterSize.getValue();
 			return rasterSizeToModel(y);
+			
+		case SHOW_STARTUP_SCREEN:
+			return this.showStartup.isSelected();
 
 		default:
 			return null;
@@ -502,6 +520,10 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 			this.rasterSize.setEnabled(rasterSize != 0);
 			this.rasterSize.setValue(0);
 			this.rasterSize.setValue(rasterSize);
+			break;
+			
+		case SHOW_STARTUP_SCREEN:
+			this.showStartup.setSelected((Boolean) value);
 			break;
 		}
 	}
