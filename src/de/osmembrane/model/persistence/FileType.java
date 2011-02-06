@@ -21,30 +21,32 @@ public enum FileType {
 	/**
 	 * Bash normally used under UNIX systems.
 	 */
-	BASH(new String[]{".sh"}, BashPersistence.class, BashParser.class),
+	BASH(new String[] { ".sh" }, BashPersistence.class, BashParser.class),
 
 	/**
 	 * CMD normally used under Windows systems.
 	 */
-	CMD(new String[]{".bat", ".cmd"}, CmdPersistence.class, CmdParser.class),
+	CMD(new String[] { ".bat", ".cmd" }, CmdPersistence.class, CmdParser.class),
 
 	/**
 	 * OSMembrane filetype.
 	 */
-	OSMEMBRANE(new String[]{".osmembrane"}, OSMembranePersistence.class, null),
-	
+	OSMEMBRANE(new String[] { ".osmembrane" }, OSMembranePersistence.class,
+			null),
+
 	/**
 	 * All filetypes together.
 	 */
-	ALLTYPES(new String[]{".osmembrane", ".bat", ".cmd", ".sh"}, null, null),
-	
+	ALLTYPES(new String[] { ".osmembrane", ".bat", ".cmd", ".sh" }, null, null),
+
 	/**
 	 * Only used to generate a pipeline compatible with the execution library.
 	 */
 	EXECUTION_FILETYPE(null, null, ExecutionParser.class);
-	
-	private static final FileType[] autoselectableFileTypes = {BASH, CMD, OSMEMBRANE};
-	
+
+	private static final FileType[] autoselectableFileTypes = { BASH, CMD,
+			OSMEMBRANE };
+
 	/**
 	 * {@link FileType} as a string.
 	 */
@@ -54,7 +56,7 @@ public enum FileType {
 	 * Matching persistence for the {@link FileType}.
 	 */
 	private Class<? extends AbstractPersistence> persistenceClass;
-	
+
 	/**
 	 * Matching parser for the {@link FileType}.
 	 */
@@ -76,9 +78,10 @@ public enum FileType {
 	public String getExtension() {
 		return extensions[0];
 	}
-	
+
 	/**
 	 * Returns all possible extensions for a filetype as a String-Array.
+	 * 
 	 * @return
 	 */
 	public String[] getAllExtensions() {
@@ -98,9 +101,10 @@ public enum FileType {
 				if (getAllExtensions() == null) {
 					return false;
 				}
-				
-				for(String extension : getAllExtensions()) {
-					if (f.getName().toLowerCase().endsWith(extension) || f.isDirectory()) {
+
+				for (String extension : getAllExtensions()) {
+					if (f.getName().toLowerCase().endsWith(extension)
+							|| f.isDirectory()) {
 						return true;
 					}
 				}
@@ -110,14 +114,14 @@ public enum FileType {
 			@Override
 			public String getDescription() {
 				StringBuilder builder = new StringBuilder();
-				for(int i = 0; i < getAllExtensions().length; i++) {
+				for (int i = 0; i < getAllExtensions().length; i++) {
 					builder.append("*");
 					builder.append(getAllExtensions()[i]);
-					if(i+1 < getAllExtensions().length) {
+					if (i + 1 < getAllExtensions().length) {
 						builder.append(", ");
 					}
 				}
-				
+
 				return getName() + " (" + builder.toString() + ")";
 			}
 		};
@@ -144,6 +148,7 @@ public enum FileType {
 
 	/**
 	 * Returns the internationalized name as String.
+	 * 
 	 * @return
 	 */
 	public String getName() {
@@ -154,12 +159,13 @@ public enum FileType {
 	/**
 	 * Returns the a corresponding filetype for a given filename.
 	 * 
-	 * @param file filename for which the filetype is needed.
+	 * @param file
+	 *            filename for which the filetype is needed.
 	 * 
 	 * @return filetype if a matching one is found, otherwise NULL
 	 */
 	public static FileType fileTypeFor(File file) {
-		for(FileType fileType : autoselectableFileTypes) {
+		for (FileType fileType : autoselectableFileTypes) {
 			if (fileType.getFileFilter().accept((file)) && fileType != ALLTYPES) {
 				return fileType;
 			}

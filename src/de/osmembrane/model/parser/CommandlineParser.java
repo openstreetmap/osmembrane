@@ -384,8 +384,8 @@ public class CommandlineParser implements IParser {
 
 		/* add the path to the osmosis binary */
 		if (addOsmosisPath) {
-			builder.append(quotate((String) ModelProxy.getInstance().getSettings()
-							.getValue(SettingType.DEFAULT_OSMOSIS_PATH)));
+			builder.append(quotate((String) ModelProxy.getInstance()
+					.getSettings().getValue(SettingType.DEFAULT_OSMOSIS_PATH)));
 		}
 
 		/* do the parsing while a function is in the queue */
@@ -546,10 +546,12 @@ public class CommandlineParser implements IParser {
 	protected void setQuotationSymbol(String symbol) {
 		this.quotationSymbol = symbol;
 	}
-	
+
 	/**
 	 * Sets if the omsosis path should be added or not
-	 * @param addOsmosisPath boolean
+	 * 
+	 * @param addOsmosisPath
+	 *            boolean
 	 */
 	protected void addOsmosisPath(boolean addOsmosisPath) {
 		this.addOsmosisPath = addOsmosisPath;

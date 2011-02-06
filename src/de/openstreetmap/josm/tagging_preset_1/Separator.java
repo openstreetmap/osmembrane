@@ -5,18 +5,19 @@
 // Generated on: 2011.01.27 at 08:53:01 PM MEZ 
 //
 
-
 package de.openstreetmap.josm.tagging_preset_1;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for separator complex type.
+ * <p>
+ * Java class for separator complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="separator">
@@ -32,6 +33,5 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "separator")
 public class Separator {
-
 
 }

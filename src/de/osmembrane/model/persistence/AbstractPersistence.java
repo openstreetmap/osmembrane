@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Observer;
 
-
 /**
  * AbstractPersistence provides two methods save and load, so all
  * Persistence-classes are used in the same way.

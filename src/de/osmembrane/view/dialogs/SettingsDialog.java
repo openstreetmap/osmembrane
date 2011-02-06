@@ -296,12 +296,12 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 								"Model.Settings.Type.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES.Description"));
 		settings.add(defaultParamExport, gbc);
 		gbc.gridwidth = 1;
-		
+
 		gbc.gridy = 2;
 		gbc.gridx = 2;
 		gbc.gridwidth = 2;
 		showStartup = new JCheckBox(I18N.getInstance().getString(
-		"Model.Settings.Type.SHOW_STARTUP_SCREEN"));
+				"Model.Settings.Type.SHOW_STARTUP_SCREEN"));
 		showStartup.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.SHOW_STARTUP_SCREEN.Description"));
 		settings.add(showStartup, gbc);
@@ -461,7 +461,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		case PIPELINE_RASTER_SIZE:
 			int y = this.rasterSize.getValue();
 			return rasterSizeToModel(y);
-			
+
 		case SHOW_STARTUP_SCREEN:
 			return this.showStartup.isSelected();
 
@@ -521,7 +521,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 			this.rasterSize.setValue(0);
 			this.rasterSize.setValue(rasterSize);
 			break;
-			
+
 		case SHOW_STARTUP_SCREEN:
 			this.showStartup.setSelected((Boolean) value);
 			break;

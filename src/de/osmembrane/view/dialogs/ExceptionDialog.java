@@ -93,8 +93,7 @@ public class ExceptionDialog extends AbstractDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				exceptionTextPane.setPreferredSize(new Dimension(
-						(getWidth() > 648) ? getWidth() - 8 : 640,
-						480));
+						(getWidth() > 648) ? getWidth() - 8 : 640, 480));
 				showTraceButton.setVisible(false);
 				exceptionTextPane.setVisible(true);
 				exceptionText.setCaretPosition(0);

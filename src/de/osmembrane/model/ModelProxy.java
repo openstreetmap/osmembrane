@@ -15,43 +15,43 @@ import de.osmembrane.model.statusbar.AbstractStatusbar;
 import de.osmembrane.model.statusbar.Statusbar;
 
 /**
- * The ModelProxy is the connection to the whole Model of OSMembrane.
- * A instance can got over {@see ModelProxy#getInstance()}.
+ * The ModelProxy is the connection to the whole Model of OSMembrane. A instance
+ * can got over {@see ModelProxy#getInstance()}.
  * 
  * @author jakob_jarosch
  */
 public class ModelProxy extends Observable implements Observer {
-	
+
 	private AbstractSettings settings;
 	private AbstractPipeline pipeline;
 	private AbstractFunctionPrototype functionPrototype;
 	private AbstractPresetPrototype presetPrototype;
 	private AbstractStatusbar statusbar;
-	
+
 	/**
 	 * Implements the Singleton pattern.
 	 */
 	private static ModelProxy instance = new ModelProxy();
-	
+
 	/**
 	 * Initiates the ModelProxy.
 	 */
 	private ModelProxy() {
 		settings = new Settings();
 		settings.addObserver(this);
-		
+
 		pipeline = new Pipeline();
 		pipeline.addObserver(this);
-		
+
 		functionPrototype = new FunctionPrototype();
 		functionPrototype.addObserver(this);
-		
+
 		statusbar = new Statusbar();
 		statusbar.addObserver(this);
-		
+
 		presetPrototype = new PresetPrototype();
 	}
-	
+
 	/**
 	 * Getter for the Singleton pattern.
 	 * 
@@ -60,7 +60,7 @@ public class ModelProxy extends Observable implements Observer {
 	public static ModelProxy getInstance() {
 		return instance;
 	}
-	
+
 	/**
 	 * Returns the {@link AbstractPipeline}.
 	 * 
@@ -87,7 +87,7 @@ public class ModelProxy extends Observable implements Observer {
 	public AbstractFunctionPrototype getFunctions() {
 		return functionPrototype;
 	}
-	
+
 	/**
 	 * Returns the {@link AbstractStatusbar}.
 	 * 
@@ -96,7 +96,7 @@ public class ModelProxy extends Observable implements Observer {
 	public AbstractStatusbar getStatusbar() {
 		return statusbar;
 	}
-	
+
 	/**
 	 * Returns the {@link AbstractPresetPrototype}.
 	 * 
@@ -105,11 +105,10 @@ public class ModelProxy extends Observable implements Observer {
 	public AbstractPresetPrototype getPreset() {
 		return presetPrototype;
 	}
-	
 
 	@Override
 	public void update(Observable o, Object arg) {
-		setChanged();	
+		setChanged();
 		notifyObservers(arg);
 	}
 }

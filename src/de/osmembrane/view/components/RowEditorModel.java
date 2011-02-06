@@ -6,8 +6,8 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
 /**
- * Implements a simple editor model for {@link JTable}s that is based on rows instead of
- * columns.
+ * Implements a simple editor model for {@link JTable}s that is based on rows
+ * instead of columns.
  * 
  * @author tobias_kuhn
  * 
@@ -25,16 +25,21 @@ public class RowEditorModel {
 
 	/**
 	 * sets a {@link TableCellEditor} for a specific row
-	 * @param row the row of the TableCellEditor
-	 * @param tce the TableCellEditor to set
+	 * 
+	 * @param row
+	 *            the row of the TableCellEditor
+	 * @param tce
+	 *            the TableCellEditor to set
 	 */
 	public void setEditorRow(int row, TableCellEditor tce) {
 		rowEditors.put(row, tce);
 	}
-	
+
 	/**
 	 * removes a {@link TableCellEditor} for a specific row
-	 * @param row the row of the TableCellEditor
+	 * 
+	 * @param row
+	 *            the row of the TableCellEditor
 	 */
 	public void removeEditorRow(int row) {
 		rowEditors.remove(row);
@@ -42,7 +47,9 @@ public class RowEditorModel {
 
 	/**
 	 * gets a {@link TableCellEditor} for a specific row
-	 * @param row the row of the TableCellEditor
+	 * 
+	 * @param row
+	 *            the row of the TableCellEditor
 	 * @return the requested TableCellEditor
 	 */
 	public TableCellEditor getEditorRow(int row) {
@@ -53,7 +60,7 @@ public class RowEditorModel {
 	 * clears the model
 	 */
 	public void clear() {
-		rowEditors.clear();		
+		rowEditors.clear();
 	}
 
 }

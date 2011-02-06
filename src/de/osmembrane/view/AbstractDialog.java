@@ -34,7 +34,7 @@ public abstract class AbstractDialog extends JDialog implements IView {
 		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		setModal(true);
 		setResizable(false);
-		
+
 		// ability activate buttons with return
 		returnButtonListener = new KeyListener() {
 

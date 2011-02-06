@@ -458,31 +458,26 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		// if you can't read the Math below properly,
 		// some idiot used Eclipse/Java auto code formatter
 		/*
-		 * o2w.scale * to + o2w.translate = 0 
-		 * <=> o2w.translate = - o2w.scale * to
+		 * o2w.scale * to + o2w.translate = 0 <=> o2w.translate = - o2w.scale *
+		 * to
 		 */
 		double translateToX = -objectToWindow.getScaleX() * to;
 
 		/*
-		 * o2w * M = o2w_new, 
-		 *   where o2w is of the form scale(x,y) and translate(s,t)
-		 *   and M is a translation matrix from translate(u,v)
-		 *   and o2w_new.translate is of the form scale(x,y) and translateTo(translateToX,t)
-		 * <=> 
-		 *   u * x + s = translateToX
-		 *   v * y + t = t
-		 * <=>
-		 *   u = (translateToX - s) / x
-		 *   v = 0
+		 * o2w * M = o2w_new, where o2w is of the form scale(x,y) and
+		 * translate(s,t) and M is a translation matrix from translate(u,v) and
+		 * o2w_new.translate is of the form scale(x,y) and
+		 * translateTo(translateToX,t) <=> u * x + s = translateToX v * y + t =
+		 * t <=> u = (translateToX - s) / x v = 0
 		 */
 		objectToWindow.translate(
 				(translateToX - objectToWindow.getTranslateX())
 						/ (objectToWindow.getScaleX()), 0.0);
 	}
-	
+
 	/**
-	 * Moves objectToWindow in a way, so that the top screen (window y = 0)
-	 * will result in the object coordinate to.
+	 * Moves objectToWindow in a way, so that the top screen (window y = 0) will
+	 * result in the object coordinate to.
 	 * 
 	 * @param to
 	 *            the object position to move the top window edge to
@@ -491,22 +486,17 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		// if you can't read the Math below properly,
 		// some idiot used Eclipse/Java auto code formatter
 		/*
-		 * o2w.scale * to + o2w.translate = 0 
-		 * <=> o2w.translate = - o2w.scale * to
+		 * o2w.scale * to + o2w.translate = 0 <=> o2w.translate = - o2w.scale *
+		 * to
 		 */
 		double translateToY = -objectToWindow.getScaleY() * to;
 
 		/*
-		 * o2w * M = o2w_new, 
-		 *   where o2w is of the form scale(x,y) and translate(s,t)
-		 *   and M is a translation matrix from translate(u,v)
-		 *   and o2w_new.translate is of the form scale(x,y) and translateTo(s,translateToY)
-		 * <=> 
-		 *   u * x + s = s
-		 *   v * y + t = translateToY
-		 * <=>
-		 *   u = 0
-		 *   v = (translateToY - t) / y
+		 * o2w * M = o2w_new, where o2w is of the form scale(x,y) and
+		 * translate(s,t) and M is a translation matrix from translate(u,v) and
+		 * o2w_new.translate is of the form scale(x,y) and
+		 * translateTo(s,translateToY) <=> u * x + s = s v * y + t =
+		 * translateToY <=> u = 0 v = (translateToY - t) / y
 		 */
 		objectToWindow.translate(0.0,
 				(translateToY - objectToWindow.getTranslateY())

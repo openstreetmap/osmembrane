@@ -27,13 +27,13 @@ import de.osmembrane.tools.I18N;
 public class OSMembranePersistence extends AbstractPersistence {
 
 	private Thread autosaveThread = new Thread() {
-		
+
 		@Override
 		public void run() {
-			
+
 		}
 	};
-	
+
 	@Override
 	public void save(URL file, Object data) throws FileException {
 		if (!(data instanceof List<?>)) {
@@ -44,9 +44,9 @@ public class OSMembranePersistence extends AbstractPersistence {
 							+ data.getClass()));
 		}
 
-		
 		try {
-			FileOutputStream fos = new FileOutputStream(file.toString().replace("file:", ""));
+			FileOutputStream fos = new FileOutputStream(file.toString()
+					.replace("file:", ""));
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 
@@ -65,13 +65,14 @@ public class OSMembranePersistence extends AbstractPersistence {
 		try {
 			BufferedInputStream bis = new BufferedInputStream(file.openStream());
 			ObjectInputStream ois = new ObjectInputStream(bis);
-			
+
 			@SuppressWarnings("unchecked")
-			List<AbstractFunction> object = (List<AbstractFunction>) ois.readObject();
-			
+			List<AbstractFunction> object = (List<AbstractFunction>) ois
+					.readObject();
+
 			ois.close();
 			bis.close();
-			
+
 			return object;
 		} catch (FileNotFoundException e) {
 			throw new FileException(Type.NOT_FOUND, e);

@@ -60,8 +60,11 @@ public class PreviewPipelineAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (!(e.getSource() instanceof PipelineExecutor)) {
-			ActionRegistry.getInstance().get(ExecutePipelineAction.class)
-					.actionPerformed(new ActionEvent(this, 0, "PreviewExection"));
+			ActionRegistry
+					.getInstance()
+					.get(ExecutePipelineAction.class)
+					.actionPerformed(
+							new ActionEvent(this, 0, "PreviewExection"));
 		} else {
 			/* the path to josm */
 			final String josmPath = (String) ModelProxy.getInstance()
@@ -102,9 +105,14 @@ public class PreviewPipelineAction extends AbstractAction {
 				processBuilder.directory(new File(workingDirectory))
 						.redirectErrorStream(false).start();
 			} catch (IOException e1) {
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.WARNING, e1, I18N.getInstance()
-								.getString("Controller.Actions.PreviewPipelineAction.IOException")));
+				Application
+						.handleException(new ControlledException(
+								this,
+								ExceptionSeverity.WARNING,
+								e1,
+								I18N.getInstance()
+										.getString(
+												"Controller.Actions.PreviewPipelineAction.IOException")));
 			}
 		}
 	}

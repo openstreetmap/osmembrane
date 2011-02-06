@@ -5,7 +5,6 @@
 // Generated on: 2011.01.27 at 08:53:01 PM MEZ 
 //
 
-
 package de.openstreetmap.josm.tagging_preset_1;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for root complex type.
+ * <p>
+ * Java class for root complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="root">
@@ -38,139 +39,122 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "root")
-public class Root
-    extends Group
-{
+public class Root extends Group {
 
-    @XmlAttribute
-    protected String author;
-    @XmlAttribute
-    protected String version;
-    @XmlAttribute
-    protected String shortdescription;
-    @XmlAttribute
-    protected String description;
-    @XmlAttribute
-    protected String link;
+	@XmlAttribute
+	protected String author;
+	@XmlAttribute
+	protected String version;
+	@XmlAttribute
+	protected String shortdescription;
+	@XmlAttribute
+	protected String description;
+	@XmlAttribute
+	protected String link;
 
-    /**
-     * Gets the value of the author property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getAuthor() {
-        return author;
-    }
+	/**
+	 * Gets the value of the author property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getAuthor() {
+		return author;
+	}
 
-    /**
-     * Sets the value of the author property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setAuthor(String value) {
-        this.author = value;
-    }
+	/**
+	 * Sets the value of the author property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setAuthor(String value) {
+		this.author = value;
+	}
 
-    /**
-     * Gets the value of the version property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getVersion() {
-        return version;
-    }
+	/**
+	 * Gets the value of the version property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getVersion() {
+		return version;
+	}
 
-    /**
-     * Sets the value of the version property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setVersion(String value) {
-        this.version = value;
-    }
+	/**
+	 * Sets the value of the version property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setVersion(String value) {
+		this.version = value;
+	}
 
-    /**
-     * Gets the value of the shortdescription property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getShortdescription() {
-        return shortdescription;
-    }
+	/**
+	 * Gets the value of the shortdescription property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getShortdescription() {
+		return shortdescription;
+	}
 
-    /**
-     * Sets the value of the shortdescription property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setShortdescription(String value) {
-        this.shortdescription = value;
-    }
+	/**
+	 * Sets the value of the shortdescription property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setShortdescription(String value) {
+		this.shortdescription = value;
+	}
 
-    /**
-     * Gets the value of the description property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDescription() {
-        return description;
-    }
+	/**
+	 * Gets the value of the description property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getDescription() {
+		return description;
+	}
 
-    /**
-     * Sets the value of the description property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDescription(String value) {
-        this.description = value;
-    }
+	/**
+	 * Sets the value of the description property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setDescription(String value) {
+		this.description = value;
+	}
 
-    /**
-     * Gets the value of the link property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getLink() {
-        return link;
-    }
+	/**
+	 * Gets the value of the link property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getLink() {
+		return link;
+	}
 
-    /**
-     * Sets the value of the link property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setLink(String value) {
-        this.link = value;
-    }
+	/**
+	 * Sets the value of the link property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setLink(String value) {
+		this.link = value;
+	}
 
 }

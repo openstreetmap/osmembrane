@@ -358,7 +358,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					JTextFieldWithButton jtfwbBB = new JTextFieldWithButton(
 							ap.getValue(), EDIT_BUTTON_CAPTION);
 					jtfwbBB.fieldNoBorders();
-					//jtfwbBB.setValue("(Bounding Box)", false);
+					// jtfwbBB.setValue("(Bounding Box)", false);
 					jtfwbBB.addButtonActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -391,7 +391,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					rowEditorModel.setEditorRow(i + 1,
 							new JTextFieldWithButtonCellEditor(jtwbList));
 					break;
-					
+
 				case FILENAME:
 					// use JTFWB with EditFileAction
 					JTextFieldWithButton jtwbFile = new JTextFieldWithButton(
@@ -411,7 +411,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					rowEditorModel.setEditorRow(i + 1,
 							new JTextFieldWithButtonCellEditor(jtwbFile));
 					break;
-					
+
 				case DIRECTORY:
 					// use JTFWB with EditDirectoryAction
 					JTextFieldWithButton jtwbDir = new JTextFieldWithButton(
@@ -463,7 +463,7 @@ public class InspectorPanel extends JPanel implements Observer {
 		private String[] columns = new String[2];
 
 		/**
-		 * Creates a new {@link InspectorPanelTableModel}	
+		 * Creates a new {@link InspectorPanelTableModel}
 		 */
 		public InspectorPanelTableModel() {
 			columns[0] = I18N.getInstance().getString("View.Parameter");
@@ -799,6 +799,6 @@ public class InspectorPanel extends JPanel implements Observer {
 			return c;
 		}
 
-	} /* InspectorPanelTableRenderer */	
+	} /* InspectorPanelTableRenderer */
 
 }

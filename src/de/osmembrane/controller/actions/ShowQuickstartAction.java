@@ -11,7 +11,7 @@ import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
-import de.osmembrane.view.dialogs.TutorialDialog;
+import de.osmembrane.view.frames.TutorialDialog;
 
 /**
  * Action to show the quickstart tutorial
@@ -27,17 +27,18 @@ public class ShowQuickstartAction extends AbstractAction {
 	 * Creates a new {@link ShowQuickstartAction}
 	 */
 	public ShowQuickstartAction() {
-		putValue(Action.NAME,
-				I18N.getInstance()
-						.getString("Controller.Actions.ShowQuickstart.Name"));
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.ShowQuickstart.Name"));
 		putValue(
 				Action.SHORT_DESCRIPTION,
 				I18N.getInstance().getString(
 						"Controller.Actions.ShowQuickstart.Description"));
-		putValue(Action.SMALL_ICON,
-				Resource.PROGRAM_ICON.getImageIcon("quickstarttutorial.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY,
-				Resource.PROGRAM_ICON.getImageIcon("quickstarttutorial.png", Size.NORMAL));
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+				"quickstarttutorial.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+				"quickstarttutorial.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
 	}

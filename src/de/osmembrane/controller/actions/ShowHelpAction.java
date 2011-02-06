@@ -53,7 +53,8 @@ public class ShowHelpAction extends AbstractAction {
 		} catch (Exception e1) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.WARNING, I18N.getInstance().getString(
-							"Controller.Actions.ShowHelp.FileNotFound", Constants.HELP_FILE_PATH)));
+							"Controller.Actions.ShowHelp.FileNotFound",
+							Constants.HELP_FILE_PATH)));
 		}
 	}
 }

@@ -48,12 +48,12 @@ public enum ParameterType {
 	INSTANT("Instant"),
 
 	/**
-	 * BoundingBox Value.
-	 * The String should be in the following format: double,double,double,double
-	 * first double is left, second right, third top and fourth is bottom
+	 * BoundingBox Value. The String should be in the following format:
+	 * double,double,double,double first double is left, second right, third top
+	 * and fourth is bottom
 	 */
 	BBOX("BoundingBox"),
-	
+
 	/**
 	 * A comma sperated list of values.
 	 */

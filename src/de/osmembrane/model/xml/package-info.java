@@ -7,3 +7,4 @@
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://osmembrane.de/model/xml", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package de.osmembrane.model.xml;
+

@@ -24,44 +24,48 @@ public class Parameter extends AbstractParameter {
 	 */
 	transient private XMLParameter xmlParam;
 	private Identifier xmlParamIdentifier;
-	
+
 	/**
-	 * The enum values for the parameter (if {@link Parameter#type} is {@link ParameterType#ENUM}).
+	 * The enum values for the parameter (if {@link Parameter#type} is
+	 * {@link ParameterType#ENUM}).
 	 */
 	private List<EnumValue> enumValues = new ArrayList<EnumValue>();
-	
+
 	/**
 	 * Parent task.
 	 */
 	private AbstractTask parentTask;
-	
+
 	/**
 	 * Type of the parameter.
 	 */
 	private ParameterType type;
-	
+
 	/**
 	 * Value of the Parameter.
 	 */
 	private String value;
-	
+
 	/**
 	 * Constructor for a new {@link Parameter}.
 	 * 
-	 * @param xmlParam XML counterpart which should be represented by the {@link Parameter}.
+	 * @param xmlParam
+	 *            XML counterpart which should be represented by the
+	 *            {@link Parameter}.
 	 */
 	public Parameter(AbstractTask parentTask, XMLParameter xmlParam) {
 		this.type = ParameterType.parseString(xmlParam.getType());
 		this.value = xmlParam.getDefaultValue();
 		this.xmlParam = xmlParam;
 		this.parentTask = parentTask;
-		
+
 		/* set the identifiers */
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
-		this.xmlParamIdentifier = afp.getMatchingXMLParameterIdentifier(this.xmlParam);
-		
+		this.xmlParamIdentifier = afp
+				.getMatchingXMLParameterIdentifier(this.xmlParam);
+
 		/* create enum values */
-		for(XMLEnumValue xmlEnum : xmlParam.getEnumValue()) {
+		for (XMLEnumValue xmlEnum : xmlParam.getEnumValue()) {
 			enumValues.add(new EnumValue(xmlEnum));
 		}
 	}
@@ -79,18 +83,18 @@ public class Parameter extends AbstractParameter {
 	@Override
 	public String getFriendlyName() {
 		/* fallback when friendlyName is not available */
-		if(xmlParam.getFriendlyName() == null) {
+		if (xmlParam.getFriendlyName() == null) {
 			return getName();
 		}
-		
+
 		return xmlParam.getFriendlyName();
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return I18N.getInstance().getDescription(xmlParam);
 	}
-	
+
 	@Override
 	public ParameterType getType() {
 		return type;
@@ -101,7 +105,7 @@ public class Parameter extends AbstractParameter {
 		EnumValue[] values = new EnumValue[enumValues.size()];
 		return enumValues.toArray(values);
 	}
-	
+
 	@Override
 	public String getListType() {
 		return xmlParam.getListType();
@@ -111,13 +115,13 @@ public class Parameter extends AbstractParameter {
 	public String getDefaultValue() {
 		return xmlParam.getDefaultValue();
 	}
-	
+
 	@Override
 	public boolean isDefaultValue() {
-		if(getValue() != null && getDefaultValue() != null) {
+		if (getValue() != null && getDefaultValue() != null) {
 			return getValue().equals(getDefaultValue());
 		} else {
-			if(getValue() == null && getDefaultValue() == null) {
+			if (getValue() == null && getDefaultValue() == null) {
 				return true;
 			}
 		}
@@ -133,10 +137,10 @@ public class Parameter extends AbstractParameter {
 	public boolean setValue(String value) {
 		// TODO check the type match for parameter values
 		this.value = value;
-		
+
 		setChanged();
 		notifyObservers();
-		
+
 		return true;
 	}
 
@@ -157,21 +161,22 @@ public class Parameter extends AbstractParameter {
 
 	@Override
 	public Parameter copy(CopyType type, AbstractTask task) {
-		Parameter newParam = new Parameter(task,  this.xmlParam);
-		
+		Parameter newParam = new Parameter(task, this.xmlParam);
+
 		/* copy the param-value */
-		if(type.copyValues()) {
+		if (type.copyValues()) {
 			newParam.value = this.value;
-			System.out.println(getParent().getName() + " copyed value: " + value);
+			System.out.println(getParent().getName() + " copyed value: "
+					+ value);
 		}
-		
+
 		return newParam;
 	}
-	
+
 	private Object readResolve() throws ObjectStreamException {
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlParam = afp.getMatchingXMLParameter(this.xmlParamIdentifier);
-		
+
 		return this;
 	}
 }

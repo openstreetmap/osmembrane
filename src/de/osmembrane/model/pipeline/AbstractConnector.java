@@ -72,7 +72,7 @@ public abstract class AbstractConnector implements Serializable {
 	 * @return index of the connector
 	 */
 	public abstract int getConnectorIndex();
-	
+
 	/**
 	 * Creates a connection to another connector.
 	 * 

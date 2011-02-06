@@ -27,15 +27,15 @@ public class AboutDialog extends AbstractDialog {
 	 */
 	public AboutDialog() {
 		setLayout(new BorderLayout());
-		
+
 		JLabel splash = new JLabel(new ImageIcon(this.getClass().getResource(
 				"/de/osmembrane/resources/images/splash.png")));
 		add(splash, BorderLayout.NORTH);
-		
+
 		JEditorPane infoText = new JEditorPane();
 		infoText.setContentType("text/html");
 		infoText.setEditable(false);
-		infoText.setText(I18N.getInstance().getString("View.AboutDialog.Info"));		
+		infoText.setText(I18N.getInstance().getString("View.AboutDialog.Info"));
 		add(infoText, BorderLayout.CENTER);
 
 		JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
@@ -47,7 +47,7 @@ public class AboutDialog extends AbstractDialog {
 			}
 		});
 		add(okButton, BorderLayout.SOUTH);
-		
+
 		setTitle(I18N.getInstance().getString("View.AboutDialog"));
 
 		pack();

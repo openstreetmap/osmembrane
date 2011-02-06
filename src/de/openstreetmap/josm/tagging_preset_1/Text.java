@@ -5,7 +5,6 @@
 // Generated on: 2011.01.27 at 08:53:01 PM MEZ 
 //
 
-
 package de.openstreetmap.josm.tagging_preset_1;
 
 import java.util.HashMap;
@@ -18,11 +17,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.namespace.QName;
 
-
 /**
- * <p>Java class for text complex type.
+ * <p>
+ * Java class for text complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="text">
@@ -47,207 +48,186 @@ import javax.xml.namespace.QName;
 @XmlType(name = "text")
 public class Text {
 
-    @XmlAttribute(required = true)
-    protected String key;
-    @XmlAttribute
-    protected String text;
-    @XmlAttribute(name = "text_context")
-    protected String textContext;
-    @XmlAttribute(name = "default")
-    protected String _default;
-    @XmlAttribute(name = "delete_if_empty")
-    protected Boolean deleteIfEmpty;
-    @XmlAttribute(name = "use_last_as_default")
-    protected Boolean useLastAsDefault;
-    @XmlAttribute
-    protected Boolean required;
-    @XmlAnyAttribute
-    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+	@XmlAttribute(required = true)
+	protected String key;
+	@XmlAttribute
+	protected String text;
+	@XmlAttribute(name = "text_context")
+	protected String textContext;
+	@XmlAttribute(name = "default")
+	protected String _default;
+	@XmlAttribute(name = "delete_if_empty")
+	protected Boolean deleteIfEmpty;
+	@XmlAttribute(name = "use_last_as_default")
+	protected Boolean useLastAsDefault;
+	@XmlAttribute
+	protected Boolean required;
+	@XmlAnyAttribute
+	private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 
-    /**
-     * Gets the value of the key property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getKey() {
-        return key;
-    }
+	/**
+	 * Gets the value of the key property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getKey() {
+		return key;
+	}
 
-    /**
-     * Sets the value of the key property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setKey(String value) {
-        this.key = value;
-    }
+	/**
+	 * Sets the value of the key property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setKey(String value) {
+		this.key = value;
+	}
 
-    /**
-     * Gets the value of the text property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getText() {
-        return text;
-    }
+	/**
+	 * Gets the value of the text property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getText() {
+		return text;
+	}
 
-    /**
-     * Sets the value of the text property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setText(String value) {
-        this.text = value;
-    }
+	/**
+	 * Sets the value of the text property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setText(String value) {
+		this.text = value;
+	}
 
-    /**
-     * Gets the value of the textContext property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getTextContext() {
-        return textContext;
-    }
+	/**
+	 * Gets the value of the textContext property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getTextContext() {
+		return textContext;
+	}
 
-    /**
-     * Sets the value of the textContext property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setTextContext(String value) {
-        this.textContext = value;
-    }
+	/**
+	 * Sets the value of the textContext property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setTextContext(String value) {
+		this.textContext = value;
+	}
 
-    /**
-     * Gets the value of the default property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDefault() {
-        return _default;
-    }
+	/**
+	 * Gets the value of the default property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getDefault() {
+		return _default;
+	}
 
-    /**
-     * Sets the value of the default property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDefault(String value) {
-        this._default = value;
-    }
+	/**
+	 * Sets the value of the default property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setDefault(String value) {
+		this._default = value;
+	}
 
-    /**
-     * Gets the value of the deleteIfEmpty property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isDeleteIfEmpty() {
-        return deleteIfEmpty;
-    }
+	/**
+	 * Gets the value of the deleteIfEmpty property.
+	 * 
+	 * @return possible object is {@link Boolean }
+	 * 
+	 */
+	public Boolean isDeleteIfEmpty() {
+		return deleteIfEmpty;
+	}
 
-    /**
-     * Sets the value of the deleteIfEmpty property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setDeleteIfEmpty(Boolean value) {
-        this.deleteIfEmpty = value;
-    }
+	/**
+	 * Sets the value of the deleteIfEmpty property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 * 
+	 */
+	public void setDeleteIfEmpty(Boolean value) {
+		this.deleteIfEmpty = value;
+	}
 
-    /**
-     * Gets the value of the useLastAsDefault property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isUseLastAsDefault() {
-        return useLastAsDefault;
-    }
+	/**
+	 * Gets the value of the useLastAsDefault property.
+	 * 
+	 * @return possible object is {@link Boolean }
+	 * 
+	 */
+	public Boolean isUseLastAsDefault() {
+		return useLastAsDefault;
+	}
 
-    /**
-     * Sets the value of the useLastAsDefault property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setUseLastAsDefault(Boolean value) {
-        this.useLastAsDefault = value;
-    }
+	/**
+	 * Sets the value of the useLastAsDefault property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 * 
+	 */
+	public void setUseLastAsDefault(Boolean value) {
+		this.useLastAsDefault = value;
+	}
 
-    /**
-     * Gets the value of the required property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isRequired() {
-        return required;
-    }
+	/**
+	 * Gets the value of the required property.
+	 * 
+	 * @return possible object is {@link Boolean }
+	 * 
+	 */
+	public Boolean isRequired() {
+		return required;
+	}
 
-    /**
-     * Sets the value of the required property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setRequired(Boolean value) {
-        this.required = value;
-    }
+	/**
+	 * Sets the value of the required property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 * 
+	 */
+	public void setRequired(Boolean value) {
+		this.required = value;
+	}
 
-    /**
-     * Gets a map that contains attributes that aren't bound to any typed property on this class.
-     * 
-     * <p>
-     * the map is keyed by the name of the attribute and 
-     * the value is the string value of the attribute.
-     * 
-     * the map returned by this method is live, and you can add new attribute
-     * by updating the map directly. Because of this design, there's no setter.
-     * 
-     * 
-     * @return
-     *     always non-null
-     */
-    public Map<QName, String> getOtherAttributes() {
-        return otherAttributes;
-    }
+	/**
+	 * Gets a map that contains attributes that aren't bound to any typed
+	 * property on this class.
+	 * 
+	 * <p>
+	 * the map is keyed by the name of the attribute and the value is the string
+	 * value of the attribute.
+	 * 
+	 * the map returned by this method is live, and you can add new attribute by
+	 * updating the map directly. Because of this design, there's no setter.
+	 * 
+	 * 
+	 * @return always non-null
+	 */
+	public Map<QName, String> getOtherAttributes() {
+		return otherAttributes;
+	}
 
 }

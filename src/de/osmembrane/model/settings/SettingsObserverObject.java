@@ -16,7 +16,7 @@ public class SettingsObserverObject {
 	public SettingsObserverObject() {
 		this.changedEntry = null;
 	}
-	
+
 	/**
 	 * Creates a new {@link SettingsObserverObject} with given changed type of
 	 * the entry.

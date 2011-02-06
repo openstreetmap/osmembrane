@@ -170,10 +170,10 @@ public class ExecutionStateDialog extends AbstractDialog implements
 		lines.setText("");
 		closeButton.setText("");
 	}
-	
+
 	@Override
 	public void setCloseButtonCaption(String caption) {
-		closeButton.setText(caption);		
+		closeButton.setText(caption);
 	}
 
 }

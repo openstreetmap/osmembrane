@@ -29,7 +29,7 @@ import de.osmembrane.model.pipeline.Function;
 public class PipelineFunction extends LibraryFunction {
 
 	private static final long serialVersionUID = -7573627124702293974L;
-	
+
 	/**
 	 * The minimum amount a {@link PipelineFunction} must be dragged to activate
 	 * the drop event.
@@ -214,9 +214,9 @@ public class PipelineFunction extends LibraryFunction {
 		highlighted = this.equals(pipeline.getSelected());
 
 		super.paintComponent(g);
-		
+
 		g.setFont(g.getFont().deriveFont(Font.PLAIN)
-				.deriveFont((int) (g.getFont().getSize() * 0.9)));					
+				.deriveFont((int) (g.getFont().getSize() * 0.9)));
 		printCenteredString(g, modelFunction.getActiveTask().getName(), 0,
 				0 + 0.33 * getHeight());
 	}

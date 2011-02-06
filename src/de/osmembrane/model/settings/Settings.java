@@ -105,7 +105,7 @@ public class Settings extends AbstractSettings {
 	public void saveFunctionPreset(String name, AbstractFunction function) {
 		FunctionPreset preset = new FunctionPreset(name, function);
 		getFPList().add(preset);
-		
+
 		changedNotifyObservers(new SettingsObserverObject());
 	}
 
@@ -113,21 +113,21 @@ public class Settings extends AbstractSettings {
 	public AbstractFunctionPreset[] getAllFunctionPresets(
 			AbstractFunction function) {
 		List<AbstractFunctionPreset> fpList = new ArrayList<AbstractFunctionPreset>();
-		for(FunctionPreset preset : getFPList()) {
-			if(preset.getInheritedFunction().getId().equals(function.getId())) {
+		for (FunctionPreset preset : getFPList()) {
+			if (preset.getInheritedFunction().getId().equals(function.getId())) {
 				fpList.add(preset);
 			}
 		}
-		
+
 		return fpList.toArray(new AbstractFunctionPreset[fpList.size()]);
 	}
 
 	@Override
 	public boolean deleteFunctionPreset(AbstractFunctionPreset preset) {
 		boolean returnValue = getFPList().remove(preset);
-		
+
 		changedNotifyObservers(new SettingsObserverObject());
-		
+
 		return returnValue;
 	}
 

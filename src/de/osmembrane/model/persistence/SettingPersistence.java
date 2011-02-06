@@ -37,7 +37,8 @@ public class SettingPersistence extends AbstractPersistence {
 		}
 
 		try {
-			FileOutputStream fos = new FileOutputStream(file.toString().replace("file:",""));
+			FileOutputStream fos = new FileOutputStream(file.toString()
+					.replace("file:", ""));
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 
@@ -57,7 +58,8 @@ public class SettingPersistence extends AbstractPersistence {
 			ObjectInputStream ois = new ObjectInputStream(bis);
 
 			@SuppressWarnings("unchecked")
-			Map<SettingType, Object> object = (Map<SettingType, Object>) ois.readObject();
+			Map<SettingType, Object> object = (Map<SettingType, Object>) ois
+					.readObject();
 			ois.close();
 			bis.close();
 
@@ -79,11 +81,10 @@ public class SettingPersistence extends AbstractPersistence {
 				soo.getSettingsModel().saveSettings();
 			} catch (FileException e) {
 				/* forward the exception to the view */
-				Application
-						.handleException(new ControlledException(this,
-								ExceptionSeverity.WARNING, e,
-								I18N.getInstance().getString(
-										"Model.Settings.AutosaveSettingsFailed")));
+				Application.handleException(new ControlledException(this,
+						ExceptionSeverity.WARNING, e,
+						I18N.getInstance().getString(
+								"Model.Settings.AutosaveSettingsFailed")));
 			}
 		}
 	}

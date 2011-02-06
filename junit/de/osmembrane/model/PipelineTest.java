@@ -50,7 +50,7 @@ public class PipelineTest {
 	private static AbstractPipeline pl;
 
 	private static URL TEST_FILE_NAME;
-	
+
 	static {
 		try {
 			TEST_FILE_NAME = new File(System.getProperty("java.io.tmpdir")
@@ -85,8 +85,7 @@ public class PipelineTest {
 
 		pl = ModelProxy.getInstance().getPipeline();
 
-		AbstractFunctionPrototype afp = ModelProxy.getInstance()
-				.getFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 
 		for (AbstractFunctionGroup afg : afp.getFunctionGroups()) {
 			for (AbstractFunction af : afg.getFunctions()) {
@@ -538,7 +537,8 @@ public class PipelineTest {
 		newFuncs[0].addConnectionTo(newFuncs[2]);
 
 		newFuncs[1].setActiveTask(newFuncs[1].getAvailableTasks()[1]);
-		newFuncs[1].getActiveTask().getParameters()[0].setValue(TEST_FILE_NAME.toString());
+		newFuncs[1].getActiveTask().getParameters()[0].setValue(TEST_FILE_NAME
+				.toString());
 
 	}
 

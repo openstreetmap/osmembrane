@@ -6,7 +6,7 @@ package de.osmembrane.exceptions;
  * @author jakob_jarosch
  */
 public enum ExceptionSeverity {
-	
+
 	/**
 	 * don't use
 	 */

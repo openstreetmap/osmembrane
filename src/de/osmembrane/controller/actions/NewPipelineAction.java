@@ -48,10 +48,12 @@ public class NewPipelineAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (!ModelProxy.getInstance().getPipeline().isSaved()) {
-			int result = JOptionPane.showConfirmDialog(null, I18N.getInstance()
-					.getString("Controller.Actions.NewPipeline.NotSaved"),
-					I18N.getInstance()
-					.getString("Controller.Actions.NewPipeline.NotSaved.Title"),
+			int result = JOptionPane.showConfirmDialog(
+					null,
+					I18N.getInstance().getString(
+							"Controller.Actions.NewPipeline.NotSaved"),
+					I18N.getInstance().getString(
+							"Controller.Actions.NewPipeline.NotSaved.Title"),
 					JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.NO_OPTION) {
 				return;

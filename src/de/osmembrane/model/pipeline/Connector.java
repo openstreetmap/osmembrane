@@ -23,7 +23,7 @@ public class Connector extends AbstractConnector {
 	private ConnectorPosition position;
 
 	private AbstractFunction parent;
-	
+
 	transient private XMLPipe xmlPipe;
 	private Identifier xmlPipeIdentifier;
 
@@ -81,7 +81,7 @@ public class Connector extends AbstractConnector {
 		connectors = this.connectors.toArray(connectors);
 		return connectors;
 	}
-	
+
 	@Override
 	public int getConnectorIndex() {
 		return xmlPipe.getIndex().intValue();
@@ -113,11 +113,11 @@ public class Connector extends AbstractConnector {
 			this.removeConnection(connector);
 		}
 	}
-	
+
 	private Object readResolve() throws ObjectStreamException {
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlPipe = afp.getMatchingXMLPipe(this.xmlPipeIdentifier);
-		
+
 		return this;
 	}
 }

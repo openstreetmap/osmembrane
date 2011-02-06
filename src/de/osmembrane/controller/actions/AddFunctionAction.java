@@ -38,7 +38,8 @@ public class AddFunctionAction extends AbstractAction {
 
 			// get the copy from the prototypes
 			AbstractFunction prototype = (AbstractFunction) cle.getContained();
-			AbstractFunction newFunc = prototype.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
+			AbstractFunction newFunc = prototype
+					.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
 
 			// add the function at the location
 			newFunc.setCoordinate(cle.getLocation());

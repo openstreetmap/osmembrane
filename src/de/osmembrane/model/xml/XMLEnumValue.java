@@ -5,7 +5,6 @@
 // Generated on: 2011.02.04 at 11:28:46 AM MEZ 
 //
 
-
 package de.osmembrane.model.xml;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,15 +12,18 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
  * 
- *         Describes an enumeration value available for use in a parameter with the "enum" data type.
- *       
+ * Describes an enumeration value available for use in a parameter with the
+ * "enum" data type.
  * 
- * <p>Java class for XMLEnumValue complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * Java class for XMLEnumValue complex type.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="XMLEnumValue">
@@ -38,69 +40,61 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "XMLEnumValue")
-public class XMLEnumValue
-    extends XMLHasDescription
-{
+public class XMLEnumValue extends XMLHasDescription {
 
-    @XmlAttribute(required = true)
-    protected String value;
-    @XmlAttribute
-    protected String friendlyName;
+	@XmlAttribute(required = true)
+	protected String value;
+	@XmlAttribute
+	protected String friendlyName;
 
-    /**
-     * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getValue() {
-        return value;
-    }
+	/**
+	 * Gets the value of the value property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getValue() {
+		return value;
+	}
 
-    /**
-     * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
+	/**
+	 * Sets the value of the value property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public boolean isSetValue() {
-        return (this.value!= null);
-    }
+	public boolean isSetValue() {
+		return (this.value != null);
+	}
 
-    /**
-     * Gets the value of the friendlyName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getFriendlyName() {
-        return friendlyName;
-    }
+	/**
+	 * Gets the value of the friendlyName property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getFriendlyName() {
+		return friendlyName;
+	}
 
-    /**
-     * Sets the value of the friendlyName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setFriendlyName(String value) {
-        this.friendlyName = value;
-    }
+	/**
+	 * Sets the value of the friendlyName property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setFriendlyName(String value) {
+		this.friendlyName = value;
+	}
 
-    public boolean isSetFriendlyName() {
-        return (this.friendlyName!= null);
-    }
+	public boolean isSetFriendlyName() {
+		return (this.friendlyName != null);
+	}
 
 }

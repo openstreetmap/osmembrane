@@ -43,14 +43,12 @@ public class IconLoader {
 		 * Big icon in original size (256px).
 		 */
 		BIG(256, 256),
-		
+
 		/**
 		 * A very big icon (512px).
 		 */
 		VERYBIG(512, 512),
-		
-		
-		
+
 		/**
 		 * Use the original size of the image.
 		 */
@@ -81,7 +79,7 @@ public class IconLoader {
 		public int getWidth() {
 			return width;
 		}
-		
+
 		/**
 		 * Returns the height of the icon.
 		 * 
@@ -106,13 +104,15 @@ public class IconLoader {
 			if (file == null) {
 				throw new IOException();
 			}
-			
+
 			/* Load the icon to an BufferedImage */
 			BufferedImage tempImg = ImageIO.read(file);
-			
-			int width = (size.getWidth() > 0) ? size.getWidth() : tempImg.getWidth();
-			int height = (size.getHeight() > 0) ? size.getHeight() : tempImg.getHeight();
-			
+
+			int width = (size.getWidth() > 0) ? size.getWidth() : tempImg
+					.getWidth();
+			int height = (size.getHeight() > 0) ? size.getHeight() : tempImg
+					.getHeight();
+
 			image = new BufferedImage(width, height,
 					BufferedImage.TYPE_INT_ARGB);
 
@@ -124,7 +124,7 @@ public class IconLoader {
 			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-			g2.drawImage(tempImg, 0, 0,width, height, null);
+			g2.drawImage(tempImg, 0, 0, width, height, null);
 		} catch (IOException e) {
 			/* do nothing, imageIcon would be null. */
 		}

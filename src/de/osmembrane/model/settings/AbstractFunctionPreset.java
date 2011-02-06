@@ -10,7 +10,7 @@ import de.osmembrane.model.pipeline.AbstractFunction;
  * @author jakob_jarosch
  */
 public abstract class AbstractFunctionPreset implements Serializable {
-	
+
 	private static final long serialVersionUID = 2011020221230001L;
 
 	/**
@@ -19,14 +19,16 @@ public abstract class AbstractFunctionPreset implements Serializable {
 	 * @return name of the preset
 	 */
 	public abstract String getName();
-	
+
 	/**
 	 * Loads the preset into the given function.
 	 * 
-	 * @param function the {@link AbstractFunction} in which the preset should be loaded
+	 * @param function
+	 *            the {@link AbstractFunction} in which the preset should be
+	 *            loaded
 	 */
 	public abstract void loadPreset(AbstractFunction function);
-	
+
 	/**
 	 * Returns the inherited function.
 	 * 

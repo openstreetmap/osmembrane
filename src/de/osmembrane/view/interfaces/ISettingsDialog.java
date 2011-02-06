@@ -11,10 +11,12 @@ import de.osmembrane.model.settings.SettingType;
  * 
  */
 public interface ISettingsDialog extends IView {
-	
+
 	/**
 	 * Sets the available locales to locales.
-	 * @param locales the available locales
+	 * 
+	 * @param locales
+	 *            the available locales
 	 */
 	public void setLocales(Locale[] locales);
 
@@ -23,18 +25,23 @@ public interface ISettingsDialog extends IView {
 	 *         to the model
 	 */
 	public boolean shallApplyChanges();
-		
+
 	/**
 	 * Returns the set value for type.
-	 * @param type the {@link SettingType}
+	 * 
+	 * @param type
+	 *            the {@link SettingType}
 	 * @return the value for type
 	 */
 	public Object getValue(SettingType type);
-	
+
 	/**
 	 * Sets the value of type in the SettingsDialog to value.
-	 * @param type the {@link SettingType}
-	 * @param value the value for type
+	 * 
+	 * @param type
+	 *            the {@link SettingType}
+	 * @param value
+	 *            the value for type
 	 */
 	public void setValue(SettingType type, Object value);
 

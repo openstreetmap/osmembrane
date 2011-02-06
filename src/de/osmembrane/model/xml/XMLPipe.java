@@ -5,7 +5,6 @@
 // Generated on: 2011.02.04 at 11:28:46 AM MEZ 
 //
 
-
 package de.osmembrane.model.xml;
 
 import java.math.BigInteger;
@@ -16,13 +15,15 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
  * Describes an input or output pipe of a task.
  * 
- * <p>Java class for XMLPipe complex type.
+ * <p>
+ * Java class for XMLPipe complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="XMLPipe">
@@ -56,130 +57,116 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "XMLPipe")
-public class XMLPipe
-    extends XMLHasDescription
-{
+public class XMLPipe extends XMLHasDescription {
 
-    @XmlAttribute(required = true)
-    protected String type;
-    @XmlAttribute(required = true)
-    protected String count;
-    @XmlAttribute
-    @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger index;
-    @XmlAttribute
-    protected String specifiedBy;
+	@XmlAttribute(required = true)
+	protected String type;
+	@XmlAttribute(required = true)
+	protected String count;
+	@XmlAttribute
+	@XmlSchemaType(name = "nonNegativeInteger")
+	protected BigInteger index;
+	@XmlAttribute
+	protected String specifiedBy;
 
-    /**
-     * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getType() {
-        return type;
-    }
+	/**
+	 * Gets the value of the type property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getType() {
+		return type;
+	}
 
-    /**
-     * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setType(String value) {
-        this.type = value;
-    }
+	/**
+	 * Sets the value of the type property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setType(String value) {
+		this.type = value;
+	}
 
-    public boolean isSetType() {
-        return (this.type!= null);
-    }
+	public boolean isSetType() {
+		return (this.type != null);
+	}
 
-    /**
-     * Gets the value of the count property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCount() {
-        return count;
-    }
+	/**
+	 * Gets the value of the count property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getCount() {
+		return count;
+	}
 
-    /**
-     * Sets the value of the count property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCount(String value) {
-        this.count = value;
-    }
+	/**
+	 * Sets the value of the count property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setCount(String value) {
+		this.count = value;
+	}
 
-    public boolean isSetCount() {
-        return (this.count!= null);
-    }
+	public boolean isSetCount() {
+		return (this.count != null);
+	}
 
-    /**
-     * Gets the value of the index property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getIndex() {
-        return index;
-    }
+	/**
+	 * Gets the value of the index property.
+	 * 
+	 * @return possible object is {@link BigInteger }
+	 * 
+	 */
+	public BigInteger getIndex() {
+		return index;
+	}
 
-    /**
-     * Sets the value of the index property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setIndex(BigInteger value) {
-        this.index = value;
-    }
+	/**
+	 * Sets the value of the index property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 * 
+	 */
+	public void setIndex(BigInteger value) {
+		this.index = value;
+	}
 
-    public boolean isSetIndex() {
-        return (this.index!= null);
-    }
+	public boolean isSetIndex() {
+		return (this.index != null);
+	}
 
-    /**
-     * Gets the value of the specifiedBy property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getSpecifiedBy() {
-        return specifiedBy;
-    }
+	/**
+	 * Gets the value of the specifiedBy property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getSpecifiedBy() {
+		return specifiedBy;
+	}
 
-    /**
-     * Sets the value of the specifiedBy property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setSpecifiedBy(String value) {
-        this.specifiedBy = value;
-    }
+	/**
+	 * Sets the value of the specifiedBy property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setSpecifiedBy(String value) {
+		this.specifiedBy = value;
+	}
 
-    public boolean isSetSpecifiedBy() {
-        return (this.specifiedBy!= null);
-    }
+	public boolean isSetSpecifiedBy() {
+		return (this.specifiedBy != null);
+	}
 
 }

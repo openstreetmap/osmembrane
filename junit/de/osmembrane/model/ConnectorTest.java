@@ -57,8 +57,7 @@ public class ConnectorTest {
 		a.createModels();
 		a.initiate();
 
-		AbstractFunctionPrototype afp = ModelProxy.getInstance()
-				.getFunctions();
+		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 
 		for (AbstractFunctionGroup afg : afp.getFunctionGroups()) {
 			for (AbstractFunction af : afg.getFunctions()) {
@@ -120,7 +119,8 @@ public class ConnectorTest {
 	}
 
 	/**
-	 * Test method for {@link de.osmembrane.model.pipeline.Connector#getParent()}.
+	 * Test method for
+	 * {@link de.osmembrane.model.pipeline.Connector#getParent()}.
 	 */
 	@Test
 	public void testGetParent() {
@@ -129,7 +129,8 @@ public class ConnectorTest {
 	}
 
 	/**
-	 * Test method for {@link de.osmembrane.model.pipeline.Connector#getDescription()}.
+	 * Test method for
+	 * {@link de.osmembrane.model.pipeline.Connector#getDescription()}.
 	 */
 	@Test
 	public void testGetDescription() {
@@ -147,7 +148,8 @@ public class ConnectorTest {
 	}
 
 	/**
-	 * Test method for {@link de.osmembrane.model.pipeline.Connector#getMaxConnections()}.
+	 * Test method for
+	 * {@link de.osmembrane.model.pipeline.Connector#getMaxConnections()}.
 	 */
 	@Test
 	public void testGetMaxConnections() {
@@ -221,7 +223,10 @@ public class ConnectorTest {
 			funcs[0].addConnectionTo(funcs[1]);
 			fail("No exception thrown");
 		} catch (ConnectorException ce) {
-			assertTrue("Exception was not " + Type.CONNECTION_ALREADY_EXISTS.toString() + " but " + ce.getType().toString(),
+			assertTrue(
+					"Exception was not "
+							+ Type.CONNECTION_ALREADY_EXISTS.toString()
+							+ " but " + ce.getType().toString(),
 					ce.getType() == Type.CONNECTION_ALREADY_EXISTS);
 		}
 
@@ -232,7 +237,8 @@ public class ConnectorTest {
 	}
 
 	/**
-	 * Test method for {@link de.osmembrane.model.pipeline.Connector#removeConnection()}.
+	 * Test method for
+	 * {@link de.osmembrane.model.pipeline.Connector#removeConnection()}.
 	 */
 	@Test
 	public void testRemoveConnection() throws ConnectorException {
@@ -245,7 +251,8 @@ public class ConnectorTest {
 	}
 
 	/**
-	 * Test method for {@link de.osmembrane.model.pipeline.Connector#getConnections()}.
+	 * Test method for
+	 * {@link de.osmembrane.model.pipeline.Connector#getConnections()}.
 	 */
 	@Test
 	public void testGetConnections() throws ConnectorException {

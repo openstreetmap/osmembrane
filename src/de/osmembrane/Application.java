@@ -55,7 +55,7 @@ public class Application {
 	public void createModels() {
 		try {
 			ModelProxy.getInstance().getSettings().initiate();
-			
+
 			ModelProxy.getInstance().getFunctions()
 					.initiate(Resource.OSMEMBRANE_XML.getURL());
 

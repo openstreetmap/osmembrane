@@ -54,8 +54,8 @@ public class GeneratePipelineAction extends AbstractAction {
 				.getCasted(CommandLineDialog.class, ICommandLineDialog.class);
 
 		// TODO Let the user choose the correct file-type.
-		commandLineDialog.setCommandline(ModelProxy.getInstance()
-				.getPipeline().generate(FileType.BASH));
+		commandLineDialog.setCommandline(ModelProxy.getInstance().getPipeline()
+				.generate(FileType.BASH));
 		commandLineDialog.showWindow();
 	}
 }

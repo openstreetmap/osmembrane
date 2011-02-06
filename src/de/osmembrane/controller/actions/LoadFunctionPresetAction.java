@@ -55,22 +55,22 @@ public class LoadFunctionPresetAction extends AbstractAction {
 		}
 		AbstractFunction function = ((PipelineFunction) select)
 				.getModelFunction();
-		
-		AbstractSettings settings = ModelProxy.getInstance()
-		.getSettings();
+
+		AbstractSettings settings = ModelProxy.getInstance().getSettings();
 
 		IFunctionPresetDialog fpd = ViewRegistry.getInstance().getCasted(
 				FunctionPresetDialog.class, IFunctionPresetDialog.class);
 
 		do {
-			AbstractFunctionPreset afp[] = settings.getAllFunctionPresets(function);
+			AbstractFunctionPreset afp[] = settings
+					.getAllFunctionPresets(function);
 
 			fpd.open(afp);
-			
+
 			AbstractFunctionPreset preset = fpd.getSelectedPreset();
-			if(fpd.loadSelected()) {
+			if (fpd.loadSelected()) {
 				preset.loadPreset(function);
-			} else if(fpd.deleteSelected()) {
+			} else if (fpd.deleteSelected()) {
 				settings.deleteFunctionPreset(preset);
 			}
 		} while (fpd.deleteSelected());

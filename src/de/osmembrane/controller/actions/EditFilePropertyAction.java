@@ -30,15 +30,15 @@ public class EditFilePropertyAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		ContainingEvent ce = (ContainingEvent) e;
 		AbstractParameter ap = (AbstractParameter) ce.getContained();
-		
+
 		JFileChooser fileChooser = new JFileChooser();
-		
+
 		String value = ap.getValue();
 		if ((value == null) || (value.isEmpty())) {
 			value = ".";
 		}
 		fileChooser.setSelectedFile(new File(value));
-		
+
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 			ap.setValue(fileChooser.getSelectedFile().getAbsolutePath());
 		}

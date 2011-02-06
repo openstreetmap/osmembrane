@@ -1,4 +1,4 @@
-package de.osmembrane.view.dialogs;
+package de.osmembrane.view.frames;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -15,6 +15,7 @@ import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.AbstractDialog;
+import de.osmembrane.view.AbstractFrame;
 
 /**
  * The dialog to show the quickstart tutorial.
@@ -22,7 +23,7 @@ import de.osmembrane.view.AbstractDialog;
  * @author tobias_kuhn
  * 
  */
-public class TutorialDialog extends AbstractDialog {
+public class TutorialDialog extends AbstractFrame {
 
 	private static final long serialVersionUID = -370948835878778575L;
 
@@ -112,9 +113,10 @@ public class TutorialDialog extends AbstractDialog {
 		for (TutorialStep ts : steps) {
 			content.add(
 					new JLabel(Resource.QUICKSTART_IMAGE.getImageIcon(
-							ts.getImageFile(), Size.ORIGINAL)), ts.getImageName());
+							ts.getImageFile(), Size.ORIGINAL)),
+					ts.getImageName());
 		}
-		
+
 		add(content, BorderLayout.CENTER);
 
 		// buttons
@@ -132,7 +134,7 @@ public class TutorialDialog extends AbstractDialog {
 			}
 		});
 		buttonGrid.add(backButton);
-		
+
 		nextButton = new JButton(I18N.getInstance().getString("View.Next"));
 		nextButton.addKeyListener(returnButtonListener);
 		nextButton.addActionListener(new ActionListener() {
@@ -162,13 +164,12 @@ public class TutorialDialog extends AbstractDialog {
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		buttons.add(buttonGrid);
 		add(buttons, BorderLayout.SOUTH);
-		
+
 		setTitle(I18N.getInstance().getString("View.TutorialDialog"));
 
 		setCurrentlyShowing(0);
 		pack();
 		centerWindow();
-		setModal(false);
 	}
 
 	/**

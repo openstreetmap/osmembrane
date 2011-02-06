@@ -5,7 +5,6 @@
 // Generated on: 2011.02.04 at 11:28:46 AM MEZ 
 //
 
-
 package de.osmembrane.model.xml;
 
 import java.util.ArrayList;
@@ -17,11 +16,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -40,109 +41,102 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "functionGroup"
-})
+@XmlType(name = "", propOrder = { "functionGroup" })
 @XmlRootElement(name = "XMLOsmosisStructure")
 public class XMLOsmosisStructure {
 
-    protected List<XMLFunctionGroup> functionGroup;
-    @XmlAttribute(required = true)
-    protected String formatVersion;
-    @XmlAttribute(required = true)
-    protected String osmosisVersion;
+	protected List<XMLFunctionGroup> functionGroup;
+	@XmlAttribute(required = true)
+	protected String formatVersion;
+	@XmlAttribute(required = true)
+	protected String osmosisVersion;
 
-    /**
-     * Gets the value of the functionGroup property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the functionGroup property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getFunctionGroup().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link XMLFunctionGroup }
-     * 
-     * 
-     */
-    public List<XMLFunctionGroup> getFunctionGroup() {
-        if (functionGroup == null) {
-            functionGroup = new ArrayList<XMLFunctionGroup>();
-        }
-        return this.functionGroup;
-    }
+	/**
+	 * Gets the value of the functionGroup property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the functionGroup property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getFunctionGroup().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link XMLFunctionGroup }
+	 * 
+	 * 
+	 */
+	public List<XMLFunctionGroup> getFunctionGroup() {
+		if (functionGroup == null) {
+			functionGroup = new ArrayList<XMLFunctionGroup>();
+		}
+		return this.functionGroup;
+	}
 
-    public boolean isSetFunctionGroup() {
-        return ((this.functionGroup!= null)&&(!this.functionGroup.isEmpty()));
-    }
+	public boolean isSetFunctionGroup() {
+		return ((this.functionGroup != null) && (!this.functionGroup.isEmpty()));
+	}
 
-    public void unsetFunctionGroup() {
-        this.functionGroup = null;
-    }
+	public void unsetFunctionGroup() {
+		this.functionGroup = null;
+	}
 
-    /**
-     * Gets the value of the formatVersion property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getFormatVersion() {
-        return formatVersion;
-    }
+	/**
+	 * Gets the value of the formatVersion property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getFormatVersion() {
+		return formatVersion;
+	}
 
-    /**
-     * Sets the value of the formatVersion property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setFormatVersion(String value) {
-        this.formatVersion = value;
-    }
+	/**
+	 * Sets the value of the formatVersion property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setFormatVersion(String value) {
+		this.formatVersion = value;
+	}
 
-    public boolean isSetFormatVersion() {
-        return (this.formatVersion!= null);
-    }
+	public boolean isSetFormatVersion() {
+		return (this.formatVersion != null);
+	}
 
-    /**
-     * Gets the value of the osmosisVersion property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getOsmosisVersion() {
-        return osmosisVersion;
-    }
+	/**
+	 * Gets the value of the osmosisVersion property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getOsmosisVersion() {
+		return osmosisVersion;
+	}
 
-    /**
-     * Sets the value of the osmosisVersion property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setOsmosisVersion(String value) {
-        this.osmosisVersion = value;
-    }
+	/**
+	 * Sets the value of the osmosisVersion property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setOsmosisVersion(String value) {
+		this.osmosisVersion = value;
+	}
 
-    public boolean isSetOsmosisVersion() {
-        return (this.osmosisVersion!= null);
-    }
+	public boolean isSetOsmosisVersion() {
+		return (this.osmosisVersion != null);
+	}
 
 }

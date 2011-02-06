@@ -21,14 +21,16 @@ public abstract class AbstractStatusbar extends Observable implements Observer {
 	/**
 	 * Adds a {@link StatusbarEntry} to the model.
 	 * 
-	 * @param entry entry which should be added
+	 * @param entry
+	 *            entry which should be added
 	 */
 	public abstract void addStatusbarEntry(StatusbarEntry entry);
-	
+
 	/**
 	 * Removes a {@link StatusbarEntry}.
 	 * 
-	 * @param entry {@link StatusbarEntry} which should be removed
+	 * @param entry
+	 *            {@link StatusbarEntry} which should be removed
 	 * @return true if the entry was removed, otherwise false
 	 */
 	public abstract boolean removeStatusbarEntry(StatusbarEntry entry);

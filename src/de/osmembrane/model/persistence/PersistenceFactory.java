@@ -28,7 +28,7 @@ public class PersistenceFactory extends Observable implements Observer {
 	private PersistenceFactory() {
 		/* register the OSMembranePersistence to get the autobackup */
 		getPersistence(OSMembranePersistence.class);
-		
+
 	}
 
 	/**
@@ -47,7 +47,8 @@ public class PersistenceFactory extends Observable implements Observer {
 	 *            class name of the AbstractPersistence
 	 * @return an instance of the given AbstractPersistence
 	 */
-	public AbstractPersistence getPersistence(Class<? extends AbstractPersistence> persistence) {
+	public AbstractPersistence getPersistence(
+			Class<? extends AbstractPersistence> persistence) {
 		if (!persistences.containsKey(persistence)) {
 			try {
 				AbstractPersistence persistenceInstance = persistence

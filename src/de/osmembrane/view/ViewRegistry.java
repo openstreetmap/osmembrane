@@ -147,17 +147,17 @@ public class ViewRegistry extends Observable implements Observer {
 			if (soo.getChangedEntry() == SettingType.ACTIVE_LANGUAGE) {
 				exceptionDialog = null;
 				for (IView iv : views.values()) {
-					iv.hideWindow();			
+					iv.hideWindow();
 					iv.dispose();
-				}				
-				
+				}
+
 				views.clear();
-				deleteObservers();								
+				deleteObservers();
 				// if Java GC understands that, I'm impressed
-				System.gc();		
-				
+				System.gc();
+
 				ActionRegistry.getInstance().reinitialize();
-				
+
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
@@ -166,7 +166,7 @@ public class ViewRegistry extends Observable implements Observer {
 				});
 			}
 		}
-		
+
 		// forward update() for Model classes
 		setChanged();
 		notifyObservers(arg);

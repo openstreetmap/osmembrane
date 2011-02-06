@@ -69,7 +69,7 @@ public class LoadPipelineAction extends AbstractAction {
 		}
 
 		JFileChooser fileChooser = new JFileChooser();
-		
+
 		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
 
 		int result = fileChooser.showOpenDialog(null);

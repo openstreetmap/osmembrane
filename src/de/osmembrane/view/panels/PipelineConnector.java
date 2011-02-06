@@ -194,7 +194,7 @@ public class PipelineConnector extends DisplayTemplatePanel {
 			display = DisplayTemplatePanel.prerenderDisplay(
 					modelConnector.getType(), displayTemplate, color, null);
 		}
-		
+
 		this.setOpaque(false);
 
 		/*

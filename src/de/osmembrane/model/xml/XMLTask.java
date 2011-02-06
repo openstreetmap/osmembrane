@@ -5,7 +5,6 @@
 // Generated on: 2011.02.04 at 11:28:46 AM MEZ 
 //
 
-
 package de.osmembrane.model.xml;
 
 import java.util.ArrayList;
@@ -17,13 +16,15 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
  * Describes a single Osmosis task.
  * 
- * <p>Java class for XMLTask complex type.
+ * <p>
+ * Java class for XMLTask complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="XMLTask">
@@ -46,249 +47,232 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "XMLTask", propOrder = {
-    "inputPipe",
-    "outputPipe",
-    "parameter"
-})
-public class XMLTask
-    extends XMLHasDescription
-{
+@XmlType(name = "XMLTask", propOrder = { "inputPipe", "outputPipe", "parameter" })
+public class XMLTask extends XMLHasDescription {
 
-    protected List<XMLPipe> inputPipe;
-    protected List<XMLPipe> outputPipe;
-    protected List<XMLParameter> parameter;
-    @XmlAttribute(required = true)
-    protected String name;
-    @XmlAttribute
-    protected String shortName;
-    @XmlAttribute
-    protected String friendlyName;
-    @XmlAttribute
-    @XmlSchemaType(name = "anyURI")
-    protected String helpURI;
+	protected List<XMLPipe> inputPipe;
+	protected List<XMLPipe> outputPipe;
+	protected List<XMLParameter> parameter;
+	@XmlAttribute(required = true)
+	protected String name;
+	@XmlAttribute
+	protected String shortName;
+	@XmlAttribute
+	protected String friendlyName;
+	@XmlAttribute
+	@XmlSchemaType(name = "anyURI")
+	protected String helpURI;
 
-    /**
-     * Gets the value of the inputPipe property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the inputPipe property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getInputPipe().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link XMLPipe }
-     * 
-     * 
-     */
-    public List<XMLPipe> getInputPipe() {
-        if (inputPipe == null) {
-            inputPipe = new ArrayList<XMLPipe>();
-        }
-        return this.inputPipe;
-    }
+	/**
+	 * Gets the value of the inputPipe property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the inputPipe property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getInputPipe().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link XMLPipe }
+	 * 
+	 * 
+	 */
+	public List<XMLPipe> getInputPipe() {
+		if (inputPipe == null) {
+			inputPipe = new ArrayList<XMLPipe>();
+		}
+		return this.inputPipe;
+	}
 
-    public boolean isSetInputPipe() {
-        return ((this.inputPipe!= null)&&(!this.inputPipe.isEmpty()));
-    }
+	public boolean isSetInputPipe() {
+		return ((this.inputPipe != null) && (!this.inputPipe.isEmpty()));
+	}
 
-    public void unsetInputPipe() {
-        this.inputPipe = null;
-    }
+	public void unsetInputPipe() {
+		this.inputPipe = null;
+	}
 
-    /**
-     * Gets the value of the outputPipe property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the outputPipe property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getOutputPipe().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link XMLPipe }
-     * 
-     * 
-     */
-    public List<XMLPipe> getOutputPipe() {
-        if (outputPipe == null) {
-            outputPipe = new ArrayList<XMLPipe>();
-        }
-        return this.outputPipe;
-    }
+	/**
+	 * Gets the value of the outputPipe property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the outputPipe property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getOutputPipe().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link XMLPipe }
+	 * 
+	 * 
+	 */
+	public List<XMLPipe> getOutputPipe() {
+		if (outputPipe == null) {
+			outputPipe = new ArrayList<XMLPipe>();
+		}
+		return this.outputPipe;
+	}
 
-    public boolean isSetOutputPipe() {
-        return ((this.outputPipe!= null)&&(!this.outputPipe.isEmpty()));
-    }
+	public boolean isSetOutputPipe() {
+		return ((this.outputPipe != null) && (!this.outputPipe.isEmpty()));
+	}
 
-    public void unsetOutputPipe() {
-        this.outputPipe = null;
-    }
+	public void unsetOutputPipe() {
+		this.outputPipe = null;
+	}
 
-    /**
-     * Gets the value of the parameter property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the parameter property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getParameter().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link XMLParameter }
-     * 
-     * 
-     */
-    public List<XMLParameter> getParameter() {
-        if (parameter == null) {
-            parameter = new ArrayList<XMLParameter>();
-        }
-        return this.parameter;
-    }
+	/**
+	 * Gets the value of the parameter property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the parameter property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getParameter().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link XMLParameter }
+	 * 
+	 * 
+	 */
+	public List<XMLParameter> getParameter() {
+		if (parameter == null) {
+			parameter = new ArrayList<XMLParameter>();
+		}
+		return this.parameter;
+	}
 
-    public boolean isSetParameter() {
-        return ((this.parameter!= null)&&(!this.parameter.isEmpty()));
-    }
+	public boolean isSetParameter() {
+		return ((this.parameter != null) && (!this.parameter.isEmpty()));
+	}
 
-    public void unsetParameter() {
-        this.parameter = null;
-    }
+	public void unsetParameter() {
+		this.parameter = null;
+	}
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Gets the value of the name property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+	/**
+	 * Sets the value of the name property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setName(String value) {
+		this.name = value;
+	}
 
-    public boolean isSetName() {
-        return (this.name!= null);
-    }
+	public boolean isSetName() {
+		return (this.name != null);
+	}
 
-    /**
-     * Gets the value of the shortName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getShortName() {
-        return shortName;
-    }
+	/**
+	 * Gets the value of the shortName property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getShortName() {
+		return shortName;
+	}
 
-    /**
-     * Sets the value of the shortName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setShortName(String value) {
-        this.shortName = value;
-    }
+	/**
+	 * Sets the value of the shortName property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setShortName(String value) {
+		this.shortName = value;
+	}
 
-    public boolean isSetShortName() {
-        return (this.shortName!= null);
-    }
+	public boolean isSetShortName() {
+		return (this.shortName != null);
+	}
 
-    /**
-     * Gets the value of the friendlyName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getFriendlyName() {
-        return friendlyName;
-    }
+	/**
+	 * Gets the value of the friendlyName property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getFriendlyName() {
+		return friendlyName;
+	}
 
-    /**
-     * Sets the value of the friendlyName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setFriendlyName(String value) {
-        this.friendlyName = value;
-    }
+	/**
+	 * Sets the value of the friendlyName property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setFriendlyName(String value) {
+		this.friendlyName = value;
+	}
 
-    public boolean isSetFriendlyName() {
-        return (this.friendlyName!= null);
-    }
+	public boolean isSetFriendlyName() {
+		return (this.friendlyName != null);
+	}
 
-    /**
-     * Gets the value of the helpURI property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getHelpURI() {
-        return helpURI;
-    }
+	/**
+	 * Gets the value of the helpURI property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getHelpURI() {
+		return helpURI;
+	}
 
-    /**
-     * Sets the value of the helpURI property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setHelpURI(String value) {
-        this.helpURI = value;
-    }
+	/**
+	 * Sets the value of the helpURI property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setHelpURI(String value) {
+		this.helpURI = value;
+	}
 
-    public boolean isSetHelpURI() {
-        return (this.helpURI!= null);
-    }
+	public boolean isSetHelpURI() {
+		return (this.helpURI != null);
+	}
 
 }

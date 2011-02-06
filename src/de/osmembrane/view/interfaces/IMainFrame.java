@@ -31,16 +31,19 @@ public interface IMainFrame extends IView {
 	 *         can display data there (mainly Library-to-Pipeline drag & drop)
 	 */
 	public MainFrameGlassPane getMainGlassPane();
-		
+
 	/**
-	 * Finds out whether drag & drop can be finished at at. 
-	 * @param at {@link Point} to check for
+	 * Finds out whether drag & drop can be finished at at.
+	 * 
+	 * @param at
+	 *            {@link Point} to check for
 	 * @return whether or not the point is valid drag and drop target
 	 */
-	public boolean isDragAndDropTarget(Point at); 
-	
+	public boolean isDragAndDropTarget(Point at);
+
 	/**
 	 * Returns the {@link IZoomDevice} capable of performing zooms
+	 * 
 	 * @return the corresponding IZoomDevice or null, if none present
 	 */
 	public IZoomDevice getZoomDevice();

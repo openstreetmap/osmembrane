@@ -26,7 +26,7 @@ import de.osmembrane.model.persistence.TaggingPresetPresistence;
 public class PresetPrototype extends AbstractPresetPrototype {
 
 	private Root preset;
-	
+
 	private List<PresetItem> nodeList = new ArrayList<PresetItem>();
 	private List<PresetItem> wayList = new ArrayList<PresetItem>();
 
@@ -36,7 +36,7 @@ public class PresetPrototype extends AbstractPresetPrototype {
 			preset = (Root) PersistenceFactory.getInstance()
 					.getPersistence(TaggingPresetPresistence.class)
 					.load(xmlFilename);
-			
+
 			List<Object> obj = preset.getGroupOrItemOrSeparator();
 			createLists(obj);
 		} catch (FileException e) {
@@ -45,7 +45,7 @@ public class PresetPrototype extends AbstractPresetPrototype {
 					"Could not load the OSMembrane xml file."));
 		}
 	}
-	
+
 	@Override
 	public PresetItem[] getNodes() {
 		return getFilteredNodes("");
@@ -59,12 +59,12 @@ public class PresetPrototype extends AbstractPresetPrototype {
 	@Override
 	public PresetItem[] getFilteredNodes(String filter) {
 		List<PresetItem> items = new ArrayList<PresetItem>();
-		for(PresetItem item : nodeList) {
-			if(item.matches(filter)) {
+		for (PresetItem item : nodeList) {
+			if (item.matches(filter)) {
 				items.add(item);
 			}
 		}
-		
+
 		return items.toArray(new PresetItem[items.size()]);
 	}
 
@@ -77,7 +77,7 @@ public class PresetPrototype extends AbstractPresetPrototype {
 	public PresetItem[] getWays() {
 		return getFilteredWays("");
 	}
-	
+
 	@Override
 	public PresetItem[] getWayKeys() {
 		return filterDoubleKeys(getWays());
@@ -86,12 +86,12 @@ public class PresetPrototype extends AbstractPresetPrototype {
 	@Override
 	public PresetItem[] getFilteredWays(String filter) {
 		List<PresetItem> items = new ArrayList<PresetItem>();
-		for(PresetItem item : wayList) {
-			if(item.matches(filter)) {
+		for (PresetItem item : wayList) {
+			if (item.matches(filter)) {
 				items.add(item);
 			}
 		}
-		
+
 		return items.toArray(new PresetItem[items.size()]);
 	}
 
@@ -102,17 +102,17 @@ public class PresetPrototype extends AbstractPresetPrototype {
 
 	private void createLists(List<Object> objects) {
 		for (Object obj : objects) {
-			if(obj instanceof Item) {
+			if (obj instanceof Item) {
 				processItem((Item) obj);
 			}
-			if(obj instanceof Group) {
+			if (obj instanceof Group) {
 				createLists(((Group) obj).getGroupOrItemOrSeparator());
 			}
 		}
 		Collections.sort(nodeList);
 		Collections.sort(wayList);
 	}
-	
+
 	private void processItem(Item item) {
 		Key key = null;
 		for (Object obj : item.getLabelOrSpaceOrLink()) {
@@ -121,13 +121,14 @@ public class PresetPrototype extends AbstractPresetPrototype {
 			}
 		}
 		if (key != null) {
-			PresetItem presetItem = new PresetItem(item, key.getKey(), key.getValue());
-			
+			PresetItem presetItem = new PresetItem(item, key.getKey(),
+					key.getValue());
+
 			/* Add the item to the lists which it refer to. */
-			if(presetItem.isNode()) {
+			if (presetItem.isNode()) {
 				nodeList.add(presetItem);
 			}
-			if(presetItem.isWay()) {
+			if (presetItem.isWay()) {
 				wayList.add(presetItem);
 			}
 		}
@@ -135,10 +136,10 @@ public class PresetPrototype extends AbstractPresetPrototype {
 
 	private PresetItem[] filterDoubleKeys(PresetItem[] items) {
 		Map<String, PresetItem> keyMap = new HashMap<String, PresetItem>();
-		for(PresetItem item : items) {
+		for (PresetItem item : items) {
 			keyMap.put(item.getKey(), item);
 		}
-		
+
 		return keyMap.values().toArray(new PresetItem[keyMap.values().size()]);
 	}
 }

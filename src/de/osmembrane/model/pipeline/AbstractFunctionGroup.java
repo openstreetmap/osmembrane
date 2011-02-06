@@ -34,7 +34,7 @@ public abstract class AbstractFunctionGroup implements Serializable {
 	 * @return list of Descriptions in the available languages.
 	 */
 	public abstract String getDescription();
-	
+
 	/**
 	 * Returns the color of the FunctionGroup.
 	 * 
@@ -58,7 +58,7 @@ public abstract class AbstractFunctionGroup implements Serializable {
 	 *         false if they do not equal.
 	 */
 	public abstract boolean same(AbstractFunctionGroup group);
-	
+
 	/**
 	 * Get identifier.
 	 */

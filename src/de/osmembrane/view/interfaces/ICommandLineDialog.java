@@ -6,7 +6,7 @@ import de.osmembrane.view.dialogs.CommandLineDialog;
  * Interface for {@link CommandLineDialog}.
  * 
  * @author tobias_kuhn
- *
+ * 
  */
 public interface ICommandLineDialog extends IView {
 
@@ -16,6 +16,6 @@ public interface ICommandLineDialog extends IView {
 	 * @param commandline
 	 *            the command line to display
 	 */
-	void setCommandline(String commandline);	
-	
+	void setCommandline(String commandline);
+
 }

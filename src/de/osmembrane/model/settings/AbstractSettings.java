@@ -64,29 +64,37 @@ public abstract class AbstractSettings extends Observable implements
 	/**
 	 * Saves a function with a given name to a preset.
 	 * 
-	 * @param name name of the preset
-	 * @param function which should be saved into the new preset
+	 * @param name
+	 *            name of the preset
+	 * @param function
+	 *            which should be saved into the new preset
 	 */
-	public abstract void saveFunctionPreset(String name, AbstractFunction function);
-	
+	public abstract void saveFunctionPreset(String name,
+			AbstractFunction function);
+
 	/**
 	 * Returns all compatible presets to a function.
 	 * 
-	 * @param function function for which all available presets should be returned
+	 * @param function
+	 *            function for which all available presets should be returned
 	 * @return all available presets for the function
 	 */
-	public abstract AbstractFunctionPreset[] getAllFunctionPresets(AbstractFunction function);
-	
+	public abstract AbstractFunctionPreset[] getAllFunctionPresets(
+			AbstractFunction function);
+
 	/**
 	 * Deletes a preset from the model.
 	 * 
-	 * @param preset preset which should be removed
+	 * @param preset
+	 *            preset which should be removed
 	 */
 	public abstract boolean deleteFunctionPreset(AbstractFunctionPreset preset);
-	
+
 	/**
 	 * Notifies all observers.
-	 * @param soo a {@link SettingsObserverObject}
+	 * 
+	 * @param soo
+	 *            a {@link SettingsObserverObject}
 	 */
 	protected abstract void changedNotifyObservers(SettingsObserverObject soo);
 }

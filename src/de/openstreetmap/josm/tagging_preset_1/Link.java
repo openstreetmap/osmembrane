@@ -5,7 +5,6 @@
 // Generated on: 2011.01.27 at 08:53:01 PM MEZ 
 //
 
-
 package de.openstreetmap.josm.tagging_preset_1;
 
 import java.util.HashMap;
@@ -18,11 +17,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.namespace.QName;
 
-
 /**
- * <p>Java class for link complex type.
+ * <p>
+ * Java class for link complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="link">
@@ -43,103 +44,94 @@ import javax.xml.namespace.QName;
 @XmlType(name = "link")
 public class Link {
 
-    @XmlAttribute(required = true)
-    protected String href;
-    @XmlAttribute
-    protected String text;
-    @XmlAttribute(name = "text_context")
-    protected String textContext;
-    @XmlAnyAttribute
-    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+	@XmlAttribute(required = true)
+	protected String href;
+	@XmlAttribute
+	protected String text;
+	@XmlAttribute(name = "text_context")
+	protected String textContext;
+	@XmlAnyAttribute
+	private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 
-    /**
-     * Gets the value of the href property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getHref() {
-        return href;
-    }
+	/**
+	 * Gets the value of the href property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getHref() {
+		return href;
+	}
 
-    /**
-     * Sets the value of the href property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setHref(String value) {
-        this.href = value;
-    }
+	/**
+	 * Sets the value of the href property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setHref(String value) {
+		this.href = value;
+	}
 
-    /**
-     * Gets the value of the text property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getText() {
-        return text;
-    }
+	/**
+	 * Gets the value of the text property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getText() {
+		return text;
+	}
 
-    /**
-     * Sets the value of the text property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setText(String value) {
-        this.text = value;
-    }
+	/**
+	 * Sets the value of the text property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setText(String value) {
+		this.text = value;
+	}
 
-    /**
-     * Gets the value of the textContext property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getTextContext() {
-        return textContext;
-    }
+	/**
+	 * Gets the value of the textContext property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getTextContext() {
+		return textContext;
+	}
 
-    /**
-     * Sets the value of the textContext property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setTextContext(String value) {
-        this.textContext = value;
-    }
+	/**
+	 * Sets the value of the textContext property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setTextContext(String value) {
+		this.textContext = value;
+	}
 
-    /**
-     * Gets a map that contains attributes that aren't bound to any typed property on this class.
-     * 
-     * <p>
-     * the map is keyed by the name of the attribute and 
-     * the value is the string value of the attribute.
-     * 
-     * the map returned by this method is live, and you can add new attribute
-     * by updating the map directly. Because of this design, there's no setter.
-     * 
-     * 
-     * @return
-     *     always non-null
-     */
-    public Map<QName, String> getOtherAttributes() {
-        return otherAttributes;
-    }
+	/**
+	 * Gets a map that contains attributes that aren't bound to any typed
+	 * property on this class.
+	 * 
+	 * <p>
+	 * the map is keyed by the name of the attribute and the value is the string
+	 * value of the attribute.
+	 * 
+	 * the map returned by this method is live, and you can add new attribute by
+	 * updating the map directly. Because of this design, there's no setter.
+	 * 
+	 * 
+	 * @return always non-null
+	 */
+	public Map<QName, String> getOtherAttributes() {
+		return otherAttributes;
+	}
 
 }

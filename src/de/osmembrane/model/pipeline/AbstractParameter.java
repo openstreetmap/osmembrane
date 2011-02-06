@@ -19,7 +19,7 @@ public abstract class AbstractParameter extends Observable implements
 	 * @return the parental task
 	 */
 	public abstract AbstractTask getParent();
-	
+
 	/**
 	 * Returns the name of the task.
 	 * 
@@ -110,7 +110,7 @@ public abstract class AbstractParameter extends Observable implements
 	 * the processing is undefined.
 	 */
 	public abstract boolean isDefaultParameter();
-	
+
 	/**
 	 * Returns if the parameter has spaces.
 	 * 

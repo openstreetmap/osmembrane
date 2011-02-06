@@ -12,14 +12,15 @@ import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 
 /**
- * This represents the implementation of a simple FunctionGroup for the XML-Functions.
+ * This represents the implementation of a simple FunctionGroup for the
+ * XML-Functions.
  * 
  * @author jakob_jarosch
  */
 public class FunctionGroup extends AbstractFunctionGroup {
 
 	private static final long serialVersionUID = 2010123022400001L;
-	
+
 	private XMLFunctionGroup xmlGroup;
 	private List<Function> functions = new ArrayList<Function>();
 
@@ -28,15 +29,16 @@ public class FunctionGroup extends AbstractFunctionGroup {
 	/**
 	 * Creates a new FunctionGroup with a given XMLFunctionGroup.
 	 * 
-	 * @param xmlFunction XMLFunctionGroup belongs to this FunctionGroup
+	 * @param xmlFunction
+	 *            XMLFunctionGroup belongs to this FunctionGroup
 	 */
 	public FunctionGroup(XMLFunctionGroup xmlGroup) {
 		this.xmlGroup = xmlGroup;
-		
+
 		/* create identifier */
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		identifier = afp.pushFGToMap(this, xmlGroup);
-		
+
 		for (XMLFunction xmlFunction : xmlGroup.getFunction()) {
 			functions.add(new Function(this, xmlFunction));
 		}
@@ -53,7 +55,7 @@ public class FunctionGroup extends AbstractFunctionGroup {
 		if (xmlGroup.getFriendlyName() == null) {
 			return getId();
 		}
-		
+
 		return xmlGroup.getFriendlyName();
 	}
 
@@ -61,21 +63,21 @@ public class FunctionGroup extends AbstractFunctionGroup {
 	public String getDescription() {
 		return I18N.getInstance().getDescription(xmlGroup);
 	}
-	
+
 	@Override
 	public Color getColor() {
 		String colorString = xmlGroup.getColor();
-		
-		if(colorString == null) {
+
+		if (colorString == null) {
 			return Constants.DEFAULT_FUNCTIONGROUP_COLOR;
 		}
-		
+
 		String[] color = colorString.split(",");
-		
-		if(color.length != 3) {
+
+		if (color.length != 3) {
 			return Constants.DEFAULT_FUNCTIONGROUP_COLOR;
 		}
-		
+
 		int r, g, b;
 		try {
 			r = Integer.parseInt(color[0].trim());
@@ -84,17 +86,17 @@ public class FunctionGroup extends AbstractFunctionGroup {
 		} catch (NumberFormatException e) {
 			return Constants.DEFAULT_FUNCTIONGROUP_COLOR;
 		}
-		
+
 		if ((r < 0 || r > 255) && (g < 0 || g > 255) && (b < 0 || b > 255)) {
 			return Constants.DEFAULT_FUNCTIONGROUP_COLOR;
 		}
-		
+
 		return new Color(r, g, b);
 	}
 
 	@Override
 	public AbstractFunction[] getFunctions() {
-		Function[] returnFunctions = new Function[functions.size()]; 
+		Function[] returnFunctions = new Function[functions.size()];
 		returnFunctions = functions.toArray(returnFunctions);
 		return (AbstractFunction[]) returnFunctions;
 	}
@@ -106,7 +108,7 @@ public class FunctionGroup extends AbstractFunctionGroup {
 			FunctionGroup oFG = (FunctionGroup) group;
 			return (oFG.getIdentifier().equals(this.getIdentifier()));
 		}
-		
+
 		return false;
 	}
 

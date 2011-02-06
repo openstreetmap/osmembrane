@@ -51,7 +51,8 @@ public enum ConnectorType {
 	 * @param color
 	 *            for the connector type
 	 */
-	private ConnectorType(String friendlyName, int maxInConnections, int maxOutConnections, Color color) {
+	private ConnectorType(String friendlyName, int maxInConnections,
+			int maxOutConnections, Color color) {
 		this.friendlyName = friendlyName;
 		this.maxInConnections = maxInConnections;
 		this.maxOutConnections = maxOutConnections;
@@ -75,7 +76,7 @@ public enum ConnectorType {
 	protected int getMaxInConnections() {
 		return maxInConnections;
 	}
-	
+
 	/**
 	 * Returns the maximum count of out-connections for the connector type.
 	 * 
@@ -97,7 +98,8 @@ public enum ConnectorType {
 	/**
 	 * Parses a {@link String} to a {@link ConnectorType}.
 	 * 
-	 * @param type type as string
+	 * @param type
+	 *            type as string
 	 * @return connector type or NULL if no type was found
 	 */
 	public static ConnectorType parseString(String type) {

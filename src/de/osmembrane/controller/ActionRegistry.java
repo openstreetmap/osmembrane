@@ -174,7 +174,7 @@ public class ActionRegistry implements Observer {
 
 		get(UndoAction.class).setEnabled(
 				ModelProxy.getInstance().getPipeline().undoAvailable());
-		
+
 		get(RedoAction.class).setEnabled(
 				ModelProxy.getInstance().getPipeline().redoAvailable());
 
@@ -187,7 +187,7 @@ public class ActionRegistry implements Observer {
 		get(ExecutePipelineAction.class).setEnabled(pipelineFull);
 
 		get(ExportPipelineAction.class).setEnabled(pipelineFull);
-		
+
 		get(PreviewPipelineAction.class).setEnabled(pipelineFull);
 
 		get(GeneratePipelineAction.class).setEnabled(pipelineFull);

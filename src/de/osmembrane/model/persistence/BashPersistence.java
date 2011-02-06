@@ -27,7 +27,8 @@ import de.osmembrane.model.pipeline.AbstractFunction;
  */
 public class BashPersistence extends AbstractPersistence {
 
-	private static final Class<? extends IParser> PARSER =  FileType.BASH.getParserClass();
+	private static final Class<? extends IParser> PARSER = FileType.BASH
+			.getParserClass();
 
 	@Override
 	public void save(URL filename, Object data) throws FileException {
@@ -40,7 +41,7 @@ public class BashPersistence extends AbstractPersistence {
 		}
 
 		try {
-			File file = new File(filename.toString().replace("file:",""));
+			File file = new File(filename.toString().replace("file:", ""));
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
 

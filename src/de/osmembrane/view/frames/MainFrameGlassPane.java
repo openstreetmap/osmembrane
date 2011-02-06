@@ -32,10 +32,10 @@ public class MainFrameGlassPane extends JComponent {
 	 *            whether the start screen shall be displayed upon
 	 *            initialization
 	 */
-	public MainFrameGlassPane(boolean showStartScreen) {	
+	public MainFrameGlassPane(boolean showStartScreen) {
 		if (showStartScreen) {
 			setLayout(new GridLayout(1, 1));
-			JPanel startPanel = new StartPanel();			
+			JPanel startPanel = new StartPanel();
 			add(startPanel);
 		}
 	}

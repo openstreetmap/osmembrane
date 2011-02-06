@@ -42,7 +42,7 @@ public class PipelineObserverObject {
 		 * A full change of the pipeline.
 		 */
 		FULLCHANGE,
-		
+
 		/**
 		 * Is returned, when a save event occurred.
 		 */
@@ -164,12 +164,12 @@ public class PipelineObserverObject {
 	public AbstractPipeline getPipeline() {
 		return pipeline;
 	}
-	
+
 	protected PipelineObserverObject setCreateUndoStep(boolean createUndoStep) {
 		this.createUndoStep = createUndoStep;
 		return this;
 	}
-	
+
 	/**
 	 * Returns if an undo-step should be added to the pipeline or not.
 	 * 

@@ -24,7 +24,7 @@ public abstract class AbstractTask extends Observable implements Observer,
 	 * @return the parental function
 	 */
 	public abstract AbstractFunction getParent();
-	
+
 	/**
 	 * Returns the description of the {@link AbstractTask}.
 	 * 
@@ -69,35 +69,41 @@ public abstract class AbstractTask extends Observable implements Observer,
 
 	/**
 	 * Returns the bbox string.
+	 * 
 	 * @return the bbox string, and if task has no bbox parameter NULL
 	 */
 	public abstract String getBBox();
-	
+
 	/**
 	 * Sets the bbox value to the given one.
 	 * 
-	 * @param bbox given bbox string
+	 * @param bbox
+	 *            given bbox string
 	 * 
-	 * @throws ArrayStoreException if bbox has not not 4 comma separated parameters
+	 * @throws ArrayStoreException
+	 *             if bbox has not not 4 comma separated parameters
 	 */
 	public abstract boolean setBBox(String bbox);
-	
+
 	/**
-	 * Returns the input pipes for the {@link XMLTask} (required for {@link AbstractFunction}).
+	 * Returns the input pipes for the {@link XMLTask} (required for
+	 * {@link AbstractFunction}).
 	 * 
 	 * @return input pipes of the {@link XMLTask}
 	 */
 	protected abstract List<XMLPipe> getInputPipe();
 
 	/**
-	 * Returns the output pipes for the {@link XMLTask} (required for {@link AbstractFunction}).
+	 * Returns the output pipes for the {@link XMLTask} (required for
+	 * {@link AbstractFunction}).
 	 * 
 	 * @return output pipes of the {@link XMLTask}
 	 */
 	protected abstract List<XMLPipe> getOutputPipe();
-	
+
 	/**
 	 * Copies the task.
 	 */
-	public abstract AbstractTask copy(CopyType type, AbstractFunction newFunction);
+	public abstract AbstractTask copy(CopyType type,
+			AbstractFunction newFunction);
 }

@@ -55,7 +55,7 @@ public class CommandLineDialog extends AbstractDialog implements
 		gbc.insets = new Insets(8, 8, 8, 8);
 
 		// text
-		commandline = new JTextArea();		
+		commandline = new JTextArea();
 		commandline.setLineWrap(true);
 		commandline.setWrapStyleWord(true);
 		JScrollPane clPane = new JScrollPane(commandline);

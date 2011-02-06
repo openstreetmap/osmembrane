@@ -374,7 +374,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 					public void keyReleased(KeyEvent e) {
 						if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 							addButton.doClick();
-							
+
 						} else if ((e.getKeyCode() != KeyEvent.VK_ESCAPE)) {
 							// auto complete
 							JTextField editorField = (JTextField) editField
@@ -455,8 +455,8 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		} else {
 			this.listContentType = ListContentType.INVALID;
 		}
-		
-		this.editFieldModel.setSelectedItem(new String());		
+
+		this.editFieldModel.setSelectedItem(new String());
 
 		setWindowTitle(I18N.getInstance().getString("View.ListDialog",
 				list.getListType()));
@@ -559,14 +559,14 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		 */
 		public String getContent() {
 			StringBuilder result = new StringBuilder();
-			
+
 			for (int i = 0; i < parameters.size() - 1; i++) {
 				result.append(parameters.get(i) + ",");
 			}
 			if (parameters.size() > 0) {
 				result.append(parameters.get(parameters.size() - 1));
 			}
-			
+
 			return result.toString();
 		}
 

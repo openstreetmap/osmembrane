@@ -112,7 +112,7 @@ public class PipelineLink extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
-		
+
 		addMouseMotionListener(new MouseMotionListener() {
 
 			@Override

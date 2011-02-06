@@ -82,12 +82,12 @@ public class LibraryPanel extends JPanel {
 	 * Filter text field to filter the functions
 	 */
 	private JTextFieldWithButton editFilter;
-	
+
 	/**
 	 * {@link LibraryPanelGroup} for the filtered functions by editFilter.
 	 */
 	private LibraryPanelGroup filterGroup;
-	
+
 	/**
 	 * Initializes a new {@link LibraryPanel}
 	 * 
@@ -102,7 +102,9 @@ public class LibraryPanel extends JPanel {
 		this.expandingThread = null;
 		this.groups = new ArrayList<LibraryPanelGroup>();
 
-		final String noFiltering = "(" + I18N.getInstance().getString("View.Library.NoFiltering") + ")";
+		final String noFiltering = "("
+				+ I18N.getInstance().getString("View.Library.NoFiltering")
+				+ ")";
 		this.editFilter = new JTextFieldWithButton();
 		editFilter.setLocation(3, 3);
 		editFilter.setValue(noFiltering);
@@ -111,11 +113,11 @@ public class LibraryPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				editFilter.setValue(noFiltering);
-				
+
 				expanded = -1;
 				expanding = -1;
 				contracting = -1;
-				
+
 				for (LibraryPanelGroup lpg : groups) {
 					lpg.setVisible(true);
 				}
@@ -142,23 +144,25 @@ public class LibraryPanel extends JPanel {
 		editFilter.addFieldKeyListener(new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (!editFilter.getValue().trim().isEmpty() && !editFilter.getValue().equals(noFiltering)) {
+				if (!editFilter.getValue().trim().isEmpty()
+						&& !editFilter.getValue().equals(noFiltering)) {
 					// show filtered state
 					AbstractFunction[] result = ModelProxy.getInstance()
 							.getFunctions()
 							.getFilteredFunctions(editFilter.getValue());
 					filterGroup.populate(result, pipeline);
-									
+
 					for (LibraryPanelGroup lpg : groups) {
 						lpg.setVisible(false);
 					}
 					filterGroup.setVisible(true);
-					filterGroup.setContentHeight(filterGroup.getFullContentHeight());
-					
+					filterGroup.setContentHeight(filterGroup
+							.getFullContentHeight());
+
 					expanded = filterGroup.getId();
 					expanding = -1;
 					contracting = -1;
-				} else {			
+				} else {
 					// show normal state
 					for (LibraryPanelGroup lpg : groups) {
 						lpg.setVisible(true);
@@ -168,8 +172,8 @@ public class LibraryPanel extends JPanel {
 					expanded = -1;
 					expanding = -1;
 					contracting = -1;
-				}			
-				
+				}
+
 				rearrange(true);
 			}
 
@@ -187,7 +191,7 @@ public class LibraryPanel extends JPanel {
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		// best decision ever <- do not touch
 		setLayout(null);
-		
+
 		filterGroup = new LibraryPanelGroup(this, pipeline, I18N.getInstance()
 				.getString("View.Library.Filter"), Color.WHITE);
 		filterGroup.setVisible(false);
@@ -333,7 +337,7 @@ public class LibraryPanel extends JPanel {
 	 * @see {@link JPanel#setSize}
 	 */
 	private void setSizeNoArrange(Dimension d) {
-		super.setSize(d);		
+		super.setSize(d);
 	}
 
 	/**
@@ -355,13 +359,13 @@ public class LibraryPanel extends JPanel {
 				lpg.setSize(this.getWidth() - 6, lpg.getHeight());
 				// notify the arrangement
 				lpg.rearranged();
-	
+
 				y += lpg.getHeight() + 6;
 			}
 		}
 
 		// update for the scroll bar
-		if (setSize) {	
+		if (setSize) {
 			setPreferredSize(new Dimension(this.getPreferredSize().width, y));
 			setSizeNoArrange(getPreferredSize());
 		}

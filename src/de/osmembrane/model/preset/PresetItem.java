@@ -16,7 +16,7 @@ import de.osmembrane.tools.IconLoader.Size;
 public class PresetItem implements Comparable<PresetItem> {
 
 	private Item item;
-	
+
 	private String key;
 	private String value;
 
@@ -28,8 +28,8 @@ public class PresetItem implements Comparable<PresetItem> {
 	 * 
 	 * @param item
 	 *            {@link Item} which should be represented
-	 * @param string2 
-	 * @param string 
+	 * @param string2
+	 * @param string
 	 */
 	protected PresetItem(Item item, String key, String value) {
 		this.item = item;
@@ -56,7 +56,8 @@ public class PresetItem implements Comparable<PresetItem> {
 		if (icon == null && !triedLoadIcon && item.getIcon() != null
 				&& item.getIcon().length() > 0) {
 			triedLoadIcon = true;
-			icon = Resource.PRESET_ICON.getImageIcon(new File(item.getIcon()).getName(), Size.NORMAL);
+			icon = Resource.PRESET_ICON.getImageIcon(
+					new File(item.getIcon()).getName(), Size.NORMAL);
 		}
 
 		return icon;
@@ -79,7 +80,7 @@ public class PresetItem implements Comparable<PresetItem> {
 	public String getValue() {
 		return value;
 	}
-	
+
 	/**
 	 * Returns the key.value of the item.
 	 * 
@@ -141,6 +142,7 @@ public class PresetItem implements Comparable<PresetItem> {
 
 	@Override
 	public int compareTo(PresetItem o) {
-		return (getKey() + "." + getValue()).compareTo(o.getKey() + "." + o.getValue());
+		return (getKey() + "." + getValue()).compareTo(o.getKey() + "."
+				+ o.getValue());
 	}
 }

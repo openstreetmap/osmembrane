@@ -18,8 +18,10 @@ public class FunctionPreset extends AbstractFunctionPreset {
 	/**
 	 * Creates a new FunctionPreset with given name and function.
 	 * 
-	 * @param name name of the preset
-	 * @param function which should be saved in the preset
+	 * @param name
+	 *            name of the preset
+	 * @param function
+	 *            which should be saved in the preset
 	 */
 	public FunctionPreset(String name, AbstractFunction function) {
 		this.name = name;
@@ -36,7 +38,8 @@ public class FunctionPreset extends AbstractFunctionPreset {
 		/* iterate over all tasks */
 		for (int task = 0; task < this.function.getAvailableTasks().length; task++) {
 			/* set the active task */
-			if(this.function.getAvailableTasks()[task] == this.function.getActiveTask()) {
+			if (this.function.getAvailableTasks()[task] == this.function
+					.getActiveTask()) {
 				function.setActiveTask(function.getAvailableTasks()[task]);
 			}
 			/* assign all parameters */

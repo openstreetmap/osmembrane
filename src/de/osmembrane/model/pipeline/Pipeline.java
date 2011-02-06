@@ -388,7 +388,7 @@ public class Pipeline extends AbstractPipeline {
 		int maximumStackSize = ((Integer) ModelProxy.getInstance()
 				.getSettings().getValue(SettingType.MAXIMUM_UNDO_STEPS))
 				.intValue();
-		
+
 		while (undoStack.size() > maximumStackSize) {
 			undoStack.remove(0);
 		}

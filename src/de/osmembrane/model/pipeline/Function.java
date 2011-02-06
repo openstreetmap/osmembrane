@@ -200,8 +200,9 @@ public class Function extends AbstractFunction {
 		if (raster < 1.0) {
 			return coordinate;
 		} else {
-			/* filter the coordinates, use the modulo function,
-			 * round to the next raster-value.
+			/*
+			 * filter the coordinates, use the modulo function, round to the
+			 * next raster-value.
 			 */
 			double x = coordinate.getX();
 			double y = coordinate.getY();
@@ -209,10 +210,10 @@ public class Function extends AbstractFunction {
 			double ySub = y % (double) raster;
 			double xAdd = raster - xSub;
 			double yAdd = raster - ySub;
-			
+
 			x = x + ((xSub < xAdd) ? -xSub : xAdd);
 			y = y + ((ySub < yAdd) ? -ySub : yAdd);
-			
+
 			return new Point2D.Double(x, y);
 		}
 
@@ -380,8 +381,8 @@ public class Function extends AbstractFunction {
 				newFunction.activeTask = newTask;
 			}
 		}
-		
-		if(!type.copyValues()) {
+
+		if (!type.copyValues()) {
 			newFunction.activeTask = newFunction.getAvailableTasks()[0];
 		}
 

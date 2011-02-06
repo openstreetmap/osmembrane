@@ -7,3 +7,4 @@
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://josm.openstreetmap.de/tagging-preset-1.0", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package de.openstreetmap.josm.tagging_preset_1;
+

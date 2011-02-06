@@ -119,7 +119,8 @@ public class Constants {
 	/**
 	 * The default working directory.
 	 */
-	public static final String DEFAULT_WORKING_DIRECTORY = System.getProperty("java.io.tmpdir");
+	public static final String DEFAULT_WORKING_DIRECTORY = System
+			.getProperty("java.io.tmpdir");
 
 	/**
 	 * Show the startup screen or not.
@@ -129,7 +130,8 @@ public class Constants {
 	/**
 	 * The default path to the helpfile pdf.
 	 */
-	public static final File HELP_FILE_PATH = new File("resources/pdf/manual.pdf");
+	public static final File HELP_FILE_PATH = new File(
+			"resources/pdf/manual.pdf");
 
 	/**
 	 * Default JOSM Heap size.

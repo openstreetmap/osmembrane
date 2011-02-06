@@ -17,7 +17,7 @@ public class JTextFieldWithButtonCellEditor extends AbstractCellEditor
 		implements TableCellEditor {
 
 	private static final long serialVersionUID = 5432943873776422277L;
-	
+
 	/**
 	 * {@link JTextFieldWithButton} to be stored and edited
 	 */
@@ -25,6 +25,7 @@ public class JTextFieldWithButtonCellEditor extends AbstractCellEditor
 
 	/**
 	 * Creates a new {@link JTextFieldWithButtonCellEditor} for jtfwb
+	 * 
 	 * @param jtfwb
 	 */
 	public JTextFieldWithButtonCellEditor(JTextFieldWithButton jtfwb) {

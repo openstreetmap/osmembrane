@@ -27,8 +27,9 @@ import de.osmembrane.model.pipeline.AbstractFunction;
  */
 public class CmdPersistence extends AbstractPersistence {
 
-	private static final Class<? extends IParser> PARSER = FileType.CMD.getParserClass();
-	
+	private static final Class<? extends IParser> PARSER = FileType.CMD
+			.getParserClass();
+
 	@Override
 	public void save(URL filename, Object data) throws FileException {
 		if (!(data instanceof List<?>)) {
@@ -40,18 +41,18 @@ public class CmdPersistence extends AbstractPersistence {
 		}
 
 		try {
-			File file = new File(filename.toString().replace("file:",""));
+			File file = new File(filename.toString().replace("file:", ""));
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
 
 			@SuppressWarnings("unchecked")
-			String output = ParserFactory.getInstance()
-			.getParser(PARSER).parsePipeline((List<AbstractFunction>) data);
-			
+			String output = ParserFactory.getInstance().getParser(PARSER)
+					.parsePipeline((List<AbstractFunction>) data);
+
 			bw.write(output);
 			bw.close();
 			fw.close();
-			
+
 		} catch (IOException e) {
 			throw new FileException(Type.NOT_WRITABLE, e);
 		}
@@ -73,7 +74,7 @@ public class CmdPersistence extends AbstractPersistence {
 
 			List<AbstractFunction> functions = ParserFactory.getInstance()
 					.getParser(PARSER).parseString(fileContent.toString());
-			
+
 			return functions;
 
 		} catch (FileNotFoundException e) {

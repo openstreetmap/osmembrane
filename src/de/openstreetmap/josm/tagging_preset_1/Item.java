@@ -5,7 +5,6 @@
 // Generated on: 2011.01.27 at 08:53:01 PM MEZ 
 //
 
-
 package de.openstreetmap.josm.tagging_preset_1;
 
 import java.util.ArrayList;
@@ -22,11 +21,13 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.namespace.QName;
 
-
 /**
- * <p>Java class for item complex type.
+ * <p>
+ * Java class for item complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="item">
@@ -52,183 +53,160 @@ import javax.xml.namespace.QName;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "item", propOrder = {
-    "labelOrSpaceOrLink",
-    "roles"
-})
+@XmlType(name = "item", propOrder = { "labelOrSpaceOrLink", "roles" })
 public class Item {
 
-    @XmlElements({
-        @XmlElement(name = "label", type = Label.class),
-        @XmlElement(name = "optional", type = Optional.class),
-        @XmlElement(name = "key", type = Key.class),
-        @XmlElement(name = "check", type = Check.class),
-        @XmlElement(name = "space", type = Space.class),
-        @XmlElement(name = "combo", type = Combo.class),
-        @XmlElement(name = "multiselect", type = Multiselect.class),
-        @XmlElement(name = "link", type = Link.class),
-        @XmlElement(name = "text", type = Text.class)
-    })
-    protected List<Object> labelOrSpaceOrLink;
-    protected Roles roles;
-    @XmlAttribute
-    protected String name;
-    @XmlAttribute
-    protected String icon;
-    @XmlAttribute
-    protected String type;
-    @XmlAnyAttribute
-    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+	@XmlElements({ @XmlElement(name = "label", type = Label.class),
+			@XmlElement(name = "optional", type = Optional.class),
+			@XmlElement(name = "key", type = Key.class),
+			@XmlElement(name = "check", type = Check.class),
+			@XmlElement(name = "space", type = Space.class),
+			@XmlElement(name = "combo", type = Combo.class),
+			@XmlElement(name = "multiselect", type = Multiselect.class),
+			@XmlElement(name = "link", type = Link.class),
+			@XmlElement(name = "text", type = Text.class) })
+	protected List<Object> labelOrSpaceOrLink;
+	protected Roles roles;
+	@XmlAttribute
+	protected String name;
+	@XmlAttribute
+	protected String icon;
+	@XmlAttribute
+	protected String type;
+	@XmlAnyAttribute
+	private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 
-    /**
-     * Gets the value of the labelOrSpaceOrLink property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the labelOrSpaceOrLink property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getLabelOrSpaceOrLink().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Label }
-     * {@link Optional }
-     * {@link Key }
-     * {@link Check }
-     * {@link Space }
-     * {@link Combo }
-     * {@link Multiselect }
-     * {@link Link }
-     * {@link Text }
-     * 
-     * 
-     */
-    public List<Object> getLabelOrSpaceOrLink() {
-        if (labelOrSpaceOrLink == null) {
-            labelOrSpaceOrLink = new ArrayList<Object>();
-        }
-        return this.labelOrSpaceOrLink;
-    }
+	/**
+	 * Gets the value of the labelOrSpaceOrLink property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the labelOrSpaceOrLink property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getLabelOrSpaceOrLink().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link Label }
+	 * {@link Optional } {@link Key } {@link Check } {@link Space } {@link Combo }
+	 * {@link Multiselect } {@link Link } {@link Text }
+	 * 
+	 * 
+	 */
+	public List<Object> getLabelOrSpaceOrLink() {
+		if (labelOrSpaceOrLink == null) {
+			labelOrSpaceOrLink = new ArrayList<Object>();
+		}
+		return this.labelOrSpaceOrLink;
+	}
 
-    /**
-     * Gets the value of the roles property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Roles }
-     *     
-     */
-    public Roles getRoles() {
-        return roles;
-    }
+	/**
+	 * Gets the value of the roles property.
+	 * 
+	 * @return possible object is {@link Roles }
+	 * 
+	 */
+	public Roles getRoles() {
+		return roles;
+	}
 
-    /**
-     * Sets the value of the roles property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Roles }
-     *     
-     */
-    public void setRoles(Roles value) {
-        this.roles = value;
-    }
+	/**
+	 * Sets the value of the roles property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Roles }
+	 * 
+	 */
+	public void setRoles(Roles value) {
+		this.roles = value;
+	}
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Gets the value of the name property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+	/**
+	 * Sets the value of the name property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setName(String value) {
+		this.name = value;
+	}
 
-    /**
-     * Gets the value of the icon property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getIcon() {
-        return icon;
-    }
+	/**
+	 * Gets the value of the icon property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getIcon() {
+		return icon;
+	}
 
-    /**
-     * Sets the value of the icon property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setIcon(String value) {
-        this.icon = value;
-    }
+	/**
+	 * Sets the value of the icon property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setIcon(String value) {
+		this.icon = value;
+	}
 
-    /**
-     * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getType() {
-        return type;
-    }
+	/**
+	 * Gets the value of the type property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getType() {
+		return type;
+	}
 
-    /**
-     * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setType(String value) {
-        this.type = value;
-    }
+	/**
+	 * Sets the value of the type property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setType(String value) {
+		this.type = value;
+	}
 
-    /**
-     * Gets a map that contains attributes that aren't bound to any typed property on this class.
-     * 
-     * <p>
-     * the map is keyed by the name of the attribute and 
-     * the value is the string value of the attribute.
-     * 
-     * the map returned by this method is live, and you can add new attribute
-     * by updating the map directly. Because of this design, there's no setter.
-     * 
-     * 
-     * @return
-     *     always non-null
-     */
-    public Map<QName, String> getOtherAttributes() {
-        return otherAttributes;
-    }
+	/**
+	 * Gets a map that contains attributes that aren't bound to any typed
+	 * property on this class.
+	 * 
+	 * <p>
+	 * the map is keyed by the name of the attribute and the value is the string
+	 * value of the attribute.
+	 * 
+	 * the map returned by this method is live, and you can add new attribute by
+	 * updating the map directly. Because of this design, there's no setter.
+	 * 
+	 * 
+	 * @return always non-null
+	 */
+	public Map<QName, String> getOtherAttributes() {
+		return otherAttributes;
+	}
 
 }

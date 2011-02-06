@@ -155,6 +155,7 @@ public class JTextFieldWithButton extends JPanel {
 		field.setHorizontalAlignment(align);
 
 	}
+
 	/**
 	 * Adds the {@link java.awt.event.KeyListener} kl to the field component
 	 * 
@@ -163,7 +164,7 @@ public class JTextFieldWithButton extends JPanel {
 
 	public void addFieldKeyListener(KeyListener kl) {
 		field.addKeyListener(kl);
-		
+
 	}
 
 }

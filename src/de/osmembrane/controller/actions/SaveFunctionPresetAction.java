@@ -54,9 +54,12 @@ public class SaveFunctionPresetAction extends AbstractAction {
 				.getModelFunction();
 
 		/* Request a name for the preset */
-		String name = JOptionPane.showInputDialog(null, I18N.getInstance()
-				.getString("Controller.Actions.SaveFunctionPreset.Text"), I18N
-				.getInstance().getString("Controller.Actions.SaveFunctionPreset.Title"),
+		String name = JOptionPane.showInputDialog(
+				null,
+				I18N.getInstance().getString(
+						"Controller.Actions.SaveFunctionPreset.Text"),
+				I18N.getInstance().getString(
+						"Controller.Actions.SaveFunctionPreset.Title"),
 				JOptionPane.QUESTION_MESSAGE);
 		if (name != null) {
 			ModelProxy.getInstance().getSettings()

@@ -26,7 +26,7 @@ public class ParseException extends Exception {
 		 * pipes do not match.
 		 */
 		UNKNOWN_TASK_FORMAT,
-		
+
 		/**
 		 * Found no default parameter for the task.
 		 */
@@ -77,7 +77,7 @@ public class ParseException extends Exception {
 
 	@Override
 	public String getMessage() {
-		return I18N.getInstance().getString(
-				"Model.Parser.Exceptions." + type, messageValues);
+		return I18N.getInstance().getString("Model.Parser.Exceptions." + type,
+				messageValues);
 	}
 }

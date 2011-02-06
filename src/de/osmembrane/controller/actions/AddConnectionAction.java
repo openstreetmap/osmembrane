@@ -37,12 +37,9 @@ public class AddConnectionAction extends AbstractAction {
 			cfe.getConnectionSource().addConnectionTo(
 					cfe.getConnectionDestination());
 		} catch (ConnectorException e1) {
-			Application
-					.handleException(new ControlledException(this,
-							ExceptionSeverity.WARNING, I18N.getInstance()
-									.getString(
-											"Model.Pipeline.AddConnection."
-													+ e1.getType())));
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.WARNING, I18N.getInstance().getString(
+							"Model.Pipeline.AddConnection." + e1.getType())));
 
 		}
 	}

@@ -108,7 +108,8 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	/**
 	 * Loads the backup into the pipeline.
 	 * 
-	 * @throws FileException when something with the IO went wrong
+	 * @throws FileException
+	 *             when something with the IO went wrong
 	 */
 	public abstract void loadBackup() throws FileException;
 

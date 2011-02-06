@@ -49,7 +49,8 @@ public class PipelineExecutor extends Thread implements WindowListener {
 		dialog.setState(I18N.getInstance().getString(
 				"Tools.PipelineExecutor.ParametersSet"));
 		dialog.setProgress(5);
-		dialog.setCloseButtonCaption(I18N.getInstance().getString("View.Cancel"));
+		dialog.setCloseButtonCaption(I18N.getInstance()
+				.getString("View.Cancel"));
 	}
 
 	public void setCallbackAction(Class<? extends Action> event) {
@@ -75,9 +76,9 @@ public class PipelineExecutor extends Thread implements WindowListener {
 					new InputStreamReader(process.getInputStream()));
 
 			dialog.setState(I18N.getInstance().getString(
-			"Tools.PipelineExecutor.RunningOsmosis"));
+					"Tools.PipelineExecutor.RunningOsmosis"));
 			dialog.setProgress(10);
-			
+
 			String line = null;
 			do {
 				try {
@@ -114,7 +115,7 @@ public class PipelineExecutor extends Thread implements WindowListener {
 				} catch (InterruptedException e) {
 					interrupt();
 				}
-			}else {
+			} else {
 				process.destroy();
 				reader.close();
 			}

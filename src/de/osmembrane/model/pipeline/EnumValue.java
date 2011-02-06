@@ -15,24 +15,26 @@ import de.osmembrane.tools.I18N;
 public class EnumValue extends AbstractEnumValue {
 
 	private static final long serialVersionUID = 2011011821200001L;
-	
+
 	/**
 	 * xml value of enum value.
 	 */
 	transient private XMLEnumValue xmlEnum;
 	private Identifier xmlEnumIdentifier;
-	
+
 	/**
 	 * Creates a new EnumValue with a given {@link XMLEnumValue}.
 	 * 
-	 * @param xmlEnum which will be represented by {@link EnumValue}
+	 * @param xmlEnum
+	 *            which will be represented by {@link EnumValue}
 	 */
 	public EnumValue(XMLEnumValue xmlEnum) {
 		this.xmlEnum = xmlEnum;
-		
+
 		/* set the identifiers */
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
-		this.xmlEnumIdentifier = afp.getMatchingXMLEnumValueIdentifier(this.xmlEnum);
+		this.xmlEnumIdentifier = afp
+				.getMatchingXMLEnumValueIdentifier(this.xmlEnum);
 	}
 
 	@Override
@@ -49,11 +51,11 @@ public class EnumValue extends AbstractEnumValue {
 	public String getValue() {
 		return xmlEnum.getValue();
 	}
-	
+
 	private Object readResolve() throws ObjectStreamException {
 		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
 		this.xmlEnum = afp.getMatchingXMLEnumValue(this.xmlEnumIdentifier);
-		
+
 		return this;
 	}
 }

@@ -22,7 +22,8 @@ public class TaggingPresetPresistence extends AbstractPersistence {
 	public Object load(URL file) throws FileException {
 		JAXBContext jc;
 		try {
-			jc = JAXBContext.newInstance("de.openstreetmap.josm.tagging_preset_1");
+			jc = JAXBContext
+					.newInstance("de.openstreetmap.josm.tagging_preset_1");
 
 			if (file == null) {
 				throw new FileException(Type.NOT_FOUND);
@@ -31,8 +32,7 @@ public class TaggingPresetPresistence extends AbstractPersistence {
 			Unmarshaller u = jc.createUnmarshaller();
 
 			@SuppressWarnings("unchecked")
-			JAXBElement<Root> root = (JAXBElement<Root>) u
-					.unmarshal(file);
+			JAXBElement<Root> root = (JAXBElement<Root>) u.unmarshal(file);
 
 			return root.getValue();
 		} catch (JAXBException e) {

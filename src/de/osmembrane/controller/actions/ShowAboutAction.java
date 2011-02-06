@@ -25,12 +25,18 @@ public class ShowAboutAction extends AbstractAction {
 	 * Creates a new {@link ShowAboutAction}
 	 */
 	public ShowAboutAction() {
-		putValue(Action.NAME, I18N.getInstance().getString("Controller.Actions.ShowAbout.Name"));
-		putValue(Action.SHORT_DESCRIPTION, I18N.getInstance().getString("Controller.Actions.ShowAbout.Description"));
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
-				"about.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
-				"about.png", Size.NORMAL));
+		putValue(
+				Action.NAME,
+				I18N.getInstance().getString(
+						"Controller.Actions.ShowAbout.Name"));
+		putValue(
+				Action.SHORT_DESCRIPTION,
+				I18N.getInstance().getString(
+						"Controller.Actions.ShowAbout.Description"));
+		putValue(Action.SMALL_ICON,
+				Resource.PROGRAM_ICON.getImageIcon("about.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY,
+				Resource.PROGRAM_ICON.getImageIcon("about.png", Size.NORMAL));
 	}
 
 	@Override

@@ -28,12 +28,16 @@ public class GraphPlanarizer {
 
 		List<AbstractFunction> primaryFunctions = getPrimaryFunctions();
 
-		/* set the xOffsetfactor to -1.0 'cause orderFunction will add 1.0 in the first step */
+		/*
+		 * set the xOffsetfactor to -1.0 'cause orderFunction will add 1.0 in
+		 * the first step
+		 */
 		double xOffsetFactor = -1.0;
 		double yOffsetFactor = 0.0;
-		
+
 		for (AbstractFunction function : primaryFunctions) {
-			yOffsetFactor = orderFunctions(function, xOffsetFactor, yOffsetFactor);
+			yOffsetFactor = orderFunctions(function, xOffsetFactor,
+					yOffsetFactor);
 			yOffsetFactor++;
 		}
 	}
@@ -59,7 +63,7 @@ public class GraphPlanarizer {
 					foundConnection = true;
 				}
 			}
-			if(!foundConnection) {
+			if (!foundConnection) {
 				primaryFunctions.add(function);
 			}
 		}
@@ -71,35 +75,40 @@ public class GraphPlanarizer {
 	 * 
 	 * @return returns the required space in height
 	 */
-	private double orderFunctions(AbstractFunction function, double xOffsetFactor, double yOffsetFactor) {
+	private double orderFunctions(AbstractFunction function,
+			double xOffsetFactor, double yOffsetFactor) {
 		xOffsetFactor++;
-		
-		function.getUnrasteredCoordinate().setLocation(X_OFFSET * xOffsetFactor, Y_OFFSET * yOffsetFactor);
-		
+
+		function.getUnrasteredCoordinate().setLocation(
+				X_OFFSET * xOffsetFactor, Y_OFFSET * yOffsetFactor);
+
 		boolean moreThanOneConnection = false;
-		for(AbstractConnector connector : function.getOutConnectors()) {
-			for(AbstractConnector connector2 : connector.getConnections()) {
-				if(moreThanOneConnection) {
+		for (AbstractConnector connector : function.getOutConnectors()) {
+			for (AbstractConnector connector2 : connector.getConnections()) {
+				if (moreThanOneConnection) {
 					yOffsetFactor++;
 				} else {
 					moreThanOneConnection = true;
 				}
-				yOffsetFactor = orderFunctions(connector2.getParent(), xOffsetFactor, yOffsetFactor);
+				yOffsetFactor = orderFunctions(connector2.getParent(),
+						xOffsetFactor, yOffsetFactor);
 			}
 		}
 
 		return yOffsetFactor;
 	}
-	
+
 	private void calculateGridSize() {
-		pipelineRasterSize = Math.max(1.0, new Double((Integer) ModelProxy.getInstance().getSettings().getValue(SettingType.PIPELINE_RASTER_SIZE)));
+		pipelineRasterSize = Math.max(1.0,
+				new Double((Integer) ModelProxy.getInstance().getSettings()
+						.getValue(SettingType.PIPELINE_RASTER_SIZE)));
 		X_OFFSET = 0.0;
 		Y_OFFSET = 0.0;
-		
+
 		while (X_OFFSET < Constants.PIPELINE_FUNCTION_MINIMAL_X_DISTANCE) {
 			X_OFFSET += pipelineRasterSize;
 		}
-		
+
 		while (Y_OFFSET < Constants.PIPELINE_FUNCTION_MINIMAL_Y_DISTANCE) {
 			Y_OFFSET += pipelineRasterSize;
 		}

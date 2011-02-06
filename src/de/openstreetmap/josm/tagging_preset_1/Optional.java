@@ -5,7 +5,6 @@
 // Generated on: 2011.01.27 at 08:53:01 PM MEZ 
 //
 
-
 package de.openstreetmap.josm.tagging_preset_1;
 
 import java.util.ArrayList;
@@ -17,11 +16,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for optional complex type.
+ * <p>
+ * Java class for optional complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="optional">
@@ -36,55 +37,47 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "optional", propOrder = {
-    "optionalElements"
-})
+@XmlType(name = "optional", propOrder = { "optionalElements" })
 public class Optional {
 
-    @XmlElements({
-        @XmlElement(name = "label", type = Label.class),
-        @XmlElement(name = "check", type = Check.class),
-        @XmlElement(name = "text", type = Text.class),
-        @XmlElement(name = "space", type = Space.class),
-        @XmlElement(name = "link", type = Link.class),
-        @XmlElement(name = "multiselect", type = Multiselect.class),
-        @XmlElement(name = "combo", type = Combo.class)
-    })
-    protected List<Object> optionalElements;
+	@XmlElements({ @XmlElement(name = "label", type = Label.class),
+			@XmlElement(name = "check", type = Check.class),
+			@XmlElement(name = "text", type = Text.class),
+			@XmlElement(name = "space", type = Space.class),
+			@XmlElement(name = "link", type = Link.class),
+			@XmlElement(name = "multiselect", type = Multiselect.class),
+			@XmlElement(name = "combo", type = Combo.class) })
+	protected List<Object> optionalElements;
 
-    /**
-     * Gets the value of the optionalElements property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the optionalElements property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getOptionalElements().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Label }
-     * {@link Check }
-     * {@link Text }
-     * {@link Space }
-     * {@link Link }
-     * {@link Multiselect }
-     * {@link Combo }
-     * 
-     * 
-     */
-    public List<Object> getOptionalElements() {
-        if (optionalElements == null) {
-            optionalElements = new ArrayList<Object>();
-        }
-        return this.optionalElements;
-    }
+	/**
+	 * Gets the value of the optionalElements property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the optionalElements property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getOptionalElements().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link Label }
+	 * {@link Check } {@link Text } {@link Space } {@link Link } {@link Multiselect }
+	 * {@link Combo }
+	 * 
+	 * 
+	 */
+	public List<Object> getOptionalElements() {
+		if (optionalElements == null) {
+			optionalElements = new ArrayList<Object>();
+		}
+		return this.optionalElements;
+	}
 
 }

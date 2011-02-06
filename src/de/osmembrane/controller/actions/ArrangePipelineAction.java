@@ -35,8 +35,10 @@ public class ArrangePipelineAction extends AbstractAction {
 				Action.SHORT_DESCRIPTION,
 				I18N.getInstance().getString(
 						"Controller.Actions.ArrangePipeline.Description"));
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon("arrange_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon("arrange_pipeline.png", Size.NORMAL));
+		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+				"arrange_pipeline.png", Size.SMALL));
+		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+				"arrange_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}

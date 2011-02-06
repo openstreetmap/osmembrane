@@ -78,25 +78,27 @@ public class ExecutePipelineAction extends AbstractAction {
 			}
 		}
 
-		IExecutionStateDialog dialog = ViewRegistry.getInstance().getCasted(ExecutionStateDialog.class, IExecutionStateDialog.class);
-		
-		
+		IExecutionStateDialog dialog = ViewRegistry.getInstance().getCasted(
+				ExecutionStateDialog.class, IExecutionStateDialog.class);
+
 		Class<? extends Action> action;
-		if(e.getSource() instanceof Action) {
+		if (e.getSource() instanceof Action) {
 			action = (Class<? extends Action>) e.getSource().getClass();
 		} else {
 			action = null;
 		}
-		
+
 		try {
-			PipelineExecutor executor = new PipelineExecutor(osmosisPath, workingDirectory, parameters, dialog);
+			PipelineExecutor executor = new PipelineExecutor(osmosisPath,
+					workingDirectory, parameters, dialog);
 			executor.setCallbackAction(action);
 			executor.start();
 			dialog.showWindow();
 		} catch (IllegalArgumentException e1) {
 			// TODO I18N
-			Application.handleException(new ControlledException(this, ExceptionSeverity.WARNING, "Pfad zu osmosis falsch..."));
+			Application.handleException(new ControlledException(this,
+					ExceptionSeverity.WARNING, "Pfad zu osmosis falsch..."));
 		}
-		
+
 	}
 }

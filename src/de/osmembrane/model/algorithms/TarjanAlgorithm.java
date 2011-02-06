@@ -72,7 +72,7 @@ public class TarjanAlgorithm {
 	public void run() {
 		reset();
 
-		while(notYetVisistedFunctions.size() > 0) {
+		while (notYetVisistedFunctions.size() > 0) {
 			AbstractFunction node = notYetVisistedFunctions.peek();
 			if (nodeIndex.get(node) == null) {
 				tarjan(node);
@@ -132,9 +132,10 @@ public class TarjanAlgorithm {
 			}
 		}
 
-		//System.out.println(node + "\t" + nodeLowlink.get(node) + "\t" + nodeIndex.get(node));
+		// System.out.println(node + "\t" + nodeLowlink.get(node) + "\t" +
+		// nodeIndex.get(node));
 		if (nodeLowlink.get(node).equals(nodeIndex.get(node))) {
-			//System.out.println("entered");
+			// System.out.println("entered");
 			/**
 			 * There seems to be a strongly connected component in the graph,
 			 * check the size.
@@ -145,12 +146,15 @@ public class TarjanAlgorithm {
 				stackNodes.add(nodeStack.pop());
 				sccSize++;
 			} while (!stackNodes.contains(node));
-			
-			//System.out.println(stackNodes.size() + "\t" + nodeLowlink.get(node) + "\t" + nodeIndex.get(node) + "\t" + stackNodes);
-			//if(stackNodes.size() == 2) {
-			//	System.out.println( "\t" + nodeLowlink.get(stackNodes.get(0)) + "\t" + nodeIndex.get(stackNodes.get(0)));
-			//}
-			
+
+			// System.out.println(stackNodes.size() + "\t" +
+			// nodeLowlink.get(node) + "\t" + nodeIndex.get(node) + "\t" +
+			// stackNodes);
+			// if(stackNodes.size() == 2) {
+			// System.out.println( "\t" + nodeLowlink.get(stackNodes.get(0)) +
+			// "\t" + nodeIndex.get(stackNodes.get(0)));
+			// }
+
 			scc.add(stackNodes);
 		}
 	}
@@ -159,7 +163,8 @@ public class TarjanAlgorithm {
 	 * minimum from lowlevel and lowlevel
 	 */
 	private Integer llMin(AbstractFunction node1, AbstractFunction node2) {
-		if (nodeLowlink.get(node1).intValue() < nodeLowlink.get(node2).intValue()) {
+		if (nodeLowlink.get(node1).intValue() < nodeLowlink.get(node2)
+				.intValue()) {
 			return nodeLowlink.get(node1);
 		} else {
 			return nodeLowlink.get(node2);

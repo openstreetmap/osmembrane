@@ -29,8 +29,7 @@ public class XMLOsmosisStructurePersistence extends AbstractPersistence {
 
 			Unmarshaller u = jc.createUnmarshaller();
 
-			XMLOsmosisStructure otd = (XMLOsmosisStructure) u
-					.unmarshal(file);
+			XMLOsmosisStructure otd = (XMLOsmosisStructure) u.unmarshal(file);
 
 			return otd;
 		} catch (JAXBException e) {

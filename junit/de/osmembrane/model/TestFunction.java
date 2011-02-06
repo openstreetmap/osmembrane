@@ -23,7 +23,7 @@ import de.osmembrane.model.pipeline.PipelineObserverObject;
 /**
  * Intelligent, well behaving and upright Function descendant.
  * 
- * ******* FOR TESTING PURPOSES ONLY. WARRANTY VOID. ******* 
+ * ******* FOR TESTING PURPOSES ONLY. WARRANTY VOID. *******
  * 
  * @author tobias_kuhn
  * 
@@ -113,8 +113,7 @@ public class TestFunction extends AbstractFunction {
 	 * @param inTarget
 	 * @param desiredCount
 	 */
-	public void assertConnectionCountTo(TestFunction inTarget,
-			int desiredCount) {
+	public void assertConnectionCountTo(TestFunction inTarget, int desiredCount) {
 
 		int outCount = 0;
 		int inCount = 0;
@@ -263,7 +262,7 @@ public class TestFunction extends AbstractFunction {
 	public AbstractFunction copy(CopyType type) {
 		return contained.copy(type);
 	}
-	
+
 	@Override
 	public synchronized void addObserver(Observer o) {
 		contained.addObserver(o);

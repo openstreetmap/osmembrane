@@ -24,8 +24,10 @@ public class StatusbarEntry extends Observable {
 	 * Creates a new {@link StatusbarEntry} with a given message and progressbar
 	 * enabled or not.
 	 * 
-	 * @param message message which should be displayed in the statusbar
-	 * @param progressbarUsed true if the statusbar should be used, otherwise false
+	 * @param message
+	 *            message which should be displayed in the statusbar
+	 * @param progressbarUsed
+	 *            true if the statusbar should be used, otherwise false
 	 */
 	public StatusbarEntry(String message, boolean progressbarUsed) {
 		this.message = message;
@@ -59,7 +61,8 @@ public class StatusbarEntry extends Observable {
 	/**
 	 * Sets the new progress for the {@link StatusbarEntry}.
 	 * 
-	 * @param progress new progress to be set.
+	 * @param progress
+	 *            new progress to be set.
 	 */
 	public void setProgress(double progress) {
 		this.progress = progress;

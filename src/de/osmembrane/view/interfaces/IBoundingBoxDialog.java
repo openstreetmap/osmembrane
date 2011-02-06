@@ -15,11 +15,12 @@ public interface IBoundingBoxDialog extends IView {
 	 * @return the selected bounding box, or null, if none
 	 */
 	Bounds getBoundingBox();
-	
+
 	/**
 	 * Sets the selected bounding box to bounds
+	 * 
 	 * @param bounds
 	 */
 	void setBoundingBox(Bounds bounds);
-	
+
 }

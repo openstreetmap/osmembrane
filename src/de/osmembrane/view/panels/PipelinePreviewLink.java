@@ -79,14 +79,14 @@ public class PipelinePreviewLink extends PipelineLink {
 
 		Point2D left;
 		Point2D right;
-		
+
 		double leftX, leftY;
 		if (target.getX() < leftAbs.getX()) {
 			// left
 			leftX = getWidth() - source.getWidth() / 2.0;
 		} else {
 			// right
-			leftX = source.getWidth() / 2.0; 
+			leftX = source.getWidth() / 2.0;
 		}
 		if (target.getY() < leftAbs.getY()) {
 			// above
@@ -95,7 +95,7 @@ public class PipelinePreviewLink extends PipelineLink {
 			// below
 			leftY = source.getHeight() / 2.0;
 		}
-		
+
 		left = new Point2D.Double(leftX, leftY);
 		right = new Point2D.Double(target.getX() - basicX, target.getY()
 				- basicY);
