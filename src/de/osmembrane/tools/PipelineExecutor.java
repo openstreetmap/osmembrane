@@ -45,7 +45,7 @@ public class PipelineExecutor extends Thread implements WindowListener {
 		this.parameters = parameters;
 		this.dialog = dialog;
 
-		dialog.setStatus(I18N.getInstance().getString(
+		dialog.setState(I18N.getInstance().getString(
 				"Tools.PipelineExecutor.ParametersSet"));
 		dialog.setProgress(5);
 	}
@@ -56,7 +56,7 @@ public class PipelineExecutor extends Thread implements WindowListener {
 	
 	@Override
 	public void run() {
-		dialog.setStatus(I18N.getInstance().getString(
+		dialog.setState(I18N.getInstance().getString(
 				"Tools.PipelineExecutor.StartingOsmosis"));
 		dialog.setProgress(10);
 
@@ -94,14 +94,14 @@ public class PipelineExecutor extends Thread implements WindowListener {
 				try {
 					exitValue = process.waitFor();
 					if(exitValue == 0) {
-						dialog.setStatus(I18N.getInstance().getString(
+						dialog.setState(I18N.getInstance().getString(
 						"Tools.PipelineExecutor.Finished"));
 						dialog.setProgress(100);
 						if(callbackEvent != null) {
 							ActionRegistry.getInstance().get(callbackEvent).actionPerformed(new ActionEvent(this, 0, "finished"));
 						}
 					} else {
-						dialog.setStatus(I18N.getInstance().getString(
+						dialog.setState(I18N.getInstance().getString(
 						"Tools.PipelineExecutor.Failed"));
 					}
 				} catch (InterruptedException e) {
@@ -116,7 +116,7 @@ public class PipelineExecutor extends Thread implements WindowListener {
 			}
 			
 		} catch (IOException e) {
-			dialog.setStatus(I18N.getInstance().getString(
+			dialog.setState(I18N.getInstance().getString(
 					"Tools.PipelineExecutor.IOExecption"));
 			dialog.setProgress(0);
 			Application.handleException(new ControlledException(this,

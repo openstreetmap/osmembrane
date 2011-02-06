@@ -13,7 +13,6 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import de.osmembrane.model.settings.AbstractFunctionPreset;
-import de.osmembrane.model.settings.FunctionPreset;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
 import de.osmembrane.view.interfaces.IFunctionPresetDialog;

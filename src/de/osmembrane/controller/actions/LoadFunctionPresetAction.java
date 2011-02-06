@@ -9,7 +9,6 @@ import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.settings.AbstractFunctionPreset;
 import de.osmembrane.model.settings.AbstractSettings;
-import de.osmembrane.model.settings.FunctionPreset;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;

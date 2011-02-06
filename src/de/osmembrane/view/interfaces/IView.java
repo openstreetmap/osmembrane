@@ -1,5 +1,7 @@
 package de.osmembrane.view.interfaces;
 
+import java.awt.Window;
+
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.ExceptionDialog;
 
@@ -40,5 +42,10 @@ public interface IView {
 	 * Brings this window to the front.
 	 */
 	public void bringToFront();
+
+	/**
+	 * @see Window#dispose()
+	 */
+	public void dispose();
 
 }

@@ -74,5 +74,10 @@ public class BoundingBoxDialog implements IBoundingBoxDialog {
 	public void setBoundingBox(Bounds bounds) {
 		dialog.setBoundingBox(bounds);
 	}
+	
+	@Override
+	public void dispose() {
+		dialog.dispose();
+	}
 
 }

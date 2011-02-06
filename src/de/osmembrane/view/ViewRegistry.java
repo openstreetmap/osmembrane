@@ -147,7 +147,8 @@ public class ViewRegistry extends Observable implements Observer {
 			if (soo.getChangedEntry() == SettingType.ACTIVE_LANGUAGE) {
 				exceptionDialog = null;
 				for (IView iv : views.values()) {
-					iv.hideWindow();					
+					iv.hideWindow();			
+					iv.dispose();
 				}				
 				
 				views.clear();

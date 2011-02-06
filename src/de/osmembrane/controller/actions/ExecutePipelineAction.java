@@ -12,14 +12,13 @@ import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileType;
-import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
-import de.osmembrane.tools.PipelineExecutor;
 import de.osmembrane.tools.IconLoader.Size;
+import de.osmembrane.tools.PipelineExecutor;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.dialogs.ExecutionStateDialog;
 import de.osmembrane.view.interfaces.IExecutionStateDialog;
 
 /**

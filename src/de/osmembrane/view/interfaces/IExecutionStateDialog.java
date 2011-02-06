@@ -1,18 +1,24 @@
 package de.osmembrane.view.interfaces;
 
+import java.awt.event.WindowListener;
+
+import javax.swing.JDialog;
+
+import de.osmembrane.view.dialogs.ExecutionStateDialog;
+
 /**
  * Interface for {@link ExecutionStateDialog}.
  * 
  * @author jakob_jarosch
  */
-public interface IExecutionStateDialog {
+public interface IExecutionStateDialog extends IView {
 	
 	/**
-	 * Sets the shown status of the execution action.
+	 * Sets the shown state of the execution action.
 	 * 
-	 * @param status status to be set
+	 * @param state state to be set
 	 */
-	public void setStatus(String status);
+	public void setState(String state);
 	
 	/**
 	 * Sets the progress of a status bar.
@@ -34,11 +40,12 @@ public interface IExecutionStateDialog {
 	public void clear();
 	
 	/**
-	 * Adds a callback object, which is called if the window is closed.<br/>
-	 * Callback should be replied with the instance-object of the dialog.
-	 * 
-	 * @param callable which should be called if the windows was closed
-	 * @deprecated to be replaced with other function
+	 * @see JDialog#addWindowListener(WindowListener)
 	 */
-	public void setCallbackObject();
+	public void addWindowListener(WindowListener wl);
+	
+	/**
+	 * @see JDialog#removeWindowListener(WindowListener)
+	 */	
+	public void removeWindowListener(WindowListener wl);
 }

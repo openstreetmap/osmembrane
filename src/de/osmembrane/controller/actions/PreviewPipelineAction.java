@@ -6,12 +6,10 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.Application;
@@ -19,18 +17,14 @@ import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
-import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Constants;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
-import de.osmembrane.tools.PipelineExecutor;
 import de.osmembrane.tools.IconLoader.Size;
-import de.unistuttgart.iev.osm.osmosiscontrol.JOSMExecutor;
-import de.unistuttgart.iev.osm.osmosiscontrol.OsmosisExecutor;
-import de.unistuttgart.iev.osm.osmosiscontrol.OsmosisResult;
+import de.osmembrane.tools.PipelineExecutor;
 
 /**
  * Action to preview the generated pipeline. Like {@link ExecutePipelineAction},
