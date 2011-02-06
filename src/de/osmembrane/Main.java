@@ -35,16 +35,6 @@ public class Main {
 		// initiate the most basic stuff
 		application.initiate();
 
-		// make sure we're the only one
-		try {
-			if (!application.checkOneInstance()) {
-				JOptionPane.showMessageDialog(null, I18N.getInstance()
-						.getString("ProgramAlreadyRunning"));
-				System.exit(0);
-			}
-		} catch (IOException e) {
-		}
-
 		// check if a backup file is available
 		application.checkForBackup();
 
