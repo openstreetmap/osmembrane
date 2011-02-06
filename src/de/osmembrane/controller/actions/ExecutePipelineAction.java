@@ -54,6 +54,7 @@ public class ExecutePipelineAction extends AbstractAction {
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		FileType type = FileType.EXECUTION_FILETYPE;
@@ -79,8 +80,17 @@ public class ExecutePipelineAction extends AbstractAction {
 
 		IExecutionStateDialog dialog = ViewRegistry.getInstance().getCasted(ExecutionStateDialog.class, IExecutionStateDialog.class);
 		
+		
+		Class<? extends Action> action;
+		if(e.getSource() instanceof Action) {
+			action = (Class<? extends Action>) e.getSource().getClass();
+		} else {
+			action = null;
+		}
+		
 		try {
 			PipelineExecutor executor = new PipelineExecutor(osmosisPath, workingDirectory, parameters, dialog);
+			executor.setCallbackAction(action);
 			executor.start();
 			dialog.showWindow();
 		} catch (IllegalArgumentException e1) {

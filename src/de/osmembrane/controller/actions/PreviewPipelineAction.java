@@ -61,7 +61,7 @@ public class PreviewPipelineAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		if (!(e.getSource() instanceof PipelineExecutor)) {
 			ActionRegistry.getInstance().get(ExecutePipelineAction.class)
-					.actionPerformed(null);
+					.actionPerformed(new ActionEvent(this, 0, "PreviewExection"));
 		} else {
 			/* the path to josm */
 			final String josmPath = (String) ModelProxy.getInstance()

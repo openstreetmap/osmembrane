@@ -74,6 +74,10 @@ public class PipelineExecutor extends Thread implements WindowListener {
 			final BufferedReader reader = new BufferedReader(
 					new InputStreamReader(process.getInputStream()));
 
+			dialog.setState(I18N.getInstance().getString(
+			"Tools.PipelineExecutor.RunningOsmosis"));
+			dialog.setProgress(10);
+			
 			String line = null;
 			do {
 				try {
@@ -99,7 +103,7 @@ public class PipelineExecutor extends Thread implements WindowListener {
 						dialog.setState(I18N.getInstance().getString(
 								"Tools.PipelineExecutor.Finished"));
 						dialog.setCloseButtonCaption(I18N.getInstance()
-								.getString("View.Ok"));
+								.getString("View.OK"));
 						dialog.setProgress(100);
 					} else {
 						dialog.setState(I18N.getInstance().getString(
