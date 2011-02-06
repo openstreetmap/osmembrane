@@ -1,8 +1,6 @@
 package de.osmembrane.view.dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,11 +8,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
 
-import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
-import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.AbstractDialog;
 
 /**
