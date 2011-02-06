@@ -35,6 +35,7 @@ import de.osmembrane.controller.actions.SaveFunctionPresetAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
 import de.osmembrane.controller.actions.ShowAboutAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
+import de.osmembrane.controller.actions.ShowQuickstartAction;
 import de.osmembrane.controller.actions.UndoAction;
 import de.osmembrane.controller.actions.ViewAllAction;
 import de.osmembrane.controller.actions.ZoomInAction;
@@ -116,6 +117,7 @@ public class ActionRegistry implements Observer {
 
 		// other actions
 		register(new ShowHelpAction());
+		register(new ShowQuickstartAction());
 		register(new ShowAboutAction());
 		register(new ChangeSettingsAction());
 		register(new ExitAction());

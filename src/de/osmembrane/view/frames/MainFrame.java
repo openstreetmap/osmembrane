@@ -46,6 +46,7 @@ import de.osmembrane.controller.actions.SaveAsPipelineAction;
 import de.osmembrane.controller.actions.SavePipelineAction;
 import de.osmembrane.controller.actions.ShowAboutAction;
 import de.osmembrane.controller.actions.ShowHelpAction;
+import de.osmembrane.controller.actions.ShowQuickstartAction;
 import de.osmembrane.controller.actions.UndoAction;
 import de.osmembrane.controller.actions.ViewAllAction;
 import de.osmembrane.controller.actions.ZoomInAction;
@@ -131,7 +132,9 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		});
 
 		// set own glass pane used for drag & drop
-		setGlassPane(new MainFrameGlassPane());
+		boolean showStartScreen = true;
+		setGlassPane(new MainFrameGlassPane(showStartScreen));
+		getGlassPane().setVisible(showStartScreen);
 
 		// initialize tools
 		Toolkit tk = Toolkit.getDefaultToolkit();
@@ -216,6 +219,8 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		JMenu aboutMenu = new JMenu(I18N.getInstance().getString(
 				"View.Menu.About"));
 		aboutMenu.add(ActionRegistry.getInstance().get(ShowHelpAction.class));
+		aboutMenu.add(ActionRegistry.getInstance().get(ShowQuickstartAction.class));
+		aboutMenu.add(new JSeparator());
 		aboutMenu.add(ActionRegistry.getInstance().get(ShowAboutAction.class));
 		menuBar.add(aboutMenu);
 

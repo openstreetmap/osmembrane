@@ -149,6 +149,7 @@ public class ViewRegistry extends Observable implements Observer {
 				for (IView iv : views.values()) {
 					iv.hideWindow();					
 				}				
+				
 				views.clear();
 				deleteObservers();								
 				// if Java GC understands that, I'm impressed

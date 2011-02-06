@@ -42,7 +42,6 @@ public class ConnectingFunctionsEvent extends ActionEvent {
 		super(source, 0, null);
 		this.connectionSource = connectionSource;
 		this.connectionDestination = connectionDestination;
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

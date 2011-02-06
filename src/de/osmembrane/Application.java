@@ -168,8 +168,6 @@ public class Application {
 	 *             kindly assume result was true.
 	 */
 	public boolean checkOneInstance() throws IOException {
-		// TODO replace this with jps
-		// Java sucks
 		// get our own temporary directory
 		String tempPath = System.getProperty("java.io.tmpdir") + "osmembrane/";
 		File tempDir = new File(tempPath);

@@ -1,11 +1,18 @@
 package de.osmembrane.view.frames;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.dnd.DragSource;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import de.osmembrane.view.panels.LibraryFunction;
+import de.osmembrane.view.panels.StartPanel;
 
 /**
  * Glass pane that improvises the drawing of the drag & drop
@@ -24,8 +31,18 @@ public class MainFrameGlassPane extends JComponent {
 
 	/**
 	 * Initializer for new {@link MainFrameGlassPane}
+	 * 
+	 * @param showStartScreen
+	 *            whether the start screen shall be displayed upon
+	 *            initialization
 	 */
-	public MainFrameGlassPane() {
+	public MainFrameGlassPane(boolean showStartScreen) {
+		setLayout(new GridLayout(1, 1));
+		
+		if (showStartScreen) {
+			JPanel startPanel = new StartPanel();			
+			add(startPanel);
+		}
 	}
 
 	/**
