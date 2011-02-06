@@ -363,7 +363,9 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		// center, then maximize
 		pack();
 		centerWindow();
-		setExtendedState(Frame.MAXIMIZED_BOTH);
+		if (!showStartScreen) {
+			setExtendedState(Frame.MAXIMIZED_BOTH);
+		}
 
 		// correct width
 		splitMain.setDividerLocation(splitMain.getSize().width
@@ -394,6 +396,11 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 	@Override
 	public IZoomDevice getZoomDevice() {
 		return pipelineView;
+	}
+
+	@Override
+	public void maximizeWindow() {
+		setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
 }

@@ -20,6 +20,9 @@ import de.osmembrane.controller.actions.ShowQuickstartAction;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
+import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.frames.MainFrame;
+import de.osmembrane.view.interfaces.IMainFrame;
 
 /**
  * The panel on the glass pane that displays the start screen.
@@ -55,8 +58,13 @@ public class StartPanel extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				setVisible(false);
 				getParent().setVisible(false);
-				
-				Action a = ActionRegistry.getInstance().get(NewPipelineAction.class);
+				getParent().setLayout(null);
+				ViewRegistry.getInstance()
+						.getCasted(MainFrame.class, IMainFrame.class)
+						.maximizeWindow();
+
+				Action a = ActionRegistry.getInstance().get(
+						NewPipelineAction.class);
 				a.actionPerformed(null);
 			}
 
@@ -89,8 +97,13 @@ public class StartPanel extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				setVisible(false);
 				getParent().setVisible(false);
-				
-				Action a = ActionRegistry.getInstance().get(LoadPipelineAction.class);
+				getParent().setLayout(null);
+				ViewRegistry.getInstance()
+						.getCasted(MainFrame.class, IMainFrame.class)
+						.maximizeWindow();
+
+				Action a = ActionRegistry.getInstance().get(
+						LoadPipelineAction.class);
 				a.actionPerformed(null);
 			}
 
@@ -123,8 +136,13 @@ public class StartPanel extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				setVisible(false);
 				getParent().setVisible(false);
-				
-				Action a = ActionRegistry.getInstance().get(ShowQuickstartAction.class);
+				getParent().setLayout(null);
+				ViewRegistry.getInstance()
+						.getCasted(MainFrame.class, IMainFrame.class)
+						.maximizeWindow();
+
+				Action a = ActionRegistry.getInstance().get(
+						ShowQuickstartAction.class);
 				a.actionPerformed(null);
 			}
 

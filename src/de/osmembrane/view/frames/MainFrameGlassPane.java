@@ -1,12 +1,8 @@
 package de.osmembrane.view.frames;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.dnd.DragSource;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -36,10 +32,9 @@ public class MainFrameGlassPane extends JComponent {
 	 *            whether the start screen shall be displayed upon
 	 *            initialization
 	 */
-	public MainFrameGlassPane(boolean showStartScreen) {
-		setLayout(new GridLayout(1, 1));
-		
+	public MainFrameGlassPane(boolean showStartScreen) {	
 		if (showStartScreen) {
+			setLayout(new GridLayout(1, 1));
 			JPanel startPanel = new StartPanel();			
 			add(startPanel);
 		}

@@ -306,6 +306,8 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 						// require a minimum distance to drag & drop
 						if (newObjPosition.distance(pf.getModelLocation()) < PipelineFunction.PIPELINE_FUNCTION_MIN_DRAG_DISTANCE) {
+							pf.setLocation(objToWindow(pf.getModelLocation()));
+							// return, so we don't create an undo step
 							return;
 						}
 

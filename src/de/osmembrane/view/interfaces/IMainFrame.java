@@ -45,4 +45,8 @@ public interface IMainFrame extends IView {
 	 */
 	public IZoomDevice getZoomDevice();
 
+	/**
+	 * Maximizes the window.
+	 */
+	public void maximizeWindow();
 }

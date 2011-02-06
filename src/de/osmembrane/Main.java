@@ -1,11 +1,6 @@
 package de.osmembrane;
 
-import java.io.IOException;
-
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-
-import de.osmembrane.tools.I18N;
 
 /**
  * the Main class for java to contain the static main() method
