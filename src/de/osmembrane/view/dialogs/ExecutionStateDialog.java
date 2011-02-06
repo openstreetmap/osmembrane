@@ -102,10 +102,11 @@ public class ExecutionStateDialog extends AbstractDialog implements
 		fontAttrib.put(TextAttribute.FAMILY, Font.MONOSPACED);
 		lines.setFont(lines.getFont().deriveFont(fontAttrib));
 
-		content.add(lines, BorderLayout.CENTER);
-
-		add(new JScrollPane(content, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		content.add(new JScrollPane(lines,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), BorderLayout.CENTER);
+
+		add(content, BorderLayout.CENTER);
 
 		// buttons
 		JPanel buttons = new JPanel();
