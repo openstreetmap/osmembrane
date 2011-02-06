@@ -35,6 +35,12 @@ public interface IExecutionStateDialog extends IView {
 	public void addOutputLine(String outputLine);
 	
 	/**
+	 * Sets the caption of the close button to caption
+	 * @param caption new caption of the close button
+	 */
+	public void setCloseButtonCaption(String caption);
+	
+	/**
 	 * Clears the contents of the window.
 	 */
 	public void clear();

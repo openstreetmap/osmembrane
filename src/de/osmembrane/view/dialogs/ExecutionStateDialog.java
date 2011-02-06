@@ -112,7 +112,7 @@ public class ExecutionStateDialog extends AbstractDialog implements
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-		closeButton = new JButton(I18N.getInstance().getString("View.Cancel"));
+		closeButton = new JButton();
 		closeButton.addKeyListener(returnButtonListener);
 		closeButton.addActionListener(new ActionListener() {
 			@Override
@@ -141,8 +141,6 @@ public class ExecutionStateDialog extends AbstractDialog implements
 	@Override
 	public void setProgress(int progress) {
 		this.progress.setValue(progress);
-		closeButton.setText(progress == 100 ? I18N.getInstance().getString(
-				"View.OK") : I18N.getInstance().getString("View.Cancel"));
 	}
 
 	@Override
@@ -170,6 +168,12 @@ public class ExecutionStateDialog extends AbstractDialog implements
 		stateField.setText("");
 		progress.setValue(0);
 		lines.setText("");
+		closeButton.setText("");
+	}
+	
+	@Override
+	public void setCloseButtonCaption(String caption) {
+		closeButton.setText(caption);		
 	}
 
 }
