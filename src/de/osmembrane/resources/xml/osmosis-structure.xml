@@ -126,7 +126,10 @@
 				<parameter name="url" type="uri" required="true" defaultValue="http://www.openstreetmap.org/api/0.6">
 					
 				<description lang="de"><value>Die URL des API-Servers.</value></description><description lang="en"><value>The url of the API server.</value></description></parameter>
-				<parameter name="bbox" type="bbox" required="true" />
+				<parameter name="left" type="bbox" required="true" />
+				<parameter name="right" type="bbox" required="true" />
+				<parameter name="top" type="bbox" required="true" />
+				<parameter name="bottom" type="bbox" required="true" />
 			<description lang="de"><value>Frägt den Inhalt einer Bounding-Box von der API ab. Dies unterliegt der Einschränkung für Bounding-Box-Größen-Einschränkungen, die von der API vorgegeben werden.</value></description><description lang="en"><value>Retrieves the contents of a bounding box from the API. This is subject to the bounding box size limitations imposed by the API.</value></description></task>
 			<description lang="de"><value>Liest Eingabequellen und erzeugt Entity-Streams.</value></description><description lang="en"><value>Reads input sources and produces an entity stream.</value></description></function>
 
