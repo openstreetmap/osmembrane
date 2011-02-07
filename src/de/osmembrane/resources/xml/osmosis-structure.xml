@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XMLOsmosisStructure xmlns="http://osmembrane.de/model/xml" formatVersion="1.0.0" osmosisVersion="0.37">
+<XMLOsmosisStructure xmlns="http://osmembrane.de/model/xml" formatVersion="1.0.0" osmosisVersion="0.38">
 
 	<functionGroup id="input-output" friendlyName="Input &amp; Output" color="255, 239, 0">
 		<function id="read" friendlyName="Read Entity Tasks">
