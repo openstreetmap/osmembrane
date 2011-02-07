@@ -16,6 +16,7 @@ package de.osmembrane.controller.actions;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -78,6 +79,20 @@ public class ExportPipelineAction extends AbstractAction {
 
 		if (result == JFileChooser.APPROVE_OPTION) {
 
+			/* Check if the file does not already exists. */
+			if (fileChooser.getSelectedFile().isFile()) {
+				if(JOptionPane
+						.showConfirmDialog(
+								null,
+								I18N.getInstance().getString(
+										"Controller.Actions.File.Override"),
+								I18N.getInstance().getString("Controller.Actions.File.Override.Title"),
+								JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
+					return;
+				}
+			}
+			
+			/* parse the file to an URL */
 			URL file;
 			try {
 				file = fileChooser.getSelectedFile().toURI().toURL();

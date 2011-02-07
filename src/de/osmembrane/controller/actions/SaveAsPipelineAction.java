@@ -16,12 +16,14 @@ package de.osmembrane.controller.actions;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.Application;
@@ -78,6 +80,19 @@ public class SaveAsPipelineAction extends AbstractAction {
 			String filePath = fileChooser.getSelectedFile().getAbsolutePath();
 			if (!filePath.endsWith(FileType.OSMEMBRANE.getExtension())) {
 				filePath = filePath + FileType.OSMEMBRANE.getExtension();
+			}
+
+			/* Check if the file does not already exists. */
+			if (new File(filePath).isFile()) {
+				if(JOptionPane
+						.showConfirmDialog(
+								null,
+								I18N.getInstance().getString(
+										"Controller.Actions.File.Override"),
+								I18N.getInstance().getString("Controller.Actions.File.Override.Title"),
+								JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
+					return;
+				}
 			}
 
 			URL file;
