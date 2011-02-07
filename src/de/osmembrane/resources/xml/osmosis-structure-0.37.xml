@@ -1061,4 +1061,75 @@
 			<description lang="de"><value>Dieser Task nimmt die state.txt in einem Replication-Arbeitsverzeichnis und vergleicht deren Timestamp (das ist der Timestamp des letzten Chunks von denen, die Osmosis heruntergeladen hat) mit dem Timestamp der state.txt des Servers (das is der Timestamp des letzten Chunks von denen, die der Server produziert hat). Dann berechnet er den Unterschied und zeigt diesen auf stdout an. Um nur die ausgegebenen Werte zu bekommen, ist es oftmals hilfreich, die Log-Nachrichten von stderr nach /dev/null zu pipen.</value></description><description lang="en"><value>This Task takes the state.txt in an replication working directory and compares its timestamp (that's the timestamp of the last chunk of that that osmosis downloaded) with the timestamp of the servers state.txt (that's the timestamp of the last chunk of that that the server has produced). It then calculates the difference and prints it to stdout. In order to get only the printed value its often useful to pipe the log messages on stderr to /dev/null.</value></description></task>
 		<description lang="de"><value>Vergleicht die lokale state.txt mit der auf einem Server und zeigt den Unterschied an.</value></description><description lang="en"><value>Compares the local state.txt with that of the server and prints the difference.</value></description></function>
 	<description lang="de"><value>Replikationsoperationen, um Änderungen für Verbraucher zur Verfügung zu stellen.</value></description><description lang="en"><value>Replication operations to provide changes for consumers.</value></description></functionGroup>
+	
+	<functionGroup id="plugins" friendlyName="Plugins" color="237, 172, 139">
+		<function id="read-osmbin-0.6" friendlyName="Read OSM-binary (0.6)">
+			<task name="read-osmbin-0.6" friendlyName="Read OSM-binary (0.6)">
+				<outputPipe count="single" index="0" type="entity" />
+				<parameter name="dir" type="directory">
+					
+				<description lang="de"><value>Der Name des Verzeichnisses, aus dem gelesen werden soll.</value></description><description lang="en"><value>The name of the directory to be read from.</value></description></parameter>
+				
+			<description lang="de"><value>Liest aus einem Verzeichnis in Osmbin Version 1.0-Format.</value></description><description lang="en"><value>Read from a directory in Osmbin version 1.0 -format.</value></description></task>
+			
+		<description lang="de"><value>Liest aus einem Verzeichnis in Osmbin Version 1.0-Format.</value></description><description lang="en"><value>Read from a directory in Osmbin version 1.0 -format.</value></description></function>
+	
+		<function id="write-osmbin-0.6" friendlyName="Write OSM-binary (0.6)">
+			<task name="write-osmbin-0.6" friendlyName="Write OSM-binary (0.6)">
+				<inputType count="single" index="0" type="entity" />
+				<parameter name="dir" type="directory">
+					
+				<description lang="de"><value>Der Name des Verzeichnisses, in das geschrieben werden soll. Wird erzeugt, falls nötig. Falls osmbin-data existiert, wird automatisch angehangen/geupdated.</value></description><description lang="en"><value>The name of the directory to be written to. Will be created if needed. Will append/update if osmbin-data exists.</value></description></parameter>
+				
+			<description lang="de"><value>Schreibt in ein Verzeichnis in Osmbin Version 1.0.</value></description><description lang="en"><value>Writes to a directory in Osmbin version 1.0,</value></description></task>
+			
+		<description lang="de"><value>Schreibt in ein Verzeichnis in Osmbin Version 1.0.</value></description><description lang="en"><value>Writes to a directory in Osmbin version 1.0.</value></description></function>
+		
+		<function id="dataset-osmbin-0.6" friendlyName="Write Dataset OSM-binary (0.6)">
+			<task name="dataset-osmbin-0.6" friendlyName="Write Dataset OSM-binary (0.6)">
+				<inputType count="single" index="0" type="entity" />
+				<parameter name="dir" type="directory">
+					
+				<description lang="de"><value>Der Name des Verzeichnisses, in das geschrieben werden soll. Wird erzeugt, falls nötig. Falls osmbin-data existiert, wird automatisch angehangen/geupdated.</value></description><description lang="en"><value>The name of the directory to be written to. Will be created if needed. Will append/update if osmbin-data exists.</value></description></parameter>
+				
+			<description lang="de"><value>Liest und schreibt in ein Verzeichnis in Osmbin Version 1.0 und ermöglicht wahlfreien Zugriff für weitere Tasks.</value></description><description lang="en"><value>Read and write from/to a directory in Osmbin version 1.0 and provide random access to it for further tasks</value></description></task>
+			
+		<description lang="de"><value>Schreibt in ein Verzeichnis in Osmbin Version 1.0.</value></description><description lang="en"><value>Read and write from/to a directory in Osmbin version 1.0 and provide random access to it for further tasks.</value></description></function>
+		
+		<function id="reindex-osmbin-0.6" friendlyName="Reindex OSM-binary (0.6)">
+			<task name="reindex-osmbin-0.6" friendlyName="Reindex OSM-binary (0.6)">
+				<parameter name="dir" type="directory">
+					
+				<description lang="de"><value>Der Name des Verzeichnisses, das neu indiziert werden soll.</value></description><description lang="en"><value>The name of the directory to be reindexed.</value></description></parameter>
+				
+			<description lang="de"><value>Erzeugt die .idx-Datei neu für ein Verzeichnis in Osmbin Version 1.0.</value></description><description lang="en"><value>Recreate the .idx -filed for a directory in Osmbin version 1.0</value></description></task>
+			
+		<description lang="de"><value>Erzeugt die .idx-Datei neu für ein Verzeichnis in Osmbin Version 1.0.</value></description><description lang="en"><value>Recreate the .idx file for a directory in Osmbin version 1.0</value></description></function>
+		
+		<function id="tag-transform" friendlyName="Tag Transform">
+			<task name="tag-transform" friendlyName="Tag Transform">
+				<inputType count="single" index="0" type="entity" />
+				<inputType count="single" index="0" type="entity" />
+				<parameter name="file" type="filename">
+					
+				<description lang="de"><value>Der Name der Datei, die die Transformierungsbeschreibung enthält.</value></description><description lang="en"><value>The name of the file containing the transform description.</value></description></parameter>
+				<parameter name="stats" type="string">
+					
+				<description lang="de"><value>Der Name der Datei, in die die Ausgabestatistiken der gefundenen Trefferanzahl geschrieben werden soll.</value></description><description lang="en"><value>The name of a file to output statistics of match hit counts to.</value></description></parameter>
+				
+			<description lang="de"><value>Wandelt die Tags im Eingabe-Stream um gemäß den Regeln, die in einer Transform-Datei angegeben werden.</value></description><description lang="en"><value>Transform the tags in the input stream according to the rules specified in a transform file.</value></description></task>
+			
+		<description lang="de"><value>Wandelt die Tags im Eingabe-Stream um gemäß den Regeln, die in einer Transform-Datei angegeben werden.</value></description><description lang="en"><value>Transform the tags in the input stream according to the rules specified in a transform file.</value></description></function>
+		
+		<function id="simplify" friendlyName="Tag Transform">
+			<task name="simplify" friendlyName="Tag Transform">
+				<inputType count="single" index="0" type="entity" />
+				<inputType count="single" index="0" type="entity" />
+				
+			<description lang="de"><value>Das Simplify-Plugin filtert einige Elemente heraus, um Daten zu vereinfachen. Zur Zeit verwendet es eine extrem naive Art der Vereinfachung: Es filtert alle Nodes auseinander vom Start- und End-Node von jedem Way.</value></description><description lang="en"><value>The simplify plugin filters to drop some elements in order to simplify the data. Currently it does one extremely crude form of simplification. It drops all nodes apart from the start and end nodes of every way.</value></description></task>
+			
+		<description lang="de"><value>Das Simplify-Plugin filtert einige Elemente heraus, um Daten zu vereinfachen. Zur Zeit verwendet es eine extrem naive Art der Vereinfachung: Es filtert alle Nodes auseinander vom Start- und End-Node von jedem Way.</value></description><description lang="en"><value>The simplify plugin filters to drop some elements in order to simplify the data. Currently it does one extremely crude form of simplification. It drops all nodes apart from the start and end nodes of every way.</value></description></function>
+		
+		
+	<description lang="de"><value>Diese Tasks sind in Plugins enthalten. Sie können zu Osmosis hinzugefügt werden, in dem ein bestimmtes Plugin in einer dieser Pfade installiert wird, oder indem der Kommandozeilenparameter "-P" angegeben wird. Mehr Details auf der Wiki-Seite von Osmosis.</value></description><description lang="en"><value>These tasks are contained in plugins. They can be added to osmosis by installing the specified plugin in one of the pathes or by adding it to the command-line via the "-P" -option. More details on the wiki-site of osmosis.</value></description></functionGroup>
 </XMLOsmosisStructure>

@@ -1059,7 +1059,7 @@
 	<description lang="de"><value>Replikationsoperationen, um Änderungen für Verbraucher zur Verfügung zu stellen.</value></description><description lang="en"><value>Replication operations to provide changes for consumers.</value></description></functionGroup>
 	
 	
-	<functionGroup id="plugins" friendlyName="Plugins">
+	<functionGroup id="plugins" friendlyName="Plugins" color="237, 172, 139">
 		<function id="read-osmbin-0.6" friendlyName="Read OSM-binary (0.6)">
 			<task name="read-osmbin-0.6" friendlyName="Read OSM-binary (0.6)">
 				<outputPipe count="single" index="0" type="entity" />
