@@ -147,7 +147,9 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 		// set own glass pane used for drag & drop
 		boolean showStartScreen = (Boolean) ModelProxy.getInstance()
-				.getSettings().getValue(SettingType.SHOW_STARTUP_SCREEN);
+				.getSettings().getValue(SettingType.SHOW_STARTUP_SCREEN)
+				&& (ModelProxy.getInstance().getPipeline().getFunctions().length == 0);
+		// if there is something on the pipeline, probably a backup was loaded
 		setGlassPane(new MainFrameGlassPane(showStartScreen));
 		getGlassPane().setVisible(showStartScreen);
 
