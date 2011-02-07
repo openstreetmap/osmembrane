@@ -335,6 +335,14 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 						a.actionPerformed(cle);
 					}
 				}
+				
+				// connection tool and magic
+				switch (activeTool) {
+				case DEFAULT_MAGIC_TOOL:
+				case SELECTION_TOOL:
+					abortConnect();
+				}
+				
 				draggingFrom = null;
 			}
 
@@ -1055,6 +1063,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 *            the cursor associated with the new tool, or null if no change
 	 */
 	public void setActiveTool(Tool activeTool, Cursor newCursor) {
+		abortConnect();
 		this.activeTool = activeTool;
 		if (newCursor != null) {
 			this.setCursor(newCursor);
@@ -1125,6 +1134,14 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 					.actionPerformed(cfe);
 			this.connectionStart = null;
 		}
+	}
+	
+	/**
+	 * Aborts a current try to connect two functions.
+	 */
+	public void abortConnect() {		
+		this.connectionStart = null;
+		this.connectionPreview.setVisible(false);
 	}
 
 	/**

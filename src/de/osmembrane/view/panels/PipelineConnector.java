@@ -123,7 +123,8 @@ public class PipelineConnector extends DisplayTemplatePanel {
 			final PipelineFunction parentFunction,
 			final PipelinePanel pipeline, boolean isOutpipes, int id, int amount) {
 		this.modelConnector = modelConnector;
-		setPreferredSize(new Dimension((int) (displayTemplate.getIconWidth() * Constants.DEFAULT_SIZE_FACTOR),
+		setPreferredSize(new Dimension(
+				(int) (displayTemplate.getIconWidth() * Constants.DEFAULT_SIZE_FACTOR),
 				(int) (displayTemplate.getIconHeight() * Constants.DEFAULT_SIZE_FACTOR)));
 		this.pipeline = pipeline;
 		this.parentFunction = parentFunction;
@@ -141,7 +142,9 @@ public class PipelineConnector extends DisplayTemplatePanel {
 			public void mouseReleased(MouseEvent e) {
 				MouseEvent pipelineEvent = SwingUtilities.convertMouseEvent(
 						PipelineConnector.this, e, pipeline);
-				pipeline.dispatchEvent(pipelineEvent);
+				if (pipeline.getActiveTool() != Tool.DEFAULT_MAGIC_TOOL) {
+					pipeline.dispatchEvent(pipelineEvent);
+				}
 			}
 
 			@Override
