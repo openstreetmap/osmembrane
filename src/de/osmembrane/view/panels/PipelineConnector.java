@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.Connector;
+import de.osmembrane.resources.Constants;
 
 /**
  * Represents a function connector, i.e. {@link AbstractConnector} in the View
@@ -121,8 +122,8 @@ public class PipelineConnector extends DisplayTemplatePanel {
 			final PipelineFunction parentFunction,
 			final PipelinePanel pipeline, boolean isOutpipes, int id, int amount) {
 		this.modelConnector = modelConnector;
-		setPreferredSize(new Dimension(displayTemplate.getIconWidth(),
-				displayTemplate.getIconHeight()));
+		setPreferredSize(new Dimension((int) (displayTemplate.getIconWidth() * Constants.DEFAULT_SIZE_FACTOR),
+				(int) (displayTemplate.getIconHeight() * Constants.DEFAULT_SIZE_FACTOR)));
 		this.pipeline = pipeline;
 		this.parentFunction = parentFunction;
 

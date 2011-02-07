@@ -26,6 +26,8 @@ import java.awt.geom.Point2D;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import de.osmembrane.resources.Constants;
+
 /**
  * The visual (and selectable) component which displays the links between
  * {@link PipelineConnector}s.
@@ -216,7 +218,7 @@ public class PipelineLink extends JPanel {
 
 		Polygon p = new Polygon();
 		int drawWidth = pipeline.objToWindowDelta(new Point2D.Double(0.0,
-				LINE_DRAWING_WIDTH)).y;
+				LINE_DRAWING_WIDTH * Constants.DEFAULT_ZOOM_SIZE)).y;
 
 		// use the dot product, Luke
 		double deltaX = line.getX2() - line.getX1();
@@ -250,7 +252,8 @@ public class PipelineLink extends JPanel {
 
 		// some radius, some tip
 		double arrowRadius = pipeline.objToWindowDelta(
-				new Point2D.Double(CONNECTOR_WIDTH / 2.0, 0.0)).getX();
+				new Point2D.Double(CONNECTOR_WIDTH
+						* Constants.DEFAULT_ZOOM_SIZE / 2.0, 0.0)).getX();
 
 		Polygon arrowHead = new Polygon();
 

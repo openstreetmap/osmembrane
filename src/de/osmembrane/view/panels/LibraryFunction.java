@@ -34,6 +34,7 @@ import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.Function;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.frames.MainFrame;
@@ -101,12 +102,6 @@ public class LibraryFunction extends DisplayTemplatePanel {
 	protected Point dragOffset;
 
 	/**
-	 * All functions will have their size modified by this factor. This
-	 * automatically affects standard zoom and drag & drop size.
-	 */
-	private static final double DEFAULT_SIZE_FACTOR = 0.64;
-
-	/**
 	 * Initializes a new {@link LibraryFunction} for the given model prototype
 	 * function
 	 * 
@@ -134,8 +129,8 @@ public class LibraryFunction extends DisplayTemplatePanel {
 		 * change this
 		 */
 		setPreferredSize(new Dimension(
-				(int) (displayTemplate.getIconWidth() * LibraryFunction.DEFAULT_SIZE_FACTOR),
-				(int) (displayTemplate.getIconHeight() * LibraryFunction.DEFAULT_SIZE_FACTOR)));
+				(int) (displayTemplate.getIconWidth() * Constants.DEFAULT_SIZE_FACTOR),
+				(int) (displayTemplate.getIconHeight() * Constants.DEFAULT_SIZE_FACTOR)));
 
 		List<Image> prerender = DisplayTemplatePanel
 				.givePrerender(modelFunctionPrototype.getParent());

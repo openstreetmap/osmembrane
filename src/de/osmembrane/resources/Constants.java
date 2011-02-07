@@ -177,4 +177,10 @@ public class Constants {
 			DEFAULT_SETTINGS_FILE = url;
 		}
 	}
+
+	/**
+	 * All view components will have their size modified by this factor. This
+	 * automatically affects standard zoom and drag & drop size.
+	 */
+	public static final double DEFAULT_SIZE_FACTOR = 0.64;
 }
