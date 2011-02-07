@@ -2,4 +2,4 @@ Changes between 0.37 and 0.38
 
 add> --read-bin
 add> --write-bin
-rem> --write-fast-pbf
+rem> --fast-write-pgsql

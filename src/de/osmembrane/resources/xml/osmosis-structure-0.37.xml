@@ -120,14 +120,6 @@
 				<description lang="de"><value>Der Name der zu lesenden Datei.</value></description><description lang="en"><value>The name of the file to be read.</value></description></parameter>
 			<description lang="de"><value>Liest den aktuellen Inhalt von einer OSM-Binärdatei.</value></description><description lang="en"><value>Reads the current contents of an OSM binary file.</value></description></task>
 
-			<task name="read-bin" shortName="rb">
-				
-				<outputPipe index="0" count="single" type="entity" />
-				<parameter name="file" defaultParameter="true" defaultValue="dump.osmbin" type="filename">
-					
-				<description lang="de"><value>Der Name der zu lesenden Datei.</value></description><description lang="en"><value>The name of the file to be read.</value></description></parameter>
-			<description lang="de"><value>Liest den aktuellen Inhalt von einer OSM-Binärdatei.</value></description><description lang="en"><value>Reads the current contents of an OSM binary file.</value></description></task>
-
 			<task name="read-api" shortName="ra">
 				
 				<outputPipe index="0" count="single" type="entity" />
@@ -314,32 +306,6 @@
 				<description lang="de"><value>'deflate' benutzt Deflate-Komprimierung auf jedem Block. 'none' deaktiviert Komprimierung. Diese Dateien sind etwa doppelt so schnell zu beschreiben und doppelt so groß.</value></description><description lang="en"><value>'deflate' uses deflate compression on each block. 'none' disables compression. These files are about twice as fast to write and twice the size.</value></description></parameter>
 			<description lang="de"><value>Schreibt Daten in eine OSM-Binary-Datei.</value></description><description lang="en"><value>Writes data to an OSM binary file.</value></description></task>
 
-			<task name="write-bin" shortName="wb">
-				
-				<inputPipe index="0" count="single" type="entity" />
-				<parameter name="file" defaultParameter="true" defaultValue="dump.osmbin" type="filename">
-					
-				<description lang="de"><value>Der Name der Datei, die geschrieben werden soll.</value></description><description lang="en"><value>The name of the file to be written.</value></description></parameter>
-				<parameter name="batchlimit" required="false" type="int" defaultValue="8000" defaultParameter="false">
-					
-				<description lang="de"><value>Blockgröße, die bei der Kompression genutzt werden soll. Dies ist ein vernünftiger Standard. Batch-Limits, die zu groß sind, können dazu führen, dass Dateien die definierten Dateigrößen-Grenzen überschreiten.</value></description><description lang="en"><value>Block size used when compressing. This is a reasonable default. Batchlimits that are too big may cause files to exceed the defined filesize limits.</value></description></parameter>
-				<parameter name="omitmetadata" type="boolean" booleanEncoding="truefalse" defaultParameter="false" defaultValue="false">
-					
-				<description lang="de"><value>Nicht-geografische Metadaten in OSM-Entitys auslassen. Dies beinhaltet Versionsnummer und Timestamp der letzten Bearbeitung des Entitys sowie den Usernamen und die ID des letzten Änderers. Diese Metadaten auszulassen kann 15% der Dateigröße sparen, wenn zu Software exportiert wird, die diese Daten nicht benötigt.</value></description><description lang="en"><value>Omit non-geographic metadata on OSM entities. This includes version number and timestamp of the last edit to the entity as well as the user name and id of the last modifier. Omitting this metadata can save 15% of the file size when exporting to software that does not need this data.</value></description></parameter>
-				<parameter name="usedense" type="boolean" booleanEncoding="truefalse" defaultParameter="false" defaultValue="true">
-					
-				<description lang="de"><value>Nodes können in einem normalen oder einem dichten Format repräsentiert werden. Das dichte Format ist etwa 30% kleiner, aber komplexer. Um es einfacher zu machen, mit (zukünftiger) Software zusammenzuarbeiten, die nicht das dichte Format implementiert, kann das dichte Format deaktiviert werden.</value></description><description lang="en"><value>Nodes can be represented in a regular format or a dense format. The dense format is about 30% smaller, but more complex. To make it easier to interoperate with (future) software that chooses to not implement the dense format, the dense format may be disabled.</value></description></parameter>
-				<parameter name="granularity" type="int" defaultParameter="false" defaultValue="100">
-					
-				<description lang="de"><value>Die Granularität oder Präzision mit der Koordinaten gespeichert werden. Der Standardwert von 100 Nanograd ist die höchste Genauigkeit, die von OSM genutzt wird, entsprechend etwa 1.1cm am Äquator. In der aktuellen Osmosis-Implementierung muss die Granularität ein Vielfaches von 100 sein. Wenn Kartendaten für Software exportiert werden, die nicht die volle Genauigkeit benötigt, kann das Erhöhen der Granularität auf 10000 Nanograd ungefähr 10% Dateigröße sparen, während die Genauigkeit bei etwa 1.1m bleibt.</value></description><description lang="en"><value>The granularity or precision used to store coordinates. The default of 100 nanodegrees is the highest precision used by OSM, corresponding to about 1.1cm at the equator. In the current osmosis implementation, the granularity must be a multiple of 100. If map data is going to be exported to software that does not need the full precision, increasing the granularity to 10000 nanodegrees can save about 10% of the file size, while still having 1.1m precision.</value></description></parameter>
-				<parameter name="compress" type="enum" defaultParameter="false" defaultValue="deflate">
-					
-					<enumValue value="deflate" />
-					<enumValue value="none" />
-				<description lang="de"><value>'deflate' benutzt Deflate-Komprimierung auf jedem Block. 'none' deaktiviert Komprimierung. Diese Dateien sind etwa doppelt so schnell zu beschreiben und doppelt so groß.</value></description><description lang="en"><value>'deflate' uses deflate compression on each block. 'none' disables compression. These files are about twice as fast to write and twice the size.</value></description></parameter>
-			<description lang="de"><value>Schreibt Daten in eine OSM-Binary-Datei.</value></description><description lang="en"><value>Writes data to an OSM binary file.</value></description></task>
-
-
 			<task name="write-pgsql" shortName="wp">
 				
 				<inputPipe count="single" index="0" type="entity" />
@@ -377,6 +343,44 @@
 					<enumValue value="CompactTempFile" />
 				<description lang="de"><value>Diese Option greift nur, wenn wenigstens eine der enableBboxBuilder- und enableLinestringBuilder-Optionen aktiviert wurden. Beide Geometry-Builder-Implementierungen benötigen Kenntnis von alle Node-Locations. Diese Option beschreibt, wie diese Nodes temporär gespeichert werden. Wenn große Mengen an Speicher verfügbar sind (min. 6 GB RAM, eine 64-bit JVM und wenigstens 4GB JVM RAM mit der -Xmx-Option angegeben), kann die "InMemory"-Option genutzt werden. Ansonsten muss gewählt werden zwischen der "TempFile"-Option, welche weitaus langsamer, aber immer noch schneller ist als sich auf die Standard-Datenbank-Geometry-Builder-Implementierung zu verlassen, oder die "CompactTempFile"-Option, welche effizienter für kleinere Datensätze ist.</value></description><description lang="en"><value>This option only takes effect if at least one of the enableBboxBuilder and enableLinestringBuilder options are enabled. Both geometry builder implementations require knowledge of all node locations. This option specifies how those nodes are temporarily stored. If you have large amounts of memory (at least 6GB of system memory, a 64-bit JVM and at least 4GB of JVM RAM specified with the -Xmx option) you may use the "InMemory" option. Otherwise you must choose between the "TempFile" option which is much slower but still faster than relying on the default database geometry building implementation, or the "CompactTempFile" option which is more efficient for smaller datasets.</value></description></parameter>
 			<description lang="de"><value>Befüllt eine leere PostGIS-Datenbank mit einem "einfachen" Schema. Ein Schema-Erzeugungsskript ist verfügbar im Osmosis-Skript-Verzeichnis.</value></description><description lang="en"><value>Populates an empty PostGIS database with a "simple" schema. A schema creation script is available in the osmosis script directory.</value></description></task>
+
+			<task name="fast-write-pgsql" shortName="fwp">
+				
+				<inputPipe count="single" index="0" type="entity" />
+				<parameter name="authFile" defaultParameter="false" required="false" type="filename">
+					
+				<description lang="de"><value>Der Name der Datei, die die Datenbank-Login-Daten enthält.</value></description><description lang="en"><value>The name of the file containing database login credentials.</value></description></parameter>
+				<parameter name="host" defaultParameter="false" required="false" defaultValue="localhost" type="string">
+					
+				<description lang="de"><value>Der Datenbank-Host-Server.</value></description><description lang="en"><value>The database host server.</value></description></parameter>
+				<parameter name="database" defaultParameter="false" required="false" defaultValue="osm" type="string">
+					
+				<description lang="de"><value>Die Datenbank-Instanz.</value></description><description lang="en"><value>The database instance.</value></description></parameter>
+				<parameter name="user" defaultParameter="false" required="false" defaultValue="osm" type="string">
+					
+				<description lang="de"><value>Der Datenbank-Username.</value></description><description lang="en"><value>The database user name.</value></description></parameter>
+				<parameter name="password" defaultParameter="false" required="false" type="string">
+					
+				<description lang="de"><value>Das Datenbank-Passwort.</value></description><description lang="en"><value>The database password.</value></description></parameter>
+				<parameter name="validateSchemaVersion" defaultParameter="false" required="false" defaultValue="true" type="boolean" booleanEncoding="yesno">
+					
+				<description lang="de"><value>Wenn ja angegeben wird, wird der Task die aktuelle Schema-Version validieren, bevor er auf die Datenbank zugreift.</value></description><description lang="en"><value>If yes is specified, the task will validate the current schema version before accessing the database.</value></description></parameter>
+				<parameter name="allowIncorrectSchemaVersion" defaultParameter="false" required="false" defaultValue="true" type="boolean" booleanEncoding="yesno">
+					
+				<description lang="de"><value>Wenn validateSchemaVersion auf ja gesetzt ist, wird diese Option das Ergebnis eines Fehlschlagens des Schema-Version-Checks kontrollieren. Wenn diese Option auf ja gesetzt ist, wird eine Warnung ausgegeben und die Ausführung fortgesetzt. Wenn diese Option auf nein gesetzt ist, wird ein Fehler angezeigt und das Programm bricht ab.</value></description><description lang="en"><value>If validateSchemaVersion is yes, this option controls the result of a schema version check failure. If this option is yes, a warning is displayed and execution continues. If this option is no, an error is displayed and the program aborts.</value></description></parameter>
+				<parameter name="enableBboxBuilder" defaultParameter="false" required="false" defaultValue="false" type="boolean" booleanEncoding="yesno">
+					
+				<description lang="de"><value>Wenn ja angegeben wird, wird der Task die BBox-Geometrie-Spalte mit einer Java-basierten Lösung statt einem Post-Import-Query aufbauen. Diese Option zu benutzen bringt signifikante Performanceverbesserungen im Vergleich zum Standard-Query-Vorgehen. Beachte, dass der Task fehlschlagen wird, wenn die Option aktiviert ist und die BBox-Spalte nicht existiert.</value></description><description lang="en"><value>If yes is specified, the task will build the bbox geometry column using a java-based solution instead of running a post-import query. Using this option provides significant performance improvements compared to the default query approach. Note that the task will fail if this option is enabled and the bbox column doesn't exist.</value></description></parameter>
+				<parameter name="enableLinestringBuilder" defaultParameter="false" required="false" defaultValue="false" type="boolean" booleanEncoding="yesno">
+					
+				<description lang="de"><value>Wie die enableBBoxBuilder-Option, nur für die Linestring-Geometry-Spalte.</value></description><description lang="en"><value>As per the enableBboxBuilder option but for the linestring geometry column.</value></description></parameter>
+				<parameter name="nodeLocationStoreType" defaultParameter="false" required="false" defaultValue="CompactTempFile" type="enum">
+					
+					<enumValue value="InMemory" />
+					<enumValue value="TempFile" />
+					<enumValue value="CompactTempFile" />
+				<description lang="de"><value>Diese Option greift nur, wenn wenigstens eine der enableBboxBuilder- und enableLinestringBuilder-Optionen aktiviert wurden. Beide Geometry-Builder-Implementierungen benötigen Kenntnis von alle Node-Locations. Diese Option beschreibt, wie diese Nodes temporär gespeichert werden. Wenn große Mengen an Speicher verfügbar sind (min. 6 GB RAM, eine 64-bit JVM und wenigstens 4GB JVM RAM mit der -Xmx-Option angegeben), kann die "InMemory"-Option genutzt werden. Ansonsten muss gewählt werden zwischen der "TempFile"-Option, welche weitaus langsamer, aber immer noch schneller ist als sich auf die Standard-Datenbank-Geometry-Builder-Implementierung zu verlassen, oder die "CompactTempFile"-Option, welche effizienter für kleinere Datensätze ist.</value></description><description lang="en"><value>This option only takes effect if at least one of the enableBboxBuilder and enableLinestringBuilder options are enabled. Both geometry builder implementations require knowledge of all node locations. This option specifies how those nodes are temporarily stored. If you have large amounts of memory (at least 6GB of system memory, a 64-bit JVM and at least 4GB of JVM RAM specified with the -Xmx option) you may use the "InMemory" option. Otherwise you must choose between the "TempFile" option which is much slower but still faster than relying on the default database geometry building implementation, or the "CompactTempFile" option which is more efficient for smaller datasets.</value></description></parameter>
+			<description lang="de"><value>Befüllt eine leere PostGIS-Datenbank mit einem "einfachen" Schema. Dies bewirkt dasselbe Ergebnis wie der Standard --write-pgsql-Task, aber benutzt den neueren COPY-Support, der in den Java-PostgreSQL-JDBC-Treibern für Geschwindigkeitsverbesserungen hinzugefügt wurde.</value></description><description lang="en"><value>Populates an empty PostGIS database with a "simple" schema. This achieves the same result as the standard --write-pgsql task but uses the recent COPY support added to Java PostgreSQL JDBC drivers to improve import speed.</value></description></task>
 
 			<task name="write-pgsql-dump" shortName="wpd">
 				
