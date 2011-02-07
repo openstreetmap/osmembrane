@@ -11,6 +11,7 @@
  * Last changed: $Date$
  */
 
+
 package de.osmembrane.model.statusbar;
 
 import java.util.Observable;

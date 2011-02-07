@@ -11,6 +11,7 @@
  * Last changed: $Date$
  */
 
+
 package de.osmembrane.view.interfaces;
 
 import de.osmembrane.view.dialogs.BoundingBoxDialog;

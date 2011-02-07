@@ -11,6 +11,7 @@
  * Last changed: $Date$
  */
 
+
 package de.osmembrane.controller.events;
 
 import java.awt.geom.Point2D;

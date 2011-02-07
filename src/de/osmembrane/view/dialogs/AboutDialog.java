@@ -11,6 +11,7 @@
  * Last changed: $Date$
  */
 
+
 package de.osmembrane.view.dialogs;
 
 import java.awt.BorderLayout;

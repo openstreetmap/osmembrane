@@ -11,6 +11,7 @@
  * Last changed: $Date$
  */
 
+
 package de.osmembrane.model.settings;
 
 import de.osmembrane.model.pipeline.AbstractFunction;

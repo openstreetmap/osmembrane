@@ -11,6 +11,7 @@
  * Last changed: $Date$
  */
 
+
 package de.osmembrane.view.interfaces;
 
 import java.util.Locale;

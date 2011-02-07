@@ -11,6 +11,7 @@
  * Last changed: $Date$
  */
 
+
 package de.osmembrane.view.frames;
 
 import java.awt.GridLayout;
