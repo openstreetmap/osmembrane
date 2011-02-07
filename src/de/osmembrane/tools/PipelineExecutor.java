@@ -67,6 +67,10 @@ public class PipelineExecutor extends Thread implements WindowListener {
 				.getString("View.Cancel"));
 	}
 
+	/**
+	 * Sets a call back action which is called after completing of the execution.
+	 * @param event
+	 */
 	public void setCallbackAction(Class<? extends Action> event) {
 		this.callbackEvent = event;
 	}

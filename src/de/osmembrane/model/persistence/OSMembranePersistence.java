@@ -24,7 +24,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;

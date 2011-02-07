@@ -60,6 +60,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "XMLTask", propOrder = { "inputPipe", "outputPipe", "parameter" })
+@SuppressWarnings(value = "all")
 public class XMLTask extends XMLHasDescription {
 
 	protected List<XMLPipe> inputPipe;

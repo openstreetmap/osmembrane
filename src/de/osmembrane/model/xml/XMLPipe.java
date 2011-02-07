@@ -69,6 +69,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "XMLPipe")
+@SuppressWarnings(value = "all")
 public class XMLPipe extends XMLHasDescription {
 
 	@XmlAttribute(required = true)

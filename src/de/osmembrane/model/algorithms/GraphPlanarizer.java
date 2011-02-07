@@ -23,6 +23,11 @@ import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Constants;
 
+/**
+ * The graph planarizer tries to optimize the given graph.
+ * 
+ * @author jakob_jarosch
+ */
 public class GraphPlanarizer {
 
 	private List<AbstractFunction> functions;
@@ -31,10 +36,18 @@ public class GraphPlanarizer {
 	private double X_OFFSET;
 	private double Y_OFFSET;
 
+	/**
+	 * Creates an new planarizer.
+	 * 
+	 * @param functions which should be planarized
+	 */
 	public GraphPlanarizer(List<AbstractFunction> functions) {
 		this.functions = functions;
 	}
 
+	/**
+	 * Execute the planarization.
+	 */
 	public void planarize() {
 		/* Reset all function to their zero-position */
 		resetAllFunctions();
@@ -56,6 +69,9 @@ public class GraphPlanarizer {
 		}
 	}
 
+	/**
+	 * Resets all functions to the (0.0, 0.0) coordinate.
+	 */
 	private void resetAllFunctions() {
 		for (AbstractFunction function : functions) {
 			function.getCoordinate().setLocation(0.0, 0.0);
@@ -65,7 +81,7 @@ public class GraphPlanarizer {
 	/**
 	 * Returns all functions with no connections at their inConnectors.
 	 * 
-	 * @return all functions with no connections at their inConnectors.
+	 * @return all functions with no connections at their inConnectors
 	 */
 	private List<AbstractFunction> getPrimaryFunctions() {
 		List<AbstractFunction> primaryFunctions = new ArrayList<AbstractFunction>();
@@ -112,6 +128,9 @@ public class GraphPlanarizer {
 		return yOffsetFactor;
 	}
 
+	/**
+	 * Calculates the grid size.
+	 */
 	private void calculateGridSize() {
 		pipelineRasterSize = Math.max(1.0,
 				new Double((Integer) ModelProxy.getInstance().getSettings()

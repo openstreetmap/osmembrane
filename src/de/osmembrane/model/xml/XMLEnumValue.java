@@ -52,6 +52,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "XMLEnumValue")
+@SuppressWarnings(value = "all")
 public class XMLEnumValue extends XMLHasDescription {
 
 	@XmlAttribute(required = true)

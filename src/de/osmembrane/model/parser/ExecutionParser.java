@@ -25,6 +25,9 @@ public class ExecutionParser extends CommandlineParser {
 	protected String BREAKLINE_COMMAND = "";
 	protected String QUOTATION_SYMBOL = "'";
 
+	/**
+	 * Creates a new {@link ExecutionParser}.
+	 */
 	public ExecutionParser() {
 		super.setBreaklineSymbol(BREAKLINE_SYMBOL);
 		super.setBreaklineCommand(BREAKLINE_COMMAND);

@@ -55,6 +55,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "functionGroup" })
 @XmlRootElement(name = "XMLOsmosisStructure")
+@SuppressWarnings(value = "all")
 public class XMLOsmosisStructure {
 
 	protected List<XMLFunctionGroup> functionGroup;

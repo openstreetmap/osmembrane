@@ -56,6 +56,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "XMLFunctionGroup", propOrder = { "function" })
+@SuppressWarnings(value = "all")
 public class XMLFunctionGroup extends XMLHasDescription {
 
 	protected List<XMLFunction> function;

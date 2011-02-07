@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.parser;
 
 import de.osmembrane.tools.I18N;
@@ -70,11 +69,9 @@ public class ParseException extends Exception {
 	 * 
 	 * @param type
 	 *            corresponding type for the {@link ParseException}
+	 * @param messageValues
+	 *            messages which are used by the exception message
 	 */
-	public ParseException(ErrorType type) {
-		this(type, null);
-	}
-
 	public ParseException(ErrorType type, Object... messageValues) {
 		this.type = type;
 		this.messageValues = messageValues;

@@ -56,6 +56,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "XMLFunction", propOrder = { "task" })
+@SuppressWarnings(value = "all")
 public class XMLFunction extends XMLHasDescription {
 
 	protected List<XMLTask> task;

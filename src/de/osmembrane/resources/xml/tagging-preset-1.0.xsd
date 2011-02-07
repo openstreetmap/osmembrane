@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://josm.openstreetmap.de/tagging-preset-1.0"
-	xmlns:tns="http://josm.openstreetmap.de/tagging-preset-1.0" elementFormDefault="qualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://josm.openstreetmap.de/tagging-preset-1.0"
+	    xmlns:tns="http://josm.openstreetmap.de/tagging-preset-1.0"
+	    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	    elementFormDefault="qualified">
 
 	<!--
 		Localized attributes (for example de.description are not supported by

@@ -11,17 +11,36 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.statusbar;
 
+import java.util.Observer;
+
+import de.osmembrane.model.settings.AbstractSettings;
+
+/**
+ * The {@link StatusbarObserverObject} is used by the {@link AbstractSettings}
+ * and informs all registered {@link Observer}s with this object.
+ * 
+ * @author jakob_jarosch
+ */
 public class StatusbarObserverObject {
 
 	private StatusbarEntry entry;
 
+	/**
+	 * Creates a new {@link StatusbarObserverObject}.
+	 * 
+	 * @param entry which has been changed.
+	 */
 	public StatusbarObserverObject(StatusbarEntry entry) {
 		this.entry = entry;
 	}
 
+	/**
+	 * Returns the changed entry.
+	 * 
+	 * @return changed entry
+	 */
 	public StatusbarEntry getEntry() {
 		return entry;
 	}

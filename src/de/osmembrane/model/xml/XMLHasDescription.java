@@ -71,6 +71,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "XMLHasDescription", propOrder = { "description" })
+@SuppressWarnings(value = "all")
 @XmlSeeAlso({ XMLParameter.class, XMLTask.class, XMLPipe.class,
 		XMLFunctionGroup.class, XMLFunction.class, XMLEnumValue.class })
 public abstract class XMLHasDescription {

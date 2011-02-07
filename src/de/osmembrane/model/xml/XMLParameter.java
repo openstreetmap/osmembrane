@@ -84,6 +84,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "XMLParameter", propOrder = { "enumValue" })
+@SuppressWarnings(value = "all")
 public class XMLParameter extends XMLHasDescription {
 
 	protected List<XMLEnumValue> enumValue;

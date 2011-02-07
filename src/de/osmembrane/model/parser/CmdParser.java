@@ -24,6 +24,9 @@ public class CmdParser extends CommandlineParser {
 	protected String BREAKLINE_SYMBOL = "^";
 	protected String BREAKLINE_COMMAND = "\r\n";
 
+	/**
+	 * Creates a new {@link CmdParser}.
+	 */
 	public CmdParser() {
 		super.setBreaklineSymbol(BREAKLINE_SYMBOL);
 		super.setBreaklineCommand(BREAKLINE_COMMAND);
