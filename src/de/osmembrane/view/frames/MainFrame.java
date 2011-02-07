@@ -39,6 +39,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.ArrangePipelineAction;
@@ -405,7 +406,10 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 	@Override
 	public boolean isDragAndDropTarget(Point at) {
-		return pipelineView.getLayeredPane().equals(findComponentAt(at));
+		Point pipelinePoint = SwingUtilities.convertPoint(this, at,
+				pipelineView);
+		return pipelineView.getLayeredPane().equals(findComponentAt(at))
+				&& !pipelineView.wouldCollide(pipelinePoint);
 	}
 
 	@Override

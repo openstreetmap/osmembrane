@@ -320,6 +320,8 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 						// require a minimum distance to drag & drop
 						if (newObjPosition.distance(pf.getModelLocation()) < PipelineFunction.PIPELINE_FUNCTION_MIN_DRAG_DISTANCE) {
 							pf.setLocation(objToWindow(pf.getModelLocation()));
+							pf.arrangeConnectors();
+							pf.arrangeLinks();
 							// return, so we don't create an undo step
 							return;
 						}
@@ -471,31 +473,26 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		// if you can't read the Math below properly,
 		// some idiot used Eclipse/Java auto code formatter
 		/*
-		 * o2w.scale * to + o2w.translate = 0 
-		 * <=> o2w.translate = - o2w.scale * to
+		 * o2w.scale * to + o2w.translate = 0 <=> o2w.translate = - o2w.scale *
+		 * to
 		 */
 		double translateToX = -objectToWindow.getScaleX() * to;
 
 		/*
-		 * o2w * M = o2w_new, 
-		 *   where o2w is of the form scale(x,y) and translate(s,t)
-		 *   and M is a translation matrix from translate(u,v)
-		 *   and o2w_new.translate is of the form scale(x,y) and translateTo(translateToX,t)
-		 * <=> 
-		 *   u * x + s = translateToX
-		 *   v * y + t = t
-		 * <=>
-		 *   u = (translateToX - s) / x
-		 *   v = 0
+		 * o2w * M = o2w_new, where o2w is of the form scale(x,y) and
+		 * translate(s,t) and M is a translation matrix from translate(u,v) and
+		 * o2w_new.translate is of the form scale(x,y) and
+		 * translateTo(translateToX,t) <=> u * x + s = translateToX v * y + t =
+		 * t <=> u = (translateToX - s) / x v = 0
 		 */
 		objectToWindow.translate(
 				(translateToX - objectToWindow.getTranslateX())
 						/ (objectToWindow.getScaleX()), 0.0);
 	}
-	
+
 	/**
-	 * Moves objectToWindow in a way, so that the top screen (window y = 0)
-	 * will result in the object coordinate to.
+	 * Moves objectToWindow in a way, so that the top screen (window y = 0) will
+	 * result in the object coordinate to.
 	 * 
 	 * @param to
 	 *            the object position to move the top window edge to
@@ -504,22 +501,17 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		// if you can't read the Math below properly,
 		// some idiot used Eclipse/Java auto code formatter
 		/*
-		 * o2w.scale * to + o2w.translate = 0 
-		 * <=> o2w.translate = - o2w.scale * to
+		 * o2w.scale * to + o2w.translate = 0 <=> o2w.translate = - o2w.scale *
+		 * to
 		 */
 		double translateToY = -objectToWindow.getScaleY() * to;
 
 		/*
-		 * o2w * M = o2w_new, 
-		 *   where o2w is of the form scale(x,y) and translate(s,t)
-		 *   and M is a translation matrix from translate(u,v)
-		 *   and o2w_new.translate is of the form scale(x,y) and translateTo(s,translateToY)
-		 * <=> 
-		 *   u * x + s = s
-		 *   v * y + t = translateToY
-		 * <=>
-		 *   u = 0
-		 *   v = (translateToY - t) / y
+		 * o2w * M = o2w_new, where o2w is of the form scale(x,y) and
+		 * translate(s,t) and M is a translation matrix from translate(u,v) and
+		 * o2w_new.translate is of the form scale(x,y) and
+		 * translateTo(s,translateToY) <=> u * x + s = s v * y + t =
+		 * translateToY <=> u = 0 v = (translateToY - t) / y
 		 */
 		objectToWindow.translate(0.0,
 				(translateToY - objectToWindow.getTranslateY())
@@ -1139,6 +1131,56 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 */
 	public JLayeredPane getLayeredPane() {
 		return layeredPane;
+	}
+
+	/**
+	 * Finds out whether you can safely place a function here without occluding
+	 * another one.
+	 * 
+	 * @param newPoint
+	 *            {@link Point} where the new Function would be situated
+	 * @return true, if the new function would collide with an existing one,
+	 *         false otherwise.
+	 */
+	public boolean wouldCollide(Point newPoint) {
+
+		for (PipelineFunction pf : functions) {
+			// top left
+			if ((newPoint.x >= pf.getX()) && (newPoint.y >= pf.getY())
+					&& (newPoint.x <= pf.getX() + pf.getWidth())
+					&& (newPoint.y <= pf.getY() + pf.getHeight())) {
+				return true;
+			}
+
+			// top right
+			Point newPointR = new Point(newPoint);
+			newPointR.translate(0, pf.getWidth());
+			if ((newPointR.x >= pf.getX()) && (newPointR.y >= pf.getY())
+					&& (newPointR.x <= pf.getX() + pf.getWidth())
+					&& (newPointR.y <= pf.getY() + pf.getHeight())) {
+				return true;
+			}
+
+			// bottom left
+			Point newPointB = new Point(newPoint);
+			newPointB.translate(pf.getHeight(), 0);
+			if ((newPointB.x >= pf.getX()) && (newPointB.y >= pf.getY())
+					&& (newPointB.x <= pf.getX() + pf.getWidth())
+					&& (newPointB.y <= pf.getY() + pf.getHeight())) {
+				return true;
+			}
+
+			// bottom right
+			Point newPointBR = new Point(newPoint);
+			newPointBR.translate(pf.getHeight(), pf.getWidth());
+			if ((newPointBR.x >= pf.getX()) && (newPointBR.y >= pf.getY())
+					&& (newPointBR.x <= pf.getX() + pf.getWidth())
+					&& (newPointBR.y <= pf.getY() + pf.getHeight())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
