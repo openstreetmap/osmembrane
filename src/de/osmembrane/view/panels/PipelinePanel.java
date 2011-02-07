@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.view.panels;
 
 import java.awt.Cursor;
@@ -335,14 +334,14 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 						a.actionPerformed(cle);
 					}
 				}
-				
+
 				// connection tool and magic
 				switch (activeTool) {
 				case DEFAULT_MAGIC_TOOL:
 				case SELECTION_TOOL:
 					abortConnect();
 				}
-				
+
 				draggingFrom = null;
 			}
 
@@ -1135,11 +1134,11 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 			this.connectionStart = null;
 		}
 	}
-	
+
 	/**
 	 * Aborts a current try to connect two functions.
 	 */
-	public void abortConnect() {		
+	public void abortConnect() {
 		this.connectionStart = null;
 		this.connectionPreview.setVisible(false);
 	}
@@ -1163,37 +1162,10 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	public boolean wouldCollide(Point newPoint) {
 
 		for (PipelineFunction pf : functions) {
-			// top left
-			if ((newPoint.x >= pf.getX()) && (newPoint.y >= pf.getY())
+			if ((newPoint.x >= pf.getX() - pf.getWidth())
+					&& (newPoint.y >= pf.getY() - pf.getHeight())
 					&& (newPoint.x <= pf.getX() + pf.getWidth())
 					&& (newPoint.y <= pf.getY() + pf.getHeight())) {
-				return true;
-			}
-
-			// top right
-			Point newPointR = new Point(newPoint);
-			newPointR.translate(0, pf.getWidth());
-			if ((newPointR.x >= pf.getX()) && (newPointR.y >= pf.getY())
-					&& (newPointR.x <= pf.getX() + pf.getWidth())
-					&& (newPointR.y <= pf.getY() + pf.getHeight())) {
-				return true;
-			}
-
-			// bottom left
-			Point newPointB = new Point(newPoint);
-			newPointB.translate(pf.getHeight(), 0);
-			if ((newPointB.x >= pf.getX()) && (newPointB.y >= pf.getY())
-					&& (newPointB.x <= pf.getX() + pf.getWidth())
-					&& (newPointB.y <= pf.getY() + pf.getHeight())) {
-				return true;
-			}
-
-			// bottom right
-			Point newPointBR = new Point(newPoint);
-			newPointBR.translate(pf.getHeight(), pf.getWidth());
-			if ((newPointBR.x >= pf.getX()) && (newPointBR.y >= pf.getY())
-					&& (newPointBR.x <= pf.getX() + pf.getWidth())
-					&& (newPointBR.y <= pf.getY() + pf.getHeight())) {
 				return true;
 			}
 		}

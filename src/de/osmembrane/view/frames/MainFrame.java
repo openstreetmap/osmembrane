@@ -407,7 +407,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 	@Override
 	public boolean isDragAndDropTarget(Point at) {
-		Point pipelinePoint = SwingUtilities.convertPoint(this, at,
+		Point pipelinePoint = SwingUtilities.convertPoint(this.getGlassPane(), at,
 				pipelineView);
 		return pipelineView.getLayeredPane().equals(findComponentAt(at))
 				&& !pipelineView.wouldCollide(pipelinePoint);

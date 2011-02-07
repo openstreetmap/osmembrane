@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.view.panels;
 
 import java.awt.Color;
@@ -184,19 +183,17 @@ public class LibraryFunction extends DisplayTemplatePanel {
 						// subtract the offset where it got clicked
 						e.translatePoint(-dragOffset.x, -dragOffset.y);
 
-						// convert the mouse event into the mainFrame and
+						// convert the mouse locations into the mainFrame and
 						// pipeline panel components
-						MouseEvent mainFrameEvent = SwingUtilities
-								.convertMouseEvent(LibraryFunction.this, e,
-										mainFrame.getMainGlassPane());
-						MouseEvent pipelineEvent = SwingUtilities
-								.convertMouseEvent(LibraryFunction.this, e,
-										pipeline);
+						Point mainFramePoint = SwingUtilities.convertPoint(
+								LibraryFunction.this, e.getPoint(),
+								mainFrame.getMainGlassPane());
+						Point pipelinePoint = SwingUtilities.convertPoint(
+								LibraryFunction.this, e.getPoint(), pipeline);
 
-						if (mainFrame.isDragAndDropTarget(mainFrameEvent
-								.getPoint())) {
+						if (mainFrame.isDragAndDropTarget(mainFramePoint)) {
 							pipeline.draggedOnto(LibraryFunction.this,
-									pipelineEvent.getPoint());
+									pipelinePoint);
 						} else {
 							Application
 									.handleException(new ControlledException(
