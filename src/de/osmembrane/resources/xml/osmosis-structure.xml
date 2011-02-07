@@ -973,15 +973,16 @@
 		<description lang="de"><value>Initialisiert ein Arbeitsverzeichnis, sodass es die Dateien enthält, die notwendig für den --read-change-interval-Task sind.</value></description><description lang="en"><value>Initialises a working directory to contain files necessary for use by the --read-change-interval task.</value></description></function>
 
 		<function id="read-replication-interval" friendlyName="Read replication-interval">
-			<task name="read-change-interval-init" shortName="rcii">
-				
-				<parameter name="workingDirectory" type="directory" defaultParameter="true">
-					
-				<description lang="de"><value>Das Verzeichnis, in dem Zustands- und Konfigurationsdateien angelegt werden sollen.</value></description><description lang="en"><value>The directory to populate with state and config files.</value></description></parameter>
-				<parameter name="initialDate" type="instant">
-					
-				<description lang="de"><value>Der Timestamp, von dem aus die Replication begonnen werden soll. Nur Change-Sets, die Daten nach diesem Timestamp enthalten, werden heruntergeladen. Beachte, dass dieser Task nicht wie die meisten Datumswerte akzeptiert, sondern ein UTC-Datum erfordert.</value></description><description lang="en"><value>The timestamp to begin replication from. Only changesets containing data after this timestamp will be downloaded. Note that unlike most tasks accepting dates, this date is specified in UTC.</value></description></parameter>
-			<description lang="de"><value>Initialisiert ein Arbeitsverzeichnis, sodass es die Dateien enthält, die notwendig für den --read-change-interval-Task sind. Dieser Task muss einmal verarbeitet werden, um die Verzeichnisstruktur anzulegen; in den erzeugten Konfigurationsdateien müssen manuell die erforderlichen Einstellungen bearbeitet werden.</value></description><description lang="en"><value>Initialises a working directory to contain files necessary for use by the --read-change-interval task. This task must be run once to create the directory structure and the configuration file manually edited to contain the required settings.</value></description></task>
+<task name="read-replication-interval" shortName="rri">
+<outputPipe count="single" index="0" type="change" />
+
+      <description lang="en"><value>Retrieves a set of replication files from a server, combines them into a single stream, sorts the result, and tracks the current timestamp. Available since osmosis 0.32. The changes produced by this task are typically full-history changes.</value></description><description lang="de"><value>Lädt eine Menge von Replication-Files von einem Server herunter, vereinigt diese in einen einzigen Stream, sortiert das Resultat, und verfolgt den aktuellen Timestamp. Verfügbar seit Osmosis 0.32. Die Changes, die von diesem Task erzeugt werden, sind typischerweise Full-History-Changes.</value></description>
+	  
+      
+      <parameter name="workingDirectory" type="directory" defaultParameter="true">
+        <description lang="en"><value>The directory containing the state and config files.</value></description><description lang="de"><value>Das Verzeichnis, das die Zustands- und Konfigurationsdateien enthält.</value></description>
+      </parameter>
+</task>
 		<description lang="de"><value>Initialisiert ein Arbeitsverzeichnis, sodass es die Dateien enthält, die notwendig für den --read-change-interval-Task sind.</value></description><description lang="en"><value>Initialises a working directory to contain files necessary for use by the --read-change-interval task.</value></description></function>
 
 		<function id="read-replication-interval-init" friendlyName="Read replication-interval-init">
