@@ -11,12 +11,12 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -81,44 +81,50 @@ public class ExportPipelineAction extends AbstractAction {
 
 			/* Check if the file does not already exists. */
 			if (fileChooser.getSelectedFile().isFile()) {
-				if(JOptionPane
-						.showConfirmDialog(
-								null,
-								I18N.getInstance().getString(
-										"Controller.Actions.File.Override"),
-								I18N.getInstance().getString("Controller.Actions.File.Override.Title"),
-								JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
+				if (JOptionPane.showConfirmDialog(
+						null,
+						I18N.getInstance().getString(
+								"Controller.Actions.File.Override"),
+						I18N.getInstance().getString(
+								"Controller.Actions.File.Override.Title"),
+						JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
 					return;
 				}
 			}
-			
+
 			/* parse the file to an URL */
-			URL file;
-			try {
-				file = fileChooser.getSelectedFile().toURI().toURL();
-			} catch (MalformedURLException e2) {
-				file = null;
-			}
 
 			try {
+				URL file = fileChooser.getSelectedFile().toURI().toURL();
 				FileType type = FileType.fileTypeFor(fileChooser
 						.getSelectedFile());
 
 				if (type == null) {
-					JOptionPane
-							.showMessageDialog(
-									null,
-									I18N.getInstance()
-											.getString(
-													"Controller.Actions.ExportPipeline.NoValidFileExtension"),
-									I18N.getInstance()
-											.getString(
-													"Controller.Actions.ExportPipeline.NoValidFileExtension.Title"),
-									JOptionPane.WARNING_MESSAGE);
-				} else {
-					ModelProxy.getInstance().getPipeline()
-							.exportPipeline(file, type);
+					/*
+					 * could not find out what type the file has, add the system
+					 * dependent extension.
+					 */
+					String fileWithExplicitExtensionString = fileChooser
+							.getSelectedFile().getAbsolutePath();
+
+					/* check if it is windows */
+					if (System.getProperty("os.name").toLowerCase()
+							.contains("win")) {
+						fileWithExplicitExtensionString += FileType.CMD
+								.getExtension();
+						type = FileType.CMD;
+					} else {
+						/* should be a unix based os, use bash */
+						fileWithExplicitExtensionString += FileType.BASH
+								.getExtension();
+						type = FileType.BASH;
+					}
+
+					file = new File(fileWithExplicitExtensionString).toURI()
+							.toURL();
 				}
+				ModelProxy.getInstance().getPipeline()
+						.exportPipeline(file, type);
 			} catch (FileException e1) {
 				String message = I18N.getInstance().getString(
 						"Controller.Actions.Save.Failed." + e1.getType(),
@@ -126,6 +132,7 @@ public class ExportPipelineAction extends AbstractAction {
 
 				Application.handleException(new ControlledException(this,
 						ExceptionSeverity.WARNING, e1, message));
+			} catch (MalformedURLException e2) {
 			}
 		}
 	}

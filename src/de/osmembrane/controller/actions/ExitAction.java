@@ -23,6 +23,7 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
@@ -67,8 +68,14 @@ public class ExitAction extends AbstractAction {
 							"Controller.Actions.NewPipeline.NotSaved"),
 					I18N.getInstance().getString(
 							"Controller.Actions.NewPipeline.NotSaved.Title"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-			if (result == JOptionPane.NO_OPTION) {
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (result == JOptionPane.YES_OPTION) {
+				ActionRegistry.getInstance().get(SavePipelineAction.class).actionPerformed(null);
+				/* check again if it is saved */
+				if (!ModelProxy.getInstance().getPipeline().isSaved()) {
+					return;
+				}
+			} else if (result == JOptionPane.CANCEL_OPTION) {
 				return;
 			}
 		}
