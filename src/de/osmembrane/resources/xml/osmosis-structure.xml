@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XMLOsmosisStructure xmlns="http://osmembrane.de/model/xml" formatVersion="1.0.0" osmosisVersion="0.38">
-
+<!DOCTYPE XMLOsmosisStructure SYSTEM "osmosis-structure.dtd">
+<XMLOsmosisStructure xmlns="http://osmembrane.de/model/xml" 
+	formatVersion="1.0.0" osmosisVersion="0.38">
+	
 	<functionGroup id="input-output" friendlyName="Input &amp; Output" color="255, 239, 0">
 		<function id="read" friendlyName="Read Entity Tasks">
 			<task name="read-xml" friendlyName="Read OSM XML" shortName="rx">

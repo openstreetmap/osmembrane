@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from osmosis-structure.xml by XMLBuddy -->
+<!ELEMENT XMLOsmosisStructure (functionGroup+)>
+<!ATTLIST XMLOsmosisStructure
+	formatVersion NMTOKEN #REQUIRED
+	osmosisVersion NMTOKEN #REQUIRED
+	xmlns CDATA #REQUIRED
+>
+<!ELEMENT description (#PCDATA|value)*>
+<!ATTLIST description lang (de|en) #REQUIRED>
+<!ELEMENT enumValue (description*)>
+<!ATTLIST enumValue
+	friendlyName NMTOKEN #IMPLIED
+	value (BitSet|CompactTempFile|Dynamic|IdList|InMemory|TempFile|bzip2|deflate|gzip|lastSource|mysql|none|postgresql|seekable|streamable|timestamp|version) #REQUIRED
+>
+<!ELEMENT function (task+,description+)>
+<!ATTLIST function
+	friendlyName CDATA #REQUIRED
+	id ID #REQUIRED
+>
+<!ELEMENT functionGroup (function+,description+)>
+<!ATTLIST functionGroup
+	color CDATA #REQUIRED
+	friendlyName CDATA #REQUIRED
+	id NMTOKEN #REQUIRED
+>
+<!ELEMENT inputPipe (description*)>
+<!ATTLIST inputPipe
+	count (single|variable) #REQUIRED
+	index (0|1) #IMPLIED
+	specifiedBy NMTOKEN #IMPLIED
+	type (change|dataset|entity) #REQUIRED
+>
+<!ELEMENT inputType EMPTY>
+<!ATTLIST inputType
+	count NMTOKEN #FIXED "single"
+	index NMTOKEN #FIXED "0"
+	type NMTOKEN #FIXED "entity"
+>
+<!ELEMENT outputPipe (description*)>
+<!ATTLIST outputPipe
+	count NMTOKEN #FIXED "single"
+	index NMTOKEN #FIXED "0"
+	type (change|dataset|entity) #REQUIRED
+>
+<!ELEMENT parameter (description|enumValue)*>
+<!ATTLIST parameter
+	booleanEncoding (truefalse|yesno) #IMPLIED
+	defaultParameter (false|true) #IMPLIED
+	defaultValue CDATA #IMPLIED
+	hasSpaces NMTOKEN #IMPLIED
+	listType NMTOKEN #IMPLIED
+	name CDATA #REQUIRED
+	required (false|true) #IMPLIED
+	type (bbox|boolean|directory|enum|filename|instant|int|list|string|uri) #REQUIRED
+>
+<!ELEMENT task (description|inputPipe|inputType|outputPipe|parameter)*>
+<!ATTLIST task
+	friendlyName CDATA #IMPLIED
+	name CDATA #REQUIRED
+	shortName NMTOKEN #IMPLIED
+>
+<!ELEMENT value (#PCDATA)>

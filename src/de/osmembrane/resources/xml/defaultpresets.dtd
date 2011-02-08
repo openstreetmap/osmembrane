@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from defaultpresets.xml by XMLBuddy -->
+<!ELEMENT check EMPTY>
+<!ATTLIST check
+	default (off|on) #REQUIRED
+	delete_if_empty (false|true) #REQUIRED
+	key NMTOKEN #REQUIRED
+	text CDATA #REQUIRED
+>
+<!ELEMENT combo (short_description*)>
+<!ATTLIST combo
+	de.text NMTOKEN #IMPLIED
+	default CDATA #IMPLIED
+	delete_if_empty (true) #IMPLIED
+	display_values CDATA #IMPLIED
+	key NMTOKEN #REQUIRED
+	required NMTOKEN #IMPLIED
+	text CDATA #REQUIRED
+	text_context NMTOKEN #IMPLIED
+	use_last_as_default NMTOKEN #IMPLIED
+	values CDATA #REQUIRED
+	values_context CDATA #IMPLIED
+>
+<!ELEMENT group (group|item|separator)*>
+<!ATTLIST group
+	icon CDATA #REQUIRED
+	name CDATA #REQUIRED
+>
+<!ELEMENT item (check|combo|key|label|link|multiselect|optional|roles|space|text)*>
+<!ATTLIST item
+	de.name NMTOKEN #IMPLIED
+	icon CDATA #REQUIRED
+	name CDATA #REQUIRED
+	name_context NMTOKEN #IMPLIED
+	type CDATA #REQUIRED
+>
+<!ELEMENT key EMPTY>
+<!ATTLIST key
+	key NMTOKEN #REQUIRED
+	value NMTOKEN #REQUIRED
+>
+<!ELEMENT label EMPTY>
+<!ATTLIST label
+	de.text CDATA #IMPLIED
+	text CDATA #REQUIRED
+	text_context NMTOKEN #IMPLIED
+>
+<!ELEMENT link EMPTY>
+<!ATTLIST link
+	de.href CDATA #IMPLIED
+	es.href CDATA #IMPLIED
+	fi.href CDATA #IMPLIED
+	fr.href CDATA #IMPLIED
+	href CDATA #REQUIRED
+	it.href CDATA #IMPLIED
+	pt.href CDATA #IMPLIED
+	pt_BR.href CDATA #IMPLIED
+	ro.href CDATA #IMPLIED
+	sv.href CDATA #IMPLIED
+>
+<!ELEMENT multiselect EMPTY>
+<!ATTLIST multiselect
+	default CDATA #REQUIRED
+	key NMTOKEN #REQUIRED
+	text CDATA #REQUIRED
+	values CDATA #REQUIRED
+>
+<!ELEMENT optional (check|combo|label|text)*>
+<!ELEMENT presets (group+)>
+<!ATTLIST presets xmlns CDATA #REQUIRED>
+<!ELEMENT role EMPTY>
+<!ATTLIST role
+	count NMTOKEN #IMPLIED
+	key CDATA #REQUIRED
+	requisite (optional|required) #REQUIRED
+	text CDATA #REQUIRED
+	type CDATA #REQUIRED
+>
+<!ELEMENT roles (role+)>
+<!ELEMENT separator EMPTY>
+<!ELEMENT short_description (#PCDATA)>
+<!ELEMENT space EMPTY>
+<!ELEMENT text EMPTY>
+<!ATTLIST text
+	de.text NMTOKEN #IMPLIED
+	default CDATA #IMPLIED
+	delete_if_empty NMTOKEN #FIXED "true"
+	key NMTOKEN #REQUIRED
+	text CDATA #REQUIRED
+	use_last_as_default NMTOKEN #IMPLIED
+	values CDATA #IMPLIED
+>
