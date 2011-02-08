@@ -278,7 +278,7 @@ public class CommandlineParser implements IParser {
 							if (key.equals(DEFAULT_KEY)) {
 								throw new ParseException(
 										ErrorType.NO_DEFAULT_PARAMETER_FOUND,
-										taskName, key);
+										taskName, parameters.get(key));
 							} else {
 								throw new ParseException(
 										ErrorType.UNKNOWN_TASK_FORMAT,
@@ -472,12 +472,13 @@ public class CommandlineParser implements IParser {
 					 * Only add a parameter when there is not a default value
 					 * assigned, or settings say that they are needed.
 					 */
-					if (!parameter.isDefaultValue()
+					if ((!parameter.isDefaultValue()
 							|| (Boolean) ModelProxy
 									.getInstance()
 									.getSettings()
 									.getValue(
-											SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES)) {
+											SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES))
+						 && parameter.getValue() != null && parameter.getValue().length() > 0) {
 
 						/* look up if it is a parameter with set "hasSpaces" */
 						if (parameter.hasSpaces()
