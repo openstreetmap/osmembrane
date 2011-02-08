@@ -49,7 +49,6 @@ public class GraphPlanarizer {
 	 * Execute the planarization.
 	 */
 	public void planarize() {
-		/* Reset all function to their zero-position */
 		resetAllFunctions();
 		calculateGridSize();
 
@@ -107,14 +106,18 @@ public class GraphPlanarizer {
 	 */
 	private double orderFunctions(AbstractFunction function,
 			double xOffsetFactor, double yOffsetFactor) {
+		
+		/* move in this recursision step one position right */
 		xOffsetFactor++;
 
+		/* Set the coordinate of the functions */
 		function.getUnrasteredCoordinate().setLocation(
 				X_OFFSET * xOffsetFactor, Y_OFFSET * yOffsetFactor);
 
 		boolean moreThanOneConnection = false;
 		for (AbstractConnector connector : function.getOutConnectors()) {
 			for (AbstractConnector connector2 : connector.getConnections()) {
+				/* move all functions step by step one position lower */
 				if (moreThanOneConnection) {
 					yOffsetFactor++;
 				} else {

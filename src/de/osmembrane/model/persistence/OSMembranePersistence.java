@@ -49,6 +49,11 @@ public class OSMembranePersistence extends AbstractPersistence {
 	 */
 	private Thread autosaveThread = new Thread() {
 
+		/* anonymous class' constructor */ 
+		{
+			setDaemon(true);
+		}
+		
 		@Override
 		public void run() {
 
@@ -76,7 +81,6 @@ public class OSMembranePersistence extends AbstractPersistence {
 	 * Creates a new {@link OSMembranePersistence} object and starts the internal thread.
 	 */
 	public OSMembranePersistence() {
-		this.autosaveThread.setDaemon(true);
 		this.autosaveThread.start();
 	}
 	

@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.parser;
 
 import java.util.ArrayList;
@@ -119,9 +118,12 @@ public class CommandlineParser implements IParser {
 			openOutConnectors.put(type, new LinkedList<AbstractFunction>());
 		}
 
+		/* join the commandlines */
 		input = input.replace(breaklineSymbol, " ");
 
 		Matcher taskMatcher = PATTERN_TASK.matcher(input);
+
+		/* iterate over all found tasks */
 		while (taskMatcher.find()) {
 			String taskName = taskMatcher.group(1).toLowerCase();
 			String taskParameters = taskMatcher.group(2).trim();
@@ -130,7 +132,10 @@ public class CommandlineParser implements IParser {
 			Map<Integer, String> inPipes = new HashMap<Integer, String>();
 			Map<Integer, String> outPipes = new HashMap<Integer, String>();
 
+			/* parse all parameters */
 			Matcher paramMatcher = PATTERN_PARAMETER.matcher(taskParameters);
+
+			/* iterate over all parameters */
 			while (paramMatcher.find()) {
 				String[] keyValuePair = getParameter(paramMatcher);
 
@@ -142,6 +147,7 @@ public class CommandlineParser implements IParser {
 					keyValuePair[0] = DEFAULT_KEY;
 				}
 
+				/* try to identify the parameter as an pipe */
 				Matcher pipeMatcher = PATTERN_PIPE.matcher(keyValuePair[0]
 						.toLowerCase());
 				if (pipeMatcher.find()) {
@@ -177,6 +183,7 @@ public class CommandlineParser implements IParser {
 							.get("outputCount"));
 				}
 
+				/* try to get the function at the inPipe */
 				for (Integer pipeId : inPipes.keySet()) {
 					function = connectionMap.get(inPipes.get(pipeId));
 				}
@@ -189,12 +196,16 @@ public class CommandlineParser implements IParser {
 					function = functions.poll();
 				}
 
+				/*
+				 * found whether a explicit function nor an implicit one at the
+				 * inConnector
+				 */
 				if (function == null) {
 					throw new ParseException(ErrorType.UNKNOWN_PIPE_STREAM,
 							taskName);
 				}
 
-				/* add all specified outPipes */
+				/* add all specified outPipes to the map */
 				int countedOutPipes = 0;
 				for (Integer pipeId : outPipes.keySet()) {
 					countedOutPipes++;
@@ -220,7 +231,7 @@ public class CommandlineParser implements IParser {
 				AbstractFunction function = ModelProxy.getInstance()
 						.getFunctions()
 						.getMatchingFunctionForTaskName(taskName);
-
+				
 				if (function == null) {
 					throw new ParseException(ErrorType.UNKNOWN_TASK, taskName);
 				} else {
