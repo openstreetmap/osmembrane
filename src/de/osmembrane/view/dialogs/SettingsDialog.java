@@ -133,6 +133,19 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 				hideWindow();
 			}
 		});
+		
+		JButton defaultButton = new JButton(I18N.getInstance().getString(
+				"View.ResetDefault"));
+		defaultButton.addKeyListener(returnButtonListener);
+		defaultButton.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// reset default values
+				for (SettingType st : SettingType.values()) {
+					setValue(st, st.getDefaultValue());
+				}
+			}
+		});
 
 		JButton cancelButton = new JButton(I18N.getInstance().getString(
 				"View.Cancel"));
@@ -145,9 +158,10 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 			}
 		});
 
-		JPanel buttonCtrlGrid = new JPanel(new GridLayout(1, 2));
+		JPanel buttonCtrlGrid = new JPanel(new GridLayout(1, 3));
 		buttonCtrlGrid.add(okButton);
-		buttonCtrlGrid.add(cancelButton);
+		buttonCtrlGrid.add(defaultButton);
+		buttonCtrlGrid.add(cancelButton);	
 
 		JPanel buttonCtrlFlow = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		buttonCtrlFlow.add(buttonCtrlGrid);
