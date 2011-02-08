@@ -1162,11 +1162,17 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 */
 	public boolean wouldCollide(Point newPoint) {
 
+		/*
+		 * number of pixels to subtract from the technically necessity to have
+		 * functions touching, so that the feature is not too restrictive
+		 */
+		int grace = 10;
+
 		for (PipelineFunction pf : functions) {
-			if ((newPoint.x >= pf.getX() - pf.getWidth())
-					&& (newPoint.y >= pf.getY() - pf.getHeight())
-					&& (newPoint.x <= pf.getX() + pf.getWidth())
-					&& (newPoint.y <= pf.getY() + pf.getHeight())) {
+			if ((newPoint.x >= pf.getX() - pf.getWidth() + grace)
+					&& (newPoint.y >= pf.getY() - pf.getHeight() + grace)
+					&& (newPoint.x <= pf.getX() + pf.getWidth() - grace)
+					&& (newPoint.y <= pf.getY() + pf.getHeight() - grace)) {
 				return true;
 			}
 		}

@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.view.frames;
 
 import java.awt.BorderLayout;
@@ -407,9 +406,13 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 	@Override
 	public boolean isDragAndDropTarget(Point at) {
-		Point pipelinePoint = SwingUtilities.convertPoint(this.getGlassPane(), at,
-				pipelineView);
-		return pipelineView.getLayeredPane().equals(findComponentAt(at))
+		Point framePoint = SwingUtilities.convertPoint(this.getGlassPane(), at,
+				this);
+		Point pipelinePoint = SwingUtilities.convertPoint(this.getGlassPane(),
+				at, pipelineView);
+
+		return pipelineView.getLayeredPane()
+				.equals(findComponentAt(framePoint))
 				&& !pipelineView.wouldCollide(pipelinePoint);
 	}
 

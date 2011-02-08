@@ -50,7 +50,7 @@ public interface IMainFrame extends IView {
 	 * Finds out whether drag & drop can be finished at at.
 	 * 
 	 * @param at
-	 *            {@link Point} to check for
+	 *            {@link Point} on the getMainGlassPane() to check for
 	 * @return whether or not the point is valid drag and drop target
 	 */
 	public boolean isDragAndDropTarget(Point at);
