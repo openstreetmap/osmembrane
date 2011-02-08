@@ -127,10 +127,10 @@
 				<parameter name="url" type="uri" required="true" defaultValue="http://www.openstreetmap.org/api/0.6">
 					
 				<description lang="de"><value>Die URL des API-Servers.</value></description><description lang="en"><value>The url of the API server.</value></description></parameter>
-				<parameter name="left" type="bbox" required="true" />
-				<parameter name="right" type="bbox" required="true" />
-				<parameter name="top" type="bbox" required="true" />
-				<parameter name="bottom" type="bbox" required="true" />
+				<parameter name="left" type="bbox" required="true" defaultValue="-180" />
+				<parameter name="right" type="bbox" required="true" defaultValue="180" />
+				<parameter name="top" type="bbox" required="true" defaultValue="90" />
+				<parameter name="bottom" type="bbox" required="true" defaultValue="-90" />
 			<description lang="de"><value>Frägt den Inhalt einer Bounding-Box von der API ab. Dies unterliegt der Einschränkung für Bounding-Box-Größen-Einschränkungen, die von der API vorgegeben werden.</value></description><description lang="en"><value>Retrieves the contents of a bounding box from the API. This is subject to the bounding box size limitations imposed by the API.</value></description></task>
 			<description lang="de"><value>Liest Eingabequellen und erzeugt Entity-Streams.</value></description><description lang="en"><value>Reads input sources and produces an entity stream.</value></description></function>
 
@@ -565,16 +565,16 @@
 				<inputPipe count="single" index="0" type="entity" />
 				<outputPipe count="single" index="0" type="entity" />
 				
-				<parameter name="left" type="bbox">
+				<parameter name="left" type="bbox" defaultValue="-180">
 					
 				<description lang="de"><value>Der Längengrade der linken Kante der Box.</value></description><description lang="en"><value>The longitude of the left edge of the box.</value></description></parameter>
-				<parameter name="right" type="bbox">
+				<parameter name="right" type="bbox" defaultValue="180">
 					
 				<description lang="de"><value>Der Längengrade der rechten Kante der Box.</value></description><description lang="en"><value>The longitude of the right edge of the box.</value></description></parameter>
-				<parameter name="top" type="bbox">
+				<parameter name="top" type="bbox" defaultValue="90">
 					
 				<description lang="de"><value>Der Breitengrad der oberen Kante der Box.</value></description><description lang="en"><value>The latitude of the top edge of the box.</value></description></parameter>
-				<parameter name="bottom" type="bbox">
+				<parameter name="bottom" type="bbox" defaultValue="-90">
 					
 				<description lang="de"><value>Der Breitengrade der unteren Kante der Box.</value></description><description lang="en"><value>The latitude of the bottom edge of the box.</value></description></parameter>
 
@@ -621,16 +621,16 @@
 				<inputPipe count="single" index="0" type="dataset" />
 				<outputPipe count="single" index="0" type="entity" />
 				
-				<parameter name="left" type="bbox">
+				<parameter name="left" type="bbox" defaultValue="-180">
 					
 				<description lang="de"><value>Der Längengrade der linken Kante der Box.</value></description><description lang="en"><value>The longitude of the left edge of the box.</value></description></parameter>
-				<parameter name="right" type="bbox">
+				<parameter name="right" type="bbox" defaultValue="180">
 					
 				<description lang="de"><value>Der Breitengrad der oberen Kante der Box.</value></description><description lang="en"><value>The longitude of the right edge of the box.</value></description></parameter>
-				<parameter name="top" type="bbox">
+				<parameter name="top" type="bbox" defaultValue="90">
 					
 				<description lang="de"><value>Der Breitengrad der oberen Kante der Box.</value></description><description lang="en"><value>The latitude of the top edge of the box.</value></description></parameter>
-				<parameter name="bottom" type="bbox">
+				<parameter name="bottom" type="bbox" defaultValue="-90">
 					
 				<description lang="de"><value>Der Breitengrade der unteren Kante der Box.</value></description><description lang="en"><value>The latitude of the bottom edge of the box.</value></description></parameter>
 				
