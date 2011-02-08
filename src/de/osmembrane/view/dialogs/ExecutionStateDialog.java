@@ -36,6 +36,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
@@ -117,8 +118,8 @@ public class ExecutionStateDialog extends AbstractDialog implements
 		lines.setFont(lines.getFont().deriveFont(fontAttrib));
 
 		content.add(new JScrollPane(lines,
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), BorderLayout.CENTER);
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER), BorderLayout.CENTER);
 
 		add(content, BorderLayout.CENTER);
 

@@ -248,7 +248,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 		// tool bar with actions
 		JToolBar toolBar = new JToolBar(I18N.getInstance().getString(
-				"osmembrane"), JToolBar.HORIZONTAL);
+				"osmembrane"), SwingConstants.HORIZONTAL);
 		toolBar.add(ActionRegistry.getInstance().get(NewPipelineAction.class));
 		toolBar.add(ActionRegistry.getInstance().get(LoadPipelineAction.class));
 		toolBar.add(ActionRegistry.getInstance().get(SavePipelineAction.class));
@@ -276,7 +276,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 
 		// tools bar with tools for editing the pipeline
 		JToolBar toolsBar = new JToolBar(I18N.getInstance().getString(
-				"osmembrane"), JToolBar.HORIZONTAL);
+				"osmembrane"), SwingConstants.HORIZONTAL);
 
 		ButtonGroup tools = new ButtonGroup();
 		// will store the buttons later

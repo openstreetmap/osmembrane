@@ -27,7 +27,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.Application;
@@ -139,7 +139,7 @@ public class LibraryPanel extends JPanel {
 				rearrange(true);
 			}
 		});
-		editFilter.setValueHorizontalAlignment(JTextField.CENTER);
+		editFilter.setValueHorizontalAlignment(SwingConstants.CENTER);
 		editFilter.addFieldFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {

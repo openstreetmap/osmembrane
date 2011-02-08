@@ -22,6 +22,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import de.osmembrane.view.interfaces.IView;
 
@@ -45,7 +46,7 @@ public abstract class AbstractFrame extends JFrame implements IView {
 	 * common constructor for all frame view elements
 	 */
 	public AbstractFrame() {
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		// ability activate buttons with return
 		returnButtonListener = new KeyListener() {

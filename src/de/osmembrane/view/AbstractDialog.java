@@ -22,6 +22,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.WindowConstants;
 
 import de.osmembrane.view.interfaces.IView;
 
@@ -45,7 +46,7 @@ public abstract class AbstractDialog extends JDialog implements IView {
 	 * common constructor for all dialog view elements
 	 */
 	public AbstractDialog() {
-		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		setModal(true);
 		setResizable(false);
 

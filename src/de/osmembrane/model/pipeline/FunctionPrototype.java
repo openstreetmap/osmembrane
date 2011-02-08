@@ -137,7 +137,7 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 	public AbstractFunctionGroup[] getFunctionGroups() {
 		FunctionGroup[] groups = new FunctionGroup[functionGroups.size()];
 		groups = functionGroups.toArray(groups);
-		return (FunctionGroup[]) groups;
+		return groups;
 	}
 
 	@Override

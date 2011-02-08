@@ -58,6 +58,7 @@ public abstract class ObjectSignature {
 	/**
 	 * equals-operation for signature-objects
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (this.getClass() == obj.getClass() && obj instanceof ObjectSignature) {
 			ObjectSignature sigObj = (ObjectSignature) obj;

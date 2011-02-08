@@ -13,6 +13,7 @@
 
 package de.osmembrane.view.panels;
 
+import java.awt.Adjustable;
 import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -212,9 +213,9 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		this.connectors = new HashMap<AbstractConnector, PipelineConnector>();
 		this.functionInspector = functionInspector;
 
-		this.verticalScroll = new JSilentScrollBar(JScrollBar.VERTICAL, 0, 0,
+		this.verticalScroll = new JSilentScrollBar(Adjustable.VERTICAL, 0, 0,
 				0, 0);
-		this.horizontalScroll = new JSilentScrollBar(JScrollBar.HORIZONTAL, 0,
+		this.horizontalScroll = new JSilentScrollBar(Adjustable.HORIZONTAL, 0,
 				0, 0, 0);
 		AdjustmentListener al = new AdjustmentListener() {
 
