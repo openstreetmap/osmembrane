@@ -74,6 +74,8 @@ public class CmdPersistence extends AbstractPersistence {
 
 	@Override
 	public Object load(URL filename) throws FileException {
+		IParser parser = ParserFactory.getInstance().getParser(PARSER);
+		
 		try {
 			InputStreamReader isr = new InputStreamReader(filename.openStream());
 			BufferedReader br = new BufferedReader(isr);
@@ -81,13 +83,12 @@ public class CmdPersistence extends AbstractPersistence {
 			StringBuilder fileContent = new StringBuilder();
 			String line;
 			while ((line = br.readLine()) != null) {
-				fileContent.append(line);
+				fileContent.append(line + parser.getBreaklineCommand());
 			}
 			br.close();
 			isr.close();
 
-			List<AbstractFunction> functions = ParserFactory.getInstance()
-					.getParser(PARSER).parseString(fileContent.toString());
+			List<AbstractFunction> functions = parser.parseString(fileContent.toString());
 
 			return functions;
 

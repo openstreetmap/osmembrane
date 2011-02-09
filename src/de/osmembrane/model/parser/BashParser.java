@@ -11,8 +11,12 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.parser;
+
+import java.util.List;
+import java.util.regex.Pattern;
+
+import de.osmembrane.model.pipeline.AbstractFunction;
 
 /**
  * Implementation of {@link IParser} for the bash (unix) command line.
@@ -23,6 +27,7 @@ public class BashParser extends CommandlineParser {
 
 	protected String BREAKLINE_SYMBOL = "\\";
 	protected String BREAKLINE_COMMAND = "\n";
+	protected Pattern[] COMMENT_PATTERNS = { Pattern.compile("#.*$", Pattern.MULTILINE) };
 
 	/**
 	 * Creates a new {@link BashParser}.
@@ -30,5 +35,12 @@ public class BashParser extends CommandlineParser {
 	public BashParser() {
 		super.setBreaklineSymbol(BREAKLINE_SYMBOL);
 		super.setBreaklineCommand(BREAKLINE_COMMAND);
+		super.setRegexCommentPatterns(COMMENT_PATTERNS);
+	}
+	
+	@Override
+	public String parsePipeline(List<AbstractFunction> pipeline) {
+		String result = super.parsePipeline(pipeline);
+		return "#!/bin/bash\n\n" + result;
 	}
 }

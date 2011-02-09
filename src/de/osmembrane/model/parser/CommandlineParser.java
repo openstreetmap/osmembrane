@@ -41,16 +41,17 @@ import de.osmembrane.tools.I18N;
  */
 public class CommandlineParser implements IParser {
 
-	protected String breaklineSymbol = "<linebreak>";
-	protected String breaklineCommand = "\n";
-	protected String quotationSymbol = "\"";
-
-	protected String DEFAULT_KEY = "DEFAULTKEY";
-
 	/**
 	 * If it is not set, the osmosis path will not be added to the pipeline.
 	 */
 	private boolean addOsmosisPath = true;
+
+	protected String breaklineSymbol = "<linebreak>";
+	protected String breaklineCommand = "\n";
+	protected String quotationSymbol = "\"";
+	protected Pattern[] regexCommentPatterns = {};
+
+	protected static final String DEFAULT_KEY = "DEFAULTKEY";
 
 	protected static final Pattern PATTERN_TASK = Pattern.compile(
 			"--([^ ]+)(.*?)((?=--)|$)", Pattern.CASE_INSENSITIVE
@@ -118,8 +119,15 @@ public class CommandlineParser implements IParser {
 			openOutConnectors.put(type, new LinkedList<AbstractFunction>());
 		}
 
+		/* replace all comments */
+		for(Pattern replacePattern : regexCommentPatterns) {
+			Matcher match = replacePattern.matcher(input);
+			 input = match.replaceAll("");
+		}
+		
 		/* join the commandlines */
-		input = input.replace(breaklineSymbol, " ");
+		input = input.replace(breaklineSymbol, "");
+		input = input.replace(breaklineCommand, " ");
 
 		Matcher taskMatcher = PATTERN_TASK.matcher(input);
 
@@ -231,7 +239,7 @@ public class CommandlineParser implements IParser {
 				AbstractFunction function = ModelProxy.getInstance()
 						.getFunctions()
 						.getMatchingFunctionForTaskName(taskName);
-				
+
 				if (function == null) {
 					throw new ParseException(ErrorType.UNKNOWN_TASK, taskName);
 				} else {
@@ -472,13 +480,13 @@ public class CommandlineParser implements IParser {
 					 * Only add a parameter when there is not a default value
 					 * assigned, or settings say that they are needed.
 					 */
-					if ((!parameter.isDefaultValue()
-							|| (Boolean) ModelProxy
-									.getInstance()
-									.getSettings()
-									.getValue(
-											SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES))
-						 && parameter.getValue() != null && parameter.getValue().length() > 0) {
+					if ((!parameter.isDefaultValue() || (Boolean) ModelProxy
+							.getInstance()
+							.getSettings()
+							.getValue(
+									SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES))
+							&& parameter.getValue() != null
+							&& parameter.getValue().length() > 0) {
 
 						/* look up if it is a parameter with set "hasSpaces" */
 						if (parameter.hasSpaces()
@@ -561,18 +569,6 @@ public class CommandlineParser implements IParser {
 		return builder.toString();
 	}
 
-	protected void setBreaklineSymbol(String symbol) {
-		this.breaklineSymbol = symbol;
-	}
-
-	protected void setBreaklineCommand(String breaklineCommand) {
-		this.breaklineCommand = breaklineCommand;
-	}
-
-	protected void setQuotationSymbol(String symbol) {
-		this.quotationSymbol = symbol;
-	}
-
 	/**
 	 * Sets if the omsosis path should be added or not
 	 * 
@@ -637,17 +633,65 @@ public class CommandlineParser implements IParser {
 		return null;
 	}
 
+	/**
+	 * Adds a linebreak to a given {@link StringBuilder}.
+	 */
 	private void appendLineBreak(StringBuilder builder) {
 		builder.append(" ");
 		builder.append(breaklineSymbol);
 		builder.append(breaklineCommand);
 	}
 
+	/**
+	 * Adds a quotation to a {@link String} if it is needed.
+	 * 
+	 * @return quotated {@link String}
+	 */
 	private String quotate(String string) {
 		if (string.contains(" ")) {
 			return quotationSymbol + string + quotationSymbol;
 		} else {
 			return string;
 		}
+	}
+
+	/* **************************** */
+	/* Some getters and setters.... */
+	/* **************************** */
+
+	protected void setBreaklineSymbol(String symbol) {
+		this.breaklineSymbol = symbol;
+	}
+
+	@Override
+	public String getBreaklineSymbol() {
+		return breaklineSymbol;
+	}
+
+	protected void setBreaklineCommand(String breaklineCommand) {
+		this.breaklineCommand = breaklineCommand;
+	}
+
+	@Override
+	public String getBreaklineCommand() {
+		return breaklineCommand;
+	}
+
+	protected void setQuotationSymbol(String symbol) {
+		this.quotationSymbol = symbol;
+	}
+
+	@Override
+	public String getQuotationSymbol() {
+		return quotationSymbol;
+	}
+
+	protected void setRegexCommentPatterns(Pattern[] regexCommentPatterns) {
+		this.regexCommentPatterns = regexCommentPatterns;
+	}
+
+	@Override
+	public Pattern[] getRegexCommentPatterns() {
+		return regexCommentPatterns;
 	}
 }

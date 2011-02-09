@@ -15,6 +15,7 @@
 package de.osmembrane.model.parser;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.Pipeline;
@@ -44,4 +45,32 @@ public interface IParser {
 	 * @return String representation a given format
 	 */
 	public String parsePipeline(List<AbstractFunction> pipeline);
+	
+	/**
+	 * Returns the quotation symbol of the parser.
+	 * 
+	 * @return quotation symbol
+	 */
+	public String getQuotationSymbol();
+
+	/**
+	 * Returns the breakline command.
+	 * 
+	 * @return breakline command
+	 */
+	public String getBreaklineCommand();
+
+	/**
+	 * Returns the breakline symbol.
+	 * 
+	 * @return breakline symbol
+	 */
+	public String getBreaklineSymbol();
+
+	/**
+	 * Returns the regex patterns for comments.
+	 * 
+	 * @return regex comment patterns
+	 */
+	public Pattern[] getRegexCommentPatterns();
 }
