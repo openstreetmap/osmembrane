@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -179,6 +180,7 @@ public class TutorialFrame extends AbstractFrame {
 		add(buttons, BorderLayout.SOUTH);
 
 		setTitle(I18N.getInstance().getString("View.TutorialDialog"));
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
 		setCurrentlyShowing(0);
 		pack();
