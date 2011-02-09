@@ -14,6 +14,7 @@
 
 package de.osmembrane.controller.actions;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -53,7 +54,8 @@ public class ZoomInAction extends AbstractAction {
 		putValue(Action.LARGE_ICON_KEY,
 				Resource.PROGRAM_ICON.getImageIcon("zoom_in.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, 0));
+				KeyStroke.getKeyStroke(KeyEvent.VK_PLUS,
+						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
 
 	@Override
