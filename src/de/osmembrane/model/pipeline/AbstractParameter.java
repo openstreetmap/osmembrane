@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.pipeline;
 
 import java.io.Serializable;
@@ -107,6 +106,9 @@ public abstract class AbstractParameter extends Observable implements
 	 *            value to be set
 	 * @return true if value has been set, or false if not (wrong format,
 	 *         etc...)
+	 * @throws ParameterFormatException
+	 *             when the string does not represent a valid value of the
+	 *             parameter
 	 */
 	public abstract boolean setValue(String value);
 
