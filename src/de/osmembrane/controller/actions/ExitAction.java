@@ -75,7 +75,7 @@ public class ExitAction extends AbstractAction {
 				if (!ModelProxy.getInstance().getPipeline().isSaved()) {
 					return;
 				}
-			} else if (result == JOptionPane.CANCEL_OPTION) {
+			} else if (result == JOptionPane.CANCEL_OPTION || result == JOptionPane.CLOSED_OPTION) {
 				return;
 			}
 		}

@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.Toolkit;
@@ -85,13 +84,12 @@ public class SaveAsPipelineAction extends AbstractAction {
 
 			/* Check if the file does not already exists. */
 			if (new File(filePath).isFile()) {
-				if(JOptionPane
-						.showConfirmDialog(
-								null,
+				int confirmResult = JOptionPane.showConfirmDialog(null,
 								I18N.getInstance().getString(
 										"Controller.Actions.File.Override"),
 								I18N.getInstance().getString("Controller.Actions.File.Override.Title"),
-								JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
+								JOptionPane.YES_NO_OPTION);
+				if(confirmResult == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
 					return;
 				}
 			}

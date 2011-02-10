@@ -79,19 +79,6 @@ public class ExportPipelineAction extends AbstractAction {
 
 		if (result == JFileChooser.APPROVE_OPTION) {
 
-			/* Check if the file does not already exists. */
-			if (fileChooser.getSelectedFile().isFile()) {
-				if (JOptionPane.showConfirmDialog(
-						null,
-						I18N.getInstance().getString(
-								"Controller.Actions.File.Override"),
-						I18N.getInstance().getString(
-								"Controller.Actions.File.Override.Title"),
-						JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
-					return;
-				}
-			}
-
 			/* parse the file to an URL */
 
 			try {
@@ -123,6 +110,20 @@ public class ExportPipelineAction extends AbstractAction {
 					file = new File(fileWithExplicitExtensionString).toURI()
 							.toURL();
 				}
+				
+				/* Check if the file does not already exists. */
+				if (new File(file.toString().replace("file:", "")).isFile()) {
+					int confirmResult = JOptionPane.showConfirmDialog(null,
+									I18N.getInstance().getString(
+											"Controller.Actions.File.Override"),
+									I18N.getInstance().getString("Controller.Actions.File.Override.Title"),
+									JOptionPane.YES_NO_OPTION);
+					if(confirmResult == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
+						return;
+					}
+				}
+				
+				
 				ModelProxy.getInstance().getPipeline()
 						.exportPipeline(file, type);
 			} catch (FileException e1) {

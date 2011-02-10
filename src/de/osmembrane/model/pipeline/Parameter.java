@@ -155,7 +155,9 @@ public class Parameter extends AbstractParameter {
 		}
 
 		if(this.getType().isStringEmpty(value)) {
-			this.value = null;
+			// TODO do that right if the view solves the ticket #216
+			// right means set it to null
+			this.value = value;
 		} else {
 			this.value = value;
 		}
