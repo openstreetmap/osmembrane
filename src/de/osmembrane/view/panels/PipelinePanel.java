@@ -315,16 +315,18 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 						PipelineFunction pf = (PipelineFunction) selected;
 
 						// getCoordinate - draggingFrom
+						Point newWinPos = e.getPoint();
 						Point2D objOffset = new Point2D.Double(pf
 								.getModelLocation().getX()
 								- draggingFrom.getX(), pf.getModelLocation()
 								.getY() - draggingFrom.getY());
 
-						Point2D objPosition = windowToObj(findNextFreePoint(e.getPoint()));
+						Point winOffset = objToWindow(objOffset);
+						newWinPos.translate(winOffset.x, winOffset.y);
 
-						Point2D newObjPosition = new Point2D.Double(
-								objPosition.getX() + objOffset.getX(),
-								objPosition.getY() + objOffset.getY());
+						newWinPos = findNextFreePoint(newWinPos, pf);
+
+						Point2D newObjPosition = windowToObj(newWinPos);
 
 						// require a minimum distance to drag & drop
 						if (newObjPosition.distance(pf.getModelLocation()) < PipelineFunction.PIPELINE_FUNCTION_MIN_DRAG_DISTANCE) {
@@ -1006,8 +1008,8 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 *            coordinates
 	 */
 	public void draggedOnto(LibraryFunction libraryFunction, Point at) {
-		
-		at = findNextFreePoint(at);
+
+		at = findNextFreePoint(at, null);
 
 		// drag & drop functionality : add function
 		Action a = ActionRegistry.getInstance().get(AddFunctionAction.class);
@@ -1170,10 +1172,13 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 * 
 	 * @param newPoint
 	 *            {@link Point} where the new Function would be situated
+	 * @param ignore
+	 *            Ignore this function. Useful if you're currently moving this
+	 *            one. May be null.
 	 * @return true, if the new function would collide with an existing one,
 	 *         false otherwise.
 	 */
-	public boolean wouldCollide(Point newPoint) {
+	public boolean wouldCollide(Point newPoint, PipelineFunction ignore) {
 
 		/*
 		 * number of pixels to subtract from the technically necessity to have
@@ -1182,6 +1187,10 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		int grace = 0;
 
 		for (PipelineFunction pf : functions) {
+			if (pf.equals(ignore)) {
+				continue;
+			}
+			
 			if ((newPoint.x >= pf.getX() - pf.getWidth() + grace)
 					&& (newPoint.y >= pf.getY() - pf.getHeight() + grace)
 					&& (newPoint.x <= pf.getX() + pf.getWidth() - grace)
@@ -1199,25 +1208,28 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 * 
 	 * @param at
 	 *            location where to find the nearest free point for
+	 * @param forFunc
+	 *            the function for which the place should be found. May be null
 	 * @return the nearest free point in the area of at
 	 */
-	public Point findNextFreePoint(Point at) {
+	public Point findNextFreePoint(Point at, PipelineFunction forFunc) {
 		Point result = new Point(at);
 		double dist = 0.0;
 
-		while (wouldCollide(result)) {
+		while (wouldCollide(result, forFunc)) {
 			dist += 20.0;
-			
+
 			// angle between x to the right, y downwards in [0, Math.PI / 2]
 			for (double angle = 0.0; angle < Math.PI / 2.0; angle += Math.PI / 20.0) {
-				
+
 				result = new Point(at);
-				result.translate((int) (+ Math.cos(angle) * dist), (int) (+ Math.sin(angle) * dist));
-				
-				if (!wouldCollide(result)) {
+				result.translate((int) (+Math.cos(angle) * dist),
+						(int) (+Math.sin(angle) * dist));
+
+				if (!wouldCollide(result, forFunc)) {
 					break;
 				}
-			} /* for */		
+			} /* for */
 		}
 
 		return result;

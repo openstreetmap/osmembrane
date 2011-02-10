@@ -25,7 +25,7 @@ import de.osmembrane.resources.Constants;
  * 
  * @see {@link PipelineLink}
  * 
- * @author whaite
+ * @author tobias_kuhn
  * 
  */
 public class PipelinePreviewLink extends PipelineLink {
