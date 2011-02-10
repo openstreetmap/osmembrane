@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.view;
 
 import java.util.HashMap;
@@ -191,9 +190,17 @@ public class ViewRegistry extends Observable implements Observer {
 	 * components, so it has to identify its main window for the purpose of
 	 * showing this window at startup.
 	 * 
-	 * @return the {@link MainFrame} of this view component
+	 * @param createIfRequired
+	 *            if set to false, the mainFrame will not be created and the
+	 *            return value will be null, true means default behavior
+	 * 
+	 * @return the {@link MainFrame} of this view component or null, if
+	 *         dontCreate and MainFrame wasn't initialized
 	 */
-	public IView getMainFrame() {
+	public IView getMainFrame(boolean createIfRequired) {
+		if (!createIfRequired && (views.get(MainFrame.class) == null)) {
+			return null;
+		}
 		return get(MainFrame.class);
 	}
 

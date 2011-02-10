@@ -100,7 +100,7 @@ public class Application {
 	 */
 	public void showMainFrame() {
 		try {
-			IView mainFrame = ViewRegistry.getInstance().getMainFrame();
+			IView mainFrame = ViewRegistry.getInstance().getMainFrame(true);
 			mainFrame.showWindow();
 			mainFrame.bringToFront();
 		} catch (Exception e) {

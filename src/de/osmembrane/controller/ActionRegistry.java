@@ -59,6 +59,7 @@ import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.interfaces.IView;
 
 /**
  * The action registry implements the Broker pattern to organize the
@@ -215,8 +216,12 @@ public class ActionRegistry implements Observer {
 				fileName = new File(url.getPath()).getName().replaceAll(
 						"(?i)" + FileType.OSMEMBRANE.getExtension(), "");
 			}
-			ViewRegistry.getInstance().getMainFrame()
-					.setWindowTitle(fileName + (isSaved ? "" : "*"));
+			
+			// prevent quick creation, if this is a backup loading call
+			IView mainFrame = ViewRegistry.getInstance().getMainFrame(false);
+			if (mainFrame != null) {
+				mainFrame.setWindowTitle(fileName + (isSaved ? "" : "*"));
+			}
 		}
 	}
 }
