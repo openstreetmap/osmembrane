@@ -28,6 +28,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
 import de.osmembrane.Application;
@@ -339,6 +340,19 @@ public class LibraryPanel extends JPanel {
 
 		});
 		expandingThread.start();
+	}
+	
+	/**
+	 * Makes Swing thread-safe (or so we hope)
+	 */
+	@Override
+	public void repaint() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				LibraryPanel.super.repaint();
+			}
+		});
 	}
 
 	@Override
