@@ -168,7 +168,8 @@ public class Parameter extends AbstractParameter {
 		return true;
 	}
 
-	private boolean validate(String value) {
+	@Override
+	public boolean validate(String value) {
 		switch (this.getType()) {
 		case ENUM:
 			for(AbstractEnumValue enumValue : getEnumValue()) {

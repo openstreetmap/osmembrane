@@ -155,7 +155,7 @@ public enum ParameterType {
 	 *             when the {@link ParameterType} does not support the validate
 	 *             operation.
 	 */
-	public boolean validate(String toBeValidated) {
+	protected boolean validate(String toBeValidated) {
 		if (getValidPattern() == null || getNullPattern() == null) {
 			throw new UnsupportedOperationException(this.toString()
 					+ " does not support validation");
@@ -185,7 +185,7 @@ public enum ParameterType {
 	 *             when the {@link ParameterType} does not support the check
 	 *             operation.
 	 */
-	public boolean isStringEmpty(String toBeChecked) {
+	protected boolean isStringEmpty(String toBeChecked) {
 		if (getNullPattern() == null) {
 			throw new UnsupportedOperationException(this.toString()
 					+ " does not support check vor empty");

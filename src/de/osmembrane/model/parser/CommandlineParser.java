@@ -30,6 +30,7 @@ import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorType;
+import de.osmembrane.model.pipeline.ParameterFormatException;
 import de.osmembrane.model.pipeline.Pipeline;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
@@ -120,11 +121,11 @@ public class CommandlineParser implements IParser {
 		}
 
 		/* replace all comments */
-		for(Pattern replacePattern : regexCommentPatterns) {
+		for (Pattern replacePattern : regexCommentPatterns) {
 			Matcher match = replacePattern.matcher(input);
-			 input = match.replaceAll("");
+			input = match.replaceAll("");
 		}
-		
+
 		/* join the commandlines */
 		input = input.replace(breaklineSymbol, "");
 		input = input.replace(breaklineCommand, " ");
@@ -262,7 +263,13 @@ public class CommandlineParser implements IParser {
 				if (spacesParam != null) {
 					String[] results = PATTERN_SPLIT_SPACES_PARAMETER
 							.split(taskParameters);
-					spacesParam.setValue(results[0].trim());
+					try {
+						spacesParam.setValue(results[0].trim());
+					} catch (ParameterFormatException e) {
+						throw new ParseException(
+								ErrorType.INVALID_PARAMETER_VALUE, taskName,
+								spacesParam.getName(), results[0].trim());
+					}
 
 					/*
 					 * Okay it seems not to be so, that there is a spaces param,
@@ -278,7 +285,14 @@ public class CommandlineParser implements IParser {
 									.equals(key.toLowerCase())
 									|| (key.equals(DEFAULT_KEY) && parameter
 											.isDefaultParameter())) {
-								parameter.setValue(parameters.get(key));
+								try {
+									parameter.setValue(parameters.get(key));
+								} catch (ParameterFormatException e) {
+									throw new ParseException(
+											ErrorType.INVALID_PARAMETER_VALUE,
+											taskName, key, parameters.get(key));
+								}
+
 								foundKey = true;
 							}
 						}

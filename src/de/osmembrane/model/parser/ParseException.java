@@ -59,6 +59,11 @@ public class ParseException extends Exception {
 		 * The defined inPipe for a task has no counterpart task with a outPipe.
 		 */
 		COUNTERPART_PIPE_MISSING,
+		
+		/**
+		 * The given parameter has an invalid value.
+		 */
+		INVALID_PARAMETER_VALUE,
 	}
 
 	private ErrorType type;

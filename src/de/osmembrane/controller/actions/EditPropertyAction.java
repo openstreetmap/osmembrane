@@ -18,8 +18,13 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import de.osmembrane.Application;
 import de.osmembrane.controller.events.ContainingFunctionChangeParameterEvent;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.pipeline.ParameterFormatException;
+import de.osmembrane.tools.I18N;
 
 /**
  * Action to edit a specific parameter or task of a function. Receives a
@@ -46,7 +51,13 @@ public class EditPropertyAction extends AbstractAction {
 
 		// set new parameter
 		if (cfcpe.wasNewParameterSet()) {
-			cfcpe.getChangedParameter().setValue(cfcpe.getNewParameterValue());
+			try {
+				cfcpe.getChangedParameter().setValue(cfcpe.getNewParameterValue());
+			} catch(ParameterFormatException e1) {
+				Application.handleException(new ControlledException(this,
+						ExceptionSeverity.WARNING, I18N.getInstance()
+								.getString("Controller.ParameterNotValid")));
+			}
 		}
 
 		// set new task

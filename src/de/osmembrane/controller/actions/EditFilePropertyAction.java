@@ -20,8 +20,13 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
+import de.osmembrane.Application;
 import de.osmembrane.controller.events.ContainingEvent;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractParameter;
+import de.osmembrane.model.pipeline.ParameterFormatException;
+import de.osmembrane.tools.I18N;
 
 /**
  * Action to edit a parameter which is a file path and therefore open the file
@@ -54,7 +59,13 @@ public class EditFilePropertyAction extends AbstractAction {
 		fileChooser.setSelectedFile(new File(value));
 
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			ap.setValue(fileChooser.getSelectedFile().getAbsolutePath());
+			try {
+				ap.setValue(fileChooser.getSelectedFile().getAbsolutePath());
+			} catch (ParameterFormatException e1) {
+				Application.handleException(new ControlledException(this,
+						ExceptionSeverity.WARNING, I18N.getInstance()
+								.getString("Controller.ParameterNotValid")));
+			}
 		}
 	}
 }

@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -20,8 +19,13 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
+import de.osmembrane.Application;
 import de.osmembrane.controller.events.ContainingEvent;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractParameter;
+import de.osmembrane.model.pipeline.ParameterFormatException;
+import de.osmembrane.tools.I18N;
 
 /**
  * Action to edit a parameter which is a directory path and therefore open the
@@ -56,7 +60,13 @@ public class EditDirectoryPropertyAction extends AbstractAction {
 		fileChooser.setCurrentDirectory(new File(value));
 
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			ap.setValue(fileChooser.getCurrentDirectory().getAbsolutePath());
+			try {
+				ap.setValue(fileChooser.getCurrentDirectory().getAbsolutePath());
+			} catch (ParameterFormatException e1) {
+				Application.handleException(new ControlledException(this,
+						ExceptionSeverity.WARNING, I18N.getInstance()
+								.getString("Controller.ParameterNotValid")));
+			}
 		}
 	}
 }

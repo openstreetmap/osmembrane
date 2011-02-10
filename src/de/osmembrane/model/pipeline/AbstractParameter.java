@@ -138,4 +138,12 @@ public abstract class AbstractParameter extends Observable implements
 	 * Copies the parameter.
 	 */
 	public abstract AbstractParameter copy(CopyType type, AbstractTask task);
+
+	/**
+	 * Returns the result of a validation of the given value.
+	 * 
+	 * @param value value to be checked
+	 * @return true if value is ok, otherwise false
+	 */
+	public abstract boolean validate(String value);
 }

@@ -18,8 +18,13 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import de.osmembrane.Application;
 import de.osmembrane.controller.events.ContainingEvent;
+import de.osmembrane.exceptions.ControlledException;
+import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractParameter;
+import de.osmembrane.model.pipeline.ParameterFormatException;
+import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.ListDialog;
 import de.osmembrane.view.interfaces.IListDialog;
@@ -51,7 +56,13 @@ public class EditListPropertyAction extends AbstractAction {
 
 		list.open(ap);
 		if (list.shallApplyChanges()) {
-			ap.setValue(list.getEdits());
+			try {
+				ap.setValue(list.getEdits());
+			} catch(ParameterFormatException e1) {
+				Application.handleException(new ControlledException(this,
+						ExceptionSeverity.WARNING, I18N.getInstance()
+								.getString("Controller.ParameterNotValid")));
+			}
 		}
 
 	}
