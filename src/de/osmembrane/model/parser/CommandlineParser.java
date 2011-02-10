@@ -485,8 +485,7 @@ public class CommandlineParser implements IParser {
 							.getSettings()
 							.getValue(
 									SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES))
-							&& parameter.getValue() != null
-							&& parameter.getValue().length() > 0) {
+							&& parameter.getValue() != null) {
 
 						/* look up if it is a parameter with set "hasSpaces" */
 						if (parameter.hasSpaces()

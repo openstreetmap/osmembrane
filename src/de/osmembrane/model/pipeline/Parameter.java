@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.pipeline;
 
 import java.io.ObjectStreamException;
@@ -20,6 +19,7 @@ import java.util.List;
 
 import de.osmembrane.model.Identifier;
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.pipeline.ParameterFormatException.Type;
 import de.osmembrane.model.xml.XMLEnumValue;
 import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.tools.I18N;
@@ -149,13 +149,38 @@ public class Parameter extends AbstractParameter {
 
 	@Override
 	public boolean setValue(String value) {
-		// TODO check the type match for parameter values
-		this.value = value;
+
+		if (!validate(value)) {
+			throw new ParameterFormatException(Type.DEFAULT);
+		}
+
+		if(this.getType().isStringEmpty(value)) {
+			this.value = null;
+		} else {
+			this.value = value;
+		}
 
 		setChanged();
 		notifyObservers();
 
 		return true;
+	}
+
+	private boolean validate(String value) {
+		switch (this.getType()) {
+		case ENUM:
+			for(AbstractEnumValue enumValue : getEnumValue()) {
+				if(enumValue.getValue().equals(value)) {
+					return true;
+				}
+			}
+			break;
+
+		default:
+			return this.getType().validate(value);
+		}
+		
+		return false;
 	}
 
 	@Override

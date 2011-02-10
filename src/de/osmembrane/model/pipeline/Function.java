@@ -186,8 +186,7 @@ public class Function extends AbstractFunction {
 							 * if that is so, don't copy.
 							 */
 							if (oldParam.getValue() != null
-									&& !oldParam.getValue().equals(
-											oldParam.getDefaultValue())) {
+									&& !oldParam.isDefaultValue()) {
 								/* oldParam has a real non-default value. */
 								newParam.setValue(oldParam.getValue());
 							}
