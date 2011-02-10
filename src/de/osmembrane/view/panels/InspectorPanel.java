@@ -326,14 +326,19 @@ public class InspectorPanel extends JPanel implements Observer {
 	 */
 	public void inspect(AbstractFunction inspect) {
 		rowEditorModel.clear();
-		/*TableCellEditor tce = propertyTable.getCellEditor();
+		TableCellEditor tce = propertyTable.getCellEditor();
 		if (tce != null) {
-			System.out.println(tce.getCellEditorValue().toString()
-					);
-			propertyTable.setValueAt(tce.getCellEditorValue(),
-					propertyTable.getEditingRow(),
-					propertyTable.getEditingColumn());
-		}*/
+			Object value = tce.getCellEditorValue();
+			int editRow = propertyTable.getEditingRow();
+			int editColumn = propertyTable.getEditingColumn();
+			
+			// required to prevent inspect -> setValue -> ... loop
+			propertyTable.removeEditor();
+			
+			propertyTable.setValueAt(value,
+					editRow,
+					editColumn);
+		}
 		propertyTable.removeEditor();
 
 		this.inspecting = inspect;
