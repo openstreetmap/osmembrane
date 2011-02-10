@@ -314,14 +314,14 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 							&& (draggingFrom != null)) {
 						PipelineFunction pf = (PipelineFunction) selected;
 
-						// getCoordinate - draggingFrom
+						// getCoordinate - draggingFrom = offset to add
 						Point newWinPos = e.getPoint();
 						Point2D objOffset = new Point2D.Double(pf
 								.getModelLocation().getX()
 								- draggingFrom.getX(), pf.getModelLocation()
 								.getY() - draggingFrom.getY());
 
-						Point winOffset = objToWindow(objOffset);
+						Point winOffset = objToWindowDelta(objOffset);
 						newWinPos.translate(winOffset.x, winOffset.y);
 
 						newWinPos = findNextFreePoint(newWinPos, pf);

@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.view.panels;
 
 import java.awt.BorderLayout;
@@ -327,6 +326,14 @@ public class InspectorPanel extends JPanel implements Observer {
 	 */
 	public void inspect(AbstractFunction inspect) {
 		rowEditorModel.clear();
+		/*TableCellEditor tce = propertyTable.getCellEditor();
+		if (tce != null) {
+			System.out.println(tce.getCellEditorValue().toString()
+					);
+			propertyTable.setValueAt(tce.getCellEditorValue(),
+					propertyTable.getEditingRow(),
+					propertyTable.getEditingColumn());
+		}*/
 		propertyTable.removeEditor();
 
 		this.inspecting = inspect;
