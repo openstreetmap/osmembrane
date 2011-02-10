@@ -153,8 +153,8 @@ public class FunctionPresetDialog extends AbstractDialog implements
 
 		selection.setModel(new DefaultComboBoxModel(selectables));
 
-		loadButton.setEnabled(false);
-		deleteButton.setEnabled(false);
+		loadButton.setEnabled(selection.getSelectedIndex() >= 0);
+		deleteButton.setEnabled(selection.getSelectedIndex() >= 0);
 		selectedButton = ButtonSelection.NONE;
 		showWindow();
 	}
