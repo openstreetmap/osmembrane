@@ -238,6 +238,11 @@ public class LibraryFunction extends DisplayTemplatePanel {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					// these clicks add the function to the pipeline
+					if (e.getClickCount() >= 2) {
+						pipeline.draggedOnto(LibraryFunction.this, new Point(0,
+								0));
+					}
 				}
 			});
 		}
