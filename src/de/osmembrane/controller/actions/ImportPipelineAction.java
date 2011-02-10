@@ -17,6 +17,7 @@ package de.osmembrane.controller.actions;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -33,6 +34,7 @@ import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.persistence.FileType;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
@@ -77,7 +79,10 @@ public class ImportPipelineAction extends AbstractAction {
 			}
 		}
 
-		JFileChooser fileChooser = new JFileChooser();
+		File startDir = new File((String) ModelProxy.getInstance()
+				.getSettings()
+				.getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
+		JFileChooser fileChooser = new JFileChooser(startDir);
 		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
 		fileChooser.addChoosableFileFilter(FileType.BASH.getFileFilter());
 		fileChooser.addChoosableFileFilter(FileType.CMD.getFileFilter());

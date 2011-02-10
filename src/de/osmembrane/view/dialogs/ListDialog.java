@@ -51,6 +51,7 @@ import de.osmembrane.Application;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.preset.PresetItem;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
 import de.osmembrane.view.interfaces.IListDialog;
@@ -177,7 +178,10 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		});
 
 		// prepare file chooser
-		fileChooser = new JFileChooser();
+		File startDir = new File((String) ModelProxy.getInstance()
+				.getSettings()
+				.getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
+		fileChooser = new JFileChooser(startDir);
 		fileChooser.setFileFilter(new FileFilter() {
 
 			@Override

@@ -32,6 +32,7 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.FileType;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
@@ -69,7 +70,10 @@ public class SaveAsPipelineAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		JFileChooser fileChooser = new JFileChooser();
+		File startDir = new File((String) ModelProxy.getInstance()
+				.getSettings()
+				.getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
+		JFileChooser fileChooser = new JFileChooser(startDir);
 		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
 
 		int result = fileChooser.showSaveDialog(null);

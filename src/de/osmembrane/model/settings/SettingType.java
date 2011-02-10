@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.settings;
 
 import java.util.Locale;
@@ -27,54 +26,75 @@ import de.osmembrane.tools.I18N;
 public enum SettingType {
 	/**
 	 * The default path to osmosis binaries.
+	 * 
+	 * can be casted to a {@link String}
 	 */
 	DEFAULT_OSMOSIS_PATH(String.class, Constants.DEFAULT_OSMOSIS_PATH),
 
 	/**
 	 * The default path to JOSM binaries.
+	 * 
+	 * can be casted to a {@link String}
 	 */
 	DEFAULT_JOSM_PATH(String.class, Constants.DEFAULT_JOSM_PATH),
 
 	/**
 	 * The active language as a locale.
+	 * 
+	 * can be casted to a {@link Locale}
 	 */
 	ACTIVE_LANGUAGE(Locale.class, Locale.getDefault()),
 
 	/**
 	 * The default zoom size.
+	 * 
+	 * can be casted to a {@link Double}
 	 */
 	DEFAULT_ZOOM_SIZE(Double.class, Constants.DEFAULT_ZOOM_SIZE),
 
 	/**
 	 * Use short names for tasks if available.
+	 * 
+	 * can be casted to a {@link Boolean}
 	 */
 	USE_SHORT_TASK_NAMES_IF_AVAILABLE(Boolean.class, false),
 
 	/**
 	 * Export the default values or not.
+	 * 
+	 * can be casted to a {@link Boolean}
 	 */
 	EXPORT_PARAMETERS_WITH_DEFAULT_VALUES(Boolean.class, false),
 
 	/**
 	 * Maximum count of undo-steps.
+	 * 
+	 * can be casted to a {@link Integer}
 	 */
 	MAXIMUM_UNDO_STEPS(Integer.class, Constants.MAXIMUM_UNDO_STEPS),
 
 	/**
 	 * Coordinate raster size.
+	 * 
+	 * can be casted to a {@link Integer}
 	 */
 	PIPELINE_RASTER_SIZE(Integer.class, Constants.DEFAULT_PIPELINE_RASTER_SIZE),
 
 	/**
 	 * The working directory for execution and preview.
+	 * 
+	 * can be casted to a {@link String}
 	 */
 	DEFAULT_WORKING_DIRECTORY(String.class, Constants.DEFAULT_WORKING_DIRECTORY),
 
 	/**
 	 * Show the startup screen or not.
+	 * 
+	 * can be casted to a {@link Boolean}
 	 */
 	SHOW_STARTUP_SCREEN(Boolean.class, Constants.DEFAULT_SHOW_STARTUP_SCREEN);
 
+	
 	private Class<?> clazz;
 	private Object defaultValue;
 

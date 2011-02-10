@@ -32,6 +32,7 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.FileType;
+import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
@@ -68,8 +69,10 @@ public class ExportPipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		JFileChooser fileChooser = new JFileChooser();
+		File startDir = new File((String) ModelProxy.getInstance()
+				.getSettings()
+				.getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
+		JFileChooser fileChooser = new JFileChooser(startDir);
 		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
 		fileChooser.addChoosableFileFilter(FileType.BASH.getFileFilter());
 		fileChooser.addChoosableFileFilter(FileType.CMD.getFileFilter());
@@ -88,8 +91,8 @@ public class ExportPipelineAction extends AbstractAction {
 
 				if (type == null) {
 					/*
-					 * could not find out which type the file has, add the system
-					 * dependent extension.
+					 * could not find out which type the file has, add the
+					 * system dependent extension.
 					 */
 					String fileWithExplicitExtensionString = fileChooser
 							.getSelectedFile().getAbsolutePath();
@@ -110,20 +113,22 @@ public class ExportPipelineAction extends AbstractAction {
 					file = new File(fileWithExplicitExtensionString).toURI()
 							.toURL();
 				}
-				
+
 				/* Check if the file does not already exists. */
 				if (new File(file.toString().replace("file:", "")).isFile()) {
-					int confirmResult = JOptionPane.showConfirmDialog(null,
-									I18N.getInstance().getString(
-											"Controller.Actions.File.Override"),
-									I18N.getInstance().getString("Controller.Actions.File.Override.Title"),
-									JOptionPane.YES_NO_OPTION);
-					if(confirmResult == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
+					int confirmResult = JOptionPane.showConfirmDialog(
+							null,
+							I18N.getInstance().getString(
+									"Controller.Actions.File.Override"),
+							I18N.getInstance().getString(
+									"Controller.Actions.File.Override.Title"),
+							JOptionPane.YES_NO_OPTION);
+					if (confirmResult == JOptionPane.NO_OPTION
+							|| result == JOptionPane.CLOSED_OPTION) {
 						return;
 					}
 				}
-				
-				
+
 				ModelProxy.getInstance().getPipeline()
 						.exportPipeline(file, type);
 			} catch (FileException e1) {
