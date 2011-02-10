@@ -37,6 +37,7 @@ import java.util.Observer;
 import javax.swing.Action;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
 
 import de.osmembrane.Application;
@@ -203,8 +204,10 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 * @param functionInspector
 	 *            the {@link InspectorPanel} to handle the edits for the
 	 *            selected objects
+	 * @param popup
+	 *            the Popup to be displayed on right clicks
 	 */
-	public PipelinePanel(InspectorPanel functionInspector) {
+	public PipelinePanel(InspectorPanel functionInspector, final JPopupMenu popup) {
 
 		setLayout(new GridLayout(1, 1));
 
@@ -276,6 +279,10 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				// popup on right click
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					popup.show(e.getComponent(), e.getX(), e.getY());
+				}
 
 				// view tool and magic
 				switch (activeTool) {

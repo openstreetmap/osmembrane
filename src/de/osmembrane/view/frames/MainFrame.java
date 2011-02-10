@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
@@ -244,6 +245,19 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		menuBar.add(aboutMenu);
 
 		setJMenuBar(menuBar);
+		
+		// also provide a popupMenu
+		JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.add(ActionRegistry.getInstance().get(
+				DuplicateFunctionAction.class));
+		popupMenu.add(ActionRegistry.getInstance().get(
+				DeleteSelectionAction.class));
+		popupMenu.add(new JSeparator());
+		popupMenu.add(ActionRegistry.getInstance().get(UndoAction.class));
+		popupMenu.add(ActionRegistry.getInstance().get(RedoAction.class));
+		popupMenu.add(new JSeparator());
+		popupMenu.add(ActionRegistry.getInstance().get(ResetViewAction.class));
+		popupMenu.add(ActionRegistry.getInstance().get(ViewAllAction.class));
 
 		// tool bar with actions
 		JToolBar toolBar = new JToolBar(I18N.getInstance().getString(
@@ -339,7 +353,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		InspectorPanel functionInspector = new InspectorPanel();
 
 		// pipeline view
-		pipelineView = new PipelinePanel(functionInspector);
+		pipelineView = new PipelinePanel(functionInspector, popupMenu);
 		JPanel panePipeline = new JPanel(new BorderLayout());
 		panePipeline.add(pipelineView, BorderLayout.CENTER);
 		panePipeline.add(pipelineView.getVerticalScroll(), BorderLayout.EAST);
