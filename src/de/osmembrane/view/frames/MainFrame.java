@@ -432,8 +432,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 				at, pipelineView);
 
 		return pipelineView.getLayeredPane()
-				.equals(findComponentAt(framePoint))
-				&& !pipelineView.wouldCollide(pipelinePoint);
+				.equals(findComponentAt(framePoint));
 	}
 
 	@Override

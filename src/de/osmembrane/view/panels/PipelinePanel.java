@@ -207,7 +207,8 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 * @param popup
 	 *            the Popup to be displayed on right clicks
 	 */
-	public PipelinePanel(InspectorPanel functionInspector, final JPopupMenu popup) {
+	public PipelinePanel(InspectorPanel functionInspector,
+			final JPopupMenu popup) {
 
 		setLayout(new GridLayout(1, 1));
 
@@ -319,7 +320,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 								- draggingFrom.getX(), pf.getModelLocation()
 								.getY() - draggingFrom.getY());
 
-						Point2D objPosition = windowToObj(e.getPoint());
+						Point2D objPosition = windowToObj((e.getPoint()));
 
 						Point2D newObjPosition = new Point2D.Double(
 								objPosition.getX() + objOffset.getX(),
@@ -1000,8 +1001,13 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 * 
 	 * @param libraryFunction
 	 *            The new function to add
+	 * @param at
+	 *            the position of the new function, in PipelinePanel's window
+	 *            coordinates
 	 */
 	public void draggedOnto(LibraryFunction libraryFunction, Point at) {
+		
+		at = findNextFreePoint(at);
 
 		// drag & drop functionality : add function
 		Action a = ActionRegistry.getInstance().get(AddFunctionAction.class);
@@ -1173,7 +1179,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		 * number of pixels to subtract from the technically necessity to have
 		 * functions touching, so that the feature is not too restrictive
 		 */
-		int grace = 10;
+		int grace = 0;
 
 		for (PipelineFunction pf : functions) {
 			if ((newPoint.x >= pf.getX() - pf.getWidth() + grace)
@@ -1185,6 +1191,46 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Finds the next free & usable position on the pipeline panel, based on a
+	 * preferred location.
+	 * 
+	 * @param at
+	 *            location where to find the nearest free point for
+	 * @return the nearest free point in the area of at
+	 */
+	public Point findNextFreePoint(Point at) {
+		Point result = at;
+		int mode = 0;
+		double dist = 0;
+
+		/*
+		 * run in 3 stages per phase: - each phase, increase dist - each stage,
+		 * increase mode - mode 0 : move x - mode 1 : move y - mode 2 : move xy
+		 */
+		while (wouldCollide(result)) {
+			switch (mode) {
+			case 0:
+				dist += 100.0;
+
+				result = at;
+				result.translate((int) dist, 0);
+				break;
+			case 1:
+				result = at;
+				result.translate(0, (int) dist);
+				break;
+			case 2:
+				result = at;
+				result.translate((int) dist, (int) dist);
+				break;
+			}
+			mode = (mode + 1) % 3;
+		}
+
+		return result;
 	}
 
 }
