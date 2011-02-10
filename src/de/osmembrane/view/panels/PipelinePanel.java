@@ -320,7 +320,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 								- draggingFrom.getX(), pf.getModelLocation()
 								.getY() - draggingFrom.getY());
 
-						Point2D objPosition = windowToObj((e.getPoint()));
+						Point2D objPosition = windowToObj(findNextFreePoint(e.getPoint()));
 
 						Point2D newObjPosition = new Point2D.Double(
 								objPosition.getX() + objOffset.getX(),
@@ -1202,32 +1202,22 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 * @return the nearest free point in the area of at
 	 */
 	public Point findNextFreePoint(Point at) {
-		Point result = at;
-		int mode = 0;
-		double dist = 0;
+		Point result = new Point(at);
+		double dist = 0.0;
 
-		/*
-		 * run in 3 stages per phase: - each phase, increase dist - each stage,
-		 * increase mode - mode 0 : move x - mode 1 : move y - mode 2 : move xy
-		 */
 		while (wouldCollide(result)) {
-			switch (mode) {
-			case 0:
-				dist += 100.0;
-
-				result = at;
-				result.translate((int) dist, 0);
-				break;
-			case 1:
-				result = at;
-				result.translate(0, (int) dist);
-				break;
-			case 2:
-				result = at;
-				result.translate((int) dist, (int) dist);
-				break;
-			}
-			mode = (mode + 1) % 3;
+			dist += 20.0;
+			
+			// angle between x to the right, y downwards in [0, Math.PI / 2]
+			for (double angle = 0.0; angle < Math.PI / 2.0; angle += Math.PI / 20.0) {
+				
+				result = new Point(at);
+				result.translate((int) (+ Math.cos(angle) * dist), (int) (+ Math.sin(angle) * dist));
+				
+				if (!wouldCollide(result)) {
+					break;
+				}
+			} /* for */		
 		}
 
 		return result;

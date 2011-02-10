@@ -14,6 +14,7 @@
 package de.osmembrane.view.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Image;
@@ -245,7 +246,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		menuBar.add(aboutMenu);
 
 		setJMenuBar(menuBar);
-		
+
 		// also provide a popupMenu
 		JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.add(ActionRegistry.getInstance().get(
@@ -402,11 +403,11 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 				- splitMain.getInsets().right - splitMain.getDividerSize()
 				- 384);
 	}
-	
-	
+
 	@Override
 	public void setWindowTitle(String title) {
-		super.setWindowTitle(title + " - " + I18N.getInstance().getString("osmembrane"));
+		super.setWindowTitle(title + " - "
+				+ I18N.getInstance().getString("osmembrane"));
 	}
 
 	@Override
@@ -428,11 +429,11 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 	public boolean isDragAndDropTarget(Point at) {
 		Point framePoint = SwingUtilities.convertPoint(this.getGlassPane(), at,
 				this);
-		Point pipelinePoint = SwingUtilities.convertPoint(this.getGlassPane(),
-				at, pipelineView);
 
-		return pipelineView.getLayeredPane()
-				.equals(findComponentAt(framePoint));
+		Component target = findComponentAt(framePoint);
+
+		return (pipelineView.getLayeredPane().equals(target))
+				|| (pipelineView.getLayeredPane().equals(target.getParent()));
 	}
 
 	@Override
