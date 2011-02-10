@@ -11,9 +11,10 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller;
 
+import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -55,6 +56,8 @@ import de.osmembrane.controller.actions.ViewAllAction;
 import de.osmembrane.controller.actions.ZoomInAction;
 import de.osmembrane.controller.actions.ZoomOutAction;
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.tools.I18N;
+import de.osmembrane.view.ViewRegistry;
 
 /**
  * The action registry implements the Broker pattern to organize the
@@ -205,5 +208,20 @@ public class ActionRegistry implements Observer {
 		get(PreviewPipelineAction.class).setEnabled(pipelineFull);
 
 		get(GeneratePipelineAction.class).setEnabled(pipelineFull);
+
+		URL url = ModelProxy.getInstance().getPipeline().getFilename();
+		String fileName;
+
+		// if not call from initializer
+		if (o != null)  {
+			
+			if (url == null) {
+				fileName = I18N.getInstance().getString("Controller.UnsavedTitle");
+			} else {
+				fileName = new File(url.getPath()).getName();
+			}
+			ViewRegistry.getInstance().getMainFrame()
+					.setWindowTitle(fileName + (isSaved ? "" : "*"));
+		}
 	}
 }

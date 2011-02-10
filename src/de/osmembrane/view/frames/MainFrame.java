@@ -388,6 +388,12 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 				- splitMain.getInsets().right - splitMain.getDividerSize()
 				- 384);
 	}
+	
+	
+	@Override
+	public void setWindowTitle(String title) {
+		super.setWindowTitle(title + " - " + I18N.getInstance().getString("osmembrane"));
+	}
 
 	@Override
 	public Object getSelected() {

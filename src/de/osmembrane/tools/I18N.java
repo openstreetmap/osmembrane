@@ -16,6 +16,7 @@ package de.osmembrane.tools;
 
 import java.text.MessageFormat;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
@@ -119,7 +120,11 @@ public class I18N extends Observable {
 	 */
 	public String getString(String key, Object... values) {
 		String msg;
-		msg = resourceBundle.getString(key);
+		try {
+			msg = resourceBundle.getString(key);
+		} catch (MissingResourceException e) {
+			msg = "!" + key + "!";
+		}
 
 		if (values.length > 0) {
 			return MessageFormat.format(msg, values);
