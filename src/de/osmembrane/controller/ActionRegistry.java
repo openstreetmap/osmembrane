@@ -56,6 +56,7 @@ import de.osmembrane.controller.actions.ViewAllAction;
 import de.osmembrane.controller.actions.ZoomInAction;
 import de.osmembrane.controller.actions.ZoomOutAction;
 import de.osmembrane.model.ModelProxy;
+import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 
@@ -191,34 +192,28 @@ public class ActionRegistry implements Observer {
 
 		get(UndoAction.class).setEnabled(
 				ModelProxy.getInstance().getPipeline().undoAvailable());
-
 		get(RedoAction.class).setEnabled(
 				ModelProxy.getInstance().getPipeline().redoAvailable());
-
 		get(SaveAsPipelineAction.class).setEnabled(pipelineFull);
-
 		get(SavePipelineAction.class).setEnabled(!isSaved && pipelineFull);
-
 		get(ArrangePipelineAction.class).setEnabled(pipelineFull);
-
 		get(ExecutePipelineAction.class).setEnabled(pipelineFull);
-
 		get(ExportPipelineAction.class).setEnabled(pipelineFull);
-
 		get(PreviewPipelineAction.class).setEnabled(pipelineFull);
-
 		get(GeneratePipelineAction.class).setEnabled(pipelineFull);
 
 		URL url = ModelProxy.getInstance().getPipeline().getFilename();
 		String fileName;
 
 		// if not call from initializer
-		if (o != null)  {
-			
+		if (o != null) {
+
 			if (url == null) {
-				fileName = I18N.getInstance().getString("Controller.UnsavedTitle");
+				fileName = I18N.getInstance().getString(
+						"Controller.UnsavedTitle");
 			} else {
-				fileName = new File(url.getPath()).getName();
+				fileName = new File(url.getPath()).getName().replaceAll(
+						"(?i)" + FileType.OSMEMBRANE.getExtension(), "");
 			}
 			ViewRegistry.getInstance().getMainFrame()
 					.setWindowTitle(fileName + (isSaved ? "" : "*"));

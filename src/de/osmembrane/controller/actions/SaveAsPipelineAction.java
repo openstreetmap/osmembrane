@@ -79,7 +79,7 @@ public class SaveAsPipelineAction extends AbstractAction {
 
 			/* check if the .osmembrane extension is missing */
 			String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-			if (!filePath.endsWith(FileType.OSMEMBRANE.getExtension())) {
+			if (!filePath.toLowerCase().endsWith(FileType.OSMEMBRANE.getExtension().toLowerCase())) {
 				filePath = filePath + FileType.OSMEMBRANE.getExtension();
 			}
 

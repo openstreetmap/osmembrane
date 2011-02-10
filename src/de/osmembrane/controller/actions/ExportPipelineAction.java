@@ -101,7 +101,7 @@ public class ExportPipelineAction extends AbstractAction {
 
 				if (type == null) {
 					/*
-					 * could not find out what type the file has, add the system
+					 * could not find out which type the file has, add the system
 					 * dependent extension.
 					 */
 					String fileWithExplicitExtensionString = fileChooser
