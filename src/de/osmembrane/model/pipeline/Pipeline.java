@@ -105,7 +105,7 @@ public class Pipeline extends AbstractPipeline {
 	}
 
 	@Override
-	public AbstractPipelineSettings getPipelineSettings() {
+	public AbstractPipelineSettings getSettings() {
 		return pipelineSettings;
 	}
 

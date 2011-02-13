@@ -28,10 +28,14 @@ import de.osmembrane.model.persistence.FileType;
 public abstract class AbstractPipeline extends Observable implements Observer {
 
 	/**
+	 * Notice: The {@link AbstractPipelineSettings} are not observed by the
+	 * pipeline, so any changes made in the {@link AbstractPipelineSettings}
+	 * will <b>not</b> result in a observer message by the pipeline.
 	 * 
+	 * @return the settings of the pipeline.
 	 */
-	public abstract AbstractPipelineSettings getPipelineSettings();
-	
+	public abstract AbstractPipelineSettings getSettings();
+
 	/**
 	 * Creates an empty pipeline.
 	 */
