@@ -17,12 +17,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import de.osmembrane.Application;
 import de.osmembrane.controller.events.ContainingEvent;
-import de.osmembrane.exceptions.ControlledException;
-import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractParameter;
-import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.ListDialog;
 import de.osmembrane.view.interfaces.IListDialog;

@@ -19,12 +19,8 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
-import de.osmembrane.Application;
 import de.osmembrane.controller.events.ContainingEvent;
-import de.osmembrane.exceptions.ControlledException;
-import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractParameter;
-import de.osmembrane.tools.I18N;
 
 /**
  * Action to edit a parameter which is a directory path and therefore open the

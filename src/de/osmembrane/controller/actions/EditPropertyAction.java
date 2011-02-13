@@ -17,12 +17,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import de.osmembrane.Application;
 import de.osmembrane.controller.events.ContainingFunctionChangeParameterEvent;
-import de.osmembrane.exceptions.ControlledException;
-import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.tools.I18N;
 
 /**
  * Action to edit a specific parameter or task of a function. Receives a
