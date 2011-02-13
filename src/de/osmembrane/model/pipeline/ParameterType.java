@@ -76,7 +76,7 @@ public enum ParameterType {
 	/**
 	 * A comma sperated list of values.
 	 */
-	LIST("List", "^.+(,.+)$", "^$");
+	LIST("List", "^[^,]+(,[^,]+)*$", "^$");
 
 	/**
 	 * compile all parameter-types at startup to verify that no pattern is
