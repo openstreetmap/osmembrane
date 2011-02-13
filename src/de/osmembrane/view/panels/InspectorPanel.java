@@ -64,7 +64,6 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.pipeline.AbstractTask;
-import de.osmembrane.model.pipeline.ParameterFormatException;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
@@ -285,14 +284,7 @@ public class InspectorPanel extends JPanel implements Observer {
 		if (inspecting != null) {
 			for (AbstractParameter ap : inspecting.getActiveTask()
 					.getParameters()) {
-				try {
-					ap.setValue(ap.getDefaultValue());
-				} catch (ParameterFormatException e) {
-					/*
-					 * the model could think one of its default parameters is
-					 * not valid. However, we do not need to do anything here.
-					 */
-				}
+				ap.setValue(ap.getDefaultValue());
 			}
 		}
 	}

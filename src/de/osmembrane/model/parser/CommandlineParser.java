@@ -30,7 +30,6 @@ import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorType;
-import de.osmembrane.model.pipeline.ParameterFormatException;
 import de.osmembrane.model.pipeline.Pipeline;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
@@ -263,9 +262,9 @@ public class CommandlineParser implements IParser {
 				if (spacesParam != null) {
 					String[] results = PATTERN_SPLIT_SPACES_PARAMETER
 							.split(taskParameters);
-					try {
-						spacesParam.setValue(results[0].trim());
-					} catch (ParameterFormatException e) {
+
+					spacesParam.setValue(results[0].trim());
+					if (!spacesParam.isValid()) {
 						throw new ParseException(
 								ErrorType.INVALID_PARAMETER_VALUE, taskName,
 								spacesParam.getName(), results[0].trim());
@@ -285,12 +284,12 @@ public class CommandlineParser implements IParser {
 									.equals(key.toLowerCase())
 									|| (key.equals(DEFAULT_KEY) && parameter
 											.isDefaultParameter())) {
-								try {
-									parameter.setValue(parameters.get(key));
-								} catch (ParameterFormatException e) {
+								parameter.setValue(parameters.get(key));
+								if (!parameter.isValid()) {
 									throw new ParseException(
 											ErrorType.INVALID_PARAMETER_VALUE,
-											taskName, key, parameters.get(key));
+											taskName, parameter.getName(),
+											parameters.get(key));
 								}
 
 								foundKey = true;
@@ -495,14 +494,17 @@ public class CommandlineParser implements IParser {
 					 * assigned, or settings say that they are needed.
 					 */
 					String value = null;
-					if(parameter.getValue() != null) {
+					if (parameter.getValue() != null) {
 						value = parameter.getValue();
-					} else if (parameter.isDefaultValue() &&
-							(Boolean) ModelProxy.getInstance().getSettings()
-							.getValue(SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES)) {
+					} else if (parameter.isDefaultValue()
+							&& (Boolean) ModelProxy
+									.getInstance()
+									.getSettings()
+									.getValue(
+											SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES)) {
 						value = parameter.getDefaultValue();
 					}
-					if(value != null) {
+					if (value != null) {
 						/* look up if it is a parameter with set "hasSpaces" */
 						if (parameter.hasSpaces()
 								&& parameter.isDefaultParameter()) {

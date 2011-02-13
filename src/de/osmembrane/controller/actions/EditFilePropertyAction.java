@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -25,7 +24,6 @@ import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractParameter;
-import de.osmembrane.model.pipeline.ParameterFormatException;
 import de.osmembrane.tools.I18N;
 
 /**
@@ -59,13 +57,7 @@ public class EditFilePropertyAction extends AbstractAction {
 		fileChooser.setSelectedFile(new File(value));
 
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			try {
-				ap.setValue(fileChooser.getSelectedFile().getAbsolutePath());
-			} catch (ParameterFormatException e1) {
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.WARNING, I18N.getInstance()
-								.getString("Controller.ParameterNotValid")));
-			}
+			ap.setValue(fileChooser.getSelectedFile().getAbsolutePath());
 		}
 	}
 }

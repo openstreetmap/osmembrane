@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -23,7 +22,6 @@ import de.osmembrane.controller.events.ContainingEvent;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractParameter;
-import de.osmembrane.model.pipeline.ParameterFormatException;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.ListDialog;
@@ -56,13 +54,7 @@ public class EditListPropertyAction extends AbstractAction {
 
 		list.open(ap);
 		if (list.shallApplyChanges()) {
-			try {
-				ap.setValue(list.getEdits());
-			} catch(ParameterFormatException e1) {
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.WARNING, I18N.getInstance()
-								.getString("Controller.ParameterNotValid")));
-			}
+			ap.setValue(list.getEdits());
 		}
 
 	}

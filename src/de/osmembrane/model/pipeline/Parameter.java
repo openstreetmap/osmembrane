@@ -19,7 +19,6 @@ import java.util.List;
 
 import de.osmembrane.model.Identifier;
 import de.osmembrane.model.ModelProxy;
-import de.osmembrane.model.pipeline.ParameterFormatException.Type;
 import de.osmembrane.model.xml.XMLEnumValue;
 import de.osmembrane.model.xml.XMLParameter;
 import de.osmembrane.tools.I18N;
@@ -142,11 +141,6 @@ public class Parameter extends AbstractParameter {
 
 	@Override
 	public boolean setValue(String value) {
-
-		if (!validate(value)) {
-			throw new ParameterFormatException(Type.DEFAULT);
-		}
-
 		if(this.getType().isStringEmpty(value)) {
 			this.value = null;
 		} else {

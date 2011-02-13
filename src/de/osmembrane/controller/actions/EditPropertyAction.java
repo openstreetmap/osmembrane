@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -23,7 +22,6 @@ import de.osmembrane.controller.events.ContainingFunctionChangeParameterEvent;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
-import de.osmembrane.model.pipeline.ParameterFormatException;
 import de.osmembrane.tools.I18N;
 
 /**
@@ -51,13 +49,7 @@ public class EditPropertyAction extends AbstractAction {
 
 		// set new parameter
 		if (cfcpe.wasNewParameterSet()) {
-			try {
-				cfcpe.getChangedParameter().setValue(cfcpe.getNewParameterValue());
-			} catch(ParameterFormatException e1) {
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.WARNING, I18N.getInstance()
-								.getString("Controller.ParameterNotValid")));
-			}
+			cfcpe.getChangedParameter().setValue(cfcpe.getNewParameterValue());
 		}
 
 		// set new task
