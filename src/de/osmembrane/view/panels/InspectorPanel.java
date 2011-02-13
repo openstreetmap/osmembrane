@@ -361,7 +361,21 @@ public class InspectorPanel extends JPanel implements Observer {
 			// required to prevent inspect -> setValue -> ... loop
 			propertyTable.removeEditor();
 
-			propertyTable.setValueAt(value, editRow, editColumn);
+			// change iff value changed
+			// + work-around for model code
+			String realValue = inspecting.getActiveTask().getParameters()[editRow - 1]
+					.getValue();
+			if (realValue == null) {
+				realValue = inspecting.getActiveTask().getParameters()[editRow - 1]
+						.getDefaultValue();
+			}
+			if (realValue == null) {
+				realValue = "";
+			}
+			if (!value.equals(realValue)) {
+				propertyTable.setValueAt(value, editRow, editColumn);
+			}
+			
 		}
 		propertyTable.removeEditor();
 
@@ -414,6 +428,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					jtfwbBB.addButtonActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							propertyTable.removeEditor();
 							Action aBB = ActionRegistry.getInstance().get(
 									EditBoundingBoxPropertyAction.class);
 							ContainingEvent ceBB = new ContainingEvent(this, ap);
@@ -433,6 +448,7 @@ public class InspectorPanel extends JPanel implements Observer {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							propertyTable.removeEditor();
 							Action aList = ActionRegistry.getInstance().get(
 									EditListPropertyAction.class);
 							ContainingEvent ceList = new ContainingEvent(this,
@@ -453,6 +469,7 @@ public class InspectorPanel extends JPanel implements Observer {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							propertyTable.removeEditor();
 							Action aList = ActionRegistry.getInstance().get(
 									EditFilePropertyAction.class);
 							ContainingEvent ceFile = new ContainingEvent(this,
@@ -473,6 +490,7 @@ public class InspectorPanel extends JPanel implements Observer {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							propertyTable.removeEditor();
 							Action aList = ActionRegistry.getInstance().get(
 									EditDirectoryPropertyAction.class);
 							ContainingEvent ceDir = new ContainingEvent(this,
