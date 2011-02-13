@@ -14,6 +14,7 @@
 package de.osmembrane.view.panels;
 
 import java.awt.Adjustable;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -35,6 +36,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -983,6 +985,14 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		size = objToWindowDelta(size);
 		pf.setSize(size.x, size.y);
 
+		if (!pf.getModelFunction().isComplete()) {
+			pf.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+		} else if (pf.equals(selected)) {
+			pf.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		} else {
+			pf.setBorder(null);
+		}
+
 		pf.arrangeConnectors();
 	}
 
@@ -1044,6 +1054,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 				// edit in inspector panel
 				PipelineFunction pf = (PipelineFunction) childObject;
+				arrange(pf);
 				functionInspector.inspect(pf.getModelFunction());
 
 			} else if (selected instanceof PipelineLink) {
@@ -1190,7 +1201,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 			if (pf.equals(ignore)) {
 				continue;
 			}
-			
+
 			if ((newPoint.x >= pf.getX() - pf.getWidth() + grace)
 					&& (newPoint.y >= pf.getY() - pf.getHeight() + grace)
 					&& (newPoint.x <= pf.getX() + pf.getWidth() - grace)
