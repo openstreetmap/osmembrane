@@ -34,6 +34,7 @@ import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.model.persistence.OSMembranePersistence;
 import de.osmembrane.model.persistence.PersistenceFactory;
+import de.osmembrane.model.persistence.PipelinePersistenceObject;
 import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Constants;
@@ -52,7 +53,7 @@ public class Pipeline extends AbstractPipeline {
 	private List<AbstractFunction> functions;
 
 	private URL pipelineFilename;
-	
+
 	private AbstractPipelineSettings pipelineSettings;
 
 	private boolean savedState;
@@ -182,19 +183,18 @@ public class Pipeline extends AbstractPipeline {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(OSMembranePersistence.class);
 
-		Object obj = persistence.load(filename);
-
-		/* is checked by persistence */
-		@SuppressWarnings("unchecked")
-		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
+		PipelinePersistenceObject pipeline = (PipelinePersistenceObject) persistence
+				.load(filename);
 
 		clear();
 
 		pipelineFilename = filename;
-		this.functions = functions;
+		this.functions = pipeline.getFunctions();
 		for (AbstractFunction function : functions) {
 			function.addObserver(this);
 		}
+
+		this.pipelineSettings = pipeline.getSettings();
 
 		changeSavedState(true);
 
@@ -213,7 +213,8 @@ public class Pipeline extends AbstractPipeline {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(OSMembranePersistence.class);
 
-		persistence.save(filename, functions);
+		persistence.save(filename, new PipelinePersistenceObject(functions,
+				pipelineSettings));
 		pipelineFilename = filename;
 
 		/* Saved successfully (persistence has not thrown a FileException */
@@ -238,7 +239,8 @@ public class Pipeline extends AbstractPipeline {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(OSMembranePersistence.class);
 
-		persistence.save(Constants.DEFAULT_BACKUP_FILE, functions);
+		persistence.save(Constants.DEFAULT_BACKUP_FILE,
+				new PipelinePersistenceObject(functions, pipelineSettings));
 	}
 
 	@Override
@@ -267,18 +269,17 @@ public class Pipeline extends AbstractPipeline {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(type.getPersistenceClass());
 
-		Object obj = persistence.load(filename);
-
-		/* is checked by persistence */
-		@SuppressWarnings("unchecked")
-		List<AbstractFunction> functions = (List<AbstractFunction>) obj;
+		PipelinePersistenceObject pipeline = (PipelinePersistenceObject) persistence
+				.load(filename);
 
 		clear();
 
-		this.functions = functions;
+		this.functions = pipeline.getFunctions();
 		for (AbstractFunction function : functions) {
 			function.addObserver(this);
 		}
+
+		this.pipelineSettings = pipeline.getSettings();
 
 		changeSavedState(true);
 
@@ -289,8 +290,12 @@ public class Pipeline extends AbstractPipeline {
 
 	@Override
 	public String generate(FileType filetype) {
-		return ParserFactory.getInstance().getParser(filetype.getParserClass())
-				.parsePipeline(functions);
+		return ParserFactory
+				.getInstance()
+				.getParser(filetype.getParserClass())
+				.parsePipeline(
+						new PipelinePersistenceObject(functions,
+								pipelineSettings));
 	}
 
 	@Override
@@ -299,7 +304,7 @@ public class Pipeline extends AbstractPipeline {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(type.getPersistenceClass());
 
-		persistence.save(filename, functions);
+		persistence.save(filename, new PipelinePersistenceObject(functions, pipelineSettings));
 	}
 
 	@Override

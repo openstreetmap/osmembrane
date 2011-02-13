@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.Semaphore;
 
@@ -29,7 +28,6 @@ import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.persistence.FileException.Type;
-import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.tools.I18N;
@@ -86,7 +84,7 @@ public class OSMembranePersistence extends AbstractPersistence {
 	
 	@Override
 	public void save(URL file, Object data) throws FileException {
-		if (!(data instanceof List<?>)) {
+		if (!(data instanceof PipelinePersistenceObject)) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
 					"OSMembranePersistence#save() got a wrong"
@@ -115,9 +113,8 @@ public class OSMembranePersistence extends AbstractPersistence {
 		try {
 			BufferedInputStream bis = new BufferedInputStream(file.openStream());
 			ObjectInputStream ois = new ObjectInputStream(bis);
-
-			@SuppressWarnings("unchecked")
-			List<AbstractFunction> object = (List<AbstractFunction>) ois
+			
+			PipelinePersistenceObject object = (PipelinePersistenceObject) ois
 					.readObject();
 
 			ois.close();
@@ -129,6 +126,8 @@ public class OSMembranePersistence extends AbstractPersistence {
 		} catch (IOException e) {
 			throw new FileException(Type.NOT_READABLE, e);
 		} catch (ClassNotFoundException e) {
+			throw new FileException(Type.WRONG_FORMAT, e);
+		} catch (ClassCastException e) {
 			throw new FileException(Type.WRONG_FORMAT, e);
 		}
 	}

@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.parser.ParseException.ErrorType;
+import de.osmembrane.model.persistence.PipelinePersistenceObject;
 import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractParameter;
@@ -31,6 +32,7 @@ import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorType;
 import de.osmembrane.model.pipeline.Pipeline;
+import de.osmembrane.model.pipeline.PipelineSettings;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.tools.I18N;
 
@@ -101,7 +103,7 @@ public class CommandlineParser implements IParser {
 	Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
 	@Override
-	public List<AbstractFunction> parseString(String input)
+	public PipelinePersistenceObject parseString(String input)
 			throws ParseException {
 
 		/** A temporary silent pipeline to check loop freeness */
@@ -400,14 +402,16 @@ public class CommandlineParser implements IParser {
 
 			returnList.add(function);
 		}
-		return returnList;
+		return new PipelinePersistenceObject(returnList, new PipelineSettings());
 	}
 
 	/* ************************* */
 	/* String-Pipeline Generator */
 	/* ************************* */
 	@Override
-	public String parsePipeline(List<AbstractFunction> pipeline) {
+	public String parsePipeline(PipelinePersistenceObject pipelineObject) {
+		List<AbstractFunction> pipeline = pipelineObject.getFunctions();
+		
 		/* Queue where functions are stored, that haven't been parsed yet. */
 		Queue<AbstractFunction> functionQueue = new LinkedList<AbstractFunction>();
 

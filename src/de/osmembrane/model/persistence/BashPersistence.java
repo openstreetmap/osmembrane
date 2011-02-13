@@ -22,7 +22,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.List;
 import java.util.Observable;
 
 import de.osmembrane.Application;
@@ -32,7 +31,6 @@ import de.osmembrane.model.parser.IParser;
 import de.osmembrane.model.parser.ParseException;
 import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.FileException.Type;
-import de.osmembrane.model.pipeline.AbstractFunction;
 
 /**
  * Writes and Reads Bash-Files (normally used on UNIX systems).
@@ -46,7 +44,7 @@ public class BashPersistence extends AbstractPersistence {
 
 	@Override
 	public void save(URL filename, Object data) throws FileException {
-		if (!(data instanceof List<?>)) {
+		if (!(data instanceof PipelinePersistenceObject)) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
 					"BashPersistence#save() got a wrong"
@@ -58,10 +56,9 @@ public class BashPersistence extends AbstractPersistence {
 			File file = new File(filename.toString().replace("file:", ""));
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
-
-			@SuppressWarnings("unchecked")
+			
 			String output = ParserFactory.getInstance().getParser(PARSER)
-					.parsePipeline((List<AbstractFunction>) data);
+					.parsePipeline((PipelinePersistenceObject) data);
 
 			bw.write(output);
 			bw.close();
@@ -88,7 +85,7 @@ public class BashPersistence extends AbstractPersistence {
 			br.close();
 			isr.close();
 
-			List<AbstractFunction> functions = parser.parseString(fileContent.toString());
+			PipelinePersistenceObject functions = parser.parseString(fileContent.toString());
 
 			return functions;
 

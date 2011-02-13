@@ -13,10 +13,9 @@
 
 package de.osmembrane.model.parser;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
-import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.persistence.PipelinePersistenceObject;
 
 /**
  * Implementation of {@link IParser} for the bash (unix) command line.
@@ -39,7 +38,7 @@ public class BashParser extends CommandlineParser {
 	}
 	
 	@Override
-	public String parsePipeline(List<AbstractFunction> pipeline) {
+	public String parsePipeline(PipelinePersistenceObject pipeline) {
 		String result = super.parsePipeline(pipeline);
 		return "#!/bin/bash\n\n" + result;
 	}

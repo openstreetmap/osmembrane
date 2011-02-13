@@ -14,10 +14,9 @@
 
 package de.osmembrane.model.parser;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
-import de.osmembrane.model.pipeline.AbstractFunction;
+import de.osmembrane.model.persistence.PipelinePersistenceObject;
 import de.osmembrane.model.pipeline.Pipeline;
 
 /**
@@ -34,7 +33,7 @@ public interface IParser {
 	 *            string which should be transformed
 	 * @return List of functions, which are used in the {@link Pipeline}
 	 */
-	public List<AbstractFunction> parseString(String input)
+	public PipelinePersistenceObject parseString(String input)
 			throws ParseException;
 
 	/**
@@ -44,7 +43,7 @@ public interface IParser {
 	 *            which should be transformed
 	 * @return String representation a given format
 	 */
-	public String parsePipeline(List<AbstractFunction> pipeline);
+	public String parsePipeline(PipelinePersistenceObject pipeline);
 	
 	/**
 	 * Returns the quotation symbol of the parser.
