@@ -494,13 +494,15 @@ public class CommandlineParser implements IParser {
 					 * Only add a parameter when there is not a default value
 					 * assigned, or settings say that they are needed.
 					 */
-					if ((!parameter.isDefaultValue() || (Boolean) ModelProxy
-							.getInstance()
-							.getSettings()
-							.getValue(
-									SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES))
-							&& parameter.getValue() != null) {
-
+					String value = null;
+					if(parameter.getValue() != null) {
+						value = parameter.getValue();
+					} else if (parameter.isDefaultValue() &&
+							(Boolean) ModelProxy.getInstance().getSettings()
+							.getValue(SettingType.EXPORT_PARAMETERS_WITH_DEFAULT_VALUES)) {
+						value = parameter.getDefaultValue();
+					}
+					if(value != null) {
 						/* look up if it is a parameter with set "hasSpaces" */
 						if (parameter.hasSpaces()
 								&& parameter.isDefaultParameter()) {
