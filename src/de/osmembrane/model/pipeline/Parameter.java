@@ -179,7 +179,11 @@ public class Parameter extends AbstractParameter {
 
 	@Override
 	public boolean isValid() {
-		return validate(getValue());
+		if (getValue() != null) {
+			return validate(getValue());
+		} else {
+			return validate(getDefaultValue());
+		}
 	}
 	
 	@Override

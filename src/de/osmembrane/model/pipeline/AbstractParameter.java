@@ -115,13 +115,15 @@ public abstract class AbstractParameter extends Observable implements
 	/**
 	 * Returns the result of a validation of the given value.
 	 * 
-	 * @param value value to be checked
+	 * @param value
+	 *            value to be checked
 	 * @return true if value is ok, otherwise false
 	 */
 	public abstract boolean validate(String value);
 
 	/**
-	 * Returns if the parameter has a valid value or not.
+	 * Returns if the parameter has a valid value or not, if value is NULL the
+	 * defaultValue is checked.
 	 * 
 	 * @return true if parameter has a valid value, otherwise false
 	 */
