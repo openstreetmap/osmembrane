@@ -11,10 +11,10 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.view.components;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
@@ -179,6 +179,15 @@ public class JTextFieldWithButton extends JPanel {
 	public void addFieldKeyListener(KeyListener kl) {
 		field.addKeyListener(kl);
 
+	}
+
+	/**
+	 * Sets the color of the value text field to color.
+	 * 
+	 * @param color
+	 */
+	public void setValueForeground(Color color) {
+		field.setForeground(color);
 	}
 
 }

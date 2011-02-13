@@ -387,7 +387,9 @@ public class InspectorPanel extends JPanel implements Observer {
 			for (int i = 0; i < inspect.getActiveTask().getParameters().length; i++) {
 				final AbstractParameter ap = inspect.getActiveTask()
 						.getParameters()[i];
-
+				
+				String realValue = (ap.getValue() != null) ? ap.getValue() : ap.getDefaultValue(); 
+					
 				switch (ap.getType()) {
 
 				case ENUM:
@@ -403,7 +405,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					// use CheckBox with true/false
 					JCheckBox jcb = new JCheckBox();
 					jcb.setModel(new InspectorPanelTableBooleanCheckBoxModel(ap));
-					jcb.setSelected(ap.getValue().equals(
+					jcb.setSelected(realValue.equals(
 							Boolean.TRUE.toString()));
 
 					DefaultCellEditor dceBoolean = new DefaultCellEditor(jcb);
@@ -413,7 +415,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				case BBOX:
 					// use JTFWB with EditBBAction
 					JTextFieldWithButton jtfwbBB = new JTextFieldWithButton(
-							ap.getValue(), EDIT_BUTTON_CAPTION);
+							realValue, EDIT_BUTTON_CAPTION);
 					jtfwbBB.fieldNoBorders();
 					// jtfwbBB.setValue("(Bounding Box)", false);
 					jtfwbBB.addButtonActionListener(new ActionListener() {
@@ -432,7 +434,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				case LIST:
 					// use JTFWB with EditListAction
 					JTextFieldWithButton jtwbList = new JTextFieldWithButton(
-							ap.getValue(), EDIT_BUTTON_CAPTION);
+							realValue, EDIT_BUTTON_CAPTION);
 					jtwbList.fieldNoBorders();
 					jtwbList.addButtonActionListener(new ActionListener() {
 
@@ -452,7 +454,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				case FILENAME:
 					// use JTFWB with EditFileAction
 					JTextFieldWithButton jtwbFile = new JTextFieldWithButton(
-							ap.getValue(), EDIT_BUTTON_CAPTION);
+							realValue, EDIT_BUTTON_CAPTION);
 					jtwbFile.fieldNoBorders();
 					jtwbFile.addButtonActionListener(new ActionListener() {
 
@@ -472,7 +474,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				case DIRECTORY:
 					// use JTFWB with EditDirectoryAction
 					JTextFieldWithButton jtwbDir = new JTextFieldWithButton(
-							ap.getValue(), EDIT_BUTTON_CAPTION);
+							realValue, EDIT_BUTTON_CAPTION);
 					jtwbDir.fieldNoBorders();
 					jtwbDir.addButtonActionListener(new ActionListener() {
 
@@ -491,7 +493,7 @@ public class InspectorPanel extends JPanel implements Observer {
 
 				default:
 					// use a plain string JTextField
-					JTextField textField = new JTextField(ap.getValue());
+					JTextField textField = new JTextField(realValue);
 					textField.setOpaque(true);
 					textField.setBorder(null);
 					DefaultCellEditor dce = new DefaultCellEditor(textField);
@@ -825,6 +827,7 @@ public class InspectorPanel extends JPanel implements Observer {
 			c = super.getTableCellRendererComponent(table, value, isSelected,
 					hasFocus, row, column);
 
+			// fetch correct components
 			if (value instanceof JComboBox) {
 				c = (Component) value;
 			} else if (value instanceof JTextFieldWithButton) {
@@ -835,7 +838,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				c = (Component) value;
 			}
 
-			// some nice colors there
+			// some nice colors for every other row there
 			if (column == 0) {
 				c.setBackground((row % 2 == 0) ? InspectorPanel.LIGHT_BLUE
 						: InspectorPanel.LIGHT_BLUE);
@@ -845,6 +848,26 @@ public class InspectorPanel extends JPanel implements Observer {
 			}
 
 			c.setForeground(Color.BLACK);
+
+			// if it's a default value, print it gray
+			if ((row > 0) && (value != null) && (value instanceof String)) {
+				if (value
+						.equals(inspecting.getActiveTask().getParameters()[row - 1]
+								.getDefaultValue())) {
+					c.setForeground(Color.GRAY);
+				} else {
+					c.setForeground(Color.BLACK);
+				}
+			} else if ((row > 0) && (c instanceof JTextFieldWithButton)) {
+				JTextFieldWithButton tfwb = (JTextFieldWithButton) c;
+				if (tfwb.getValue()
+						.equals(inspecting.getActiveTask().getParameters()[row - 1]
+								.getDefaultValue())) {
+					tfwb.setValueForeground(Color.GRAY);
+				} else {
+					tfwb.setValueForeground(Color.BLACK);
+				}
+			}
 
 			// suppress "selected" borders
 			// does not work for edited cells (in Metal LnF at least)
