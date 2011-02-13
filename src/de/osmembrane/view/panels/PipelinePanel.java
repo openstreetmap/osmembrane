@@ -985,10 +985,10 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 		size = objToWindowDelta(size);
 		pf.setSize(size.x, size.y);
 
-		if (!pf.getModelFunction().isComplete()) {
-			pf.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-		} else if (pf.equals(selected)) {
+		if (pf.equals(selected)) {
 			pf.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		} else if (!pf.getModelFunction().isComplete()) {
+			pf.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 		} else {
 			pf.setBorder(null);
 		}
@@ -1054,7 +1054,6 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 				// edit in inspector panel
 				PipelineFunction pf = (PipelineFunction) childObject;
-				arrange(pf);
 				functionInspector.inspect(pf.getModelFunction());
 
 			} else if (selected instanceof PipelineLink) {
@@ -1070,6 +1069,8 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 			functionInspector.inspect(null);
 			repaint();
 		}
+		
+		arrange(false);
 
 		// enable deleting & duplicating
 		ActionRegistry.getInstance().get(DeleteSelectionAction.class)
