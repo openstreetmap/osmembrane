@@ -113,6 +113,21 @@ public abstract class AbstractParameter extends Observable implements
 	public abstract boolean setValue(String value);
 
 	/**
+	 * Returns the result of a validation of the given value.
+	 * 
+	 * @param value value to be checked
+	 * @return true if value is ok, otherwise false
+	 */
+	public abstract boolean validate(String value);
+
+	/**
+	 * Returns if the parameter has a valid value or not.
+	 * 
+	 * @return true if parameter has a valid value, otherwise false
+	 */
+	public abstract boolean isValid();
+
+	/**
 	 * Returns if the parameter is a required one.
 	 * 
 	 * @return true if the parameter is required, otherwise false
@@ -138,12 +153,4 @@ public abstract class AbstractParameter extends Observable implements
 	 * Copies the parameter.
 	 */
 	public abstract AbstractParameter copy(CopyType type, AbstractTask task);
-
-	/**
-	 * Returns the result of a validation of the given value.
-	 * 
-	 * @param value value to be checked
-	 * @return true if value is ok, otherwise false
-	 */
-	public abstract boolean validate(String value);
 }

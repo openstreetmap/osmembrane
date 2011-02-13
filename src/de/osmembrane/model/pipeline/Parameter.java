@@ -69,7 +69,7 @@ public class Parameter extends AbstractParameter {
 	 */
 	public Parameter(AbstractTask parentTask, XMLParameter xmlParam) {
 		this.type = ParameterType.parseString(xmlParam.getType());
-		this.value = xmlParam.getDefaultValue();
+		this.value = null;
 		this.xmlParam = xmlParam;
 		this.parentTask = parentTask;
 
@@ -132,14 +132,7 @@ public class Parameter extends AbstractParameter {
 
 	@Override
 	public boolean isDefaultValue() {
-		if (getValue() != null && getDefaultValue() != null) {
-			return getValue().equals(getDefaultValue());
-		} else {
-			if (getValue() == null && getDefaultValue() == null) {
-				return true;
-			}
-		}
-		return false;
+		return (getValue() == null);
 	}
 
 	@Override
@@ -155,9 +148,7 @@ public class Parameter extends AbstractParameter {
 		}
 
 		if(this.getType().isStringEmpty(value)) {
-			// TODO do that right if the view solves the ticket #216
-			// right means set it to null
-			this.value = value;
+			this.value = null;
 		} else {
 			this.value = value;
 		}
@@ -186,6 +177,11 @@ public class Parameter extends AbstractParameter {
 		return false;
 	}
 
+	@Override
+	public boolean isValid() {
+		return validate(getValue());
+	}
+	
 	@Override
 	public boolean isRequired() {
 		return xmlParam.isRequired();
