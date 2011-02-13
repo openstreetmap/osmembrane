@@ -63,8 +63,11 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.pipeline.AbstractTask;
+import de.osmembrane.model.pipeline.ParameterFormatException;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
+import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
+import de.osmembrane.tools.IconLoader.Size;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.components.JRowTable;
 import de.osmembrane.view.components.JTextFieldWithButton;
@@ -137,10 +140,11 @@ public class InspectorPanel extends JPanel implements Observer {
 	private AbstractFunction inspecting = null;
 
 	/**
-	 * Buttons to load and save FunctionPresets.
+	 * Buttons to load and save FunctionPresets/defaults.
 	 */
 	private JButton savePreset;
 	private JButton loadPreset;
+	private JButton setDefault;
 
 	/**
 	 * Initializes the {@link InspectorPanel} and display
@@ -161,6 +165,15 @@ public class InspectorPanel extends JPanel implements Observer {
 
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(1, 2));
+		setDefault = new JButton(Resource.PROGRAM_ICON.getImageIcon("undo.png",
+				Size.SMALL));
+		setDefault.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setDefaults();
+			}
+		});
+		buttons.add(setDefault);
 		loadPreset = new JButton(ActionRegistry.getInstance().get(
 				LoadFunctionPresetAction.class));
 		buttons.add(loadPreset);
@@ -264,6 +277,26 @@ public class InspectorPanel extends JPanel implements Observer {
 	}
 
 	/**
+	 * Sets all changes in the currently inspected function *in the currently
+	 * set task* back to their default values.
+	 */
+	protected void setDefaults() {
+		if (inspecting != null) {
+			for (AbstractParameter ap : inspecting.getActiveTask()
+					.getParameters()) {
+				try {
+					ap.setValue(ap.getDefaultValue());
+				} catch (ParameterFormatException e) {
+					/*
+					 * the model could think one of its default parameters is
+					 * not valid. However, we do not need to do anything here.
+					 */
+				}
+			}
+		}
+	}
+
+	/**
 	 * Sets the hint text
 	 * 
 	 * @param hintText
@@ -331,13 +364,11 @@ public class InspectorPanel extends JPanel implements Observer {
 			Object value = tce.getCellEditorValue();
 			int editRow = propertyTable.getEditingRow();
 			int editColumn = propertyTable.getEditingColumn();
-			
+
 			// required to prevent inspect -> setValue -> ... loop
 			propertyTable.removeEditor();
-			
-			propertyTable.setValueAt(value,
-					editRow,
-					editColumn);
+
+			propertyTable.setValueAt(value, editRow, editColumn);
 		}
 		propertyTable.removeEditor();
 
@@ -471,6 +502,7 @@ public class InspectorPanel extends JPanel implements Observer {
 			} /* for */
 		}
 
+		setDefault.setEnabled((inspect != null));
 		loadPreset.setEnabled((inspect != null));
 		savePreset.setEnabled((inspect != null));
 		propertyTableModel.fireTableDataChanged();
