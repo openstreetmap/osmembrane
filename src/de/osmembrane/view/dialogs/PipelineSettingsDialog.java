@@ -131,6 +131,15 @@ public class PipelineSettingsDialog extends AbstractDialog implements
 		verboseFlag = new JCheckBox(I18N.getInstance().getString(
 				"View.PipelineSettingsDialog.Verbose")
 				+ ":");
+		verboseFlag.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				verbose.setEnabled(verboseFlag.isSelected());
+				if (verbose.getValue().equals(-1)) {
+					verbose.setValue(0);
+				}				
+			}
+		});
 		settings.add(verboseFlag, gbc);
 		gbc.gridx = 1;
 		verbose = new JSpinner();
@@ -143,6 +152,15 @@ public class PipelineSettingsDialog extends AbstractDialog implements
 		debugFlag = new JCheckBox(I18N.getInstance().getString(
 				"View.PipelineSettingsDialog.Debug")
 				+ ":");
+		debugFlag.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				debug.setEnabled(debugFlag.isSelected());
+				if (debug.getValue().equals(-1)) {
+					debug.setValue(0);
+				}
+			}
+		});
 		settings.add(debugFlag, gbc);
 		gbc.gridx = 1;
 		debug = new JSpinner();

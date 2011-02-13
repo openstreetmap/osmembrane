@@ -81,7 +81,7 @@ public class ChangePipelineSettingsAction extends AbstractAction {
 			settings.setVerbose(dialog.getVerbose());
 			settings.setDebug(dialog.getDebug());
 			settings.setComment(dialog.getComment());
-			settings.setName(settings.getName());			
+			settings.setName(dialog.getName());			
 			
 		} /* if apply changes */
 	}
