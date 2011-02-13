@@ -25,6 +25,7 @@ import javax.swing.Action;
 import de.osmembrane.controller.actions.AddConnectionAction;
 import de.osmembrane.controller.actions.AddFunctionAction;
 import de.osmembrane.controller.actions.ArrangePipelineAction;
+import de.osmembrane.controller.actions.ChangePipelineSettingsAction;
 import de.osmembrane.controller.actions.ChangeSettingsAction;
 import de.osmembrane.controller.actions.DeleteSelectionAction;
 import de.osmembrane.controller.actions.DuplicateFunctionAction;
@@ -103,6 +104,7 @@ public class ActionRegistry implements Observer {
 		register(new ExecutePipelineAction());
 		register(new PreviewPipelineAction());
 		register(new ArrangePipelineAction());
+		register(new ChangePipelineSettingsAction());
 
 		// function actions
 		register(new AddFunctionAction());

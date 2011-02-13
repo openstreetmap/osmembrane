@@ -45,6 +45,7 @@ import javax.swing.SwingUtilities;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.ArrangePipelineAction;
+import de.osmembrane.controller.actions.ChangePipelineSettingsAction;
 import de.osmembrane.controller.actions.ChangeSettingsAction;
 import de.osmembrane.controller.actions.DeleteSelectionAction;
 import de.osmembrane.controller.actions.DuplicateFunctionAction;
@@ -198,9 +199,6 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		fileMenu.add(ActionRegistry.getInstance().get(
 				ExportPipelineAction.class));
 		fileMenu.add(new JSeparator());
-		fileMenu.add(ActionRegistry.getInstance().get(
-				ChangeSettingsAction.class));
-		fileMenu.add(new JSeparator());
 		fileMenu.add(ActionRegistry.getInstance().get(ExitAction.class));
 		menuBar.add(fileMenu);
 
@@ -227,14 +225,24 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		JMenu pipelineMenu = new JMenu(I18N.getInstance().getString(
 				"View.Menu.Pipeline"));
 		pipelineMenu.add(ActionRegistry.getInstance().get(
-				PreviewPipelineAction.class));
+				ArrangePipelineAction.class));
+		pipelineMenu.add(ActionRegistry.getInstance().get(
+				ChangePipelineSettingsAction.class));
+		pipelineMenu.add(new JSeparator());		
 		pipelineMenu.add(ActionRegistry.getInstance().get(
 				GeneratePipelineAction.class));
+		pipelineMenu.add(new JSeparator());
 		pipelineMenu.add(ActionRegistry.getInstance().get(
 				ExecutePipelineAction.class));
 		pipelineMenu.add(ActionRegistry.getInstance().get(
-				ArrangePipelineAction.class));
+				PreviewPipelineAction.class));
 		menuBar.add(pipelineMenu);
+		
+		JMenu extrasMenu = new JMenu(I18N.getInstance().getString(
+		"View.Menu.Extras"));
+		extrasMenu.add(ActionRegistry.getInstance().get(
+				ChangeSettingsAction.class));
+		menuBar.add(extrasMenu);
 
 		JMenu aboutMenu = new JMenu(I18N.getInstance().getString(
 				"View.Menu.About"));
