@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.Toolkit;
@@ -20,6 +19,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
@@ -67,17 +67,28 @@ public class GeneratePipelineAction extends AbstractAction {
 		ICommandLineDialog commandLineDialog = ViewRegistry.getInstance()
 				.getCasted(CommandLineDialog.class, ICommandLineDialog.class);
 
-		
+		/* Check if the pipeline is complete */
+		if (!ModelProxy.getInstance().getPipeline().isComplete()) {
+			if (!(JOptionPane.showConfirmDialog(
+					null,
+					I18N.getInstance().getString(
+							"Controller.Actions.PipelineNotComplete"),
+					I18N.getInstance().getString(
+							"Controller.Actions.PipelineNotComplete.Title"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
+				return;
+			}
+		}
+
 		FileType type;
 		/* check if it is windows */
-		if (System.getProperty("os.name").toLowerCase()
-				.contains("win")) {
+		if (System.getProperty("os.name").toLowerCase().contains("win")) {
 			type = FileType.CMD;
 		} else {
 			/* should be a unix based os, use bash */
 			type = FileType.BASH;
 		}
-		
+
 		commandLineDialog.setCommandline(ModelProxy.getInstance().getPipeline()
 				.generate(type));
 		commandLineDialog.showWindow();

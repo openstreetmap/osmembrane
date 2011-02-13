@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.Application;
@@ -71,6 +72,21 @@ public class ExecutePipelineAction extends AbstractAction {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		/* Check if the pipeline is complete */
+		if (!ModelProxy.getInstance().getPipeline().isComplete()) {
+			if (!(JOptionPane.showConfirmDialog(
+					null,
+					I18N.getInstance().getString(
+							"Controller.Actions.PipelineNotComplete"),
+					I18N.getInstance().getString(
+							"Controller.Actions.PipelineNotComplete.Title"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
+				return;
+			}
+		}
+		
+		
 		FileType type = FileType.EXECUTION_FILETYPE;
 		String pipeline = ModelProxy.getInstance().getPipeline().generate(type);
 

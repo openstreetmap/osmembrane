@@ -69,6 +69,21 @@ public class ExportPipelineAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		/* Check if the pipeline is complete */
+		if (!ModelProxy.getInstance().getPipeline().isComplete()) {
+			if (!(JOptionPane.showConfirmDialog(
+					null,
+					I18N.getInstance().getString(
+							"Controller.Actions.PipelineNotComplete"),
+					I18N.getInstance().getString(
+							"Controller.Actions.PipelineNotComplete.Title"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
+				return;
+			}
+		}
+		
+		
 		File startDir = new File((String) ModelProxy.getInstance()
 				.getSettings()
 				.getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));

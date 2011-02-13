@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.Application;
@@ -80,6 +81,21 @@ public class PreviewPipelineAction extends AbstractAction {
 					.actionPerformed(
 							new ActionEvent(this, 0, "PreviewExection"));
 		} else {
+			
+			/* Check if the pipeline is complete */
+			if (!ModelProxy.getInstance().getPipeline().isComplete()) {
+				if (!(JOptionPane.showConfirmDialog(
+						null,
+						I18N.getInstance().getString(
+								"Controller.Actions.PipelineNotComplete"),
+						I18N.getInstance().getString(
+								"Controller.Actions.PipelineNotComplete.Title"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
+					return;
+				}
+			}
+			
+			
 			/* the path to josm */
 			final String josmPath = (String) ModelProxy.getInstance()
 					.getSettings().getValue(SettingType.DEFAULT_JOSM_PATH);
