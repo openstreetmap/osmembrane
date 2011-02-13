@@ -14,6 +14,7 @@
 package de.osmembrane.model.parser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,6 +30,7 @@ import de.osmembrane.model.pipeline.AbstractConnector;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.model.pipeline.AbstractParameter;
 import de.osmembrane.model.pipeline.AbstractPipeline;
+import de.osmembrane.model.pipeline.AbstractPipelineSettings;
 import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorType;
 import de.osmembrane.model.pipeline.Pipeline;
@@ -51,6 +53,7 @@ public class CommandlineParser implements IParser {
 	protected String breaklineSymbol = "<linebreak>";
 	protected String breaklineCommand = "\n";
 	protected String quotationSymbol = "\"";
+	protected String commentSymbol = "<COMMENT>: ";
 	protected Pattern[] regexCommentPatterns = {};
 
 	protected static final String DEFAULT_KEY = "DEFAULTKEY";
@@ -411,6 +414,7 @@ public class CommandlineParser implements IParser {
 	@Override
 	public String parsePipeline(PipelinePersistenceObject pipelineObject) {
 		List<AbstractFunction> pipeline = pipelineObject.getFunctions();
+		AbstractPipelineSettings settings = pipelineObject.getSettings();
 		
 		/* Queue where functions are stored, that haven't been parsed yet. */
 		Queue<AbstractFunction> functionQueue = new LinkedList<AbstractFunction>();
@@ -432,10 +436,39 @@ public class CommandlineParser implements IParser {
 			functionQueue.add(function);
 		}
 
+		/* add the comment header block to the pipeline. */
+		builder.append(getCommentSymbol() + "OSMembrane auto-generated pipeline for osmosis");
+		builder.append(getBreaklineCommand());
+		
+		builder.append(getCommentSymbol() + "Name: " + settings.getName());
+		builder.append(getBreaklineCommand());
+		
+		builder.append(getCommentSymbol() + "Date: " + new Date().toString());
+		builder.append(getBreaklineCommand());
+		
+		builder.append(getCommentSymbol() + "Comment:");
+		builder.append(getBreaklineCommand());
+		
+		String[] commentLines = settings.getComment().split("(\\r\\n|\\n)");
+		for(String line : commentLines) {
+			builder.append(getCommentSymbol() + line);
+			builder.append(getBreaklineCommand());
+		}
+		builder.append(getBreaklineCommand());
+		
+		
 		/* add the path to the osmosis binary */
 		if (addOsmosisPath) {
 			builder.append(quotate((String) ModelProxy.getInstance()
 					.getSettings().getValue(SettingType.DEFAULT_OSMOSIS_PATH)));
+			
+			if(pipelineObject.getSettings().getVerbose() > 0) {
+				builder.append(" -v" + settings.getVerbose());
+			}
+			
+			if(pipelineObject.getSettings().getDebug() > 0) {
+				builder.append(" -d" + settings.getDebug());
+			}
 		}
 
 		/* do the parsing while a function is in the queue */
@@ -687,6 +720,15 @@ public class CommandlineParser implements IParser {
 	@Override
 	public String getBreaklineSymbol() {
 		return breaklineSymbol;
+	}
+	
+	protected void setCommentSymbol(String commentSymbol) {
+		this.commentSymbol = commentSymbol;
+	}
+
+	@Override
+	public String getCommentSymbol() {
+		return commentSymbol;
 	}
 
 	protected void setBreaklineCommand(String breaklineCommand) {

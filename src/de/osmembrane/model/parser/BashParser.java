@@ -26,6 +26,7 @@ public class BashParser extends CommandlineParser {
 
 	protected String BREAKLINE_SYMBOL = "\\";
 	protected String BREAKLINE_COMMAND = "\n";
+	protected String COMMENT_SYMBOL = "# ";
 	protected Pattern[] COMMENT_PATTERNS = { Pattern.compile("#.*$", Pattern.MULTILINE) };
 
 	/**
@@ -34,6 +35,7 @@ public class BashParser extends CommandlineParser {
 	public BashParser() {
 		super.setBreaklineSymbol(BREAKLINE_SYMBOL);
 		super.setBreaklineCommand(BREAKLINE_COMMAND);
+		super.setCommentSymbol(COMMENT_SYMBOL);
 		super.setRegexCommentPatterns(COMMENT_PATTERNS);
 	}
 	

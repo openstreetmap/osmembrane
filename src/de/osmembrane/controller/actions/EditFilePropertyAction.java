@@ -20,7 +20,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
 import de.osmembrane.controller.events.ContainingEvent;
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractParameter;
+import de.osmembrane.model.settings.SettingType;
 
 /**
  * Action to edit a parameter which is a file path and therefore open the file
@@ -44,6 +46,11 @@ public class EditFilePropertyAction extends AbstractAction {
 		ContainingEvent ce = (ContainingEvent) e;
 		AbstractParameter ap = (AbstractParameter) ce.getContained();
 
+		String wd = (String) ModelProxy.getInstance().getSettings().getValue(SettingType.DEFAULT_WORKING_DIRECTORY);
+		if(wd.length() == 0) {
+			wd = null;
+		}
+		
 		JFileChooser fileChooser = new JFileChooser();
 
 		String value = ap.getValue();
@@ -53,7 +60,11 @@ public class EditFilePropertyAction extends AbstractAction {
 		fileChooser.setSelectedFile(new File(value));
 
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			ap.setValue(fileChooser.getSelectedFile().getAbsolutePath());
+			String path = fileChooser.getSelectedFile().getAbsolutePath();
+			if(wd != null) {
+				path = new File(wd).toURI().relativize(new File(path).toURI()).getPath();
+			}
+			ap.setValue(path);
 		}
 	}
 }

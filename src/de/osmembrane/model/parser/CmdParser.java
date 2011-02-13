@@ -25,6 +25,7 @@ public class CmdParser extends CommandlineParser {
 
 	protected String BREAKLINE_SYMBOL = "^";
 	protected String BREAKLINE_COMMAND = "\r\n";
+	protected String COMMENT_SYMBOL = ":: ";
 	protected Pattern[] COMMENT_PATTERNS = { Pattern.compile("::.*$", Pattern.MULTILINE),
 			Pattern.compile("^\\p{Space}*REM .*$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE) };
 
@@ -34,6 +35,7 @@ public class CmdParser extends CommandlineParser {
 	public CmdParser() {
 		super.setBreaklineSymbol(BREAKLINE_SYMBOL);
 		super.setBreaklineCommand(BREAKLINE_COMMAND);
+		super.setCommentSymbol(COMMENT_SYMBOL);
 		super.setRegexCommentPatterns(COMMENT_PATTERNS);
 	}
 }

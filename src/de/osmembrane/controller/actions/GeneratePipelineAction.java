@@ -67,9 +67,19 @@ public class GeneratePipelineAction extends AbstractAction {
 		ICommandLineDialog commandLineDialog = ViewRegistry.getInstance()
 				.getCasted(CommandLineDialog.class, ICommandLineDialog.class);
 
-		// TODO Let the user choose the correct file-type.
+		
+		FileType type;
+		/* check if it is windows */
+		if (System.getProperty("os.name").toLowerCase()
+				.contains("win")) {
+			type = FileType.CMD;
+		} else {
+			/* should be a unix based os, use bash */
+			type = FileType.BASH;
+		}
+		
 		commandLineDialog.setCommandline(ModelProxy.getInstance().getPipeline()
-				.generate(FileType.BASH));
+				.generate(type));
 		commandLineDialog.showWindow();
 	}
 }

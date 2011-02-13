@@ -67,9 +67,18 @@ public interface IParser {
 	public String getBreaklineSymbol();
 
 	/**
+	 * Returns the comment symbol
+	 * 
+	 * @return comment symbol
+	 */
+	public String getCommentSymbol();
+	
+	/**
 	 * Returns the regex patterns for comments.
 	 * 
 	 * @return regex comment patterns
 	 */
 	public Pattern[] getRegexCommentPatterns();
+
+	
 }
