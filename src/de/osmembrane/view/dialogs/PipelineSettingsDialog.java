@@ -138,12 +138,12 @@ public class PipelineSettingsDialog extends AbstractDialog implements
 				.getPreferredSize().height));
 		settings.add(verbose, gbc);
 
-		gbc.gridy = 1;
+		gbc.gridy = 2;
 		gbc.gridx = 0;
 		debugFlag = new JCheckBox(I18N.getInstance().getString(
 				"View.PipelineSettingsDialog.Debug")
 				+ ":");
-		settings.add(verboseFlag, gbc);
+		settings.add(debugFlag, gbc);
 		gbc.gridx = 1;
 		debug = new JSpinner();
 		debug.setPreferredSize(new Dimension(minSpinnerWidth, debug
@@ -159,6 +159,7 @@ public class PipelineSettingsDialog extends AbstractDialog implements
 
 		gbc.gridy = 4;
 		gbc.gridx = 0;
+		gbc.gridwidth = 2;
 		comment = new JTextArea();
 		comment.setPreferredSize(new Dimension(minFieldWidth * 2, minFieldWidth));
 		settings.add(new JScrollPane(comment), gbc);
@@ -177,6 +178,7 @@ public class PipelineSettingsDialog extends AbstractDialog implements
 	@Override
 	public void setVerbose(int mode) {
 		verboseFlag.setSelected(mode >= 0);
+		verbose.setEnabled(mode >= 0);
 		verbose.setValue(mode);
 	}
 
@@ -192,6 +194,7 @@ public class PipelineSettingsDialog extends AbstractDialog implements
 	@Override
 	public void setDebug(int mode) {
 		debugFlag.setSelected(mode >= 0);
+		debug.setEnabled(mode >= 0);
 		debug.setValue(mode);
 	}
 
