@@ -273,4 +273,9 @@ public class TestFunction extends AbstractFunction {
 		return contained.getUnrasteredCoordinate();
 	}
 
+	@Override
+	public boolean isComplete() {
+		return contained.isComplete();
+	}
+
 }

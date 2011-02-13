@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.pipeline;
 
 import java.io.ByteArrayInputStream;
@@ -53,6 +52,8 @@ public class Pipeline extends AbstractPipeline {
 	private List<AbstractFunction> functions;
 
 	private URL pipelineFilename;
+	
+	private AbstractPipelineSettings pipelineSettings;
 
 	private boolean savedState;
 
@@ -97,9 +98,15 @@ public class Pipeline extends AbstractPipeline {
 		this.undoRedoDisabled = undoRedoDisabled;
 		this.savedState = true;
 		this.pipelineFilename = null;
+		this.pipelineSettings = new PipelineSettings();
 
 		/* register the Observer of Persistence to the Pipeline */
 		addObserver(PersistenceFactory.getInstance());
+	}
+
+	@Override
+	public AbstractPipelineSettings getPipelineSettings() {
+		return pipelineSettings;
 	}
 
 	@Override
@@ -107,6 +114,7 @@ public class Pipeline extends AbstractPipeline {
 		this.functions.clear();
 		this.undoStack.clear();
 		this.redoStack.clear();
+		pipelineSettings = new PipelineSettings();
 		pipelineFilename = null;
 
 		changeSavedState(true);
@@ -154,6 +162,19 @@ public class Pipeline extends AbstractPipeline {
 		}
 
 		return returnValue;
+	}
+
+	@Override
+	public boolean isComplete() {
+		/* check all functions */
+		for (AbstractFunction function : getFunctions()) {
+			if (!function.isComplete()) {
+				return false;
+			}
+		}
+
+		/* all functions seems to be complete, so the pipeline is also complete. */
+		return true;
 	}
 
 	@Override

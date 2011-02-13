@@ -206,6 +206,33 @@ public class Function extends AbstractFunction {
 	}
 
 	@Override
+	public boolean isComplete() {
+		/* check the params */
+		for(AbstractParameter param : getActiveTask().getParameters()) {
+			if(!param.isValid()) {
+				return false;
+			}
+		}
+		
+		/* check the in connectors */
+		for(AbstractConnector connector : getInConnectors()) {
+			if(connector.getConnections().length == 0) {
+				return false;
+			}
+		}
+		
+		/* check the out connectors */
+		for(AbstractConnector connector : getOutConnectors()) {
+			if(connector.getConnections().length == 0) {
+				return false;
+			}
+		}
+		
+		/* everything seems to be ok, return true */
+		return true;
+	}
+	
+	@Override
 	public Point2D getCoordinate() {
 		Integer rasterInt = (Integer) ModelProxy.getInstance().getSettings()
 				.getValue(SettingType.PIPELINE_RASTER_SIZE);

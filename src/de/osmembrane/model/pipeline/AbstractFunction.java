@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.pipeline;
 
 import java.awt.geom.Point2D;
@@ -107,6 +106,15 @@ public abstract class AbstractFunction extends Observable implements Observer,
 	 *            XMLTask which should be set as active
 	 */
 	public abstract void setActiveTask(AbstractTask task);
+
+	/**
+	 * Returns if the function has all parameters in a valid format set, or not.
+	 * And also it is checked if all of the connectors has at least one
+	 * connection to another function.
+	 * 
+	 * @return true if function is valid, otherwise false
+	 */
+	public abstract boolean isComplete();
 
 	/**
 	 * Returns the Coordinates in the Pipeline of the current Function.<br/>

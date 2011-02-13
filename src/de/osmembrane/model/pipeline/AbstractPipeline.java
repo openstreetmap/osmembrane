@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.pipeline;
 
 import java.net.URL;
@@ -27,6 +26,23 @@ import de.osmembrane.model.persistence.FileType;
  * @author jakob_jarosch
  */
 public abstract class AbstractPipeline extends Observable implements Observer {
+
+	/**
+	 * 
+	 */
+	public abstract AbstractPipelineSettings getPipelineSettings();
+	
+	/**
+	 * Creates an empty pipeline.
+	 */
+	public abstract void clear();
+
+	/**
+	 * Returns the {@link AbstractFunction}s in the pipeline.
+	 * 
+	 * @return array of {@link AbstractFunction}s
+	 */
+	public abstract AbstractFunction[] getFunctions();
 
 	/**
 	 * Adds a {@link AbstractFunction} to the pipeline.
@@ -45,11 +61,12 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	public abstract boolean deleteFunction(AbstractFunction func);
 
 	/**
-	 * Returns the {@link AbstractFunction}s in the pipeline.
+	 * Returns if the pipeline is complete or not. Complete means, that every
+	 * function in the pipeline is complete.
 	 * 
-	 * @return array of {@link AbstractFunction}s
+	 * @return true if pipeline is complete, otherwise false
 	 */
-	public abstract AbstractFunction[] getFunctions();
+	public abstract boolean isComplete();
 
 	/**
 	 * Makes the last change undone.
@@ -85,6 +102,17 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	public abstract void arrangePipeline();
 
 	/**
+	 * Loads a pipeline from a OSMembrane file.
+	 * 
+	 * @param filename
+	 *            path to the OSMembrane file
+	 * 
+	 * @throws FileException
+	 *             when something with the IO went wrong
+	 */
+	public abstract void loadPipeline(URL filename) throws FileException;
+
+	/**
 	 * Saves the pipeline to a OSMembrane file, only callable if a pipeline was
 	 * loaded, or it has already been saved.
 	 * 
@@ -105,43 +133,12 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 	public abstract void savePipeline(URL filename) throws FileException;
 
 	/**
-	 * Saves the pipeline to the default backup file.
+	 * Creates a String-representation for the current pipeline.
 	 * 
-	 * @throws FileException
-	 *             when something with the IO went wrong
+	 * @param filetype
+	 *            should be created
 	 */
-	public abstract void backupPipeline() throws FileException;
-
-	/**
-	 * Returns if a backup is available or not.
-	 * 
-	 * @return true if a backup is available, otherwise false
-	 */
-	public abstract boolean isBackupAvailable();
-
-	/**
-	 * Loads the backup into the pipeline.
-	 * 
-	 * @throws FileException
-	 *             when something with the IO went wrong
-	 */
-	public abstract void loadBackup() throws FileException;
-
-	/**
-	 * Deletes the local backup file.
-	 */
-	public abstract void clearBackup();
-
-	/**
-	 * Loads a pipeline from a OSMembrane file.
-	 * 
-	 * @param filename
-	 *            path to the OSMembrane file
-	 * 
-	 * @throws FileException
-	 *             when something with the IO went wrong
-	 */
-	public abstract void loadPipeline(URL filename) throws FileException;
+	public abstract String generate(FileType filetype);
 
 	/**
 	 * Imports the pipeline from a given file.
@@ -172,17 +169,32 @@ public abstract class AbstractPipeline extends Observable implements Observer {
 			throws FileException;
 
 	/**
-	 * Creates an empty pipeline.
+	 * Saves the pipeline to the default backup file.
+	 * 
+	 * @throws FileException
+	 *             when something with the IO went wrong
 	 */
-	public abstract void clear();
+	public abstract void backupPipeline() throws FileException;
 
 	/**
-	 * Creates a String-representation for the current pipeline.
+	 * Returns if a backup is available or not.
 	 * 
-	 * @param filetype
-	 *            should be created
+	 * @return true if a backup is available, otherwise false
 	 */
-	public abstract String generate(FileType filetype);
+	public abstract boolean isBackupAvailable();
+
+	/**
+	 * Loads the backup into the pipeline.
+	 * 
+	 * @throws FileException
+	 *             when something with the IO went wrong
+	 */
+	public abstract void loadBackup() throws FileException;
+
+	/**
+	 * Deletes the local backup file.
+	 */
+	public abstract void clearBackup();
 
 	/**
 	 * Checks is the pipeline contains any loops, what is not right.
