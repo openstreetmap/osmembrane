@@ -28,6 +28,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -387,9 +388,10 @@ public class InspectorPanel extends JPanel implements Observer {
 			for (int i = 0; i < inspect.getActiveTask().getParameters().length; i++) {
 				final AbstractParameter ap = inspect.getActiveTask()
 						.getParameters()[i];
-				
-				String realValue = (ap.getValue() != null) ? ap.getValue() : ap.getDefaultValue(); 
-					
+
+				String realValue = (ap.getValue() != null) ? ap.getValue() : ap
+						.getDefaultValue();
+
 				switch (ap.getType()) {
 
 				case ENUM:
@@ -405,8 +407,7 @@ public class InspectorPanel extends JPanel implements Observer {
 					// use CheckBox with true/false
 					JCheckBox jcb = new JCheckBox();
 					jcb.setModel(new InspectorPanelTableBooleanCheckBoxModel(ap));
-					jcb.setSelected(realValue.equals(
-							Boolean.TRUE.toString()));
+					jcb.setSelected(realValue.equals(Boolean.TRUE.toString()));
 
 					DefaultCellEditor dceBoolean = new DefaultCellEditor(jcb);
 					rowEditorModel.setEditorRow(i + 1, dceBoolean);
@@ -717,7 +718,9 @@ public class InspectorPanel extends JPanel implements Observer {
 
 		@Override
 		public Object getSelectedItem() {
-			return param.getValue();
+			String realValue = (param.getValue() != null) ? param.getValue()
+					: param.getDefaultValue();
+			return realValue;
 		}
 
 		@Override
@@ -771,7 +774,9 @@ public class InspectorPanel extends JPanel implements Observer {
 
 		@Override
 		public boolean isSelected() {
-			return param.getValue().equals(Boolean.TRUE.toString());
+			String realValue = (param.getValue() != null) ? param.getValue()
+					: param.getDefaultValue();
+			return realValue.equals(Boolean.TRUE.toString());
 		}
 
 		@Override
@@ -791,7 +796,9 @@ public class InspectorPanel extends JPanel implements Observer {
 			 * Swing coders why the fork this thing is so messed up.
 			 */
 			Boolean bool = Boolean.valueOf(b);
-			if (param.getValue().equals(bool.toString())) {
+			String realValue = (param.getValue() != null) ? param.getValue()
+					: param.getDefaultValue();
+			if (realValue.equals(bool.toString())) {
 				return;
 			}
 
@@ -849,6 +856,16 @@ public class InspectorPanel extends JPanel implements Observer {
 
 			c.setForeground(Color.BLACK);
 
+			// if it's a required parameter, print its descriptor blue
+			if ((column == 0) && (row > 0)) {
+				if (inspecting.getActiveTask().getParameters()[row - 1]
+						.isRequired()) {
+					c.setFont(c.getFont().deriveFont(Font.BOLD));
+				} else {
+					c.setFont(c.getFont().deriveFont(Font.PLAIN));
+				}
+			}
+
 			// if it's a default value, print it gray
 			if ((row > 0) && (value != null) && (value instanceof String)) {
 				if (value
@@ -860,8 +877,8 @@ public class InspectorPanel extends JPanel implements Observer {
 				}
 			} else if ((row > 0) && (c instanceof JTextFieldWithButton)) {
 				JTextFieldWithButton tfwb = (JTextFieldWithButton) c;
-				if (tfwb.getValue()
-						.equals(inspecting.getActiveTask().getParameters()[row - 1]
+				if (tfwb.getValue().equals(
+						inspecting.getActiveTask().getParameters()[row - 1]
 								.getDefaultValue())) {
 					tfwb.setValueForeground(Color.GRAY);
 				} else {
@@ -875,6 +892,14 @@ public class InspectorPanel extends JPanel implements Observer {
 				JComponent jc = (JComponent) c;
 				jc.setBorder(null);
 				jc.setOpaque(true);
+
+				if ((column == 1) && (row > 0)) {
+					if (!inspecting.getActiveTask().getParameters()[row - 1]
+							.isValid()) {
+						jc.setBorder(BorderFactory.createLineBorder(Color.RED,
+								2));
+					}
+				}
 			}
 
 			return c;
