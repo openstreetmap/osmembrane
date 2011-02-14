@@ -123,7 +123,7 @@ public class FunctionPrototype extends AbstractFunctionPrototype {
 
 						for (XMLEnumValue enumValue : param.getEnumValue()) {
 							Identifier enumValueIdentifier = new Identifier(
-									paramIdentifier + "|enumValue");
+									paramIdentifier + "|enumValues|" + enumValue.getValue());
 							xmlEnumValueMap.put(enumValueIdentifier, enumValue);
 							identifiers.put(enumValue, enumValueIdentifier);
 						}

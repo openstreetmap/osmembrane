@@ -246,7 +246,6 @@
 					
 				<description lang="de"><value>Der Name der OSM-Datei, die geschrieben werden soll. "-" bedeutet STDOUT.</value></description><description lang="en"><value>The name of the osm file to be written, "-" means STDOUT.</value></description></parameter>
 				<parameter name="compressionMethod" type="enum" defaultValue="none">
-					
 					<enumValue value="none" friendlyName="None" />
 					<enumValue value="gzip" />
 					<enumValue value="bzip2" />
