@@ -122,13 +122,13 @@ public class Constants {
 	 * Minimal x distance between two functions in the pipeline view, needed for
 	 * graph planarization.
 	 */
-	public static final double PIPELINE_FUNCTION_MINIMAL_X_DISTANCE = 300.0;
+	public static final double PIPELINE_FUNCTION_MINIMAL_X_DISTANCE = 175.0;
 
 	/**
 	 * Minimal y distance between two functions in the pipeline view, needed for
 	 * graph planarization.
 	 */
-	public static final double PIPELINE_FUNCTION_MINIMAL_Y_DISTANCE = 130.0;
+	public static final double PIPELINE_FUNCTION_MINIMAL_Y_DISTANCE = 75.0;
 
 	/**
 	 * The default working directory.
