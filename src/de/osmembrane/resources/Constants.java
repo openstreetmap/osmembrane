@@ -134,7 +134,7 @@ public class Constants {
 	 * The default working directory.
 	 */
 	public static final String DEFAULT_WORKING_DIRECTORY = System
-			.getProperty("java.io.tmpdir");
+			.getProperty("user.home");
 
 	/**
 	 * Show the startup screen or not.

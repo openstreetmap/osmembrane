@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE XMLOsmosisStructure SYSTEM "osmosis-structure.dtd">
 <XMLOsmosisStructure xmlns="http://osmembrane.de/model/xml" 
 	formatVersion="1.0.0" osmosisVersion="0.38">
 	
