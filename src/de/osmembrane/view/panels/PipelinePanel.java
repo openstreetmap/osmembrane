@@ -417,7 +417,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 						if (e.isControlDown()) {
 							// zoom
-							double winDist = objToWindow(draggingFrom)
+							double winDist = objToWindowFixed(draggingFrom)
 									.distance(e.getPoint())
 									* Math.signum(draggingFrom.getY()
 											- draggingTo.getY());
@@ -590,17 +590,17 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 * This is necessary for dragging operations to transform only by the part
 	 * of the transformation which is currently newly determined.
 	 * 
-	 * @param window
-	 *            window coordinates
+	 * @param windowFixed
+	 *            fixed window coordinates
 	 * @return window in object coordinates, only of basic transformation, null
 	 *         if there is an error with the transformations which should
 	 *         theoretically never be the case
 	 */
-	protected Point2D windowToObjFixed(Point window) {
+	protected Point2D windowToObjFixed(Point windowFixed) {
 		Point2D result = new Point2D.Double();
 
 		try {
-			objectToWindow.inverseTransform(window, result);
+			objectToWindow.inverseTransform(windowFixed, result);
 		} catch (NoninvertibleTransformException e) {
 			Application.handleException(e);
 		}
@@ -637,6 +637,24 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 
 		objectToWindow.deltaTransform(objectDelta, result);
 		currentDisplay.deltaTransform(result, result);
+
+		return new Point((int) result.getX(), (int) result.getY());
+	}
+
+	/**
+	 * Translates object coordinates to window coordinates based on only the
+	 * objectToWindow transformation, not the temporary display transformation.
+	 * This is necessary for dragging operations to transform only by the part
+	 * of the transformation which is currently newly determined.
+	 * 
+	 * @param objectFixed
+	 *            fixed object coordinates
+	 * @return object in window coordinates, only of basic transformation
+	 */
+	protected Point objToWindowFixed(Point2D objectFixed) {
+		Point2D result = new Point2D.Double();
+
+		objectToWindow.transform(objectFixed, result);
 
 		return new Point((int) result.getX(), (int) result.getY());
 	}
@@ -1069,7 +1087,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 			functionInspector.inspect(null);
 			repaint();
 		}
-		
+
 		arrange(false);
 
 		// enable deleting & duplicating
