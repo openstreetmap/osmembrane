@@ -698,10 +698,23 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 *            zooming value. if < 1 zooms out, if > 1 zooms in
 	 */
 	public void zoomTemp(Point2D objCenter, double factor) {
+		AffineTransform objectToWindowInverse = new AffineTransform(
+				objectToWindow);
+		try {
+			objectToWindowInverse.invert();
+		} catch (NoninvertibleTransformException e) {
+			Application.handleException(e);
+		}
+
 		currentDisplay.setToIdentity();
+
+		currentDisplay.concatenate(objectToWindow);
+
 		currentDisplay.translate(+objCenter.getX(), +objCenter.getY());
 		currentDisplay.scale(factor, factor);
 		currentDisplay.translate(-objCenter.getX(), -objCenter.getY());
+
+		currentDisplay.concatenate(objectToWindowInverse);
 
 		arrange(true);
 		repaint();
