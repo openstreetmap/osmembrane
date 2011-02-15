@@ -32,6 +32,7 @@ public class ExecutionParser extends CommandlineParser {
 		super.setBreaklineSymbol(BREAKLINE_SYMBOL);
 		super.setBreaklineCommand(BREAKLINE_COMMAND);
 		super.setQuotationSymbol(QUOTATION_SYMBOL);
+		super.disableComments(true);
 		super.addOsmosisPath(false);
 	}
 }

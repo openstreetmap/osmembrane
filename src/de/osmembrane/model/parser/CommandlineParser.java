@@ -55,6 +55,7 @@ public class CommandlineParser implements IParser {
 	protected String quotationSymbol = "\"";
 	protected String commentSymbol = "<COMMENT>: ";
 	protected Pattern[] regexCommentPatterns = {};
+	protected boolean disableComments = false;
 
 	protected static final String DEFAULT_KEY = "DEFAULTKEY";
 
@@ -437,24 +438,26 @@ public class CommandlineParser implements IParser {
 		}
 
 		/* add the comment header block to the pipeline. */
-		builder.append(getCommentSymbol() + "OSMembrane auto-generated pipeline for osmosis");
-		builder.append(getBreaklineCommand());
-		
-		builder.append(getCommentSymbol() + "Name: " + settings.getName());
-		builder.append(getBreaklineCommand());
-		
-		builder.append(getCommentSymbol() + "Date: " + new Date().toString());
-		builder.append(getBreaklineCommand());
-		
-		builder.append(getCommentSymbol() + "Comment:");
-		builder.append(getBreaklineCommand());
-		
-		String[] commentLines = settings.getComment().split("(\\r\\n|\\n)");
-		for(String line : commentLines) {
-			builder.append(getCommentSymbol() + line);
+		if(!disableComments) {
+			builder.append(getCommentSymbol() + "OSMembrane auto-generated pipeline for osmosis");
+			builder.append(getBreaklineCommand());
+			
+			builder.append(getCommentSymbol() + "Name: " + settings.getName());
+			builder.append(getBreaklineCommand());
+			
+			builder.append(getCommentSymbol() + "Date: " + new Date().toString());
+			builder.append(getBreaklineCommand());
+			
+			builder.append(getCommentSymbol() + "Comment:");
+			builder.append(getBreaklineCommand());
+			
+			String[] commentLines = settings.getComment().split("(\\r\\n|\\n)");
+			for(String line : commentLines) {
+				builder.append(getCommentSymbol() + line);
+				builder.append(getBreaklineCommand());
+			}
 			builder.append(getBreaklineCommand());
 		}
-		builder.append(getBreaklineCommand());
 		
 		
 		/* add the path to the osmosis binary */
@@ -756,5 +759,9 @@ public class CommandlineParser implements IParser {
 	@Override
 	public Pattern[] getRegexCommentPatterns() {
 		return regexCommentPatterns;
+	}
+	
+	protected void disableComments(boolean disableComments) {
+		this.disableComments = disableComments;
 	}
 }
