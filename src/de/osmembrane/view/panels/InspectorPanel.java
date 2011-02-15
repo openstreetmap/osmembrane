@@ -363,17 +363,20 @@ public class InspectorPanel extends JPanel implements Observer {
 
 			// change iff value changed
 			// + work-around for model code
-			String realValue = inspecting.getActiveTask().getParameters()[editRow - 1]
-					.getValue();
-			if (realValue == null) {
-				realValue = inspecting.getActiveTask().getParameters()[editRow - 1]
-						.getDefaultValue();
-			}
-			if (realValue == null) {
-				realValue = "";
-			}
-			if (!value.equals(realValue)) {
-				propertyTable.setValueAt(value, editRow, editColumn);
+			if (editRow > 0) {
+				
+				String realValue = inspecting.getActiveTask().getParameters()[editRow - 1]
+						.getValue();
+				if (realValue == null) {
+					realValue = inspecting.getActiveTask().getParameters()[editRow - 1]
+							.getDefaultValue();
+				}
+				if (realValue == null) {
+					realValue = "";
+				}
+				if (!value.equals(realValue)) {
+					propertyTable.setValueAt(value, editRow, editColumn);
+				}
 			}
 			
 		}
@@ -591,11 +594,15 @@ public class InspectorPanel extends JPanel implements Observer {
 					// property values
 					TableCellEditor tce = rowEditorModel.getEditorRow(row);
 
-					boolean selected = (propertyTable.getSelectedRow() == row)
-							&& (propertyTable.getSelectedColumn() == column);
-
-					result = tce.getTableCellEditorComponent(propertyTable,
-							tce.getCellEditorValue(), selected, row, column);
+					if (tce != null) {
+						boolean selected = (propertyTable.getSelectedRow() == row)
+								&& (propertyTable.getSelectedColumn() == column);
+	
+						result = tce.getTableCellEditorComponent(propertyTable,
+								tce.getCellEditorValue(), selected, row, column);
+					} else {
+						result = new String();
+					}
 
 					if (result instanceof JTextField) {
 						result = ((JTextField) result).getText();
