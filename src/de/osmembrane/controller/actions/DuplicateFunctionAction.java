@@ -11,7 +11,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.Toolkit;
@@ -82,9 +81,9 @@ public class DuplicateFunctionAction extends AbstractAction {
 
 				// set its location
 				Point2D duplLoc = duplicate.getCoordinate();
-				duplicate.setCoordinate(new Point2D.Double(duplLoc.getX() + 0.3
-						* pf.getPreferredSize().width, duplLoc.getY() + 1.1
-						* pf.getPreferredSize().height));
+				duplicate.setCoordinate(new Point2D.Double(duplLoc.getX() + 1.0
+						* Math.random() * pf.getPreferredSize().width, duplLoc
+						.getY() + 1.1 * pf.getPreferredSize().height));
 
 				// add it
 				ModelProxy.getInstance().getPipeline().addFunction(duplicate);
