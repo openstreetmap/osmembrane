@@ -31,7 +31,7 @@ import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 
 /**
- * Action to ... TODO what does this thing do?
+ * Action to explain the question "what does this thing do?"
  * 
  * @author tobias_kuhn
  * 
