@@ -11,9 +11,12 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane;
 
+import java.awt.AlphaComposite;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.SplashScreen;
 import java.util.Locale;
 
 import javax.swing.JOptionPane;
@@ -36,6 +39,20 @@ import de.osmembrane.view.interfaces.IView;
  * 
  */
 public class Application {
+
+	/**
+	 * Creates a new Application and writes the build number on the splash.
+	 */
+	public Application() {
+		SplashScreen splash = SplashScreen.getSplashScreen();
+		if(splash != null) {
+			Graphics2D g = (Graphics2D) splash.createGraphics();
+			Dimension size = splash.getSize();
+			g.setComposite(AlphaComposite.Clear);
+			g.drawString("$Revision$", size.width-100, size.height-100);
+			g.setPaintMode();
+		}
+	}
 
 	/**
 	 * Connects the most basic stuff of the MVC architecture
