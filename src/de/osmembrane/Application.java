@@ -13,7 +13,7 @@
 
 package de.osmembrane;
 
-import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
@@ -45,12 +45,16 @@ public class Application {
 	 */
 	public Application() {
 		SplashScreen splash = SplashScreen.getSplashScreen();
-		if(splash != null) {
+		if (splash != null) {
 			Graphics2D g = (Graphics2D) splash.createGraphics();
 			Dimension size = splash.getSize();
-			g.setComposite(AlphaComposite.Clear);
-			g.drawString("$Revision$", size.width-100, size.height-100);
+			g.setColor(new Color(255,255,255));
+			g.drawRect(0, 0, size.width, size.height);
+			g.drawString(
+					"build " + "$Revision$".replace("$Revision$",
+							""), size.width-170, size.height-45);
 			g.setPaintMode();
+			splash.update();
 		}
 	}
 
