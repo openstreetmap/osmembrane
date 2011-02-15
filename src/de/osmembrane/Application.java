@@ -21,6 +21,8 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
+import de.osmembrane.resources.Constants;
+
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
@@ -51,8 +53,7 @@ public class Application {
 			g.setColor(new Color(255,255,255));
 			g.drawRect(0, 0, size.width, size.height);
 			g.drawString(
-					"build " + "$Revision$".replace("$Revision$",
-							""), size.width-170, size.height-45);
+					"build " + Constants.REVISION, size.width-170, size.height-45);
 			g.setPaintMode();
 			splash.update();
 		}

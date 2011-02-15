@@ -184,4 +184,9 @@ public class Constants {
 	 * automatically affects standard zoom and drag & drop size.
 	 */
 	public static final double DEFAULT_SIZE_FACTOR = 0.64;
+
+	/**
+	 * The revision of this build.
+	 */
+	public static final int REVISION = 817;
 }
