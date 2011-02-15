@@ -2,14 +2,13 @@
  * This file is part of the OSMembrane project.
  * More informations under www.osmembrane.de
  * 
- * The project is licensed under the Creative Commons
- * Attribution-NonCommercial-ShareAlike 3.0 Unported License.
- * for more details about the license see
- * http://www.osmembrane.de/license/
+ * The project is licensed under the GNU GENERAL PUBLIC LICENSE 3.0.
+ * for more details about the license see http://www.osmembrane.de/license/
  * 
- * Source: $HeadURL: https://www.osmembrane.de/svn/sources/src/de/osmembrane/controller/actions/ChangeSettingsAction.java $ ($Revision: 722 $)
- * Last changed: $Date: 2011-02-07 23:10:35 +0100 (Mo, 07 Feb 2011) $
+ * Source: $HeadURL: https://osmembrane.de/svn/sources/src/header.txt $ ($Revision: 703 $)
+ * Last changed: $Date: 2011-02-07 10:56:49 +0100 (Mo, 07 Feb 2011) $
  */
+
 
 
 package de.osmembrane.controller.actions;
