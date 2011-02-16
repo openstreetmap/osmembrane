@@ -52,16 +52,17 @@ public abstract class AbstractFrame extends JFrame implements IView {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					Component focusedComponent = getFocusOwner();
+					if (focusedComponent instanceof JButton) {
+						e.consume();
+						((JButton) focusedComponent).doClick();
+					}
+				}
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					Component focusedComponent = getFocusOwner();
-					if (focusedComponent instanceof JButton) {
-						((JButton) focusedComponent).doClick();
-					}
-				}
 			}
 
 			@Override
