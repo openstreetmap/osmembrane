@@ -34,6 +34,9 @@ public class Main {
 	public static void main(String[] args) {
 		application = new Application();
 
+		// create home directory if not exists
+		application.createHomeDirectory();
+		
 		// create the models
 		application.createModels();
 

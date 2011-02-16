@@ -9,13 +9,12 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.resources;
 
 import java.awt.Color;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 
@@ -45,6 +44,11 @@ public class Constants {
 	 */
 	public static final Locale[] AVAILABLE_LOCALES = new Locale[] {
 			Locale.ENGLISH, Locale.GERMAN };
+
+	/**
+	 * Default OSMembrane-user directory.
+	 */
+	public static final URL DEFAULT_USER_FOLDER;
 
 	/**
 	 * Default Backup filename (for {@link Pipeline}.
@@ -152,33 +156,6 @@ public class Constants {
 	public static final int JOSM_HEAP_SIZE = 256;
 
 	/**
-	 * static method
-	 */
-	static {
-		URL url = null;
-		try {
-			url = new File(System.getProperty("user.home") + "/"
-					+ ".osmembrane.backup").toURI().toURL();
-		} catch (MalformedURLException e) {
-			/* no that shouldn't be so! */
-			Application.handleException(e);
-		} finally {
-			DEFAULT_BACKUP_FILE = url;
-		}
-
-		url = null;
-		try {
-			url = new File(System.getProperty("user.home") + "/"
-					+ ".osmembrane.settings").toURI().toURL();
-		} catch (MalformedURLException e) {
-			/* no that shouldn't be so! */
-			Application.handleException(e);
-		} finally {
-			DEFAULT_SETTINGS_FILE = url;
-		}
-	}
-
-	/**
 	 * All view components will have their size modified by this factor. This
 	 * automatically affects standard zoom and drag & drop size.
 	 */
@@ -188,4 +165,47 @@ public class Constants {
 	 * The revision of this build.
 	 */
 	public static final int REVISION = 822;
+
+	/**
+	 * static method
+	 */
+	static {
+		URL urlBackup = null;
+		URL urlSettings = null;
+		URL urlUserFolder = null;
+		try {
+			urlUserFolder = new File(System.getProperty("user.home") + "/"
+					+ ".osmembrane/").toURI().toURL();
+
+			urlBackup = new File(urlUserFolder.getPath().replace("file:", "")
+					+ "pipeline_backup.osmembrane").toURI().toURL();
+
+			urlBackup = new File(urlUserFolder.getPath().replace("file:", "")
+					+ "osmembrane.settings").toURI().toURL();
+
+		} catch (MalformedURLException e) {
+			/* no that shouldn't be so! */
+			Application.handleException(e);
+		} finally {
+			DEFAULT_USER_FOLDER = urlUserFolder;
+			DEFAULT_BACKUP_FILE = urlBackup;
+			DEFAULT_SETTINGS_FILE = urlSettings;
+		}
+	}
+	
+	/**
+	 * Creates a file from an URL.
+	 * 
+	 * @param url which should be converted
+	 * @return to a File converted URL
+	 */
+	public static File urlToFile(URL url) {
+		File f;
+		try {
+		  f = new File(url.toURI());
+		} catch(URISyntaxException e) {
+		  f = new File(url.getPath());
+		}
+		return f;
+	}
 }

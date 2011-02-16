@@ -29,6 +29,7 @@ import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 
 /**
@@ -67,7 +68,7 @@ public class OSMembranePersistence extends AbstractPersistence {
 							.handleException(new ControlledException(this,
 									ExceptionSeverity.WARNING, e,
 									I18N.getInstance().getString(
-											"Exception.AutosavePipelineFailed")));
+											"Exception.AutosavePipelineFailed", Constants.DEFAULT_BACKUP_FILE)));
 
 				}
 			}

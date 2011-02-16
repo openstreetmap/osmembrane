@@ -9,13 +9,14 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
+import java.io.File;
+import java.net.URL;
 import java.util.Locale;
 
 import javax.swing.JOptionPane;
@@ -49,10 +50,10 @@ public class Application {
 		if (splash != null) {
 			Graphics2D g = (Graphics2D) splash.createGraphics();
 			Dimension size = splash.getSize();
-			g.setColor(new Color(255,255,255));
+			g.setColor(new Color(255, 255, 255));
 			g.drawRect(0, 0, size.width, size.height);
-			g.drawString(
-					"build " + Constants.REVISION, size.width-170, size.height-45);
+			g.drawString("build " + Constants.REVISION, size.width - 170,
+					size.height - 45);
 			g.setPaintMode();
 			splash.update();
 		}
@@ -98,6 +99,7 @@ public class Application {
 					.initiate(Resource.PRESET_XML.getURL());
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
 							.getInstance().getString(
@@ -188,6 +190,22 @@ public class Application {
 
 		if (skippedLoad || !backupAvailable) {
 			ModelProxy.getInstance().getPipeline().clear();
+		}
+	}
+
+	/**
+	 * Creates the home directory of OSMembrane if it does not exists.
+	 */
+	public void createHomeDirectory() {
+		File home = Constants.urlToFile(Constants.DEFAULT_USER_FOLDER);
+		if (!home.isDirectory()) {
+			if (!home.mkdir()) {
+				Application.handleException(new ControlledException(this,
+						ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, I18N
+								.getInstance().getString(
+										"Execption.HomeFolderCreationFailed",
+										home)));
+			}
 		}
 	}
 }
