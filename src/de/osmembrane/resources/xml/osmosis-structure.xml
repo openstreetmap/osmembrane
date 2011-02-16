@@ -60,7 +60,7 @@
 				<parameter name="password" defaultParameter="false" required="false" type="string">
 					
 				<description lang="de"><value>Das Datenbank-Passwort.</value></description><description lang="en"><value>The database password.</value></description></parameter>
-				<parameter name="dbType" defaultParameter="false" required="false" type="enum">
+				<parameter name="dbType" defaultValue="postgresql" defaultParameter="false" required="false" type="enum">
 					
 					<enumValue value="postgresql" />
 					<enumValue value="mysql" />
@@ -97,7 +97,7 @@
 				<parameter name="password" defaultParameter="false" required="false" type="string">
 					
 				<description lang="de"><value>Das Datenbank-Passwort.</value></description><description lang="en"><value>The database password.</value></description></parameter>
-				<parameter name="dbType" defaultParameter="false" required="false" type="enum">
+				<parameter name="dbType" defaultValue="postgresql" defaultParameter="false" required="false" type="enum">
 					
 					<enumValue value="postgresql" />
 					<enumValue value="mysql" />
@@ -180,7 +180,7 @@
 				<parameter name="password" defaultParameter="false" required="false" type="string">
 					
 				<description lang="de"><value>Das Datenbank-Passwort.</value></description><description lang="en"><value>The database password.</value></description></parameter>
-				<parameter name="dbType" defaultParameter="false" required="false" type="enum">
+				<parameter name="dbType" defaultValue="postgresql" defaultParameter="false" required="false" type="enum">
 					
 					<enumValue value="postgresql" />
 					<enumValue value="mysql" />
@@ -270,7 +270,7 @@
 				<parameter name="password" defaultParameter="false" required="false" type="string">
 					
 				<description lang="de"><value>Das Datenbank-Passwort.</value></description><description lang="en"><value>The database password.</value></description></parameter>
-				<parameter name="dbType" defaultParameter="false" required="false" type="enum">
+				<parameter name="dbType" defaultValue="postgresql" defaultParameter="false" required="false" type="enum">
 					
 					<enumValue value="postgresql" />
 					<enumValue value="mysql" />
@@ -435,7 +435,7 @@
 				<parameter name="password" defaultParameter="false" required="false" type="string">
 					
 				<description lang="de"><value>Das Datenbank-Passwort.</value></description><description lang="en"><value>The database password.</value></description></parameter>
-				<parameter name="dbType" defaultParameter="false" required="false" type="enum">
+				<parameter name="dbType" defaultValue="postgresql" defaultParameter="false" required="false" type="enum">
 					
 					<enumValue value="postgresql" />
 					<enumValue value="mysql" />
@@ -511,7 +511,7 @@
 				<parameter name="password" defaultParameter="false" required="false" type="string">
 					
 				<description lang="de"><value>Das Datenbank-Passwort.</value></description><description lang="en"><value>The database password.</value></description></parameter>
-				<parameter name="dbType" defaultParameter="false" required="false" type="enum">
+				<parameter name="dbType" defaultValue="postgresql" defaultParameter="false" required="false" type="enum">
 					
 					<enumValue value="postgresql" />
 					<enumValue value="mysql" />

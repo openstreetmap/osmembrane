@@ -362,7 +362,7 @@ public class InspectorPanel extends JPanel implements Observer {
 
 			// change iff value changed
 			// + work-around for model code
-			if (editRow > 0) {
+			if ((editRow > 0) && (inspecting != null)) {
 				
 				String realValue = inspecting.getActiveTask().getParameters()[editRow - 1]
 						.getValue();
@@ -373,7 +373,7 @@ public class InspectorPanel extends JPanel implements Observer {
 				if (realValue == null) {
 					realValue = "";
 				}
-				if (!value.equals(realValue)) {
+				if ((value != null) && (!value.equals(realValue))) {
 					propertyTable.setValueAt(value, editRow, editColumn);
 				}
 			}

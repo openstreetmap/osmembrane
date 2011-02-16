@@ -187,5 +187,5 @@ public class Constants {
 	/**
 	 * The revision of this build.
 	 */
-	public static final int REVISION = 820;
+	public static final int REVISION = 822;
 }
