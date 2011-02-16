@@ -104,7 +104,7 @@ public class TestFunction extends AbstractFunction {
 	 * @param loc
 	 */
 	public void assertLocation(Point2D loc) {
-		assertEquals(loc, this.getCoordinate());
+		assertEquals(loc, this.getUnrasteredCoordinate());
 	}
 
 	/**

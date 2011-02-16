@@ -31,6 +31,7 @@ import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.model.settings.SettingsObserverObject;
 import de.osmembrane.tools.I18N;
+import de.osmembrane.tools.Tools;
 
 /**
  * Saves the {@see AbstractSettings} in a file.
@@ -50,8 +51,7 @@ public class SettingPersistence extends AbstractPersistence {
 		}
 
 		try {
-			FileOutputStream fos = new FileOutputStream(file.toString()
-					.replace("file:", ""));
+			FileOutputStream fos = new FileOutputStream(Tools.urlToFile(file));
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 

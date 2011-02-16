@@ -30,6 +30,7 @@ import de.osmembrane.model.parser.IParser;
 import de.osmembrane.model.parser.ParseException;
 import de.osmembrane.model.parser.ParserFactory;
 import de.osmembrane.model.persistence.FileException.Type;
+import de.osmembrane.tools.Tools;
 
 /**
  * Writes and Reads Bash-Files (normally used on UNIX systems).
@@ -52,7 +53,7 @@ public class BashPersistence extends AbstractPersistence {
 		}
 
 		try {
-			File file = new File(filename.toString().replace("file:", ""));
+			File file = Tools.urlToFile(filename);
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
 			

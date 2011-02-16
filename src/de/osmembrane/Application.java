@@ -16,7 +16,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
 import java.io.File;
-import java.net.URL;
 import java.util.Locale;
 
 import javax.swing.JOptionPane;
@@ -31,6 +30,7 @@ import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
+import de.osmembrane.tools.Tools;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.interfaces.IView;
 
@@ -197,7 +197,7 @@ public class Application {
 	 * Creates the home directory of OSMembrane if it does not exists.
 	 */
 	public void createHomeDirectory() {
-		File home = Constants.urlToFile(Constants.DEFAULT_USER_FOLDER);
+		File home = Tools.urlToFile(Constants.DEFAULT_USER_FOLDER);
 		if (!home.isDirectory()) {
 			if (!home.mkdir()) {
 				Application.handleException(new ControlledException(this,

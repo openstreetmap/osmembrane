@@ -31,6 +31,7 @@ import de.osmembrane.model.persistence.SettingPersistence;
 import de.osmembrane.model.pipeline.AbstractFunction;
 import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
+import de.osmembrane.tools.Tools;
 
 /**
  * Implementation of {@link AbstractSettings}.
@@ -50,8 +51,7 @@ public class Settings extends AbstractSettings {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(SettingPersistence.class);
 
-		File file = new File(Constants.DEFAULT_SETTINGS_FILE.toString()
-				.replace("file:", ""));
+		File file = Tools.urlToFile(Constants.DEFAULT_SETTINGS_FILE);
 
 		/*
 		 * register the persistence as observer for automatic saving of the

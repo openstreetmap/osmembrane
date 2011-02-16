@@ -97,10 +97,12 @@ public class SaveAsPipelineAction extends AbstractAction {
 				}
 			}
 
+
+			/* parse the file to an URL */
 			URL file;
 			try {
-				file = new URL("file:" + filePath);
-			} catch (MalformedURLException e2) {
+				file = new File(filePath).toURI().toURL();
+			} catch (MalformedURLException e1) {
 				file = null;
 			}
 

@@ -14,12 +14,12 @@ package de.osmembrane.resources;
 import java.awt.Color;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 
 import de.osmembrane.Application;
 import de.osmembrane.model.pipeline.Pipeline;
+import de.osmembrane.tools.Tools;
 
 /**
  * Constants for OSMembrane.
@@ -177,10 +177,10 @@ public class Constants {
 			urlUserFolder = new File(System.getProperty("user.home") + "/"
 					+ ".osmembrane/").toURI().toURL();
 
-			urlBackup = new File(urlUserFolder.getPath().replace("file:", "")
+			urlBackup = new File(Tools.urlToFile(urlUserFolder) + "/"
 					+ "pipeline_backup.osmembrane").toURI().toURL();
 
-			urlBackup = new File(urlUserFolder.getPath().replace("file:", "")
+			urlSettings = new File(Tools.urlToFile(urlUserFolder) + "/"
 					+ "osmembrane.settings").toURI().toURL();
 
 		} catch (MalformedURLException e) {
@@ -191,21 +191,5 @@ public class Constants {
 			DEFAULT_BACKUP_FILE = urlBackup;
 			DEFAULT_SETTINGS_FILE = urlSettings;
 		}
-	}
-	
-	/**
-	 * Creates a file from an URL.
-	 * 
-	 * @param url which should be converted
-	 * @return to a File converted URL
-	 */
-	public static File urlToFile(URL url) {
-		File f;
-		try {
-		  f = new File(url.toURI());
-		} catch(URISyntaxException e) {
-		  f = new File(url.getPath());
-		}
-		return f;
 	}
 }

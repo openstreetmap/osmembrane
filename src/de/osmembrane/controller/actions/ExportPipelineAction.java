@@ -35,6 +35,7 @@ import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
+import de.osmembrane.tools.Tools;
 
 /**
  * Action to export the created pipeline to a file.
@@ -96,9 +97,9 @@ public class ExportPipelineAction extends AbstractAction {
 
 		if (result == JFileChooser.APPROVE_OPTION) {
 
-			/* parse the file to an URL */
-
+			
 			try {
+				/* parse the file to an URL */
 				URL file = fileChooser.getSelectedFile().toURI().toURL();
 				FileType type = FileType.fileTypeFor(fileChooser
 						.getSelectedFile());
@@ -129,7 +130,7 @@ public class ExportPipelineAction extends AbstractAction {
 				}
 
 				/* Check if the file does not already exists. */
-				if (new File(file.toString().replace("file:", "")).isFile()) {
+				if (Tools.urlToFile(file).isFile()) {
 					int confirmResult = JOptionPane.showConfirmDialog(
 							null,
 							I18N.getInstance().getString(
@@ -152,7 +153,7 @@ public class ExportPipelineAction extends AbstractAction {
 
 				Application.handleException(new ControlledException(this,
 						ExceptionSeverity.WARNING, e1, message));
-			} catch (MalformedURLException e2) {
+			} catch (MalformedURLException e1) {
 			}
 		}
 	}

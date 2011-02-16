@@ -31,6 +31,7 @@ import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.model.pipeline.PipelineObserverObject;
 import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
+import de.osmembrane.tools.Tools;
 
 /**
  * Saves the OSMembrane Pipeline into a file.
@@ -93,8 +94,7 @@ public class OSMembranePersistence extends AbstractPersistence {
 		}
 
 		try {
-			FileOutputStream fos = new FileOutputStream(file.toString()
-					.replace("file:", ""));
+			FileOutputStream fos = new FileOutputStream(Tools.urlToFile(file));
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 

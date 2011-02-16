@@ -43,7 +43,7 @@ import de.osmembrane.resources.Constants;
 public class PipelineTest {
 
 	private static AbstractFunction prototype;
-
+	
 	/**
 	 * pipeline under test
 	 */

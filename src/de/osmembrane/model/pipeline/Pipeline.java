@@ -37,6 +37,7 @@ import de.osmembrane.model.persistence.PipelinePersistenceObject;
 import de.osmembrane.model.pipeline.PipelineObserverObject.ChangeType;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Constants;
+import de.osmembrane.tools.Tools;
 
 /**
  * Implementation of {@link AbstractPipeline}.
@@ -244,8 +245,7 @@ public class Pipeline extends AbstractPipeline {
 
 	@Override
 	public boolean isBackupAvailable() {
-		File file = new File(Constants.DEFAULT_BACKUP_FILE.toString().replace(
-				"file:", ""));
+		File file = Tools.urlToFile(Constants.DEFAULT_BACKUP_FILE);
 		return file.isFile();
 	}
 
@@ -257,8 +257,7 @@ public class Pipeline extends AbstractPipeline {
 	@Override
 	public void clearBackup() {
 		if (isBackupAvailable()) {
-			new File(Constants.DEFAULT_BACKUP_FILE.toString().replace("file:",
-					"")).delete();
+			Tools.urlToFile(Constants.DEFAULT_BACKUP_FILE).delete();
 		}
 	}
 
@@ -280,11 +279,9 @@ public class Pipeline extends AbstractPipeline {
 
 		this.pipelineSettings = pipeline.getSettings();
 
-		changeSavedState(true);
-
 		/* notify the observers */
 		changedNotifyObservers(new PipelineObserverObject(
-				ChangeType.FULLCHANGE, null).setCreateUndoStep(false));
+				ChangeType.FULLCHANGE, null));
 	}
 
 	@Override
