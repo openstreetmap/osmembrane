@@ -50,7 +50,7 @@ public class EditFilePropertyAction extends AbstractAction {
 			wd = null;
 		}
 		
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser = new JFileChooser(wd);
 
 		String value = ap.getValue();
 		if ((value == null) || (value.isEmpty())) {

@@ -19,7 +19,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
 import de.osmembrane.controller.events.ContainingEvent;
+import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.pipeline.AbstractParameter;
+import de.osmembrane.model.settings.SettingType;
 
 /**
  * Action to edit a parameter which is a directory path and therefore open the
@@ -43,7 +45,11 @@ public class EditDirectoryPropertyAction extends AbstractAction {
 		ContainingEvent ce = (ContainingEvent) e;
 		AbstractParameter ap = (AbstractParameter) ce.getContained();
 
-		JFileChooser fileChooser = new JFileChooser();
+		File startDir = new File((String) ModelProxy.getInstance()
+				.getSettings()
+				.getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
+		
+		JFileChooser fileChooser = new JFileChooser(startDir);
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 
