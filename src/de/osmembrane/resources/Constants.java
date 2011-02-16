@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import de.osmembrane.Application;
 import de.osmembrane.model.pipeline.Pipeline;
+import de.osmembrane.model.settings.SettingsTypeUpdateInterval;
 import de.osmembrane.tools.Tools;
 
 /**
@@ -27,6 +28,11 @@ import de.osmembrane.tools.Tools;
  * @author jakob_jarosch
  */
 public class Constants {
+
+	/**
+	 * The revision of this build.
+	 */
+	public static final int BUILD_NUMBER = 822;
 
 	/**
 	 * Path to the language files.
@@ -162,9 +168,14 @@ public class Constants {
 	public static final double DEFAULT_SIZE_FACTOR = 0.64;
 
 	/**
-	 * The revision of this build.
+	 * Default update interval.
 	 */
-	public static final int REVISION = 822;
+	public static final SettingsTypeUpdateInterval DEFAULT_UPDATE_INTERVAL = SettingsTypeUpdateInterval.ONCE_A_DAY;
+
+	/**
+	 * The website where updates can be checked.
+	 */
+	public static final URL UPDATE_WEBSITE;
 
 	/**
 	 * static method
@@ -173,6 +184,7 @@ public class Constants {
 		URL urlBackup = null;
 		URL urlSettings = null;
 		URL urlUserFolder = null;
+		URL updateWebsite = null;
 		try {
 			urlUserFolder = new File(System.getProperty("user.home") + "/"
 					+ ".osmembrane/").toURI().toURL();
@@ -182,6 +194,8 @@ public class Constants {
 
 			urlSettings = new File(Tools.urlToFile(urlUserFolder) + "/"
 					+ "osmembrane.settings").toURI().toURL();
+			
+			updateWebsite = new URL("http://update.osmembrane.de/latest_build");
 
 		} catch (MalformedURLException e) {
 			/* no that shouldn't be so! */
@@ -190,6 +204,7 @@ public class Constants {
 			DEFAULT_USER_FOLDER = urlUserFolder;
 			DEFAULT_BACKUP_FILE = urlBackup;
 			DEFAULT_SETTINGS_FILE = urlSettings;
+			UPDATE_WEBSITE = updateWebsite;
 		}
 	}
 }

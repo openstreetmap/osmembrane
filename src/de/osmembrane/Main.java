@@ -48,6 +48,9 @@ public class Main {
 
 		// check if a backup file is available
 		application.checkForBackup();
+		
+		// check if an update for OSMembrane is available
+		application.checkForUpdates();
 
 		// standard method to start Swing GUI
 		SwingUtilities.invokeLater(new Runnable() {

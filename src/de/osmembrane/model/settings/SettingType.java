@@ -91,8 +91,23 @@ public enum SettingType {
 	 * 
 	 * can be casted to a {@link Boolean}
 	 */
-	SHOW_STARTUP_SCREEN(Boolean.class, Constants.DEFAULT_SHOW_STARTUP_SCREEN);
+	SHOW_STARTUP_SCREEN(Boolean.class, Constants.DEFAULT_SHOW_STARTUP_SCREEN),
 
+	/**
+	 * Should the Software update or not?
+	 * 
+	 * can be casted to a {@link Integer}<br/>
+	 * 0: never<br/>
+	 * 1: once a day<br/>
+	 * 2: once a week<br/>
+	 */
+	UPDATE_INTERVAL(SettingsTypeUpdateInterval.class, Constants.DEFAULT_UPDATE_INTERVAL),
+	
+	/**
+	 * The last date when OSMembrane tried to update.
+	 * Timestamp since 01.01.1980.
+	 */
+	LAST_UPDATE_LOOKUP(Long.class, 0L);
 	
 	private Class<?> clazz;
 	private Object defaultValue;
