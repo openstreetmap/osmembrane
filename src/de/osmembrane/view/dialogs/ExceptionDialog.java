@@ -266,7 +266,7 @@ public class ExceptionDialog extends AbstractDialog {
 			sb.append(I18N.getInstance().getString("View.ErrorDialog.CausedBy",
 					causedBy.toString())
 					+ NL);
-			for (StackTraceElement ste : t.getStackTrace()) {
+			for (StackTraceElement ste : causedBy.getStackTrace()) {
 				sb.append(printStackTraceElement(ste));
 			}
 
