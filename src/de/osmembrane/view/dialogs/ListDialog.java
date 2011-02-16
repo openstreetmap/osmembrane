@@ -474,6 +474,8 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		}
 
 		this.editFieldModel.setSelectedItem(new String());
+		
+		this.editField.requestFocus();
 
 		setWindowTitle(I18N.getInstance().getString("View.ListDialog",
 				list.getListType()));
