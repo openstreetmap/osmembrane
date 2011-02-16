@@ -318,7 +318,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 					try {
 						String saveTo = fileChooser.getSelectedFile()
 								.getAbsolutePath();
-						if (!saveTo.toLowerCase().endsWith("*.txt")) {
+						if (!saveTo.toLowerCase().endsWith(".txt")) {
 							saveTo += ".txt";
 						}
 						FileWriter fw = new FileWriter(saveTo);
