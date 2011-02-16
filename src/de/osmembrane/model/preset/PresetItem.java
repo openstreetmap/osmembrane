@@ -118,7 +118,7 @@ public class PresetItem implements Comparable<PresetItem> {
 	 * @return true if the item is a way
 	 */
 	public boolean isWay() {
-		return isType("way");
+		return (isType("way") || isType("closedway"));
 	}
 
 	/**
