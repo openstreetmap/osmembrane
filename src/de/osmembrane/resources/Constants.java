@@ -17,6 +17,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
 import de.osmembrane.Application;
 import de.osmembrane.model.pipeline.Pipeline;
 import de.osmembrane.model.settings.SettingsTypeUpdateInterval;
@@ -176,6 +179,11 @@ public class Constants {
 	 * The website where updates can be checked.
 	 */
 	public static final URL UPDATE_WEBSITE;
+	
+	/**
+	 * The default LnF of OSMembrane, called Nimbus.
+	 */
+	public static final String DEFAULT_PLAF_NAME = getNimbusPlafName();
 
 	/**
 	 * static method
@@ -206,5 +214,20 @@ public class Constants {
 			DEFAULT_SETTINGS_FILE = urlSettings;
 			UPDATE_WEBSITE = updateWebsite;
 		}
+	}
+	
+	/**
+	 * Determines the PLaF name for the Nimbus PLaF.
+	 * 
+	 * @return the name of the Nimbus plaf, or any arbitrary one, if Nimbus
+	 *         isn't found.
+	 */
+	private static String getNimbusPlafName() {
+		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+			if (info.getName().toLowerCase().contains("nimbus")) {
+				return info.getName();
+			}
+		}
+		return UIManager.getInstalledLookAndFeels()[0].getName();
 	}
 }

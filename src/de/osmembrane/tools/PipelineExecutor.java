@@ -45,6 +45,8 @@ public class PipelineExecutor extends Thread implements WindowListener {
 
 	private Class<? extends Action> callbackEvent;
 
+	private int executionState = -1;
+	
 	/**
 	 * Initialize the pipeline executor.
 	 * 
@@ -129,6 +131,8 @@ public class PipelineExecutor extends Thread implements WindowListener {
 						dialog.setCloseButtonCaption(I18N.getInstance()
 								.getString("View.Close"));
 					}
+
+					executionState = exitValue;
 				} catch (InterruptedException e) {
 					interrupt();
 				}
@@ -173,7 +177,7 @@ public class PipelineExecutor extends Thread implements WindowListener {
 		if (this.isAlive()) {
 			this.interrupt();
 		} else {
-			if (callbackEvent != null) {
+			if (callbackEvent != null && executionState == 0) {
 				ActionRegistry.getInstance().get(callbackEvent)
 						.actionPerformed(new ActionEvent(this, 0, "finished"));
 			}

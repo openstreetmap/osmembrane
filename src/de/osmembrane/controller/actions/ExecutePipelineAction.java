@@ -110,6 +110,9 @@ public class ExecutePipelineAction extends AbstractAction {
 		IExecutionStateDialog dialog = ViewRegistry.getInstance().getCasted(
 				ExecutionStateDialog.class, IExecutionStateDialog.class);
 
+		/* clear the contents of the exectuion window */
+		dialog.clear();
+		
 		Class<? extends Action> action;
 		if (e.getSource() instanceof Action) {
 			action = (Class<? extends Action>) e.getSource().getClass();

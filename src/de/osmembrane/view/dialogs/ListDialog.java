@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.dialogs;
 
 import java.awt.BorderLayout;
@@ -43,6 +41,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -429,6 +428,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 							case KeyEvent.VK_Y:
 							case KeyEvent.VK_Z:
 								editFieldModel.doAutoCompleteSelection();
+
 							}
 
 							editField.hidePopup();
@@ -474,7 +474,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		}
 
 		this.editFieldModel.setSelectedItem(new String());
-		
+
 		this.editField.requestFocus();
 
 		setWindowTitle(I18N.getInstance().getString("View.ListDialog",

@@ -119,7 +119,7 @@ public enum SettingType {
 	 * 
 	 * can be casted to a {@link String}
 	 */
-	ACTIVE_PLAF(String.class, getNimbusPlafName());
+	ACTIVE_PLAF(String.class, Constants.DEFAULT_PLAF_NAME);
 
 	private Class<?> clazz;
 	private Object defaultValue;
@@ -224,20 +224,5 @@ public enum SettingType {
 		}
 
 		return value;
-	}
-
-	/**
-	 * Determines the PLaF name for the Nimbus PLaF.
-	 * 
-	 * @return the name of the Nimbus plaf, or any arbitrary one, if Nimbus
-	 *         isn't found.
-	 */
-	private static String getNimbusPlafName() {
-		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-			if (info.getName().toLowerCase().contains("nimbus")) {
-				return info.getName();
-			}
-		}
-		return UIManager.getInstalledLookAndFeels()[0].getName();
 	}
 }
