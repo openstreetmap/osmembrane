@@ -15,6 +15,7 @@ package de.osmembrane.view.frames;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Point;
@@ -41,6 +42,7 @@ import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.controller.actions.ArrangePipelineAction;
@@ -266,10 +268,15 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		popupMenu.add(new JSeparator());
 		popupMenu.add(ActionRegistry.getInstance().get(ResetViewAction.class));
 		popupMenu.add(ActionRegistry.getInstance().get(ViewAllAction.class));
+		
 
 		// tool bar with actions
 		JToolBar toolBar = new JToolBar(I18N.getInstance().getString(
 				"osmembrane"), SwingConstants.HORIZONTAL);
+		if (!UIManager.getLookAndFeel().getName().toLowerCase().contains("nimbus")) {
+			toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
+		}
+		
 		toolBar.add(ActionRegistry.getInstance().get(NewPipelineAction.class));
 		toolBar.add(ActionRegistry.getInstance().get(LoadPipelineAction.class));
 		toolBar.add(ActionRegistry.getInstance().get(SavePipelineAction.class));
@@ -298,6 +305,9 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 		// tools bar with tools for editing the pipeline
 		JToolBar toolsBar = new JToolBar(I18N.getInstance().getString(
 				"osmembrane"), SwingConstants.HORIZONTAL);
+		if (!UIManager.getLookAndFeel().getName().toLowerCase().contains("nimbus")) {
+			toolsBar.setLayout(new FlowLayout(FlowLayout.LEFT));
+		}
 
 		ButtonGroup tools = new ButtonGroup();
 		// will store the buttons later
