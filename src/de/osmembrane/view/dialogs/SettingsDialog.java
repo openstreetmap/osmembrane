@@ -112,6 +112,11 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 	 * Components to edit whether the startup screen shall be displayed
 	 */
 	private JCheckBox showStartup;
+	
+	/**
+	 * Components to edit how often updates shall be searched
+	 */
+	private JComboBox updateInterval;
 
 	/**
 	 * Generates a new {@link SettingsDialog}.
@@ -347,8 +352,26 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		maxUndoSteps.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.MAXIMUM_UNDO_STEPS.Description"));
 		settings.add(maxUndoSteps, gbc);
-
+		
 		gbc.gridy = 4;
+		gbc.gridx = 2;
+		settings.add(
+				new JLabel(I18N.getInstance().getString(
+						"Model.Settings.Type.UPDATE_INTERVAL")
+						+ ":"), gbc);
+		gbc.gridx = 3;
+		String[] updateOptions = {I18N.getInstance().getString(
+		"Model.Settings.Type.UPDATE_INTERVAL.Never"), I18N.getInstance().getString(
+		"Model.Settings.Type.UPDATE_INTERVAL.PerDay"), I18N.getInstance().getString(
+		"Model.Settings.Type.UPDATE_INTERVAL.PerWeek")}; 
+		updateInterval = new JComboBox(updateOptions);
+		updateInterval.setPreferredSize(new Dimension(minSpinnerWidth,
+				updateInterval.getPreferredSize().height));
+		updateInterval.setToolTipText(I18N.getInstance().getString(
+				"Model.Settings.Type.UPDATE_INTERVAL.Description"));
+		settings.add(updateInterval, gbc);
+
+		gbc.gridy = 5;
 		gbc.gridx = 2;
 		rasterSizeEnable = new JCheckBox(I18N.getInstance().getString(
 				"Model.Settings.Type.PIPELINE_RASTER_SIZE")
@@ -364,7 +387,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		rasterSizeDisplay = new JLabel("");
 		settings.add(rasterSizeDisplay, gbc);
 
-		gbc.gridy = 5;
+		gbc.gridy = 6;
 		gbc.gridx = 2;
 		gbc.gridwidth = 2;
 		rasterSize = new JSlider(1, 100);
@@ -491,6 +514,9 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 
 		case SHOW_STARTUP_SCREEN:
 			return this.showStartup.isSelected();
+			
+		case UPDATE_INTERVAL:
+			return this.updateInterval.getSelectedIndex();
 
 		default:
 			return null;
@@ -552,6 +578,11 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		case SHOW_STARTUP_SCREEN:
 			this.showStartup.setSelected((Boolean) value);
 			break;
+			
+		case UPDATE_INTERVAL:
+			this.updateInterval.setSelectedIndex((Integer) value);
+			break;
+			
 		}
 	}
 
