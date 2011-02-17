@@ -9,7 +9,7 @@
 	<target name="find_revision" description="Determines SVN revision number">
         <typedef resource="org/tigris/subversion/svnant/svnantlib.xml">
 			<classpath>
-			<fileset dir="buildlib/svnant/" includes="**/*.jar" />
+			<fileset dir="svnant/" includes="**/*.jar" />
 			</classpath>
 		</typedef>
 
