@@ -35,7 +35,7 @@ public class Constants {
 	/**
 	 * The revision of this build.
 	 */
-	public static final int BUILD_NUMBER = 832;
+	public static final int BUILD_NUMBER = 839;
 
 	/**
 	 * Path to the language files.

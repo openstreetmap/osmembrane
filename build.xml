@@ -5,16 +5,34 @@
 		<delete dir="build"/>
 		<mkdir dir="build"/>
 	</target>
+	
+	<target name="find_revision" description="Determines SVN revision number">
+        <typedef resource="org/tigris/subversion/svnant/svnantlib.xml">
+			<classpath>
+			<fileset dir="lib/svnant/" includes="**/*.jar" />
+			</classpath>
+		</typedef>
+
+		<svn>
+			<status path="${basedir}" revisionProperty="svn.revision" />
+		</svn>
+
+        <echo>Revision found: ${svn.revision}</echo>
+    </target>
+	
+	<target name="update_constants_revision">
+		<replaceregexp file="src/de/osmembrane/resources/Constants.java" match="BUILD_NUMBER = [0-9]+;" replace="BUILD_NUMBER = ${svn.revision};"/>
+	</target>
 
     <!--this target was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
-    <target name="create_run_jar" depends="init">
+    <target name="create_run_jar" depends="init, find_revision, update_constants_revision">
         <jar destfile="build/OSMembrane.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
                 <attribute name="Rsrc-Main-Class" value="de.osmembrane.Main"/>
                 <attribute name="Class-Path" value="."/>
-                <attribute name="Rsrc-Class-Path" value="./ junit.jar org.hamcrest.core_1.1.0.v20090501071000.jar bboxchooser-0.2.jar"/>
+                <attribute name="Rsrc-Class-Path" value="./ bboxchooser-0.2.jar"/>
 				<attribute name="SplashScreen-Image" value="de/osmembrane/resources/images/splash.png"/>
             </manifest>
             <zipfileset src="jar-in-jar-loader.zip"/>
@@ -28,6 +46,6 @@
 		<mkdir dir="build/resources/pdf"/>
 		<copy file="../documents/m9/manual/manual.pdf" tofile="build/resources/pdf/manual.pdf"/>
 		<copy file="src/LICENSE.txt" tofile="build/LICENSE.txt"/>
-		<zip destfile="build/OSMembrane_build.zip" basedir="build"/>
+		<zip destfile="build/OSMembrane_build${svn.revision}.zip" basedir="build"/>
 	</target>
 </project>
