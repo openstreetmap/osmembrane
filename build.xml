@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_zip" name="Build OSMembrane">
+	
+	<target name="init">
+		<delete dir="build"/>
+		<mkdir dir="build"/>
+	</target>
+
+    <!--this target was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar" depends="init">
+        <jar destfile="build/OSMembrane.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="de.osmembrane.Main"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ junit.jar org.hamcrest.core_1.1.0.v20090501071000.jar bboxchooser-0.2.jar"/>
+				<attribute name="SplashScreen-Image" value="de/osmembrane/resources/images/splash.png"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="bin"/>
+            <zipfileset dir="lib" includes="bboxchooser-0.2.jar"/>
+        </jar>
+    </target>
+	
+	<target name="create_zip" depends="create_run_jar">
+		<mkdir dir="build/resources/xml"/>
+		<mkdir dir="build/resources/pdf"/>
+		<copy file="../documents/m9/manual/manual.pdf" tofile="build/resources/pdf/manual.pdf"/>
+		<copy file="src/LICENSE.txt" tofile="build/LICENSE.txt"/>
+		<zip destfile="build/OSMembrane_build.zip" basedir="build"/>
+	</target>
+</project>

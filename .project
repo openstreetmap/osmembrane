@@ -15,6 +15,16 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
+			<triggers>full,incremental,</triggers>
+			<arguments>
+				<dictionary>
+					<key>LaunchConfigHandle</key>
+					<value>&lt;project&gt;/.externalToolBuilders/Ant Builder.launch</value>
+				</dictionary>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
@@ -22,7 +32,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1297939765482</id>
+			<id>1297942480480</id>
 			<name></name>
 			<type>22</type>
 			<matcher>
@@ -31,7 +41,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1297939765485</id>
+			<id>1297942480483</id>
 			<name></name>
 			<type>22</type>
 			<matcher>
@@ -40,12 +50,21 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1297939765487</id>
+			<id>1297942480485</id>
 			<name></name>
 			<type>22</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-osmosis*.txt</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1297942480487</id>
+			<name></name>
+			<type>22</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-header.txt</arguments>
 			</matcher>
 		</filter>
 		<filter>
