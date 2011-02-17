@@ -20,7 +20,7 @@
         <echo>Revision found: ${svn.revision}</echo>
     </target>
 	
-	<target name="update_constants_revision">
+	<target name="update_constants_revision" depends="find_revision">
 		<replaceregexp file="src/de/osmembrane/resources/Constants.java" match="BUILD_NUMBER = [0-9]+;" replace="BUILD_NUMBER = ${svn.revision};"/>
 	</target>
 
