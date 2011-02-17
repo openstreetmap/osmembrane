@@ -18,15 +18,12 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 import de.osmembrane.Application;
 import de.osmembrane.Main;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
-import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.model.settings.SettingsObserverObject;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.dialogs.ExceptionDialog;
@@ -65,18 +62,6 @@ public class ViewRegistry extends Observable implements Observer {
 	 * initializes the view registry
 	 */
 	private ViewRegistry() {
-		// try to set LnF to Nimbus, if available
-		try {
-			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (Exception e) {
-			// if setLookAndFeel() failed
-			Application.handleException(e);
-		}
 	}
 
 	/**
@@ -156,7 +141,12 @@ public class ViewRegistry extends Observable implements Observer {
 		// if this means language change, do your worst
 		if (arg instanceof SettingsObserverObject) {
 			SettingsObserverObject soo = (SettingsObserverObject) arg;
-			if (soo.getChangedEntry() == SettingType.ACTIVE_LANGUAGE) {
+			
+			// language change
+			switch (soo.getChangedEntry()) {
+			case ACTIVE_LANGUAGE:
+			case ACTIVE_PLAF:
+				
 				exceptionDialog = null;
 				for (IView iv : views.values()) {
 					iv.hideWindow();
@@ -176,7 +166,9 @@ public class ViewRegistry extends Observable implements Observer {
 						Main.getApplication().showMainFrame();
 					}
 				});
-			}
+				
+				break;
+			} /* switch */
 		}
 
 		// forward update() for Model classes

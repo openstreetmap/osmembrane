@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.dialogs;
 
 import java.awt.BorderLayout;
@@ -34,11 +32,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import de.osmembrane.model.settings.SettingType;
+import de.osmembrane.model.settings.SettingsTypeUpdateInterval;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
 import de.osmembrane.view.components.JTextFieldWithButton;
@@ -112,11 +112,16 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 	 * Components to edit whether the startup screen shall be displayed
 	 */
 	private JCheckBox showStartup;
-	
+
 	/**
 	 * Components to edit how often updates shall be searched
 	 */
 	private JComboBox updateInterval;
+
+	/**
+	 * Components to edit the PLaF
+	 */
+	private JComboBox pLaF;
 
 	/**
 	 * Generates a new {@link SettingsDialog}.
@@ -137,11 +142,11 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 				hideWindow();
 			}
 		});
-		
+
 		JButton defaultButton = new JButton(I18N.getInstance().getString(
 				"View.ResetDefault"));
 		defaultButton.addKeyListener(returnButtonListener);
-		defaultButton.addActionListener(new ActionListener() {			
+		defaultButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// reset default values
@@ -165,7 +170,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		JPanel buttonCtrlGrid = new JPanel(new GridLayout(1, 3));
 		buttonCtrlGrid.add(okButton);
 		buttonCtrlGrid.add(defaultButton);
-		buttonCtrlGrid.add(cancelButton);	
+		buttonCtrlGrid.add(cancelButton);
 
 		JPanel buttonCtrlFlow = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		buttonCtrlFlow.add(buttonCtrlGrid);
@@ -269,8 +274,47 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		language.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.ACTIVE_LANGUAGE.Description"));
 		settings.add(language, gbc);
-
+		
 		gbc.gridy = 4;
+		gbc.gridx = 0;
+		settings.add(
+				new JLabel(I18N.getInstance().getString(
+						"Model.Settings.Type.ACTIVE_PLAF")
+						+ ":"), gbc);
+		gbc.gridx = 1;
+		String[] pLaFOptions = new String[UIManager.getInstalledLookAndFeels().length];
+		for (int i = 0; i < UIManager.getInstalledLookAndFeels().length; i++) {
+			pLaFOptions[i] = UIManager.getInstalledLookAndFeels()[i].getName();
+		}
+		pLaF = new JComboBox(pLaFOptions);
+		pLaF.setPreferredSize(new Dimension(minFieldWidth, pLaF
+				.getPreferredSize().height));
+		pLaF.setToolTipText(I18N.getInstance().getString(
+				"Model.Settings.Type.ACTIVE_PLAF.Description"));
+		settings.add(pLaF, gbc);
+		
+		gbc.gridy = 5;
+		gbc.gridx = 0;
+		settings.add(
+				new JLabel(I18N.getInstance().getString(
+						"Model.Settings.Type.UPDATE_INTERVAL")
+						+ ":"), gbc);
+		gbc.gridx = 1;
+		String[] updateOptions = {
+				I18N.getInstance().getString(
+						"Model.Settings.Type.UPDATE_INTERVAL.Never"),
+				I18N.getInstance().getString(
+						"Model.Settings.Type.UPDATE_INTERVAL.PerDay"),
+				I18N.getInstance().getString(
+						"Model.Settings.Type.UPDATE_INTERVAL.PerWeek") };
+		updateInterval = new JComboBox(updateOptions);
+		updateInterval.setPreferredSize(new Dimension(minFieldWidth,
+				updateInterval.getPreferredSize().height));
+		updateInterval.setToolTipText(I18N.getInstance().getString(
+				"Model.Settings.Type.UPDATE_INTERVAL.Description"));
+		settings.add(updateInterval, gbc);
+
+		gbc.gridy = 6;
 		gbc.gridx = 0;
 		settings.add(
 				new JLabel(I18N.getInstance().getString(
@@ -280,7 +324,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		defaultZoomDisplay = new JLabel("");
 		settings.add(defaultZoomDisplay, gbc);
 
-		gbc.gridy = 5;
+		gbc.gridy = 7;
 		gbc.gridx = 0;
 		gbc.gridwidth = 2;
 		defaultZoom = new JSlider(1, 200);
@@ -352,26 +396,8 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		maxUndoSteps.setToolTipText(I18N.getInstance().getString(
 				"Model.Settings.Type.MAXIMUM_UNDO_STEPS.Description"));
 		settings.add(maxUndoSteps, gbc);
-		
-		gbc.gridy = 4;
-		gbc.gridx = 2;
-		settings.add(
-				new JLabel(I18N.getInstance().getString(
-						"Model.Settings.Type.UPDATE_INTERVAL")
-						+ ":"), gbc);
-		gbc.gridx = 3;
-		String[] updateOptions = {I18N.getInstance().getString(
-		"Model.Settings.Type.UPDATE_INTERVAL.Never"), I18N.getInstance().getString(
-		"Model.Settings.Type.UPDATE_INTERVAL.PerDay"), I18N.getInstance().getString(
-		"Model.Settings.Type.UPDATE_INTERVAL.PerWeek")}; 
-		updateInterval = new JComboBox(updateOptions);
-		updateInterval.setPreferredSize(new Dimension(minSpinnerWidth,
-				updateInterval.getPreferredSize().height));
-		updateInterval.setToolTipText(I18N.getInstance().getString(
-				"Model.Settings.Type.UPDATE_INTERVAL.Description"));
-		settings.add(updateInterval, gbc);
 
-		gbc.gridy = 5;
+		gbc.gridy = 6;
 		gbc.gridx = 2;
 		rasterSizeEnable = new JCheckBox(I18N.getInstance().getString(
 				"Model.Settings.Type.PIPELINE_RASTER_SIZE")
@@ -387,7 +413,7 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		rasterSizeDisplay = new JLabel("");
 		settings.add(rasterSizeDisplay, gbc);
 
-		gbc.gridy = 6;
+		gbc.gridy = 7;
 		gbc.gridx = 2;
 		gbc.gridwidth = 2;
 		rasterSize = new JSlider(1, 100);
@@ -514,9 +540,19 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 
 		case SHOW_STARTUP_SCREEN:
 			return this.showStartup.isSelected();
-			
+
 		case UPDATE_INTERVAL:
-			return this.updateInterval.getSelectedIndex();
+			switch (this.updateInterval.getSelectedIndex()) {
+			case 1:
+				return SettingsTypeUpdateInterval.ONCE_A_DAY;
+			case 2:
+				return SettingsTypeUpdateInterval.ONCE_A_WEEK;
+			default:
+				return SettingsTypeUpdateInterval.NEVER;
+			}
+
+		case ACTIVE_PLAF:
+			return this.pLaF.getSelectedItem();
 
 		default:
 			return null;
@@ -578,11 +614,27 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 		case SHOW_STARTUP_SCREEN:
 			this.showStartup.setSelected((Boolean) value);
 			break;
-			
+
 		case UPDATE_INTERVAL:
-			this.updateInterval.setSelectedIndex((Integer) value);
+			SettingsTypeUpdateInterval stui = (SettingsTypeUpdateInterval) value;
+			int newIndex = -1;
+			switch (stui) {
+			case NEVER:
+				newIndex = 0;
+				break;
+			case ONCE_A_DAY:
+				newIndex = 1;
+				break;
+			case ONCE_A_WEEK:
+				newIndex = 2;
+				break;
+			}
+			this.updateInterval.setSelectedIndex(newIndex);
 			break;
-			
+
+		case ACTIVE_PLAF:
+			this.pLaF.setSelectedItem((String) value);
+
 		}
 	}
 

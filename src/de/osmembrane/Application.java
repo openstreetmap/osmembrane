@@ -25,8 +25,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
 
-import de.osmembrane.resources.Constants;
-
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
@@ -35,6 +33,7 @@ import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.model.settings.SettingsTypeUpdateInterval;
 import de.osmembrane.model.settings.UnparsableFormatException;
+import de.osmembrane.resources.Constants;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.Tools;

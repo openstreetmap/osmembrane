@@ -9,11 +9,14 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.settings;
 
 import java.util.Locale;
 
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
+import de.osmembrane.Application;
 import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 
@@ -24,7 +27,7 @@ import de.osmembrane.tools.I18N;
  */
 public enum SettingType {
 	/**
-	 * The default path to osmosis binaries.
+	 * The default path to Osmosis binaries.
 	 * 
 	 * can be casted to a {@link String}
 	 */
@@ -96,19 +99,28 @@ public enum SettingType {
 	/**
 	 * Should the Software update or not?
 	 * 
-	 * can be casted to a {@link Integer}<br/>
+	 * can be casted to a {@link SettingsTypeUpdateInterval}<br/>
 	 * 0: never<br/>
 	 * 1: once a day<br/>
 	 * 2: once a week<br/>
 	 */
-	UPDATE_INTERVAL(SettingsTypeUpdateInterval.class, Constants.DEFAULT_UPDATE_INTERVAL),
-	
+	UPDATE_INTERVAL(SettingsTypeUpdateInterval.class,
+			Constants.DEFAULT_UPDATE_INTERVAL),
+
 	/**
-	 * The last date when OSMembrane tried to update.
-	 * Timestamp since 01.01.1980.
+	 * The last date when OSMembrane tried to update. Timestamp since
+	 * 01.01.1980.
 	 */
-	LAST_UPDATE_LOOKUP(Long.class, 0L);
-	
+	LAST_UPDATE_LOOKUP(Long.class, 0L),
+
+	/**
+	 * The active pluggable Java Look & Feel as a name specified by the
+	 * {@link LookAndFeelInfo}.
+	 * 
+	 * can be casted to a {@link String}
+	 */
+	ACTIVE_PLAF(String.class, getNimbusPlafName());
+
 	private Class<?> clazz;
 	private Object defaultValue;
 
@@ -146,7 +158,22 @@ public enum SettingType {
 		case ACTIVE_LANGUAGE:
 			I18N.getInstance().setLocale((Locale) value);
 			break;
-		}
+			
+		case ACTIVE_PLAF:
+			try {
+				String pLaF = (String) value;
+				for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+					if (info.getName().equals(pLaF)) {
+						UIManager.setLookAndFeel(info.getClassName());
+						break;
+					}
+				}
+			} catch (Exception e) {
+				// if setLookAndFeel() failed
+				Application.handleException(e);
+			}
+			break;
+		}		
 	}
 
 	/**
@@ -197,5 +224,20 @@ public enum SettingType {
 		}
 
 		return value;
+	}
+
+	/**
+	 * Determines the PLaF name for the Nimbus PLaF.
+	 * 
+	 * @return the name of the Nimbus plaf, or any arbitrary one, if Nimbus
+	 *         isn't found.
+	 */
+	private static String getNimbusPlafName() {
+		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+			if (info.getName().toLowerCase().contains("nimbus")) {
+				return info.getName();
+			}
+		}
+		return UIManager.getInstalledLookAndFeels()[0].getName();
 	}
 }

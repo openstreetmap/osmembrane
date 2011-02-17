@@ -70,6 +70,12 @@ public class Settings extends AbstractSettings {
 			@SuppressWarnings("unchecked")
 			Map<Object, Object> settingsMap = (Map<Object, Object>) obj;
 			this.settingsMap = settingsMap;
+			
+			// invoke the required actions, even on default values
+			for (SettingType st : SettingType.values()) {
+				st.doRequiredActions(getValue(st));
+			}
+			
 		} catch (FileException e) {
 			Application.handleException(new ControlledException(this,
 					ExceptionSeverity.WARNING, I18N.getInstance().getString(
