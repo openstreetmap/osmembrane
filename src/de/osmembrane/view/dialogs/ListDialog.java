@@ -390,7 +390,9 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 						if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 							addButton.doClick();
 
-						} else if ((e.getKeyCode() != KeyEvent.VK_ESCAPE)) {
+						} else if ((e.getKeyCode() != KeyEvent.VK_ESCAPE)
+								&& (!e.isControlDown()) && (!e.isAltDown())) {
+							
 							// auto complete
 							JTextField editorField = (JTextField) editField
 									.getEditor().getEditorComponent();
