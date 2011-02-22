@@ -1073,7 +1073,7 @@
 	
 		<function id="write-osmbin-0.6" friendlyName="Write OSM-binary (0.6)">
 			<task name="write-osmbin-0.6" friendlyName="Write OSM-binary (0.6)">
-				<inputType count="single" index="0" type="entity" />
+				<inputPipe count="single" index="0" type="entity" />
 				<parameter name="dir" type="directory">
 					
 				<description lang="de"><value>Der Name des Verzeichnisses, in das geschrieben werden soll. Wird erzeugt, falls nötig. Falls osmbin-data existiert, wird automatisch angehangen/geupdated.</value></description><description lang="en"><value>The name of the directory to be written to. Will be created if needed. Will append/update if osmbin-data exists.</value></description></parameter>
