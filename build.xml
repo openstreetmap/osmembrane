@@ -32,12 +32,12 @@
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
                 <attribute name="Rsrc-Main-Class" value="de.osmembrane.Main"/>
                 <attribute name="Class-Path" value="."/>
-                <attribute name="Rsrc-Class-Path" value="./ bboxchooser-0.2.jar"/>
+                <attribute name="Rsrc-Class-Path" value="./ bboxchooser-0.3.0.jar JMapViewer.jar"/>
 				<attribute name="SplashScreen-Image" value="de/osmembrane/resources/images/splash.png"/>
             </manifest>
             <zipfileset src="jar-in-jar-loader.zip"/>
             <fileset dir="bin"/>
-            <zipfileset dir="lib" includes="bboxchooser-0.2.jar"/>
+            <zipfileset dir="lib" includes="*.jar"/>
         </jar>
     </target>
 	
