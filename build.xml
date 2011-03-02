@@ -53,4 +53,9 @@
 		<copy file="src/LICENSE.txt" tofile="build/LICENSE.txt"/>
 		<zip destfile="build/OSMembrane_build${svn.revision}.zip" basedir="build"/>
 	</target>
+	
+	<target name="clean" description="remove generated files">
+		<delete file="${version.properties.path}" />
+		<delete dir="build" />
+	</target>
 </project>
