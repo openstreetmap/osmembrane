@@ -13,9 +13,11 @@ package de.osmembrane.resources;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
+import java.util.Properties;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -35,8 +37,32 @@ public class Constants {
 	/**
 	 * The revision of this build.
 	 */
-	public static final int BUILD_NUMBER = 845;
-
+	public static final int BUILD_NUMBER;
+	
+	private static final String BUILD_NUMBER_PROPERTY = "de.osmembrane.version.buildNumber";
+	
+	static {
+		int buildNumber = 0;
+		InputStream vpStream = Constants.class.getResourceAsStream("version.properties");
+		
+		// if the resource doesn't exist, we're most probably in an uncontrolled
+		// development build, so we let it at zero.
+		if (vpStream != null) {
+			try {
+				Properties vp = new Properties();
+				vp.load(vpStream);
+				buildNumber = Integer.parseInt(
+						vp.getProperty(BUILD_NUMBER_PROPERTY), 10);
+			} catch (Exception e) {
+				// Something went wrong while parsing the embedded build number,
+				// resort to zero.
+				buildNumber = 0;
+			}
+		}
+		
+		BUILD_NUMBER = buildNumber;
+	}
+	
 	/**
 	 * Path to the language files.
 	 */
@@ -186,7 +212,7 @@ public class Constants {
 	public static final String DEFAULT_PLAF_NAME = getNimbusPlafName();
 
 	/**
-	 * static method
+	 * Figure out the default URLs
 	 */
 	static {
 		URL urlBackup = null;
@@ -215,6 +241,7 @@ public class Constants {
 			UPDATE_WEBSITE = updateWebsite;
 		}
 	}
+
 	
 	/**
 	 * Determines the PLaF name for the Nimbus PLaF.

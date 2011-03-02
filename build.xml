@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_zip" name="Build OSMembrane">
 	
+	<property name="version.properties.path" value="src/de/osmembrane/resources/version.properties" />
+	
 	<target name="init">
 		<delete dir="build"/>
 		<mkdir dir="build"/>
@@ -21,7 +23,10 @@
     </target>
 	
 	<target name="update_constants_revision" depends="find_revision">
-		<replaceregexp file="src/de/osmembrane/resources/Constants.java" match="BUILD_NUMBER = [0-9]+;" replace="BUILD_NUMBER = ${svn.revision};"/>
+		<propertyfile file="${version.properties.path}" 
+			comment="This file has been generated automatically during the build process.">
+			<entry key="de.osmembrane.version.buildNumber" value="${svn.revision}" />
+		</propertyfile>
 	</target>
 
     <!--this target was created by Eclipse Runnable JAR Export Wizard-->
