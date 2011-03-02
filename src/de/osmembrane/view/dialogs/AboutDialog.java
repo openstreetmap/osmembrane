@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 
+import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.AbstractDialog;
 
@@ -48,7 +49,10 @@ public class AboutDialog extends AbstractDialog {
 		JEditorPane infoText = new JEditorPane();
 		infoText.setContentType("text/html");
 		infoText.setEditable(false);
-		infoText.setText(I18N.getInstance().getString("View.AboutDialog.Info"));
+		infoText.setText(
+				I18N.getInstance().getString("View.AboutDialog.BuildInfo", Constants.BUILD_NUMBER) +
+				"\n" +
+				I18N.getInstance().getString("View.AboutDialog.Info"));
 		add(infoText, BorderLayout.CENTER);
 
 		JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
@@ -59,8 +63,8 @@ public class AboutDialog extends AbstractDialog {
 				hideWindow();
 			}
 		});
+		
 		add(okButton, BorderLayout.SOUTH);
-
 		setTitle(I18N.getInstance().getString("View.AboutDialog"));
 
 		pack();
