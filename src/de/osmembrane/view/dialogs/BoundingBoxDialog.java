@@ -15,6 +15,12 @@ package de.osmembrane.view.dialogs;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 import de.osmembrane.view.interfaces.IBoundingBoxDialog;
 import de.unistuttgart.iev.osm.bboxchooser.BBoxChooserDialog;
@@ -43,9 +49,21 @@ public class BoundingBoxDialog implements IBoundingBoxDialog {
 	/**
 	 * Creates a new {@link BoundingBoxDialog}
 	 */
+	@SuppressWarnings("serial")
 	public BoundingBoxDialog() {
 		dialog = new BBoxChooserDialog();
 		dialog.setModal(true);
+
+		dialog.getLayeredPane().getActionMap().put("close", new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hideWindow();
+			}
+		});
+		
+		dialog.getLayeredPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+			.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
 	}
 
 	@Override
