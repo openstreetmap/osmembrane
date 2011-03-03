@@ -16,12 +16,16 @@ package de.osmembrane.view;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
 import de.osmembrane.view.interfaces.IView;
@@ -50,6 +54,18 @@ public abstract class AbstractDialog extends JDialog implements IView {
 		setModal(true);
 		setResizable(false);
 
+		// close dialog on escape
+		this.getLayeredPane().getActionMap().put("close", new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hideWindow();
+			}
+		});
+		
+		this.getLayeredPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
+		
 		// ability activate buttons with return
 		returnButtonListener = new KeyAdapter() {
 
