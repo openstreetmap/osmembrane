@@ -16,6 +16,7 @@ package de.osmembrane.view;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -50,10 +51,10 @@ public abstract class AbstractDialog extends JDialog implements IView {
 		setResizable(false);
 
 		// ability activate buttons with return
-		returnButtonListener = new KeyListener() {
+		returnButtonListener = new KeyAdapter() {
 
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					Component focusedComponent = getFocusOwner();
 					if (focusedComponent instanceof JButton) {
@@ -61,14 +62,6 @@ public abstract class AbstractDialog extends JDialog implements IView {
 						((JButton) focusedComponent).doClick();
 					}
 				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
 			}
 		};
 	}
