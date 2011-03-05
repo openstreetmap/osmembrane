@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="fail" name="Build OSMembrane">
+<project default="fail">
 
 	<target name="fail">
 		<fail message="This file is not intended to be called directly. Use build.xml."/>	  
