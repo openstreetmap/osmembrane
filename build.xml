@@ -16,7 +16,7 @@
         <jar destfile="build/OSMembrane.jar" manifest="MANIFEST.fatjar">
             <zipfileset src="jar-in-jar-loader.zip"/>
             <fileset dir="bin"/>
-            <zipfileset dir="lib" includes="*.jar"/>
+            <zipfileset dir="lib/runtime" includes="*.jar"/>
         </jar>
     </target>
 	
