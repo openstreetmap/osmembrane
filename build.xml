@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_zip" name="Build OSMembrane">
 	
-	<property name="version.properties.path" value="src/de/osmembrane/resources/version.properties" />
+	<property name="version.properties.path" value="bin/de/osmembrane/resources/version.properties" />
 	
 	<target name="init">
 		<delete dir="build"/>
@@ -16,22 +16,22 @@
 		</typedef>
 
 		<svn>
-			<status path="${basedir}" revisionProperty="svn.revision" />
+			<info target="${basedir}" />
 		</svn>
 
-        <echo>Revision found: ${svn.revision}</echo>
+        <echo>Revision found: ${svn.info.lastRev}</echo>
     </target>
 	
 	<target name="update_constants_revision" depends="find_revision">
 		<propertyfile file="${version.properties.path}" 
 			comment="This file has been generated automatically during the build process.">
-			<entry key="de.osmembrane.version.buildNumber" value="${svn.revision}" />
+			<entry key="de.osmembrane.version.buildNumber" value="${svn.info.lastRev}" />
 		</propertyfile>
 	</target>
 
     <!--this target was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
-    <target name="create_run_jar" depends="init, find_revision, update_constants_revision">
+    <target name="create_run_jar" depends="init, update_constants_revision">
         <jar destfile="build/OSMembrane.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
