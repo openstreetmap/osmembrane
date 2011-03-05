@@ -1,0 +1,5 @@
+Main-Class: org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader
+Rsrc-Main-Class: de.osmembrane.Main
+Class-Path: .
+Rsrc-Class-Path: ./ bboxchooser-0.3.0.jar JMapViewer.jar
+SplashScreen-Image: de/osmembrane/resources/images/splash.png

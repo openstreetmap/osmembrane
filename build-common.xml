@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="fail" name="Build OSMembrane">
+
+	<target name="fail">
+		<fail message="This file is not intended to be called directly. Use build.xml."/>	  
+	</target>
+
+	<target name="find_revision" description="Determines SVN revision number">
+        <typedef resource="org/tigris/subversion/svnant/svnantlib.xml">
+			<classpath>
+			<fileset dir="svnant/" includes="**/*.jar" />
+			</classpath>
+		</typedef>
+
+		<svn>
+			<info target="${basedir}" />
+		</svn>
+
+        <echo>Revision found: ${svn.info.lastRev}</echo>
+    </target>
+	
+	<target name="update_constants_revision" depends="find_revision">
+		<propertyfile file="${version.properties.path}" 
+			comment="This file has been generated automatically during the build process.">
+			<entry key="de.osmembrane.version.buildNumber" value="${svn.info.lastRev}" />
+		</propertyfile>
+	</target>
+</project>
