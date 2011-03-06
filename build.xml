@@ -90,7 +90,7 @@
 		<mkdir dir="${_binary-zip-basedir}" />
 		<mkdir dir="${_binary-zip-basedir}/resources/xml"/>
 		<mkdir dir="${_binary-zip-basedir}/resources/pdf"/>
-		<copy file="../documents/manual/manual.pdf" tofile="${_binary-zip-basedir}/resources/pdf/manual.pdf"/>
+		<copy file="manual/manual.pdf" tofile="${_binary-zip-basedir}/resources/pdf/manual.pdf"/>
 		<copy file="LICENSE.txt" tofile="${_binary-zip-basedir}/LICENSE.txt"/>
 		<zip destfile="${build.dir}/OSMembrane_${svn.info.lastRev}-bin.zip">
 			<fileset dir="${_binary-zip-basedir}" />

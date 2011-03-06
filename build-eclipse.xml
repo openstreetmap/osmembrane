@@ -29,7 +29,7 @@
 	<target name="create_zip" depends="create_run_jar">
 		<mkdir dir="${build.dir}/resources/xml"/>
 		<mkdir dir="${build.dir}/resources/pdf"/>
-		<copy file="../documents/manual/manual.pdf" tofile="${build.dir}/resources/pdf/manual.pdf"/>
+		<copy file="manual/manual.pdf" tofile="${build.dir}/resources/pdf/manual.pdf"/>
 		<copy file="LICENSE.txt" tofile="${build.dir}/LICENSE.txt"/>
 		<zip destfile="${build.dir}/OSMembrane_${svn.info.lastRev}-bin.zip" basedir="build"/>
 	</target>
