@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project name="OSMembrane">
+<project name="OSMembrane" default="binary">
 	
 	<import file="build-common.xml" />
 
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="dist.dir" value="${basedir}/dist" />
+
+	<property name="binary-zip-basedir" value="${build.dir}/binary-zip" />
 	
 	<fileset dir="lib/runtime" id="runtime-classpath-files">
 		<include name="*.jar" />
@@ -86,15 +88,14 @@
 	</target>
 	
 	<target name="binary-zip" depends="init,find_revision,jar">
-		<property name="_binary-zip-basedir" value="${build.dir}/binary-zip" />
-		<mkdir dir="${_binary-zip-basedir}" />
-		<mkdir dir="${_binary-zip-basedir}/resources/xml"/>
-		<mkdir dir="${_binary-zip-basedir}/resources/pdf"/>
-		<copy file="manual/manual.pdf" tofile="${_binary-zip-basedir}/resources/pdf/manual.pdf"/>
-		<copy file="LICENSE.txt" tofile="${_binary-zip-basedir}/LICENSE.txt"/>
+		<mkdir dir="${binary-zip-basedir}" />
+		<mkdir dir="${binary-zip-basedir}/resources/xml"/>
+		<mkdir dir="${binary-zip-basedir}/resources/pdf"/>
+		<copy file="manual/manual.pdf" tofile="${binary-zip-basedir}/resources/pdf/manual.pdf"/>
+		<copy file="LICENSE.txt" tofile="${binary-zip-basedir}/LICENSE.txt"/>
+		<copy file="${build.dir}/OSMembrane.jar" tofile="${binary-zip-basedir}/OSMembrane.jar"/>
 		<zip destfile="${build.dir}/OSMembrane_${svn.info.lastRev}-bin.zip">
-			<fileset dir="${_binary-zip-basedir}" />
-			<path path="${build.dir}/OSMembrane.jar"/>
+			<fileset dir="${binary-zip-basedir}" />
 		</zip>
 	</target>
 	
@@ -116,6 +117,13 @@
 			basedir="${build.dir}/javadoc" />
 	</target>
 	
+	<target name="binary" depends="binary-zip" >
+		<mkdir dir="${dist.dir}" />
+		<copy todir="${dist.dir}/binary">
+			<fileset dir="${binary-zip-basedir}" />
+		</copy>
+	</target>
+		
 	<target name="dist" depends="init,find_revision,source-zip,binary-zip" description="create a distribution">
 		<mkdir dir="${dist.dir}" />
 		<copy todir="${dist.dir}">
