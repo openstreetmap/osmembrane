@@ -2,7 +2,7 @@
 <project default="fail">
 
 	<target name="fail">
-		<fail message="This file is not intended to be called directly. Use build.xml."/>	  
+		<fail message="This file is not intended to be called directly. Use build.xml instead."/>	  
 	</target>
 
 	<target name="find_revision" description="Determines SVN revision number">
