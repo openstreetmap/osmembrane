@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="OSMembrane">
+	
+	<import file="build-common.xml" />
+
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="dist.dir" value="${basedir}/dist" />
+	
+	<fileset dir="lib/runtime" id="runtime-classpath-files">
+		<include name="*.jar" />
+	</fileset>
+	
+	<fileset dir="lib/test" id="test-classpath-files">
+		<include name="*.jar" />
+	</fileset>
+
+	
+	<property name="version.properties.path" value="${build.dir}/bin/de/osmembrane/resources/version.properties" />
+	
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile main sources">
+		<mkdir dir="${build.dir}/bin"/>
+		<javac srcdir="${src.dir}" destdir="${build.dir}/bin">
+			<classpath>
+				<fileset refid="runtime-classpath-files" />
+			</classpath>
+		</javac>
+		<copy todir="${build.dir}/bin">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+				<exclude name="LICENSE.txt" />
+			</fileset>
+		</copy>
+	</target>
+	
+   	<target name="jar" depends="compile, update_constants_revision" description="build an executable jar">
+        <jar destfile="${build.dir}/OSMembrane.jar" manifest="MANIFEST.fatjar">
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="bin"/>
+            <zipfileset dir="lib" includes="*.jar"/>
+        </jar>
+	</target>
+	
+	<target name="compile_tests" depends="compile">
+		<mkdir dir="${build.dir}/bin-tests"/>
+		<javac srcdir="junit"
+         destdir="${build.dir}/bin-tests"
+         debug="on">
+			<classpath>
+				<path path="${build.dir}/bin" />
+				<fileset refid="runtime-classpath-files" />
+				<fileset refid="test-classpath-files" />
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="test" depends="compile, compile_tests" description="run unit tests">
+		<junit printsummary="on" showoutput="true" fork="on">
+			<batchtest>
+				<fileset dir="${build.dir}/bin-tests">
+					<include name="**/*Test.class"/>
+					<exclude name="**/*$*"/>
+				</fileset>
+			</batchtest>
+			<classpath>
+				<path path="${build.dir}/bin-tests" />
+				<path path="${build.dir}/bin" />
+				<fileset refid="runtime-classpath-files" />
+				<fileset refid="test-classpath-files" />
+			</classpath>
+		</junit>
+	</target>
+	
+	<target name="source-zip" depends="init, find_revision">
+		<delete dir="${build.dir}/source-zip" />
+		<svn>
+			<export srcpath="${basedir}" destpath="${build.dir}/source-zip" />
+		</svn>
+		<zip destfile="${build.dir}/OSMembrane_${svn.info.lastRev}-src.zip">
+			<fileset dir="${build.dir}/source-zip" />
+		</zip>
+	</target>
+	
+	<target name="binary-zip" depends="init,find_revision,jar">
+		<property name="_binary-zip-basedir" value="${build.dir}/binary-zip" />
+		<mkdir dir="${_binary-zip-basedir}" />
+		<mkdir dir="${_binary-zip-basedir}/resources/xml"/>
+		<mkdir dir="${_binary-zip-basedir}/resources/pdf"/>
+		<copy file="../documents/manual/manual.pdf" tofile="${_binary-zip-basedir}/resources/pdf/manual.pdf"/>
+		<copy file="LICENSE.txt" tofile="${_binary-zip-basedir}/LICENSE.txt"/>
+		<zip destfile="${build.dir}/OSMembrane_${svn.info.lastRev}-bin.zip">
+			<fileset dir="${_binary-zip-basedir}" />
+			<path path="${build.dir}/OSMembrane.jar"/>
+		</zip>
+	</target>
+	
+	<target name="javadoc" depends="init,find_revision">
+		<mkdir dir="${build.dir}/javadoc" />
+		<javadoc sourcepath="${src.dir}" destdir="${build.dir}/javadoc" 
+			windowtitle="OSMembrane API documentation (r${svn.info.lastRev})" 
+			defaultexcludes="true" use="true" 
+			noqualifier="java.lang:java.util:javax.swing:java.awt"
+			>
+			<classpath>
+				<fileset refid="runtime-classpath-files"/>
+			</classpath>
+		</javadoc>
+	</target>
+	
+	<target name="javadoc-zip" depends="init,find_revision,javadoc">
+		<zip destfile="${build.dir}/OSMembrane_${svn.info.lastRev}-javadoc.zip" 
+			basedir="${build.dir}/javadoc" />
+	</target>
+	
+	<target name="dist" depends="init,find_revision,source-zip,binary-zip" description="create a distribution">
+		<mkdir dir="${dist.dir}" />
+		<copy todir="${dist.dir}">
+			<path path="${build.dir}/OSMembrane_${svn.info.lastRev}-bin.zip" />
+			<path path="${build.dir}/OSMembrane_${svn.info.lastRev}-src.zip" />
+			<path path="${build.dir}/OSMembrane_${svn.info.lastRev}-javadoc.zip" />
+		</copy>
+	</target>
+	
+	<target name="clean" description="remove generated files">
+		<delete file="${version.properties.path}" />
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+	
+</project>
