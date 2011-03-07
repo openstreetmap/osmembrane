@@ -29,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.InputMap;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 import de.osmembrane.controller.ActionRegistry;
