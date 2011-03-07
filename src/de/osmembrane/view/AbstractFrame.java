@@ -13,13 +13,9 @@
 
 package de.osmembrane.view;
 
-import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -35,40 +31,10 @@ import de.osmembrane.view.interfaces.IView;
 public abstract class AbstractFrame extends JFrame implements IView {
 
 	/**
-	 * This is the {@link KeyListener} for all buttons to be added, so they
-	 * react on return. (A rather typical behavior not implemented by Swing
-	 * natively)
-	 */
-	protected KeyListener returnButtonListener;
-
-	/**
 	 * common constructor for all frame view elements
 	 */
 	public AbstractFrame() {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
-		// ability activate buttons with return
-		returnButtonListener = new KeyListener() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					Component focusedComponent = getFocusOwner();
-					if (focusedComponent instanceof JButton) {
-						e.consume();
-						((JButton) focusedComponent).doClick();
-					}
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-		};
 	}
 
 	@Override

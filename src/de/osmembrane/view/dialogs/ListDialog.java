@@ -196,7 +196,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		// control buttons
 		JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
-		okButton.addKeyListener(returnButtonListener);
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -208,7 +207,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		JButton cancelButton = new JButton(I18N.getInstance().getString(
 				"View.Cancel"));
-		cancelButton.addKeyListener(returnButtonListener);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -230,7 +228,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		// editing buttons
 		final JButton addButton = new JButton(I18N.getInstance().getString(
 				"View.Add"));
-		addButton.addKeyListener(returnButtonListener);
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -242,7 +239,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		final JButton deleteButton = new JButton(I18N.getInstance().getString(
 				"View.Delete"));
-		deleteButton.addKeyListener(returnButtonListener);
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -257,7 +253,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		JButton clearButton = new JButton(I18N.getInstance().getString(
 				"View.Clear"));
-		clearButton.addKeyListener(returnButtonListener);
 		clearButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -267,7 +262,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		JButton resetButton = new JButton(I18N.getInstance().getString(
 				"View.Reset"));
-		resetButton.addKeyListener(returnButtonListener);
 		resetButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -278,7 +272,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		JButton loadButton = new JButton(I18N.getInstance().getString(
 				"View.Load"));
-		loadButton.addKeyListener(returnButtonListener);
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -307,7 +300,6 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 
 		JButton saveButton = new JButton(I18N.getInstance().getString(
 				"View.Save"));
-		saveButton.addKeyListener(returnButtonListener);
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

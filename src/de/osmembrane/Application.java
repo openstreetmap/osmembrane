@@ -15,6 +15,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +26,11 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.InputMap;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.exceptions.ControlledException;
@@ -286,5 +293,34 @@ public class Application {
 				}
 			}
 		}.start();
+	}
+
+	/**
+	 * Configures some bits and pieces of the UI that are per application.
+	 * This method should be called before any UI components are created.
+	 */
+	public void configureUIDefaults() {
+		
+		// Update default on every look and feel change.
+		UIManager.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (!"lookAndFeel".equals(evt.getPropertyName())) {
+					return;
+				}
+				configureInputMaps();
+			}
+		});
+		
+		// Update defaults once now
+		configureInputMaps();
+	}
+
+	private void configureInputMaps() {
+		InputMap inputMap = (InputMap) UIManager.getDefaults().get("Button.focusInputMap");
+		
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), "pressed");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true), "released");
 	}
 }

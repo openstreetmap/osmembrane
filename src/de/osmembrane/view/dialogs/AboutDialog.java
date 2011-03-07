@@ -56,7 +56,6 @@ public class AboutDialog extends AbstractDialog {
 		add(infoText, BorderLayout.CENTER);
 
 		JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
-		okButton.addKeyListener(returnButtonListener);
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

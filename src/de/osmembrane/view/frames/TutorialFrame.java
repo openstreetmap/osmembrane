@@ -137,7 +137,6 @@ public class TutorialFrame extends AbstractFrame {
 		buttonGrid.setLayout(new GridLayout(1, 3));
 
 		backButton = new JButton(I18N.getInstance().getString("View.Back"));
-		backButton.addKeyListener(returnButtonListener);
 		backButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -149,7 +148,6 @@ public class TutorialFrame extends AbstractFrame {
 		buttonGrid.add(backButton);
 
 		nextButton = new JButton(I18N.getInstance().getString("View.Next"));
-		nextButton.addKeyListener(returnButtonListener);
 		nextButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -162,7 +160,6 @@ public class TutorialFrame extends AbstractFrame {
 
 		JButton closeButton = new JButton(I18N.getInstance().getString(
 				"View.Close"));
-		closeButton.addKeyListener(returnButtonListener);
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

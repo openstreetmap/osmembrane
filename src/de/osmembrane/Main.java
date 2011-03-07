@@ -34,6 +34,9 @@ public class Main {
 	public static void main(String[] args) {
 		application = new Application();
 
+		// configure UI defaults (default input maps and such)
+		application.configureUIDefaults();
+
 		// create home directory if not exists
 		application.createHomeDirectory();
 		
@@ -42,10 +45,10 @@ public class Main {
 
 		// set the correct locale
 		application.setLocale();
-
+		
 		// initiate the most basic stuff
 		application.initiate();
-
+		
 		// check if a backup file is available
 		application.checkForBackup();
 		

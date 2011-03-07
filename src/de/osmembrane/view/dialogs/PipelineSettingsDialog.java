@@ -76,7 +76,6 @@ public class PipelineSettingsDialog extends AbstractDialog implements
 
 		// control buttons
 		JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
-		okButton.addKeyListener(returnButtonListener);
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -87,7 +86,6 @@ public class PipelineSettingsDialog extends AbstractDialog implements
 
 		JButton cancelButton = new JButton(I18N.getInstance().getString(
 				"View.Cancel"));
-		cancelButton.addKeyListener(returnButtonListener);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

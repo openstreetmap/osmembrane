@@ -106,7 +106,6 @@ public class FunctionPresetDialog extends AbstractDialog implements
 				hideWindow();
 			}
 		});
-		loadButton.addKeyListener(returnButtonListener);
 		buttonGrid.add(loadButton);
 
 		deleteButton = new JButton(I18N.getInstance().getString("View.Delete"));
@@ -117,7 +116,6 @@ public class FunctionPresetDialog extends AbstractDialog implements
 				hideWindow();
 			}
 		});
-		deleteButton.addKeyListener(returnButtonListener);
 		buttonGrid.add(deleteButton);
 
 		JButton cancelButton = new JButton(I18N.getInstance().getString(
@@ -129,7 +127,6 @@ public class FunctionPresetDialog extends AbstractDialog implements
 				hideWindow();
 			}
 		});
-		cancelButton.addKeyListener(returnButtonListener);
 		buttonGrid.add(cancelButton);
 
 		add(buttonGrid, gbc);

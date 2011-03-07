@@ -83,13 +83,11 @@ public class CommandLineDialog extends AbstractDialog implements
 
 		JButton exportButton = new JButton(ActionRegistry.getInstance().get(
 				ExportPipelineAction.class));
-		exportButton.addKeyListener(returnButtonListener);
 		buttonGrid.add(exportButton);
 
 		// Copy to clipboard
 		JButton copyToClipButton = new JButton(I18N.getInstance().getString(
 				"View.CopyToClipboard"));
-		copyToClipButton.addKeyListener(returnButtonListener);
 		copyToClipButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -104,7 +102,6 @@ public class CommandLineDialog extends AbstractDialog implements
 
 		// OK Button
 		JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
-		okButton.addKeyListener(returnButtonListener);
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

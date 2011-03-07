@@ -127,7 +127,6 @@ public class ExecutionStateDialog extends AbstractDialog implements
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		closeButton = new JButton();
-		closeButton.addKeyListener(returnButtonListener);
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
