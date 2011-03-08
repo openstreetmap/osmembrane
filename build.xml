@@ -4,6 +4,7 @@
 	<import file="build-common.xml" />
 
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="3rdparty.dir" value="${basedir}/3rdparty" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="dist.dir" value="${basedir}/dist" />
 
@@ -26,13 +27,21 @@
 
 	<target name="compile" depends="init" description="compile main sources">
 		<mkdir dir="${build.dir}/bin"/>
-		<javac srcdir="${src.dir}" destdir="${build.dir}/bin">
+		<javac destdir="${build.dir}/bin">
+			<src>
+				<path path="${src.dir}" />
+				<path path="${3rdparty.dir}" />
+			</src>
 			<classpath>
 				<fileset refid="runtime-classpath-files" />
 			</classpath>
 		</javac>
 		<copy todir="${build.dir}/bin">
 			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+				<exclude name="LICENSE.txt" />
+			</fileset>
+			<fileset dir="${3rdparty.dir}">
 				<exclude name="**/*.java" />
 				<exclude name="LICENSE.txt" />
 			</fileset>
