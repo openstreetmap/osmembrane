@@ -28,12 +28,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,6 +43,8 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
+
+import org.openstreetmap.josm.gui.tagging.ac.AutoCompletingComboBox;
 
 import de.osmembrane.Application;
 import de.osmembrane.model.ModelProxy;
@@ -125,12 +127,7 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 	/**
 	 * Field for entering new entries
 	 */
-	private JComboBox editField;
-
-	/**
-	 * Model for the auto completion
-	 */
-	private AutoCompleteComboBoxModel editFieldModel;
+	private AutoCompletingComboBox editField;
 
 	/**
 	 * Generates a new {@link ListDialog}.
@@ -366,73 +363,9 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		JPanel edit = new JPanel(new BorderLayout());
 		edit.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		edit.add(editPane, BorderLayout.CENTER);
-
-		editFieldModel = new AutoCompleteComboBoxModel();
-		editField = new JComboBox(editFieldModel);
+		
+		editField = new AutoCompletingComboBox();
 		editField.setEditable(true);
-		editField.getEditor().getEditorComponent()
-				.addKeyListener(new KeyListener() {
-
-					@Override
-					public void keyTyped(KeyEvent e) {
-					}
-
-					@Override
-					public void keyReleased(KeyEvent e) {
-						if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-							addButton.doClick();
-
-						} else if ((e.getKeyCode() != KeyEvent.VK_ESCAPE)
-								&& (!e.isControlDown()) && (!e.isAltDown())) {
-							
-							// auto complete
-							JTextField editorField = (JTextField) editField
-									.getEditor().getEditorComponent();
-							editFieldModel.setSelectedItem(editorField
-									.getText());
-
-							/* assume only English characters present */
-							switch (e.getKeyCode()) {
-							case KeyEvent.VK_PERIOD:
-							case KeyEvent.VK_A:
-							case KeyEvent.VK_B:
-							case KeyEvent.VK_C:
-							case KeyEvent.VK_D:
-							case KeyEvent.VK_E:
-							case KeyEvent.VK_F:
-							case KeyEvent.VK_G:
-							case KeyEvent.VK_H:
-							case KeyEvent.VK_I:
-							case KeyEvent.VK_J:
-							case KeyEvent.VK_K:
-							case KeyEvent.VK_L:
-							case KeyEvent.VK_M:
-							case KeyEvent.VK_N:
-							case KeyEvent.VK_O:
-							case KeyEvent.VK_P:
-							case KeyEvent.VK_Q:
-							case KeyEvent.VK_R:
-							case KeyEvent.VK_S:
-							case KeyEvent.VK_T:
-							case KeyEvent.VK_U:
-							case KeyEvent.VK_V:
-							case KeyEvent.VK_W:
-							case KeyEvent.VK_X:
-							case KeyEvent.VK_Y:
-							case KeyEvent.VK_Z:
-								editFieldModel.doAutoCompleteSelection();
-
-							}
-
-							editField.hidePopup();
-							editField.showPopup();
-						}
-					}
-
-					@Override
-					public void keyPressed(KeyEvent e) {
-					}
-				});
 		edit.add(editField, BorderLayout.NORTH);
 
 		add(edit, BorderLayout.CENTER);
@@ -466,13 +399,53 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 			this.listContentType = ListContentType.INVALID;
 		}
 
-		this.editFieldModel.setSelectedItem(new String());
-
+		this.editField.setSelectedItem(null);
+		this.editField.setPossibleItems(generateAutoCompletionList());
 		this.editField.requestFocus();
 
 		setWindowTitle(I18N.getInstance().getString("View.ListDialog",
 				list.getListType()));
 		showWindow();
+	}
+
+	private Collection<String> generateAutoCompletionList() {
+		PresetItem[] items = null;
+		if (listType == ListType.NODE) {
+			if (listContentType == ListContentType.KEY) {
+				items = ModelProxy.getInstance().getPreset().getNodeKeys();
+			} else if (listContentType == ListContentType.KEY_VALUE) {
+				items = ModelProxy.getInstance().getPreset().getNodes();
+			}
+		} else if (listType == ListType.WAY) {
+			if (listContentType == ListContentType.KEY) {
+				items = ModelProxy.getInstance().getPreset().getWayKeys();
+			} else if (listContentType == ListContentType.KEY_VALUE) {
+				items = ModelProxy.getInstance().getPreset().getWays();
+			}
+		}
+		
+		if (items == null) {
+			return new ArrayList<String>(0);
+		}
+
+		List<String> result = new ArrayList<String>(items.length);
+		
+		for (PresetItem i : items) {
+			String s;
+			if (listContentType == ListContentType.KEY_VALUE) {
+				s = i.getKeyValue();
+			} else {
+				s = i.getKey();
+			}
+			int index = Collections.binarySearch(result, s);
+			if (index >= 0) {
+				continue;
+			}
+			
+			result.add(~index, s);
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -626,147 +599,4 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 		}
 
 	} /* ListDialogTableModel */
-
-	/**
-	 * The combobox model used for the auto complete functionality
-	 * 
-	 * @author tobias_kuhn
-	 * 
-	 */
-	class AutoCompleteComboBoxModel extends DefaultComboBoxModel {
-
-		private static final long serialVersionUID = -2411522330049480604L;
-
-		/**
-		 * The set of preset items that are the current auto complete contents
-		 * filter
-		 */
-		private List<PresetItem> autoComplete;
-
-		/**
-		 * The currently "selected" element, i.e. the one where you type in
-		 */
-		private String element;
-
-		public AutoCompleteComboBoxModel() {
-			autoComplete = new ArrayList<PresetItem>();
-			element = new String();
-		}
-
-		/**
-		 * Regenerates the auto complete contents with filter
-		 * 
-		 * @param filter
-		 */
-		public void regenerate(String filter) {
-			PresetItem[] items;
-			switch (listType) {
-			case NODE:
-				switch (listContentType) {
-				case KEY:
-					items = ModelProxy.getInstance().getPreset()
-							.getFilteredNodeKeys(filter);
-					break;
-				case KEY_VALUE:
-					items = ModelProxy.getInstance().getPreset()
-							.getFilteredNodes(filter);
-					break;
-				default:
-					items = new PresetItem[0];
-				}
-				break;
-
-			case WAY:
-				switch (listContentType) {
-				case KEY:
-					items = ModelProxy.getInstance().getPreset()
-							.getFilteredWayKeys(filter);
-					break;
-				case KEY_VALUE:
-					items = ModelProxy.getInstance().getPreset()
-							.getFilteredWays(filter);
-					break;
-				default:
-					items = new PresetItem[0];
-				}
-				break;
-
-			default:
-				items = new PresetItem[0];
-
-			}
-
-			// update the models correctly
-			int oldSize = autoComplete.size();
-			autoComplete.clear();
-			fireIntervalRemoved(this, 0, oldSize);
-
-			for (PresetItem pi : items) {
-				autoComplete.add(pi);
-			}
-
-			fireIntervalAdded(this, 0, autoComplete.size());
-		}
-
-		@Override
-		public int getSize() {
-			return autoComplete.size();
-		}
-
-		@Override
-		public Object getElementAt(int index) {
-			String element;
-			switch (listContentType) {
-			case KEY:
-				element = autoComplete.get(index).getKey();
-				break;
-			case KEY_VALUE:
-				element = autoComplete.get(index).getKeyValue();
-				break;
-			default:
-				return null;
-			}
-
-			return element;
-		}
-
-		@Override
-		public Object getSelectedItem() {
-			return element;
-		}
-
-		@Override
-		public void setSelectedItem(Object anObject) {
-			String content = (String) anObject;
-			element = content;
-			regenerate(content);
-		}
-
-		/**
-		 * Performs the writing and selection of the most likely auto complete
-		 * item.
-		 * 
-		 */
-		public void doAutoCompleteSelection() {
-			for (PresetItem pi : autoComplete) {
-				// retrieve the correct item
-				String check = new String();
-				if (listContentType == ListContentType.KEY) {
-					check = pi.getKey();
-				} else if (listContentType == ListContentType.KEY_VALUE) {
-					check = pi.getKeyValue();
-				}
-
-				// if it fits with the user input
-				String content = (String) getSelectedItem();
-				if (check.startsWith(content)) {
-					// tell the editor to write that
-					setEditorValue(check, content.length());
-					break;
-				}
-			} /* for */
-		}
-
-	} /* AutoCompleteComboBoxModel */
-
 }
