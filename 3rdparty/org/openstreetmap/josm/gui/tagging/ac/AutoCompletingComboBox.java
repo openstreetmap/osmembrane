@@ -155,7 +155,7 @@ public class AutoCompletingComboBox extends JComboBox {
      * that can be edited in the editor component.
      *
      * @param editor    the editor
-     * @param item      excepts AutoCompletionListItem, String and null
+     * @param item      accepts AutoCompletionListItem, String and null
      */
     @Override public void configureEditor(ComboBoxEditor editor, Object item) {
         if (item == null) {
@@ -170,7 +170,7 @@ public class AutoCompletingComboBox extends JComboBox {
 
     /**
      * Selects a given item in the ComboBox model
-     * @param item      excepts AutoCompletionListItem, String and null
+     * @param item      accepts AutoCompletionListItem, String and null
      */
     @Override public void setSelectedItem(Object item) {
         if (item == null) {
