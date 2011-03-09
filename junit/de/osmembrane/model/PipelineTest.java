@@ -33,6 +33,7 @@ import de.osmembrane.model.pipeline.ConnectorException;
 import de.osmembrane.model.pipeline.ConnectorType;
 import de.osmembrane.model.pipeline.CopyType;
 import de.osmembrane.resources.Constants;
+import de.osmembrane.tools.Tools;
 
 /**
  * Tests the pipeline.
@@ -135,6 +136,7 @@ public class PipelineTest {
 	@After
 	public void tearDown() {
 		ModelProxy.getInstance().getPipeline().clear();
+		Tools.urlToFile(TEST_FILE_NAME).delete();
 	}
 
 	/**
