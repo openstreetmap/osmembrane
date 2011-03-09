@@ -70,8 +70,11 @@
 	</target>
 	
 	<target name="test" depends="compile, compile_tests" description="run unit tests">
+		<mkdir dir="${build.dir}/test-reports" />
 		<junit printsummary="on" showoutput="true" fork="on">
-			<batchtest>
+			<formatter type="plain" />
+			<formatter type="xml" />
+			<batchtest todir="${build.dir}/test-reports">
 				<fileset dir="${build.dir}/bin-tests">
 					<include name="**/*Test.class"/>
 					<exclude name="**/*$*"/>
