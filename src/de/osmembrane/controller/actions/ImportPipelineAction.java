@@ -13,7 +13,6 @@
 
 package de.osmembrane.controller.actions;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -35,6 +34,7 @@ import de.osmembrane.model.persistence.FileException.Type;
 import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.resources.Resource;
+import de.osmembrane.tools.HeadlessSafe;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 
@@ -65,7 +65,7 @@ public class ImportPipelineAction extends AbstractAction {
 		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
 				"import_pipeline.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+				HeadlessSafe.getMenuShortcutKeyMask()));
 	}
 
 	@Override

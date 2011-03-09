@@ -13,7 +13,6 @@
 
 package de.osmembrane.controller.actions;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -25,6 +24,7 @@ import javax.swing.KeyStroke;
 import de.osmembrane.controller.ActionRegistry;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.resources.Resource;
+import de.osmembrane.tools.HeadlessSafe;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.IconLoader.Size;
 
@@ -54,7 +54,7 @@ public class ExitAction extends AbstractAction {
 		putValue(Action.LARGE_ICON_KEY,
 				Resource.PROGRAM_ICON.getImageIcon("exit.png", Size.NORMAL));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+				HeadlessSafe.getMenuShortcutKeyMask()));
 	}
 
 	@Override
