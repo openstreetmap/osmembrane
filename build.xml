@@ -133,12 +133,10 @@
 		</copy>
 	</target>
 		
-	<target name="dist" depends="init,find_revision,source-zip,binary-zip" description="create a distribution">
+	<target name="dist" depends="init,find_revision,source-zip,binary-zip,javadoc-zip" description="create a distribution">
 		<mkdir dir="${dist.dir}" />
 		<copy todir="${dist.dir}">
-			<path path="${build.dir}/OSMembrane_${svn.info.lastRev}-bin.zip" />
-			<path path="${build.dir}/OSMembrane_${svn.info.lastRev}-src.zip" />
-			<path path="${build.dir}/OSMembrane_${svn.info.lastRev}-javadoc.zip" />
+			<fileset dir="${build.dir}" includes="OSMembrane_${svn.info.lastRev}*.zip" />
 		</copy>
 	</target>
 	
