@@ -14,6 +14,7 @@ package de.osmembrane;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.SplashScreen;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
@@ -61,6 +62,10 @@ public class Application {
 	 * Creates a new Application and writes the build number on the splash.
 	 */
 	public Application() {
+		if (GraphicsEnvironment.isHeadless()) {
+			return;
+		}
+		
 		SplashScreen splash = SplashScreen.getSplashScreen();
 		if (splash != null) {
 			Graphics2D g = (Graphics2D) splash.createGraphics();
