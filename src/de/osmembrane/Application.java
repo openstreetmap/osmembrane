@@ -158,6 +158,10 @@ public class Application {
 	 * Called whenever there's a {@link Throwable} to catch.
 	 */
 	public static void handleException(Throwable t) {
+		if (GraphicsEnvironment.isHeadless()) {
+			throw new RuntimeException(t);
+		}
+		
 		// if it's one of our own, decode it
 		if (t instanceof ControlledException) {
 			ControlledException ce = (ControlledException) t;
