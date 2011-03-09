@@ -36,6 +36,7 @@ import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileException;
+import de.osmembrane.model.persistence.PipelineBackup;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.model.settings.SettingsTypeUpdateInterval;
 import de.osmembrane.model.settings.UnparsableFormatException;
@@ -54,6 +55,8 @@ import de.osmembrane.view.interfaces.IView;
  */
 public class Application {
 
+	private PipelineBackup pipelineBackup;
+	
 	/**
 	 * Creates a new Application and writes the build number on the splash.
 	 */
@@ -321,5 +324,11 @@ public class Application {
 		
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), "pressed");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true), "released");
+	}
+
+	void initializeBackup() {
+		pipelineBackup = new PipelineBackup();
+		ModelProxy.getInstance().getPipeline().addObserver(pipelineBackup);
+		pipelineBackup.start();
 	}
 }

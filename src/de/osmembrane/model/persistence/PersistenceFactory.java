@@ -36,12 +36,9 @@ public class PersistenceFactory extends Observable implements Observer {
 	private static PersistenceFactory instance = new PersistenceFactory();
 
 	/**
-	 * Initiates the PersistenceFactory.
+	 * Initializes the PersistenceFactory.
 	 */
 	private PersistenceFactory() {
-		/* register the OSMembranePersistence to get the autobackup */
-		getPersistence(OSMembranePersistence.class);
-
 	}
 
 	/**

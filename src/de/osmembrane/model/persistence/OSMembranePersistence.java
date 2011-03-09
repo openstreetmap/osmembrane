@@ -21,16 +21,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.Observable;
-import java.util.concurrent.Semaphore;
 
 import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.persistence.FileException.Type;
-import de.osmembrane.model.pipeline.AbstractPipeline;
-import de.osmembrane.model.pipeline.PipelineObserverObject;
-import de.osmembrane.resources.Constants;
-import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.Tools;
 
 /**
@@ -40,47 +35,10 @@ import de.osmembrane.tools.Tools;
  */
 public class OSMembranePersistence extends AbstractPersistence {
 	
-	Semaphore backupAvailable = new Semaphore(0);
-	AbstractPipeline tobeBackupedPipeline;
-
-	/**
-	 * Internal autosave thread used for backing up the pipeline.
-	 */
-	private Thread autosaveThread = new Thread() {
-
-		/* anonymous class' constructor */ 
-		{
-			setDaemon(true);
-		}
-		
-		@Override
-		public void run() {
-
-			while (!isInterrupted()) {
-				try {
-					backupAvailable.acquire();
-					backupAvailable.drainPermits();
-					tobeBackupedPipeline.backupPipeline();
-				} catch (InterruptedException e) {
-					interrupt();
-				} catch (FileException e) {
-					/* forward the exception to the view */
-					Application
-							.handleException(new ControlledException(this,
-									ExceptionSeverity.WARNING, e,
-									I18N.getInstance().getString(
-											"Exception.AutosavePipelineFailed", Constants.DEFAULT_BACKUP_FILE)));
-
-				}
-			}
-		}
-	};
-
 	/**
 	 * Creates a new {@link OSMembranePersistence} object and starts the internal thread.
 	 */
 	public OSMembranePersistence() {
-		this.autosaveThread.start();
 	}
 	
 	@Override
@@ -134,9 +92,5 @@ public class OSMembranePersistence extends AbstractPersistence {
 
 	@Override
 	public synchronized void update(Observable o, Object arg) {
-		if (arg instanceof PipelineObserverObject) {
-			this.tobeBackupedPipeline = ((PipelineObserverObject) arg).getPipeline();
-			this.backupAvailable.release();
-		}
 	}
 }
