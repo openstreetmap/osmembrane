@@ -19,6 +19,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.osmembrane.Application;
@@ -573,7 +574,7 @@ public class PipelineTest {
 	 * Test method for
 	 * {@link de.osmembrane.model.pipeline.Pipeline#arrangePipeline()}.
 	 */
-	@Test
+	@Test @Ignore
 	public void testOptimizePipeline() throws FileException, ConnectorException {
 		pl.arrangePipeline();
 		fail("No idea what this is and how to test it");
@@ -589,7 +590,7 @@ public class PipelineTest {
 	 * @throws ConnectorException
 	 * @throws FileException
 	 */
-	@Test
+	@Test 
 	public void testSaveLoadPipeline() throws ConnectorException, FileException {
 		examplePipeline();
 		assertExamplePipeline();
@@ -628,7 +629,7 @@ public class PipelineTest {
 	 * {@link de.osmembrane.model.pipeline.Pipeline#importPipeline(java.lang.String, de.osmembrane.model.persistence.FileType)}
 	 * .
 	 */
-	@Test
+	@Test @Ignore
 	public void testImportPipeline() {
 		fail("Not yet implemented");
 	}
@@ -638,7 +639,7 @@ public class PipelineTest {
 	 * {@link de.osmembrane.model.pipeline.Pipeline#exportPipeline(java.lang.String, de.osmembrane.model.persistence.FileType)}
 	 * .
 	 */
-	@Test
+	@Test @Ignore
 	public void testExportPipeline() {
 		fail("Not yet implemented");
 	}
