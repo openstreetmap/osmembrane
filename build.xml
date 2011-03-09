@@ -51,8 +51,8 @@
    	<target name="jar" depends="compile, update_constants_revision" description="build an executable jar">
         <jar destfile="${build.dir}/OSMembrane.jar" manifest="MANIFEST.fatjar">
             <zipfileset src="jar-in-jar-loader.zip"/>
-            <fileset dir="bin"/>
-            <zipfileset dir="lib" includes="*.jar"/>
+            <fileset dir="${build.dir}/bin"/>
+            <zipfileset dir="lib/production" includes="*.jar"/>
         </jar>
 	</target>
 	
