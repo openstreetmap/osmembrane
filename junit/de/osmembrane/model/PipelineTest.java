@@ -550,10 +550,7 @@ public class PipelineTest {
 		AbstractFunction[] newFuncs = new AbstractFunction[3];
 		for (int i = 0; i < pl.getFunctions().length; i++) {
 			AbstractFunction af = pl.getFunctions()[i];
-			Point p = (Point) af.getCoordinate();
-			if (p.y == 1) {
-				newFuncs[p.x] = af;
-			}
+			newFuncs[i] = af;
 		}
 
 		assertNotNull(newFuncs[0]);
@@ -662,12 +659,7 @@ public class PipelineTest {
 		String result = pl.generate(FileType.BASH);
 
 		assertNotNull(result);
-
-		if (af.getActiveTask().getShortName() != null) {
-			assertTrue(result.contains(af.getActiveTask().getShortName()));
-		} else {
-			assertTrue(result.contains(af.getActiveTask().getName()));
-		}
+		assertTrue(result.contains(af.getActiveTask().getName()));
 	}
 
 	/**
