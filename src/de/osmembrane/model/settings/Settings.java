@@ -117,7 +117,11 @@ public class Settings extends AbstractSettings {
 		AbstractPersistence persistence = PersistenceFactory.getInstance()
 				.getPersistence(SettingPersistence.class);
 
-		persistence.save(Constants.DEFAULT_SETTINGS_FILE, settingsMap);
+		File parent = Tools.urlToFile(Constants.DEFAULT_SETTINGS_FILE).getParentFile();
+		if (parent != null) {
+			parent.mkdirs();
+		}
+		persistence.save(Constants.DEFAULT_SETTINGS_FILE, settingsMap);		
 	}
 
 	@Override
