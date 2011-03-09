@@ -16,7 +16,7 @@ package de.osmembrane.view.panels;
 /**
  * Represents the tool currently in use on the {@link PipelinePanel}.
  * 
- * @see Specification, 2.1.3
+ * @see "Spezifikation.pdf, chapter 2.1.3 (German)"
  * 
  * @author tobias_kuhn
  * 

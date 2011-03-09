@@ -31,7 +31,7 @@ public class ContainingLocationEvent extends ContainingEvent {
 	protected Point2D location;
 
 	/**
-	 * @see {@link ContainingEvent#ContainingEvent}
+	 * @see ContainingEvent#ContainingEvent(Object, Object)
 	 * @param location
 	 *            the location
 	 */

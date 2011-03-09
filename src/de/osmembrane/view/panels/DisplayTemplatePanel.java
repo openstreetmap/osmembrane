@@ -63,12 +63,12 @@ public abstract class DisplayTemplatePanel extends JPanel {
 	 * given color and with the given icon.
 	 * 
 	 * @param template
-	 *            the {@link ImageIcon} to colorize and iconify
+	 *            the ImageIcon to colorize and iconify
 	 * @param color
-	 *            The {@link Color} this image shall display in
+	 *            The Color this image shall display in
 	 * @param icon
 	 *            The icon this image shall display
-	 * @return the pre-rendered {@link Image} in the color and with the icon
+	 * @return the pre-rendered Image in the color and with the icon
 	 */
 	protected Image derivateDisplay(ImageIcon template, Color color, Image icon) {
 		// copy displayTemplate to a BufferedImage
@@ -117,7 +117,7 @@ public abstract class DisplayTemplatePanel extends JPanel {
 	 * 
 	 * @param forObject
 	 *            object to identify the prerendering
-	 * @see {@link DisplayTemplatePanel#derivateDisplay(ImageIcon, Color, Image)}
+	 * @see #derivateDisplay(ImageIcon, Color, Image)
 	 * @return the immediately created Image
 	 */
 	protected static Image prerenderDisplay(Object forObject,

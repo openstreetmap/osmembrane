@@ -60,7 +60,7 @@ import de.osmembrane.view.interfaces.IListDialog;
  * Simple dialog to edit special types of comma-separated lists with
  * AutoComplete functionality, plus save or load them.
  * 
- * @see Spezifikation.pdf, chapter 2.2
+ * @see "Spezifikation.pdf, chapter 2.2 (German)"
  * 
  * @author tobias_kuhn
  * 
@@ -100,12 +100,12 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 	private AbstractParameter listParam;
 
 	/**
-	 * The {@link ListType} of the list
+	 * The ListType of the list
 	 */
 	private ListType listType;
 
 	/**
-	 * The {@link ListContentType} of the list
+	 * The ListContentType of the list
 	 */
 	private ListContentType listContentType;
 

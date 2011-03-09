@@ -76,7 +76,7 @@ import de.osmembrane.view.components.RowEditorModel;
 /**
  * The inspector panel component to realize the function inspector.
  * 
- * @see Spezifikation.pdf, chapter 2.1.6
+ * @see "Spezifikation.pdf, chapter 2.1.6 (German)"
  * 
  * @author tobias_kuhn
  * 
@@ -90,16 +90,16 @@ public class InspectorPanel extends JPanel implements Observer {
 	 */
 	private JLabel functionName;
 
-	/**
-	 * the {@link JRowTable} that displays the data of the function along with
-	 * its {@link InspectorPanelTableModel} and {@link RowEditorModel}.
+	/*
+	 * the JRowTable that displays the data of the function along with
+	 * its InspectorPanelTableModel and RowEditorModel.
 	 */
 	private JRowTable propertyTable;
 	private InspectorPanelTableModel propertyTableModel;
 	private RowEditorModel rowEditorModel;
 
 	/**
-	 * the {@link InspectorPanelTableTaskComboBoxModel} for the combo box to
+	 * the InspectorPanelTableTaskComboBoxModel for the combo box to
 	 * choose the tasks
 	 */
 	private InspectorPanelTableTaskComboBoxModel taskComboModel;

@@ -31,7 +31,7 @@ public class ContainingEvent extends ActionEvent {
 	private Object contained;
 
 	/**
-	 * {@see ActionEvent#ActionEvent}
+	 * @see ActionEvent#ActionEvent
 	 * 
 	 * @param contained
 	 *            the value contained

@@ -79,8 +79,6 @@ public class TarjanAlgorithm {
 
 	/**
 	 * Checks if a Graph has a loop.
-	 * 
-	 * @return true if a loop exists, otherwise false
 	 */
 	public void run() {
 		reset();

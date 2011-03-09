@@ -43,7 +43,7 @@ public class I18N extends Observable {
 	private ResourceBundle resourceBundle;
 
 	/**
-	 * Default-Locale for {@see XMLHasDescription}.
+	 * Default-Locale for {@link XMLHasDescription}.
 	 */
 	private Locale defaultLocale;
 
@@ -98,7 +98,7 @@ public class I18N extends Observable {
 	 * Updates the default locale for the current instance.
 	 * 
 	 * @param locale
-	 *            new defaultLocale for {@see XMLHasDescription}
+	 *            new defaultLocale for {@link XMLHasDescription}
 	 */
 	protected void setDefaultLocale(Locale locale) {
 		this.defaultLocale = locale;
@@ -133,7 +133,7 @@ public class I18N extends Observable {
 	}
 
 	/**
-	 * Gives a localized String for a given {@see XMLHasDescription} object
+	 * Gives a localized String for a given {@link XMLHasDescription} object
 	 * back.
 	 * 
 	 * @param description

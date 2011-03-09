@@ -43,9 +43,6 @@ public class Connector extends AbstractConnector {
 	/**
 	 * Constructor for a new Connector with given {@link XMLPipe} and
 	 * {@link AbstractFunction} as parent.
-	 * 
-	 * @param pipe
-	 * @param parent
 	 */
 	public Connector(AbstractFunction parent, ConnectorPosition position,
 			XMLPipe xmlPipe) {

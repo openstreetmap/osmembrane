@@ -100,8 +100,9 @@ public class PipelineObserverObject {
 	 * @param type
 	 *            type of the observer-notification.
 	 * @param changedFunction
-	 *            function which has been changed ({@see
-	 *            PipelineObserverObject#changedFunction}).
+	 *            function which has been changed 
+	 *            
+	 * @see PipelineObserverObject#getChangedFunction()
 	 */
 	public PipelineObserverObject(ChangeType type,
 			AbstractFunction changedFunction) {
@@ -138,8 +139,9 @@ public class PipelineObserverObject {
 	}
 
 	/**
-	 * Returns the changed {@link AbstractFunction}. ({@see
-	 * PipelineObserverObject#changedFunction})
+	 * Returns the changed {@link AbstractFunction}. 
+	 * 
+	 * @see PipelineObserverObject#getChangedFunction()
 	 * 
 	 * @return changed function
 	 */
@@ -148,8 +150,9 @@ public class PipelineObserverObject {
 	}
 
 	/**
-	 * Returns the changed {@link AbstractConnector}s. ({@see
-	 * PipelineObserverObject#changedConnectors})
+	 * Returns the changed {@link AbstractConnector}s. 
+	 * 
+	 * @see PipelineObserverObject#getChangedConnectors()
 	 * 
 	 * @return changed connectors, array-length is always 2.<br/>
 	 *         first one is out connector, second one in connector.

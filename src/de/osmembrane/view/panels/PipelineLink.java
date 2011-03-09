@@ -78,8 +78,6 @@ public class PipelineLink extends JPanel {
 	 * @param linkDestination
 	 *            the *true* destination for the connection, i.e. the actual
 	 *            ending point
-	 * @param color
-	 *            the link will be drawn in
 	 */
 	public PipelineLink(final PipelinePanel pipeline,
 			PipelineConnector linkSource, PipelineConnector linkDestination) {

@@ -42,7 +42,7 @@ public class FunctionGroup extends AbstractFunctionGroup {
 	/**
 	 * Creates a new FunctionGroup with a given XMLFunctionGroup.
 	 * 
-	 * @param xmlFunction
+	 * @param xmlGroup
 	 *            XMLFunctionGroup belongs to this FunctionGroup
 	 */
 	public FunctionGroup(XMLFunctionGroup xmlGroup) {

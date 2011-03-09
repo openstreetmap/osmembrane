@@ -39,7 +39,7 @@ public abstract class AbstractConnector implements Serializable {
 	 * Returns the parent, a {@link AbstractFunction}, of the
 	 * {@link AbstractConnector}.
 	 * 
-	 * @return
+	 * @return the parent of this connector
 	 */
 	public abstract AbstractFunction getParent();
 

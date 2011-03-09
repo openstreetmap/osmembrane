@@ -14,7 +14,7 @@
 package de.osmembrane.view.interfaces;
 
 /**
- * Interface for {@link PipelineSettingDialog}.
+ * Interface for PipelineSettingsDialog.
  * 
  * @author tobias_kuhn
  * 

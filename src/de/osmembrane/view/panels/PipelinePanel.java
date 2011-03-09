@@ -94,10 +94,10 @@ import de.osmembrane.view.interfaces.IZoomDevice;
  * the currentDisplay transformation and, when final, "pre-apply" it (multiply
  * from the left side) to the objectToWindow transformation.
  * 
- * @see Spezifikation.pdf, chapter 2.1.5
+ * @see "Spezifikation.pdf, chapter 2.1.5 (German)"
  * 
- * @see your Math reference book, sections "Linear Algebra", "Matrices",
- *      "Linear Transformations"
+ * @see "your Math reference book, sections 'Linear Algebra', 'Matrices',
+ *      'Linear Transformations'"
  * 
  * @author tobias_kuhn
  * 
@@ -1140,7 +1140,7 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 	 * {@link MouseListener}s should be forwarded though. But forwarding mouse
 	 * events in this case would cause a deselection of the dragged object)
 	 * 
-	 * @param draggingFrom
+	 * @param winDraggingFrom
 	 *            point dragging started from (window space) to set
 	 */
 	public void setDraggingFrom(Point winDraggingFrom) {

@@ -45,7 +45,7 @@ import de.osmembrane.view.components.JTextFieldWithButton;
  * Would have been fancy to be generic, but was not possible due to time
  * constraints. Note smelly calls to getMainFrameByPass().getPipeline().
  * 
- * @see Spezifikation.pdf, chapter 2.1.4
+ * @see "Spezifikation.pdf, chapter 2.1.4 (German)"
  * 
  * @author tobias_kuhn
  * 

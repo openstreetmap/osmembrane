@@ -29,7 +29,7 @@ import de.osmembrane.model.statusbar.Statusbar;
 
 /**
  * The ModelProxy is the connection to the whole Model of OSMembrane. A instance
- * can got over {@see ModelProxy#getInstance()}.
+ * can got over {@link ModelProxy#getInstance()}.
  * 
  * @author jakob_jarosch
  */

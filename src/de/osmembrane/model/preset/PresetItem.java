@@ -41,8 +41,10 @@ public class PresetItem implements Comparable<PresetItem> {
 	 * 
 	 * @param item
 	 *            {@link Item} which should be represented
-	 * @param string2
-	 * @param string
+	 * @param key
+	 * 			the tag key of the item
+	 * @param value
+	 *          the tag value of the item
 	 */
 	protected PresetItem(Item item, String key, String value) {
 		this.item = item;
@@ -62,7 +64,7 @@ public class PresetItem implements Comparable<PresetItem> {
 	/**
 	 * Returns the relative path to the icon of the item.
 	 * 
-	 * @returns the ImageIcon for the item. return NULL if icon failed to load,
+	 * @return the ImageIcon for the item. return <code>null</code> if icon failed to load,
 	 *          or no icon does exists.
 	 */
 	public ImageIcon getIcon() {

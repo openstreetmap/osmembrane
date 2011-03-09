@@ -28,13 +28,14 @@ import de.osmembrane.Application;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.persistence.FileException.Type;
+import de.osmembrane.model.settings.AbstractSettings;
 import de.osmembrane.model.settings.SettingType;
 import de.osmembrane.model.settings.SettingsObserverObject;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.Tools;
 
 /**
- * Saves the {@see AbstractSettings} in a file.
+ * Saves the {@link AbstractSettings} in a file.
  * 
  * @author jakob_jarosch
  */

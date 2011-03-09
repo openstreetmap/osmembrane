@@ -18,7 +18,7 @@ import java.util.Locale;
 import de.osmembrane.model.settings.SettingType;
 
 /**
- * Interface for {@link SettingDialog}.
+ * Interface for SettingsDialog.
  * 
  * @author tobias_kuhn
  * 

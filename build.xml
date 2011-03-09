@@ -113,11 +113,13 @@
 	
 	<target name="javadoc" depends="init,find_revision">
 		<mkdir dir="${build.dir}/javadoc" />
-		<javadoc sourcepath="${src.dir}" destdir="${build.dir}/javadoc" 
+		<javadoc destdir="${build.dir}/javadoc" 
 			windowtitle="OSMembrane API documentation (r${svn.info.lastRev})" 
 			defaultexcludes="true" use="true" 
 			noqualifier="java.lang:java.util:javax.swing:java.awt"
 			>
+			<packageset dir="src" />
+			<packageset dir="3rdparty" />
 			<classpath>
 				<fileset refid="runtime-classpath-files"/>
 			</classpath>

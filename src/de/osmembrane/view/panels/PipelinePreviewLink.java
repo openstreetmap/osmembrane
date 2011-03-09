@@ -22,7 +22,7 @@ import de.osmembrane.resources.Constants;
 /**
  * A special pipeline link used only for the preview.
  * 
- * @see {@link PipelineLink}
+ * @see PipelineLink
  * 
  * @author tobias_kuhn
  * 

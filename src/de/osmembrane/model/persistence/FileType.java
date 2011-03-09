@@ -93,9 +93,9 @@ public enum FileType {
 	}
 
 	/**
-	 * Returns all possible extensions for a filetype as a String-Array.
+	 * Returns all possible extensions for a filetype as an array of strings.
 	 * 
-	 * @return
+	 * @return all possible extensions for a filetype as an array of strings.
 	 */
 	public String[] getAllExtensions() {
 		return extensions;
@@ -162,7 +162,7 @@ public enum FileType {
 	/**
 	 * Returns the internationalized name as String.
 	 * 
-	 * @return
+	 * @return the internationalized name as String
 	 */
 	public String getName() {
 		return I18N.getInstance().getString(

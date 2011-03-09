@@ -162,7 +162,7 @@ public class JTextFieldWithButton extends JPanel {
 	}
 
 	/**
-	 * @see {@link JTextField#setHorizontalAlignment(int)}
+	 * @see JTextField#setHorizontalAlignment(int)
 	 */
 	public void setValueHorizontalAlignment(int align) {
 		field.setHorizontalAlignment(align);
@@ -173,6 +173,7 @@ public class JTextFieldWithButton extends JPanel {
 	 * Adds the {@link java.awt.event.KeyListener} kl to the field component
 	 * 
 	 * @param kl
+	 * 			the key listener to add
 	 */
 
 	public void addFieldKeyListener(KeyListener kl) {
@@ -184,6 +185,7 @@ public class JTextFieldWithButton extends JPanel {
 	 * Sets the color of the value text field to color.
 	 * 
 	 * @param color
+	 *            the new foreground color
 	 */
 	public void setValueForeground(Color color) {
 		field.setForeground(color);

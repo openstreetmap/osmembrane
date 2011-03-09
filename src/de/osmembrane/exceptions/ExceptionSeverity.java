@@ -38,7 +38,7 @@ public enum ExceptionSeverity {
 	UNEXPECTED_BEHAVIOR,
 
 	/**
-	 * like {@link ExceptionSeverity#ABNORMAL_BEHAVIOR} but the program's
+	 * like {@link ExceptionSeverity#UNEXPECTED_BEHAVIOR} but the program's
 	 * integrity cannot be guaranteed anymore and it should be closed after the
 	 * exception
 	 */

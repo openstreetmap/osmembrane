@@ -37,7 +37,7 @@ public enum ParameterType {
 	BOOLEAN("Boolean", "^(true|false|yes|no)$", "^$"),
 
 	/**
-	 * Enumeration ({@see AbstractEnumValue}).
+	 * Enumeration ({@link AbstractEnumValue}).
 	 * 
 	 * Important! ENUM can't use the validate method.
 	 */

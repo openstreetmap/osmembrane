@@ -23,10 +23,11 @@ import javax.swing.JScrollBar;
  * attributeChanged-Listener after setValue().
  * 
  * Kind of a dirty hack, but this seems to be a bug in Swing ({@link Adjustable}
- * specifies that an AdjustmentEvent should *NOT* be thrown!) and there is not
+ * specifies that an AdjustmentEvent should *NOT* be fired!) and there is not
  * really an alternative.
  * 
- * @see {@link Adjustable#setValue(int)}, {@link JScrollBar#setValue(int)}
+ * @see Adjustable#setValue(int)
+ * @see JScrollBar#setValue(int)
  * 
  * @author tobias_kuhn
  * 
@@ -36,21 +37,21 @@ public class JSilentScrollBar extends JScrollBar {
 	private static final long serialVersionUID = -8976816464093270469L;
 
 	/**
-	 * @see {@link JScrollBar#JScrollBar()}
+	 * @see JScrollBar#JScrollBar()
 	 */
 	public JSilentScrollBar() {
 		super();
 	}
 
 	/**
-	 * @see {@link JScrollBar#JScrollBar(int)}
+	 * @see JScrollBar#JScrollBar(int)
 	 */
 	public JSilentScrollBar(int orientation) {
 		super(orientation);
 	}
 
 	/**
-	 * @see {@link JScrollBar#JScrollBar(int, int, int, int, int)}
+	 * @see JScrollBar#JScrollBar(int, int, int, int, int)
 	 */
 	public JSilentScrollBar(int orientation, int value, int extent, int min,
 			int max) {
@@ -83,7 +84,7 @@ public class JSilentScrollBar extends JScrollBar {
 	}
 
 	/**
-	 * @see {@link JScrollBar#setValue(int)}, only silently
+	 * Equivalent to {@link JScrollBar#setValue(int)}, only silently
 	 */
 	public void setValueSilently(int value) {
 		AdjustmentListener[] als = removeDirtyListeners();
@@ -92,7 +93,7 @@ public class JSilentScrollBar extends JScrollBar {
 	}
 
 	/**
-	 * @see {@link JScrollBar#setMinimum(int)}, only silently
+	 * Equivalent to {@link JScrollBar#setMinimum(int)}, only silently
 	 */
 	public void setMinimumSilently(int minimum) {
 		AdjustmentListener[] als = removeDirtyListeners();
@@ -101,7 +102,7 @@ public class JSilentScrollBar extends JScrollBar {
 	}
 
 	/**
-	 * @see {@link JScrollBar#setMinimum(int)}, only silently
+	 * Equivalent to {@link JScrollBar#setMinimum(int)}, only silently
 	 */
 	public void setMaximumSilently(int maximum) {
 		AdjustmentListener[] als = removeDirtyListeners();

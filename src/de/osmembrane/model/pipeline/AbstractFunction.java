@@ -91,7 +91,7 @@ public abstract class AbstractFunction extends Observable implements Observer,
 	 * Returns the currently active XMLTask for the actual Function.
 	 * 
 	 * If any changes are applied to the XMLTask call
-	 * {@link AbstractFunction#changedNotifyObservers()}
+	 * {@link AbstractFunction#changedNotifyObservers(PipelineObserverObject)}
 	 * 
 	 * @return active XMLTask for the Function
 	 */
@@ -155,8 +155,8 @@ public abstract class AbstractFunction extends Observable implements Observer,
 	/**
 	 * Creates a connection to the given {@link AbstractFunction}.
 	 * 
-	 * @param connection
-	 *            to which the connection should be created.
+	 * @param function
+	 *            the function to which the connection should be created.
 	 * 
 	 * @throws ConnectorException
 	 *             when the given function is not compatible or all
@@ -182,7 +182,7 @@ public abstract class AbstractFunction extends Observable implements Observer,
 
 	/**
 	 * Notifies all registered {@link Observer}s with pre-called
-	 * {@link Observable#setChanged())}.
+	 * {@link Observable#setChanged()}.
 	 */
 	protected abstract void changedNotifyObservers(PipelineObserverObject poo);
 

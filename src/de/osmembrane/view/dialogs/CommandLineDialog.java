@@ -38,7 +38,7 @@ import de.osmembrane.view.interfaces.ICommandLineDialog;
  * Simple dialog to display the generated command line, export it, or copy it to
  * the clipboard.
  * 
- * @see Spezifikation.pdf, chapter 2.5
+ * @see "Spezifikation.pdf, chapter 2.5 (German)"
  * 
  * @author tobias_kuhn
  * 

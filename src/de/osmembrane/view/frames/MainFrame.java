@@ -88,7 +88,7 @@ import de.osmembrane.view.panels.Tool;
  * The Main window that is the center of OSMembrane and the first thing you'll
  * see after the splash screen.
  * 
- * @see Spezifikation.pdf, chapter 2.1
+ * @see "Spezifikation.pdf, chapter 2.1 (German)"
  * 
  * @author tobias_kuhn
  * 
@@ -98,7 +98,7 @@ public class MainFrame extends AbstractFrame implements IMainFrame {
 	private static final long serialVersionUID = 6464462774273555770L;
 
 	/**
-	 * The {@link PipelinePanel} showing the pipeline
+	 * The PipelinePanel showing the pipeline
 	 */
 	private PipelinePanel pipelineView;
 

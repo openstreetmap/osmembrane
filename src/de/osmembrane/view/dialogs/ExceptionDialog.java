@@ -169,14 +169,14 @@ public class ExceptionDialog extends AbstractDialog {
 	}
 
 	/**
-	 * Displays a {@link Throwable} and handles the possibly necessary shutdown.
+	 * Displays a Throwable and handles the possibly necessary shutdown.
 	 * 
 	 * @param t
-	 *            the occurred {@link Throwable}
-	 * @param type
-	 *            the kind of the exception or null, if none known
+	 *            the occurred Throwable
+	 * @param severity
+	 *            the kind of the exception
 	 * @param causingObject
-	 *            the causing object or null, if none known
+	 *            the causing object or null, if unknown
 	 */
 	public void showException(Throwable t, ExceptionSeverity severity,
 			Object causingObject) {
