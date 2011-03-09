@@ -53,8 +53,7 @@ public class PipelineTest {
 
 	static {
 		try {
-			TEST_FILE_NAME = new File(System.getProperty("java.io.tmpdir")
-					+ "test.tmp").toURI().toURL();
+			TEST_FILE_NAME = new File(new File(System.getProperty("java.io.tmpdir")), "test.tmp").toURI().toURL();
 		} catch (MalformedURLException e) {
 			TEST_FILE_NAME = null;
 		}
