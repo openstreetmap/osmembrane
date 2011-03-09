@@ -52,7 +52,7 @@
         <jar destfile="${build.dir}/OSMembrane.jar" manifest="MANIFEST.fatjar">
             <zipfileset src="jar-in-jar-loader.zip"/>
             <fileset dir="${build.dir}/bin"/>
-            <zipfileset dir="lib/production" includes="*.jar"/>
+            <zipfileset dir="lib/runtime" includes="*.jar"/>
         </jar>
 	</target>
 	
