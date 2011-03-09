@@ -7,5 +7,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/runtime/bboxchooser-0.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/runtime/JMapViewer.jar"/>
+	<classpathentry kind="lib" path="lib/test/org-netbeans-insane.jar"/>
+	<classpathentry kind="lib" path="lib/test/memoryasserts.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
