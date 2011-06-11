@@ -790,6 +790,9 @@ public class PipelinePanel extends JPanel implements Observer, IZoomDevice {
 						layeredPane.add(pl, LINK_LAYER);
 					}
 				}
+
+				// automatically select the newly added function
+				selected(pfAdd);
 				break;
 
 			// properties of a function changed
