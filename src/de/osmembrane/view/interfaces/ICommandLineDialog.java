@@ -9,10 +9,9 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.interfaces;
 
+import de.osmembrane.model.pipeline.AbstractPipeline;
 import de.osmembrane.view.dialogs.CommandLineDialog;
 
 /**
@@ -24,11 +23,11 @@ import de.osmembrane.view.dialogs.CommandLineDialog;
 public interface ICommandLineDialog extends IView {
 
 	/**
-	 * Sets the command line to display
+	 * Sets the pipeline to process.
 	 * 
-	 * @param commandline
-	 *            the command line to display
+	 * @param pipeline
+	 *            the pipeline;
 	 */
-	void setCommandline(String commandline);
+	public void setPipeline(AbstractPipeline pipeline);
 
 }

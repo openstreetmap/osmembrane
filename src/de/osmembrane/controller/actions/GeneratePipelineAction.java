@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import de.osmembrane.model.ModelProxy;
-import de.osmembrane.model.persistence.FileType;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.HeadlessSafe;
 import de.osmembrane.tools.I18N;
@@ -79,17 +78,7 @@ public class GeneratePipelineAction extends AbstractAction {
 			}
 		}
 
-		FileType type;
-		/* check if it is windows */
-		if (System.getProperty("os.name").toLowerCase().contains("win")) {
-			type = FileType.CMD;
-		} else {
-			/* should be a unix based os, use bash */
-			type = FileType.BASH;
-		}
-
-		commandLineDialog.setCommandline(ModelProxy.getInstance().getPipeline()
-				.generate(type));
+		commandLineDialog.setPipeline(ModelProxy.getInstance().getPipeline());
 		commandLineDialog.showWindow();
 	}
 }
