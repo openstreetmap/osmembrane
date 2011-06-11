@@ -50,8 +50,9 @@ public class AboutDialog extends AbstractDialog {
 		infoText.setContentType("text/html");
 		infoText.setEditable(false);
 		infoText.setText(
-				I18N.getInstance().getString("View.AboutDialog.BuildInfo", Constants.BUILD_NUMBER) +
-				"\n" +
+				I18N.getInstance().getString(
+						"View.AboutDialog.BuildInfo", 
+						Constants.VERSION, Constants.REVISION_ID) + "\n" +
 				I18N.getInstance().getString("View.AboutDialog.Info"));
 		add(infoText, BorderLayout.CENTER);
 

@@ -65,8 +65,8 @@ public class Application {
 			Dimension size = splash.getSize();
 			g.setColor(new Color(255, 255, 255));
 			g.drawRect(0, 0, size.width, size.height);
-			g.drawString("build " + Constants.BUILD_NUMBER, size.width - 170,
-					size.height - 45);
+			g.drawString(String.format("%s (%s)", Constants.VERSION, Constants.REVISION_ID),
+					size.width - 170, size.height - 45);
 			g.setPaintMode();
 			splash.update();
 		}

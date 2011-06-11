@@ -94,7 +94,7 @@
 		<svn>
 			<export srcpath="${basedir}" destpath="${build.dir}/source-zip" />
 		</svn>
-		<zip destfile="${build.dir}/OSMembrane_${project.version}-src.zip">
+		<zip destfile="${build.dir}/OSMembrane_${project.version.id}-src.zip">
 			<fileset dir="${build.dir}/source-zip" />
 		</zip>
 	</target>
@@ -106,7 +106,7 @@
 		<copy file="manual/manual.pdf" tofile="${binary-zip-basedir}/resources/pdf/manual.pdf"/>
 		<copy file="LICENSE.txt" tofile="${binary-zip-basedir}/LICENSE.txt"/>
 		<copy file="${build.dir}/OSMembrane.jar" tofile="${binary-zip-basedir}/OSMembrane.jar"/>
-		<zip destfile="${build.dir}/OSMembrane_${project.version}-bin.zip">
+		<zip destfile="${build.dir}/OSMembrane_${project.version.id}-bin.zip">
 			<fileset dir="${binary-zip-basedir}" />
 		</zip>
 	</target>
@@ -114,7 +114,7 @@
 	<target name="javadoc" depends="init,_get-version">
 		<mkdir dir="${build.dir}/javadoc" />
 		<javadoc destdir="${build.dir}/javadoc" 
-			windowtitle="OSMembrane API documentation (${project.version})" 
+			windowtitle="OSMembrane API documentation (${project.version.id})" 
 			defaultexcludes="true" use="true" 
 			noqualifier="java.lang:java.util:javax.swing:java.awt"
 			>
@@ -127,7 +127,7 @@
 	</target>
 	
 	<target name="javadoc-zip" depends="init,_get-version,javadoc">
-		<zip destfile="${build.dir}/OSMembrane_${project.version}-javadoc.zip" 
+		<zip destfile="${build.dir}/OSMembrane_${project.version.id}-javadoc.zip" 
 			basedir="${build.dir}/javadoc" />
 	</target>
 	
@@ -141,7 +141,7 @@
 	<target name="dist" depends="init,_get-version,source-zip,binary-zip,javadoc-zip" description="create a distribution">
 		<mkdir dir="${dist.dir}" />
 		<copy todir="${dist.dir}">
-			<fileset dir="${build.dir}" includes="OSMembrane_${project.version}*.zip" />
+			<fileset dir="${build.dir}" includes="OSMembrane_${project.version.id}*.zip" />
 		</copy>
 	</target>
 	
