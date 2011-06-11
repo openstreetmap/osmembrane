@@ -37,12 +37,12 @@ public class Constants {
 	/**
 	 * The revision of this build.
 	 */
-	public static final int BUILD_NUMBER;
+	public static final String BUILD_NUMBER;
 	
 	private static final String BUILD_NUMBER_PROPERTY = "de.osmembrane.version.buildNumber";
 	
 	static {
-		int buildNumber = 0;
+		String buildNumber = "UNKNOWN";
 		InputStream vpStream = Constants.class.getResourceAsStream("version.properties");
 		
 		// if the resource doesn't exist, we're most probably in an uncontrolled
@@ -51,12 +51,11 @@ public class Constants {
 			try {
 				Properties vp = new Properties();
 				vp.load(vpStream);
-				buildNumber = Integer.parseInt(
-						vp.getProperty(BUILD_NUMBER_PROPERTY), 10);
+				buildNumber = vp.getProperty(BUILD_NUMBER_PROPERTY);
 			} catch (Exception e) {
 				// Something went wrong while parsing the embedded build number,
 				// resort to zero.
-				buildNumber = 0;
+				buildNumber = "UNKNOWN";
 			}
 		}
 		

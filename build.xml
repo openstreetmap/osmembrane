@@ -89,32 +89,32 @@
 		</junit>
 	</target>
 	
-	<target name="source-zip" depends="init, find_revision">
+	<target name="source-zip" depends="init, _get-version">
 		<delete dir="${build.dir}/source-zip" />
 		<svn>
 			<export srcpath="${basedir}" destpath="${build.dir}/source-zip" />
 		</svn>
-		<zip destfile="${build.dir}/OSMembrane_${svn.info.lastRev}-src.zip">
+		<zip destfile="${build.dir}/OSMembrane_${project.version}-src.zip">
 			<fileset dir="${build.dir}/source-zip" />
 		</zip>
 	</target>
 	
-	<target name="binary-zip" depends="init,find_revision,jar">
+	<target name="binary-zip" depends="init,_get-version,jar">
 		<mkdir dir="${binary-zip-basedir}" />
 		<mkdir dir="${binary-zip-basedir}/resources/xml"/>
 		<mkdir dir="${binary-zip-basedir}/resources/pdf"/>
 		<copy file="manual/manual.pdf" tofile="${binary-zip-basedir}/resources/pdf/manual.pdf"/>
 		<copy file="LICENSE.txt" tofile="${binary-zip-basedir}/LICENSE.txt"/>
 		<copy file="${build.dir}/OSMembrane.jar" tofile="${binary-zip-basedir}/OSMembrane.jar"/>
-		<zip destfile="${build.dir}/OSMembrane_${svn.info.lastRev}-bin.zip">
+		<zip destfile="${build.dir}/OSMembrane_${project.version}-bin.zip">
 			<fileset dir="${binary-zip-basedir}" />
 		</zip>
 	</target>
 	
-	<target name="javadoc" depends="init,find_revision">
+	<target name="javadoc" depends="init,_get-version">
 		<mkdir dir="${build.dir}/javadoc" />
 		<javadoc destdir="${build.dir}/javadoc" 
-			windowtitle="OSMembrane API documentation (r${svn.info.lastRev})" 
+			windowtitle="OSMembrane API documentation (${project.version})" 
 			defaultexcludes="true" use="true" 
 			noqualifier="java.lang:java.util:javax.swing:java.awt"
 			>
@@ -126,8 +126,8 @@
 		</javadoc>
 	</target>
 	
-	<target name="javadoc-zip" depends="init,find_revision,javadoc">
-		<zip destfile="${build.dir}/OSMembrane_${svn.info.lastRev}-javadoc.zip" 
+	<target name="javadoc-zip" depends="init,_get-version,javadoc">
+		<zip destfile="${build.dir}/OSMembrane_${project.version}-javadoc.zip" 
 			basedir="${build.dir}/javadoc" />
 	</target>
 	
@@ -138,10 +138,10 @@
 		</copy>
 	</target>
 		
-	<target name="dist" depends="init,find_revision,source-zip,binary-zip,javadoc-zip" description="create a distribution">
+	<target name="dist" depends="init,_get-version,source-zip,binary-zip,javadoc-zip" description="create a distribution">
 		<mkdir dir="${dist.dir}" />
 		<copy todir="${dist.dir}">
-			<fileset dir="${build.dir}" includes="OSMembrane_${svn.info.lastRev}*.zip" />
+			<fileset dir="${build.dir}" includes="OSMembrane_${project.version}*.zip" />
 		</copy>
 	</target>
 	

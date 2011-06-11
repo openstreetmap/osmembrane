@@ -19,13 +19,8 @@ import java.awt.SplashScreen;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.InputMap;
 import javax.swing.JOptionPane;
@@ -39,8 +34,6 @@ import de.osmembrane.model.ModelProxy;
 import de.osmembrane.model.persistence.FileException;
 import de.osmembrane.model.persistence.PipelineBackup;
 import de.osmembrane.model.settings.SettingType;
-import de.osmembrane.model.settings.SettingsTypeUpdateInterval;
-import de.osmembrane.model.settings.UnparsableFormatException;
 import de.osmembrane.resources.Constants;
 import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
@@ -233,78 +226,69 @@ public class Application {
 		}
 	}
 
-	/**
-	 * Checks for updates.
-	 */
-	public void checkForUpdates() {
-		new Thread() {
-			public void run() {
-				SettingsTypeUpdateInterval interval = (SettingsTypeUpdateInterval) ModelProxy
-						.getInstance().getSettings()
-						.getValue(SettingType.UPDATE_INTERVAL);
-				long timeDiff = interval.getTimeDiff();
-				long lastUpdateLookup = (Long) ModelProxy.getInstance()
-						.getSettings().getValue(SettingType.LAST_UPDATE_LOOKUP);
-				long currentTime = TimeUnit.MILLISECONDS.toSeconds(System
-						.currentTimeMillis());
-				URL updateSite = Constants.UPDATE_WEBSITE;
-
-				if (timeDiff > 0) {
-					if (lastUpdateLookup + timeDiff < currentTime) {
-						/* update */
-						try {
-							BufferedReader br = new BufferedReader(
-									new InputStreamReader(
-											updateSite.openStream()));
-
-							int availableBuild = 0;
-							String downloadSite = "";
-							StringBuilder message = new StringBuilder();
-
-							String line;
-							int lineId = 0;
-							while ((line = br.readLine()) != null) {
-								if (lineId == 0) {
-									try {
-										availableBuild = Integer.parseInt(line);
-									} catch (NumberFormatException e) {
-										/* invalid version */
-										availableBuild = 0;
-									}
-								} else if (lineId == 1) {
-									downloadSite = line;
-								} else {
-									message.append("\n" + line);
-								}
-								lineId++;
-							}
-							br.close();
-
-							if (availableBuild > Constants.BUILD_NUMBER) {
-								/* new version is available */
-								JOptionPane.showMessageDialog(null, (I18N
-										.getInstance().getString(
-										"UpdateAvailable", availableBuild,
-										Constants.BUILD_NUMBER, downloadSite,
-										message)));
-							}
-						} catch (IOException e) {
-							/* hidden, not so important... */
-						}
-
-						try {
-							ModelProxy
-									.getInstance()
-									.getSettings()
-									.setValue(SettingType.LAST_UPDATE_LOOKUP,
-											currentTime);
-						} catch (UnparsableFormatException e) {
-						}
-					}
-				}
-			}
-		}.start();
-	}
+//	/**
+//	 * Checks for updates.
+//	 */
+//	public void checkForUpdates() {
+//		new Thread() {
+//			public void run() {
+//				SettingsTypeUpdateInterval interval = (SettingsTypeUpdateInterval) ModelProxy
+//						.getInstance().getSettings()
+//						.getValue(SettingType.UPDATE_INTERVAL);
+//				long timeDiff = interval.getTimeDiff();
+//				long lastUpdateLookup = (Long) ModelProxy.getInstance()
+//						.getSettings().getValue(SettingType.LAST_UPDATE_LOOKUP);
+//				long currentTime = TimeUnit.MILLISECONDS.toSeconds(System
+//						.currentTimeMillis());
+//				URL updateSite = Constants.UPDATE_WEBSITE;
+//
+//				if (timeDiff > 0) {
+//					if (lastUpdateLookup + timeDiff < currentTime) {
+//						/* update */
+//						try {
+//							BufferedReader br = new BufferedReader(
+//									new InputStreamReader(
+//											updateSite.openStream()));
+//
+//							int availableBuild = 0;
+//							String downloadSite = "";
+//							StringBuilder message = new StringBuilder();
+//
+//							String line;
+//							int lineId = 0;
+//							while ((line = br.readLine()) != null) {
+//								if (lineId == 0) {
+//									try {
+//										availableBuild = Integer.parseInt(line);
+//									} catch (NumberFormatException e) {
+//										/* invalid version */
+//										availableBuild = 0;
+//									}
+//								} else if (lineId == 1) {
+//									downloadSite = line;
+//								} else {
+//									message.append("\n" + line);
+//								}
+//								lineId++;
+//							}
+//							br.close();
+//						} catch (IOException e) {
+//							/* hidden, not so important... */
+//						}
+//
+//						try {
+//							ModelProxy
+//									.getInstance()
+//									.getSettings()
+//									.setValue(SettingType.LAST_UPDATE_LOOKUP,
+//											currentTime);
+//						} catch (UnparsableFormatException e) {
+//						}
+//					}
+//				}
+//			}
+//		}.start();
+//	}
 
 	/**
 	 * Configures some bits and pieces of the UI that are per application.
