@@ -5,6 +5,7 @@
 
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="3rdparty.dir" value="${basedir}/3rdparty" />
+	<property name="resources.dir" value="${basedir}/resources" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="dist.dir" value="${basedir}/dist" />
 
@@ -44,6 +45,9 @@
 			<fileset dir="${3rdparty.dir}">
 				<exclude name="**/*.java" />
 				<exclude name="LICENSE.txt" />
+			</fileset>
+			<fileset dir="${resources.dir}">
+				<include name="**/*"/>
 			</fileset>
 		</copy>
 	</target>
