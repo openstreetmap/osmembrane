@@ -15,6 +15,7 @@ package de.osmembrane.view;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -38,9 +39,10 @@ public abstract class AbstractDialog extends JDialog implements IView {
 	/**
 	 * common constructor for all dialog view elements
 	 */
-	public AbstractDialog() {
+	public AbstractDialog(Window owner) {
+		super(owner);
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-		setModal(true);
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setResizable(false);
 
 		// close dialog on escape

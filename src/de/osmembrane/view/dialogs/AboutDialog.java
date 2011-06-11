@@ -14,6 +14,7 @@
 package de.osmembrane.view.dialogs;
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -39,7 +40,8 @@ public class AboutDialog extends AbstractDialog {
 	/**
 	 * Creates a new {@link AboutDialog}.
 	 */
-	public AboutDialog() {
+	public AboutDialog(Window owner) {
+		super(owner);
 		setLayout(new BorderLayout());
 
 		JLabel splash = new JLabel(new ImageIcon(this.getClass().getResource(

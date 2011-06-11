@@ -17,6 +17,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -75,7 +76,8 @@ public class FunctionPresetDialog extends AbstractDialog implements
 	/**
 	 * Creates a new {@link FunctionPresetDialog}.
 	 */
-	public FunctionPresetDialog() {
+	public FunctionPresetDialog(Window owner) {
+		super(owner);
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(8, 8, 8, 8);

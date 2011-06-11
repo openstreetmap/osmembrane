@@ -20,6 +20,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -66,7 +67,8 @@ public class CommandLineDialog extends AbstractDialog implements
 	/**
 	 * Creates a new {@link CommandLineDialog}
 	 */
-	public CommandLineDialog() {
+	public CommandLineDialog(Window owner) {
+		super(owner);
 		setWindowTitle(I18N.getInstance().getString("View.CommandLineDialog"));
 
 		// set the basics up

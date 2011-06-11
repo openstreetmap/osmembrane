@@ -19,6 +19,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -66,8 +67,11 @@ public class PipelineSettingsDialog extends AbstractDialog implements
 
 	/**
 	 * Generates a new {@link PipelineSettingsDialog}.
+	 * @param owner 
 	 */
-	public PipelineSettingsDialog() {
+	public PipelineSettingsDialog(Window owner) {
+		super(owner);
+		
 		// set the basics up
 		setLayout(new BorderLayout());
 

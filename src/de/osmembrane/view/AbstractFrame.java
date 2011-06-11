@@ -65,5 +65,4 @@ public abstract class AbstractFrame extends JFrame implements IView {
 	public void bringToFront() {
 		toFront();
 	}
-
 }

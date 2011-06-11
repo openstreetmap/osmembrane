@@ -15,6 +15,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -132,7 +133,9 @@ public class ListDialog extends AbstractDialog implements IListDialog {
 	/**
 	 * Generates a new {@link ListDialog}.
 	 */
-	public ListDialog() {
+	public ListDialog(Window owner) {
+		super(owner);
+		
 		// set the basics up
 		setLayout(new BorderLayout());
 

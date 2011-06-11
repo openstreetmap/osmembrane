@@ -39,6 +39,17 @@ import de.osmembrane.resources.Resource;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.tools.Tools;
 import de.osmembrane.view.ViewRegistry;
+import de.osmembrane.view.dialogs.AboutDialog;
+import de.osmembrane.view.dialogs.BoundingBoxDialog;
+import de.osmembrane.view.dialogs.CommandLineDialog;
+import de.osmembrane.view.dialogs.ExceptionDialog;
+import de.osmembrane.view.dialogs.ExecutionStateDialog;
+import de.osmembrane.view.dialogs.FunctionPresetDialog;
+import de.osmembrane.view.dialogs.ListDialog;
+import de.osmembrane.view.dialogs.PipelineSettingsDialog;
+import de.osmembrane.view.dialogs.SettingsDialog;
+import de.osmembrane.view.frames.MainFrame;
+import de.osmembrane.view.frames.TutorialFrame;
 import de.osmembrane.view.interfaces.IView;
 
 /**
@@ -323,5 +334,21 @@ public class Application {
 		pipelineBackup = new PipelineBackup();
 		ModelProxy.getInstance().getPipeline().addObserver(pipelineBackup);
 		pipelineBackup.start();
+	}
+
+	void createViews() {
+		ViewRegistry vr = ViewRegistry.getInstance();
+		MainFrame mf = new MainFrame();
+		vr.register(mf);
+		vr.register(new AboutDialog(mf));
+		vr.register(new BoundingBoxDialog(mf));
+		vr.register(new CommandLineDialog(mf));
+		vr.register(new ExceptionDialog(mf));
+		vr.register(new ExecutionStateDialog(mf));
+		vr.register(new FunctionPresetDialog(mf));
+		vr.register(new ListDialog(mf));
+		vr.register(new PipelineSettingsDialog(mf));
+		vr.register(new SettingsDialog(mf));
+		vr.register(new TutorialFrame());
 	}
 }

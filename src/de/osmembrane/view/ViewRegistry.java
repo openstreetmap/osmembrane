@@ -38,7 +38,7 @@ import de.osmembrane.view.interfaces.IView;
  * 
  */
 public class ViewRegistry extends Observable implements Observer {
-
+	
 	/**
 	 * implements the error-handling dialog Note: This is important to be static
 	 * and external to the {@link ViewRegistry} instance, because anyway else
@@ -91,19 +91,7 @@ public class ViewRegistry extends Observable implements Observer {
 	 * @return the registered object for that class
 	 */
 	public IView get(Class<? extends IView> clazz) {
-		IView result = views.get(clazz);
-
-		// if it does not exist, create it
-		if (result == null) {
-			try {
-				result = clazz.newInstance();
-			} catch (Exception e) {
-				Application.handleException(e);
-			}
-			views.put(clazz, result);
-		}
-
-		return result;
+		return views.get(clazz);
 	}
 
 	/**
@@ -210,7 +198,7 @@ public class ViewRegistry extends Observable implements Observer {
 	public static void showException(Throwable t, ExceptionSeverity severity,
 			Object causingObject) {
 		if (exceptionDialog == null) {
-			exceptionDialog = new ExceptionDialog();
+			exceptionDialog = new ExceptionDialog(null);
 		}
 		exceptionDialog.showException(t, severity, causingObject);
 	}

@@ -18,6 +18,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -126,7 +127,9 @@ public class SettingsDialog extends AbstractDialog implements ISettingsDialog {
 	/**
 	 * Generates a new {@link SettingsDialog}.
 	 */
-	public SettingsDialog() {
+	public SettingsDialog(Window owner) {
+		super(owner);
+		
 		// set the basics up
 		setLayout(new BorderLayout());
 

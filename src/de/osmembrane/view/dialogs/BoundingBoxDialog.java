@@ -15,6 +15,7 @@ package de.osmembrane.view.dialogs;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -50,7 +51,7 @@ public class BoundingBoxDialog implements IBoundingBoxDialog {
 	 * Creates a new {@link BoundingBoxDialog}
 	 */
 	@SuppressWarnings("serial")
-	public BoundingBoxDialog() {
+	public BoundingBoxDialog(Window owner) {
 		dialog = new BBoxChooserDialog();
 		dialog.setModal(true);
 
@@ -110,5 +111,4 @@ public class BoundingBoxDialog implements IBoundingBoxDialog {
 	public void dispose() {
 		dialog.dispose();
 	}
-
 }

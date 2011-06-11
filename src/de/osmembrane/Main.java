@@ -62,6 +62,7 @@ public class Main {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				application.createViews();
 				application.showMainFrame();
 			}
 		});

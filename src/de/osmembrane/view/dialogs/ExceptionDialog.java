@@ -18,6 +18,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -71,8 +72,9 @@ public class ExceptionDialog extends AbstractDialog {
 	/**
 	 * Initializes the {@link ExceptionDialog}
 	 */
-	public ExceptionDialog() {
-
+	public ExceptionDialog(Window owner) {
+		super(owner);
+		
 		// set the basics up
 		setLayout(new GridBagLayout());
 

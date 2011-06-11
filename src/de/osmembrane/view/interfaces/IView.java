@@ -60,5 +60,4 @@ public interface IView {
 	 * @see Window#dispose()
 	 */
 	public void dispose();
-
 }
