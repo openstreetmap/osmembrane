@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.Desktop;
@@ -37,37 +35,37 @@ import de.osmembrane.tools.IconLoader.Size;
  */
 public class ShowHelpAction extends AbstractAction {
 
-	private static final long serialVersionUID = 1015846096381941393L;
+    private static final long serialVersionUID = 1015846096381941393L;
 
-	/**
-	 * Creates a new {@link ShowHelpAction}
-	 */
-	public ShowHelpAction() {
-		putValue(Action.NAME,
-				I18N.getInstance()
-						.getString("Controller.Actions.ShowHelp.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.ShowHelp.Description"));
-		putValue(Action.SMALL_ICON,
-				Resource.PROGRAM_ICON.getImageIcon("help.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY,
-				Resource.PROGRAM_ICON.getImageIcon("help.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-	}
+    /**
+     * Creates a new {@link ShowHelpAction}
+     */
+    public ShowHelpAction() {
+        putValue(Action.NAME,
+                I18N.getInstance()
+                        .getString("Controller.Actions.ShowHelp.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ShowHelp.Description"));
+        putValue(Action.SMALL_ICON,
+                Resource.PROGRAM_ICON.getImageIcon("help.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY,
+                Resource.PROGRAM_ICON.getImageIcon("help.png", Size.NORMAL));
+        putValue(Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Desktop d = Desktop.getDesktop();
-		try {
-			d.open(Constants.HELP_FILE_PATH);
-		} catch (Exception e1) {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.WARNING, I18N.getInstance().getString(
-							"Controller.Actions.ShowHelp.FileNotFound",
-							Constants.HELP_FILE_PATH)));
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Desktop d = Desktop.getDesktop();
+        try {
+            d.open(Constants.HELP_FILE_PATH);
+        } catch (Exception e1) {
+            Application.handleException(new ControlledException(this,
+                    ExceptionSeverity.WARNING, I18N.getInstance().getString(
+                            "Controller.Actions.ShowHelp.FileNotFound",
+                            Constants.HELP_FILE_PATH)));
+        }
+    }
 }

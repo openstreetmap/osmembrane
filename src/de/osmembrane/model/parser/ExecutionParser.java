@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.model.parser;
 
 /**
@@ -20,18 +18,18 @@ package de.osmembrane.model.parser;
  */
 public class ExecutionParser extends CommandlineParser {
 
-	protected String BREAKLINE_SYMBOL = " ";
-	protected String BREAKLINE_COMMAND = "";
-	protected String QUOTATION_SYMBOL = "'";
+    protected String BREAKLINE_SYMBOL = " ";
+    protected String BREAKLINE_COMMAND = "";
+    protected String QUOTATION_SYMBOL = "'";
 
-	/**
-	 * Creates a new {@link ExecutionParser}.
-	 */
-	public ExecutionParser() {
-		super.setBreaklineSymbol(BREAKLINE_SYMBOL);
-		super.setBreaklineCommand(BREAKLINE_COMMAND);
-		super.setQuotationSymbol(QUOTATION_SYMBOL);
-		super.disableComments(true);
-		super.addOsmosisPath(false);
-	}
+    /**
+     * Creates a new {@link ExecutionParser}.
+     */
+    public ExecutionParser() {
+        super.setBreaklineSymbol(BREAKLINE_SYMBOL);
+        super.setBreaklineCommand(BREAKLINE_COMMAND);
+        super.setQuotationSymbol(QUOTATION_SYMBOL);
+        super.disableComments(true);
+        super.addOsmosisPath(false);
+    }
 }

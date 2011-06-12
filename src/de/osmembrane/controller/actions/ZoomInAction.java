@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -36,32 +34,33 @@ import de.osmembrane.view.interfaces.IMainFrame;
  */
 public class ZoomInAction extends AbstractAction {
 
-	private static final long serialVersionUID = 5671603148720489921L;
+    private static final long serialVersionUID = 5671603148720489921L;
 
-	/**
-	 * Creates a new {@link ZoomInAction}
-	 */
-	public ZoomInAction() {
-		putValue(Action.NAME,
-				I18N.getInstance().getString("Controller.Actions.ZoomIn.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.ZoomIn.Description"));
-		putValue(Action.SMALL_ICON,
-				Resource.PROGRAM_ICON.getImageIcon("zoom_in.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY,
-				Resource.PROGRAM_ICON.getImageIcon("zoom_in.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_PLUS,
-						HeadlessSafe.getMenuShortcutKeyMask()));
-	}
+    /**
+     * Creates a new {@link ZoomInAction}
+     */
+    public ZoomInAction() {
+        putValue(Action.NAME,
+                I18N.getInstance().getString("Controller.Actions.ZoomIn.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ZoomIn.Description"));
+        putValue(Action.SMALL_ICON,
+                Resource.PROGRAM_ICON.getImageIcon("zoom_in.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY,
+                Resource.PROGRAM_ICON.getImageIcon("zoom_in.png", Size.NORMAL));
+        putValue(
+                Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_PLUS,
+                        HeadlessSafe.getMenuShortcutKeyMask()));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
-				MainFrame.class, IMainFrame.class);
-		mainFrame.getZoomDevice().zoomIn();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
+                MainFrame.class, IMainFrame.class);
+        mainFrame.getZoomDevice().zoomIn();
+    }
 
 }

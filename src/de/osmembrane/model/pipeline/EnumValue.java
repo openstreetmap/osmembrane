@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.model.pipeline;
 
 import java.io.ObjectStreamException;
@@ -27,48 +25,48 @@ import de.osmembrane.tools.I18N;
  */
 public class EnumValue extends AbstractEnumValue {
 
-	private static final long serialVersionUID = 2011011821200001L;
+    private static final long serialVersionUID = 2011011821200001L;
 
-	/**
-	 * xml value of enum value.
-	 */
-	transient private XMLEnumValue xmlEnum;
-	private Identifier xmlEnumIdentifier;
+    /**
+     * xml value of enum value.
+     */
+    transient private XMLEnumValue xmlEnum;
+    private Identifier xmlEnumIdentifier;
 
-	/**
-	 * Creates a new EnumValue with a given {@link XMLEnumValue}.
-	 * 
-	 * @param xmlEnum
-	 *            which will be represented by {@link EnumValue}
-	 */
-	public EnumValue(XMLEnumValue xmlEnum) {
-		this.xmlEnum = xmlEnum;
+    /**
+     * Creates a new EnumValue with a given {@link XMLEnumValue}.
+     * 
+     * @param xmlEnum
+     *            which will be represented by {@link EnumValue}
+     */
+    public EnumValue(XMLEnumValue xmlEnum) {
+        this.xmlEnum = xmlEnum;
 
-		/* set the identifiers */
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
-		this.xmlEnumIdentifier = afp
-				.getMatchingXMLEnumValueIdentifier(this.xmlEnum);
-	}
+        /* set the identifiers */
+        AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
+        this.xmlEnumIdentifier = afp
+                .getMatchingXMLEnumValueIdentifier(this.xmlEnum);
+    }
 
-	@Override
-	public String getDescription() {
-		return I18N.getInstance().getDescription(xmlEnum);
-	}
+    @Override
+    public String getDescription() {
+        return I18N.getInstance().getDescription(xmlEnum);
+    }
 
-	@Override
-	public String getFriendlyName() {
-		return xmlEnum.getFriendlyName();
-	}
+    @Override
+    public String getFriendlyName() {
+        return xmlEnum.getFriendlyName();
+    }
 
-	@Override
-	public String getValue() {
-		return xmlEnum.getValue();
-	}
+    @Override
+    public String getValue() {
+        return xmlEnum.getValue();
+    }
 
-	private Object readResolve() throws ObjectStreamException {
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
-		this.xmlEnum = afp.getMatchingXMLEnumValue(this.xmlEnumIdentifier);
+    private Object readResolve() throws ObjectStreamException {
+        AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
+        this.xmlEnum = afp.getMatchingXMLEnumValue(this.xmlEnumIdentifier);
 
-		return this;
-	}
+        return this;
+    }
 }

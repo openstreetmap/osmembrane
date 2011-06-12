@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.events;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
@@ -27,95 +25,95 @@ import de.osmembrane.model.pipeline.AbstractTask;
  */
 public class ContainingFunctionChangeParameterEvent extends ContainingEvent {
 
-	private static final long serialVersionUID = 9051024945589013774L;
+    private static final long serialVersionUID = 9051024945589013774L;
 
-	/**
-	 * the parameter that was changed
-	 */
-	private AbstractParameter changedParameter;
+    /**
+     * the parameter that was changed
+     */
+    private AbstractParameter changedParameter;
 
-	/**
-	 * the new value of the parameter with index changedParameter
-	 */
-	private String newParameterValue;
+    /**
+     * the new value of the parameter with index changedParameter
+     */
+    private String newParameterValue;
 
-	/**
-	 * the new AbstractTask the function was set to
-	 */
-	private AbstractTask newTask;
+    /**
+     * the new AbstractTask the function was set to
+     */
+    private AbstractTask newTask;
 
-	/**
-	 * Creates a ContainingFunctionChangeParameterEvent for the function
-	 * contained, that yet yields no changes.
-	 * 
-	 * @param source
-	 * @param contained
-	 */
-	public ContainingFunctionChangeParameterEvent(Object source,
-			AbstractFunction contained) {
-		super(source, contained);
-		changedParameter = null;
-		newParameterValue = null;
-		newTask = null;
-	}
+    /**
+     * Creates a ContainingFunctionChangeParameterEvent for the function
+     * contained, that yet yields no changes.
+     * 
+     * @param source
+     * @param contained
+     */
+    public ContainingFunctionChangeParameterEvent(Object source,
+            AbstractFunction contained) {
+        super(source, contained);
+        changedParameter = null;
+        newParameterValue = null;
+        newTask = null;
+    }
 
-	/**
-	 * @param param
-	 *            the changedParameter to set
-	 */
-	public void setChangedParameter(AbstractParameter param) {
-		this.changedParameter = param;
-	}
+    /**
+     * @param param
+     *            the changedParameter to set
+     */
+    public void setChangedParameter(AbstractParameter param) {
+        this.changedParameter = param;
+    }
 
-	/**
-	 * @return the changedParameter
-	 */
-	public AbstractParameter getChangedParameter() {
-		return changedParameter;
-	}
+    /**
+     * @return the changedParameter
+     */
+    public AbstractParameter getChangedParameter() {
+        return changedParameter;
+    }
 
-	/**
-	 * @param newParameterValue
-	 *            the newParameterValue to set
-	 */
-	public void setNewParameterValue(String newParameterValue) {
-		this.newParameterValue = newParameterValue;
-	}
+    /**
+     * @param newParameterValue
+     *            the newParameterValue to set
+     */
+    public void setNewParameterValue(String newParameterValue) {
+        this.newParameterValue = newParameterValue;
+    }
 
-	/**
-	 * @return the newParameterValue
-	 */
-	public String getNewParameterValue() {
-		return newParameterValue;
-	}
+    /**
+     * @return the newParameterValue
+     */
+    public String getNewParameterValue() {
+        return newParameterValue;
+    }
 
-	/**
-	 * @return whether a newParameter was set
-	 */
-	public boolean wasNewParameterSet() {
-		return (changedParameter != null) && (newParameterValue != null);
-	}
+    /**
+     * @return whether a newParameter was set
+     */
+    public boolean wasNewParameterSet() {
+        return (changedParameter != null) && (newParameterValue != null);
+    }
 
-	/**
-	 * @param newTask
-	 *            the newTask to set
-	 */
-	public void setNewTask(AbstractTask newTask) {
-		this.newTask = newTask;
-	}
+    /**
+     * @param newTask
+     *            the newTask to set
+     */
+    public void setNewTask(AbstractTask newTask) {
+        this.newTask = newTask;
+    }
 
-	/**
-	 * @return the newTask
-	 */
-	public AbstractTask getNewTask() {
-		return newTask;
-	}
+    /**
+     * @return the newTask
+     */
+    public AbstractTask getNewTask() {
+        return newTask;
+    }
 
-	/**
-	 * @return whether a newTask was set
-	 */
-	public boolean wasNewTaskSet() {
-		return (newTask != null);
-	}
+    /**
+     * @return whether a newTask was set
+     */
+    public boolean wasNewTaskSet() {
+        return (newTask != null);
+    }
 
 }

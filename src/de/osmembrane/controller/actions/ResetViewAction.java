@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -35,33 +33,33 @@ import de.osmembrane.view.interfaces.IMainFrame;
  */
 public class ResetViewAction extends AbstractAction {
 
-	private static final long serialVersionUID = 3090041670794938671L;
+    private static final long serialVersionUID = 3090041670794938671L;
 
-	/**
-	 * Creates a new {@link ResetViewAction}
-	 */
-	public ResetViewAction() {
-		putValue(
-				Action.NAME,
-				I18N.getInstance().getString(
-						"Controller.Actions.ResetView.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.ResetView.Description"));
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
-				"zoom_reset.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
-				"zoom_reset.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0));
-	}
+    /**
+     * Creates a new {@link ResetViewAction}
+     */
+    public ResetViewAction() {
+        putValue(
+                Action.NAME,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ResetView.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ResetView.Description"));
+        putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+                "zoom_reset.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+                "zoom_reset.png", Size.NORMAL));
+        putValue(Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
-				MainFrame.class, IMainFrame.class);
-		mainFrame.getZoomDevice().resetView();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
+                MainFrame.class, IMainFrame.class);
+        mainFrame.getZoomDevice().resetView();
+    }
 
 }

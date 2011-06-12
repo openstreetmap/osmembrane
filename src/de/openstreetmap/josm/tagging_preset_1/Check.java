@@ -49,209 +49,209 @@ import javax.xml.namespace.QName;
 @XmlType(name = "check")
 public class Check {
 
-	@XmlAttribute(required = true)
-	protected String key;
-	@XmlAttribute
-	protected String text;
-	@XmlAttribute(name = "text_context")
-	protected String textContext;
-	@XmlAttribute(name = "default")
-	protected CheckDefault _default;
-	@XmlAttribute(name = "use_last_as_default")
-	protected Boolean useLastAsDefault;
-	@XmlAttribute
-	protected Boolean required;
-	@XmlAttribute(name = "value_on")
-	protected String valueOn;
-	@XmlAttribute(name = "value_off")
-	protected String valueOff;
-	@XmlAnyAttribute
-	private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+    @XmlAttribute(required = true)
+    protected String key;
+    @XmlAttribute
+    protected String text;
+    @XmlAttribute(name = "text_context")
+    protected String textContext;
+    @XmlAttribute(name = "default")
+    protected CheckDefault _default;
+    @XmlAttribute(name = "use_last_as_default")
+    protected Boolean useLastAsDefault;
+    @XmlAttribute
+    protected Boolean required;
+    @XmlAttribute(name = "value_on")
+    protected String valueOn;
+    @XmlAttribute(name = "value_off")
+    protected String valueOff;
+    @XmlAnyAttribute
+    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 
-	/**
-	 * Gets the value of the key property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getKey() {
-		return key;
-	}
+    /**
+     * Gets the value of the key property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getKey() {
+        return key;
+    }
 
-	/**
-	 * Sets the value of the key property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setKey(String value) {
-		this.key = value;
-	}
+    /**
+     * Sets the value of the key property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setKey(String value) {
+        this.key = value;
+    }
 
-	/**
-	 * Gets the value of the text property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getText() {
-		return text;
-	}
+    /**
+     * Gets the value of the text property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getText() {
+        return text;
+    }
 
-	/**
-	 * Sets the value of the text property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setText(String value) {
-		this.text = value;
-	}
+    /**
+     * Sets the value of the text property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setText(String value) {
+        this.text = value;
+    }
 
-	/**
-	 * Gets the value of the textContext property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getTextContext() {
-		return textContext;
-	}
+    /**
+     * Gets the value of the textContext property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getTextContext() {
+        return textContext;
+    }
 
-	/**
-	 * Sets the value of the textContext property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setTextContext(String value) {
-		this.textContext = value;
-	}
+    /**
+     * Sets the value of the textContext property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setTextContext(String value) {
+        this.textContext = value;
+    }
 
-	/**
-	 * Gets the value of the default property.
-	 * 
-	 * @return possible object is {@link CheckDefault }
-	 * 
-	 */
-	public CheckDefault getDefault() {
-		return _default;
-	}
+    /**
+     * Gets the value of the default property.
+     * 
+     * @return possible object is {@link CheckDefault }
+     * 
+     */
+    public CheckDefault getDefault() {
+        return _default;
+    }
 
-	/**
-	 * Sets the value of the default property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link CheckDefault }
-	 * 
-	 */
-	public void setDefault(CheckDefault value) {
-		this._default = value;
-	}
+    /**
+     * Sets the value of the default property.
+     * 
+     * @param value
+     *            allowed object is {@link CheckDefault }
+     * 
+     */
+    public void setDefault(CheckDefault value) {
+        this._default = value;
+    }
 
-	/**
-	 * Gets the value of the useLastAsDefault property.
-	 * 
-	 * @return possible object is {@link Boolean }
-	 * 
-	 */
-	public Boolean isUseLastAsDefault() {
-		return useLastAsDefault;
-	}
+    /**
+     * Gets the value of the useLastAsDefault property.
+     * 
+     * @return possible object is {@link Boolean }
+     * 
+     */
+    public Boolean isUseLastAsDefault() {
+        return useLastAsDefault;
+    }
 
-	/**
-	 * Sets the value of the useLastAsDefault property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
-	 * 
-	 */
-	public void setUseLastAsDefault(Boolean value) {
-		this.useLastAsDefault = value;
-	}
+    /**
+     * Sets the value of the useLastAsDefault property.
+     * 
+     * @param value
+     *            allowed object is {@link Boolean }
+     * 
+     */
+    public void setUseLastAsDefault(Boolean value) {
+        this.useLastAsDefault = value;
+    }
 
-	/**
-	 * Gets the value of the required property.
-	 * 
-	 * @return possible object is {@link Boolean }
-	 * 
-	 */
-	public Boolean isRequired() {
-		return required;
-	}
+    /**
+     * Gets the value of the required property.
+     * 
+     * @return possible object is {@link Boolean }
+     * 
+     */
+    public Boolean isRequired() {
+        return required;
+    }
 
-	/**
-	 * Sets the value of the required property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
-	 * 
-	 */
-	public void setRequired(Boolean value) {
-		this.required = value;
-	}
+    /**
+     * Sets the value of the required property.
+     * 
+     * @param value
+     *            allowed object is {@link Boolean }
+     * 
+     */
+    public void setRequired(Boolean value) {
+        this.required = value;
+    }
 
-	/**
-	 * Gets the value of the valueOn property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getValueOn() {
-		return valueOn;
-	}
+    /**
+     * Gets the value of the valueOn property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getValueOn() {
+        return valueOn;
+    }
 
-	/**
-	 * Sets the value of the valueOn property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setValueOn(String value) {
-		this.valueOn = value;
-	}
+    /**
+     * Sets the value of the valueOn property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setValueOn(String value) {
+        this.valueOn = value;
+    }
 
-	/**
-	 * Gets the value of the valueOff property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getValueOff() {
-		return valueOff;
-	}
+    /**
+     * Gets the value of the valueOff property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getValueOff() {
+        return valueOff;
+    }
 
-	/**
-	 * Sets the value of the valueOff property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setValueOff(String value) {
-		this.valueOff = value;
-	}
+    /**
+     * Sets the value of the valueOff property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setValueOff(String value) {
+        this.valueOff = value;
+    }
 
-	/**
-	 * Gets a map that contains attributes that aren't bound to any typed
-	 * property on this class.
-	 * 
-	 * <p>
-	 * the map is keyed by the name of the attribute and the value is the string
-	 * value of the attribute.
-	 * 
-	 * the map returned by this method is live, and you can add new attribute by
-	 * updating the map directly. Because of this design, there's no setter.
-	 * 
-	 * 
-	 * @return always non-null
-	 */
-	public Map<QName, String> getOtherAttributes() {
-		return otherAttributes;
-	}
+    /**
+     * Gets a map that contains attributes that aren't bound to any typed
+     * property on this class.
+     * 
+     * <p>
+     * the map is keyed by the name of the attribute and the value is the string
+     * value of the attribute.
+     * 
+     * the map returned by this method is live, and you can add new attribute by
+     * updating the map directly. Because of this design, there's no setter.
+     * 
+     * 
+     * @return always non-null
+     */
+    public Map<QName, String> getOtherAttributes() {
+        return otherAttributes;
+    }
 
 }

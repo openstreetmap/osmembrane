@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -39,44 +37,46 @@ import de.osmembrane.tools.IconLoader.Size;
  */
 public class SavePipelineAction extends AbstractAction {
 
-	private static final long serialVersionUID = 5036259208332239931L;
+    private static final long serialVersionUID = 5036259208332239931L;
 
-	/**
-	 * Creates a new {@link SavePipelineAction}
-	 */
-	public SavePipelineAction() {
-		putValue(
-				Action.NAME,
-				I18N.getInstance().getString(
-						"Controller.Actions.SavePipeline.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.SavePipeline.Description"));
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
-				"save_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
-				"save_pipeline.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				HeadlessSafe.getMenuShortcutKeyMask()));
-	}
+    /**
+     * Creates a new {@link SavePipelineAction}
+     */
+    public SavePipelineAction() {
+        putValue(
+                Action.NAME,
+                I18N.getInstance().getString(
+                        "Controller.Actions.SavePipeline.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.SavePipeline.Description"));
+        putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+                "save_pipeline.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+                "save_pipeline.png", Size.NORMAL));
+        putValue(
+                Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_S,
+                        HeadlessSafe.getMenuShortcutKeyMask()));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-		if (ModelProxy.getInstance().getPipeline().getFilename() == null) {
-			ActionRegistry.getInstance().get(SaveAsPipelineAction.class)
-					.actionPerformed(null);
-		} else {
-			try {
-				ModelProxy.getInstance().getPipeline().savePipeline();
-			} catch (FileException e1) {
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.WARNING, e1, I18N.getInstance()
-								.getString(
-										"Controller.Actions.Save.Failed."
-												+ e1.getType())));
-			}
-		}
-	}
+        if (ModelProxy.getInstance().getPipeline().getFilename() == null) {
+            ActionRegistry.getInstance().get(SaveAsPipelineAction.class)
+                    .actionPerformed(null);
+        } else {
+            try {
+                ModelProxy.getInstance().getPipeline().savePipeline();
+            } catch (FileException e1) {
+                Application.handleException(new ControlledException(this,
+                        ExceptionSeverity.WARNING, e1, I18N.getInstance()
+                                .getString(
+                                        "Controller.Actions.Save.Failed."
+                                                + e1.getType())));
+            }
+        }
+    }
 }

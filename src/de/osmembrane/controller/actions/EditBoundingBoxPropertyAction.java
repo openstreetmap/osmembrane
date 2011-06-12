@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -39,47 +37,47 @@ import de.unistuttgart.iev.osm.bboxchooser.Bounds;
  */
 public class EditBoundingBoxPropertyAction extends AbstractAction {
 
-	private static final long serialVersionUID = -8977717015720840558L;
+    private static final long serialVersionUID = -8977717015720840558L;
 
-	/**
-	 * Creates a new {@link EditBoundingBoxPropertyAction}
-	 */
-	public EditBoundingBoxPropertyAction() {
-	}
+    /**
+     * Creates a new {@link EditBoundingBoxPropertyAction}
+     */
+    public EditBoundingBoxPropertyAction() {
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ContainingEvent ce = (ContainingEvent) e;
-		if (ce.getContained() instanceof AbstractParameter) {
-			AbstractParameter p = (AbstractParameter) ce.getContained();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ContainingEvent ce = (ContainingEvent) e;
+        if (ce.getContained() instanceof AbstractParameter) {
+            AbstractParameter p = (AbstractParameter) ce.getContained();
 
-			if (p.getType() == ParameterType.BBOX) {
-				IBoundingBoxDialog ibbd = ViewRegistry.getInstance().getCasted(
-						BoundingBoxDialog.class, IBoundingBoxDialog.class);
+            if (p.getType() == ParameterType.BBOX) {
+                IBoundingBoxDialog ibbd = ViewRegistry.getInstance().getCasted(
+                        BoundingBoxDialog.class, IBoundingBoxDialog.class);
 
-				if (p.getParent().getBBox() != null) {
-					try {
-						ibbd.setBoundingBox(new Bounds(p.getParent().getBBox(),
-								Constants.BBOX_SEPERATOR));
-					} catch (IllegalArgumentException e1) {
-						ibbd.setBoundingBox(null);
-					}
-				} else {
-					ibbd.setBoundingBox(null);
-				}
-				ibbd.centerWindow();
-				ibbd.showWindow();
+                if (p.getParent().getBBox() != null) {
+                    try {
+                        ibbd.setBoundingBox(new Bounds(p.getParent().getBBox(),
+                                Constants.BBOX_SEPERATOR));
+                    } catch (IllegalArgumentException e1) {
+                        ibbd.setBoundingBox(null);
+                    }
+                } else {
+                    ibbd.setBoundingBox(null);
+                }
+                ibbd.centerWindow();
+                ibbd.showWindow();
 
-				Bounds b = ibbd.getBoundingBox();
-				if (b != null) {
-					p.getParent().setBBox(
-							b.encodeAsString(Constants.BBOX_SEPERATOR));
-				}
-			}
-		} else {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N.getInstance()
-							.getString("Controller.Actions.InvalidEvent")));
-		}
-	}
+                Bounds b = ibbd.getBoundingBox();
+                if (b != null) {
+                    p.getParent().setBBox(
+                            b.encodeAsString(Constants.BBOX_SEPERATOR));
+                }
+            }
+        } else {
+            Application.handleException(new ControlledException(this,
+                    ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N.getInstance()
+                            .getString("Controller.Actions.InvalidEvent")));
+        }
+    }
 }

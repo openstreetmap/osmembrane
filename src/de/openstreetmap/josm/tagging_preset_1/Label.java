@@ -43,71 +43,71 @@ import javax.xml.namespace.QName;
 @XmlType(name = "label")
 public class Label {
 
-	@XmlAttribute(required = true)
-	protected String text;
-	@XmlAttribute(name = "text_context")
-	protected String textContext;
-	@XmlAnyAttribute
-	private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+    @XmlAttribute(required = true)
+    protected String text;
+    @XmlAttribute(name = "text_context")
+    protected String textContext;
+    @XmlAnyAttribute
+    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 
-	/**
-	 * Gets the value of the text property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getText() {
-		return text;
-	}
+    /**
+     * Gets the value of the text property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getText() {
+        return text;
+    }
 
-	/**
-	 * Sets the value of the text property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setText(String value) {
-		this.text = value;
-	}
+    /**
+     * Sets the value of the text property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setText(String value) {
+        this.text = value;
+    }
 
-	/**
-	 * Gets the value of the textContext property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getTextContext() {
-		return textContext;
-	}
+    /**
+     * Gets the value of the textContext property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getTextContext() {
+        return textContext;
+    }
 
-	/**
-	 * Sets the value of the textContext property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setTextContext(String value) {
-		this.textContext = value;
-	}
+    /**
+     * Sets the value of the textContext property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setTextContext(String value) {
+        this.textContext = value;
+    }
 
-	/**
-	 * Gets a map that contains attributes that aren't bound to any typed
-	 * property on this class.
-	 * 
-	 * <p>
-	 * the map is keyed by the name of the attribute and the value is the string
-	 * value of the attribute.
-	 * 
-	 * the map returned by this method is live, and you can add new attribute by
-	 * updating the map directly. Because of this design, there's no setter.
-	 * 
-	 * 
-	 * @return always non-null
-	 */
-	public Map<QName, String> getOtherAttributes() {
-		return otherAttributes;
-	}
+    /**
+     * Gets a map that contains attributes that aren't bound to any typed
+     * property on this class.
+     * 
+     * <p>
+     * the map is keyed by the name of the attribute and the value is the string
+     * value of the attribute.
+     * 
+     * the map returned by this method is live, and you can add new attribute by
+     * updating the map directly. Because of this design, there's no setter.
+     * 
+     * 
+     * @return always non-null
+     */
+    public Map<QName, String> getOtherAttributes() {
+        return otherAttributes;
+    }
 
 }

@@ -9,7 +9,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.statusbar;
 
 import java.util.Observer;
@@ -24,23 +23,24 @@ import de.osmembrane.model.settings.AbstractSettings;
  */
 public class StatusbarObserverObject {
 
-	private StatusbarEntry entry;
+    private StatusbarEntry entry;
 
-	/**
-	 * Creates a new {@link StatusbarObserverObject}.
-	 * 
-	 * @param entry which has been changed.
-	 */
-	public StatusbarObserverObject(StatusbarEntry entry) {
-		this.entry = entry;
-	}
+    /**
+     * Creates a new {@link StatusbarObserverObject}.
+     * 
+     * @param entry
+     *            which has been changed.
+     */
+    public StatusbarObserverObject(StatusbarEntry entry) {
+        this.entry = entry;
+    }
 
-	/**
-	 * Returns the changed entry.
-	 * 
-	 * @return changed entry
-	 */
-	public StatusbarEntry getEntry() {
-		return entry;
-	}
+    /**
+     * Returns the changed entry.
+     * 
+     * @return changed entry
+     */
+    public StatusbarEntry getEntry() {
+        return entry;
+    }
 }

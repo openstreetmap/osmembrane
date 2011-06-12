@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.model.parser;
 
 import java.util.regex.Pattern;
@@ -25,59 +23,58 @@ import de.osmembrane.model.pipeline.Pipeline;
  */
 public interface IParser {
 
-	/**
-	 * Creates a {@link Pipeline} from a given string.
-	 * 
-	 * @param input
-	 *            string which should be transformed
-	 * @return List of functions, which are used in the {@link Pipeline}
-	 */
-	public PipelinePersistenceObject parseString(String input)
-			throws ParseException;
+    /**
+     * Creates a {@link Pipeline} from a given string.
+     * 
+     * @param input
+     *            string which should be transformed
+     * @return List of functions, which are used in the {@link Pipeline}
+     */
+    public PipelinePersistenceObject parseString(String input)
+            throws ParseException;
 
-	/**
-	 * Creates a string from a given {@link Pipeline}.
-	 * 
-	 * @param pipeline
-	 *            which should be transformed
-	 * @return String representation a given format
-	 */
-	public String parsePipeline(PipelinePersistenceObject pipeline);
-	
-	/**
-	 * Returns the quotation symbol of the parser.
-	 * 
-	 * @return quotation symbol
-	 */
-	public String getQuotationSymbol();
+    /**
+     * Creates a string from a given {@link Pipeline}.
+     * 
+     * @param pipeline
+     *            which should be transformed
+     * @return String representation a given format
+     */
+    public String parsePipeline(PipelinePersistenceObject pipeline);
 
-	/**
-	 * Returns the breakline command.
-	 * 
-	 * @return breakline command
-	 */
-	public String getBreaklineCommand();
+    /**
+     * Returns the quotation symbol of the parser.
+     * 
+     * @return quotation symbol
+     */
+    public String getQuotationSymbol();
 
-	/**
-	 * Returns the breakline symbol.
-	 * 
-	 * @return breakline symbol
-	 */
-	public String getBreaklineSymbol();
+    /**
+     * Returns the breakline command.
+     * 
+     * @return breakline command
+     */
+    public String getBreaklineCommand();
 
-	/**
-	 * Returns the comment symbol
-	 * 
-	 * @return comment symbol
-	 */
-	public String getCommentSymbol();
-	
-	/**
-	 * Returns the regex patterns for comments.
-	 * 
-	 * @return regex comment patterns
-	 */
-	public Pattern[] getRegexCommentPatterns();
+    /**
+     * Returns the breakline symbol.
+     * 
+     * @return breakline symbol
+     */
+    public String getBreaklineSymbol();
 
-	
+    /**
+     * Returns the comment symbol
+     * 
+     * @return comment symbol
+     */
+    public String getCommentSymbol();
+
+    /**
+     * Returns the regex patterns for comments.
+     * 
+     * @return regex comment patterns
+     */
+    public Pattern[] getRegexCommentPatterns();
+
 }

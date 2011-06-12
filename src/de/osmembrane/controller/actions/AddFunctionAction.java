@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -36,31 +34,31 @@ import de.osmembrane.tools.I18N;
  */
 public class AddFunctionAction extends AbstractAction {
 
-	private static final long serialVersionUID = 6264271045174747984L;
+    private static final long serialVersionUID = 6264271045174747984L;
 
-	/**
-	 * Creates a new {@link AddFunctionAction}
-	 */
-	public AddFunctionAction() {
-	}
+    /**
+     * Creates a new {@link AddFunctionAction}
+     */
+    public AddFunctionAction() {
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ContainingLocationEvent cle = (ContainingLocationEvent) e;
-		if (cle.getContained() instanceof AbstractFunction) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ContainingLocationEvent cle = (ContainingLocationEvent) e;
+        if (cle.getContained() instanceof AbstractFunction) {
 
-			// get the copy from the prototypes
-			AbstractFunction prototype = (AbstractFunction) cle.getContained();
-			AbstractFunction newFunc = prototype
-					.copy(CopyType.WITHOUT_VALUES_AND_POSITION);
+            // get the copy from the prototypes
+            AbstractFunction prototype = (AbstractFunction) cle.getContained();
+            AbstractFunction newFunc = prototype
+                    .copy(CopyType.WITHOUT_VALUES_AND_POSITION);
 
-			// add the function at the location
-			newFunc.setCoordinate(cle.getLocation());
-			ModelProxy.getInstance().getPipeline().addFunction(newFunc);
-		} else {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N.getInstance()
-							.getString("Controller.Actions.InvalidEvent")));
-		}
-	}
+            // add the function at the location
+            newFunc.setCoordinate(cle.getLocation());
+            ModelProxy.getInstance().getPipeline().addFunction(newFunc);
+        } else {
+            Application.handleException(new ControlledException(this,
+                    ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N.getInstance()
+                            .getString("Controller.Actions.InvalidEvent")));
+        }
+    }
 }

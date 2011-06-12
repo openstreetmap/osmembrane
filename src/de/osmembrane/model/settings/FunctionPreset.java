@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.model.settings;
 
 import de.osmembrane.model.pipeline.AbstractFunction;
@@ -23,61 +21,61 @@ import de.osmembrane.model.pipeline.CopyType;
  */
 public class FunctionPreset extends AbstractFunctionPreset {
 
-	private static final long serialVersionUID = 2011020221170001L;
+    private static final long serialVersionUID = 2011020221170001L;
 
-	private String name;
-	private AbstractFunction function;
+    private String name;
+    private AbstractFunction function;
 
-	/**
-	 * Creates a new FunctionPreset with given name and function.
-	 * 
-	 * @param name
-	 *            name of the preset
-	 * @param function
-	 *            which should be saved in the preset
-	 */
-	public FunctionPreset(String name, AbstractFunction function) {
-		this.name = name;
-		this.function = function.copy(CopyType.WITHOUT_POSITION);
-	}
+    /**
+     * Creates a new FunctionPreset with given name and function.
+     * 
+     * @param name
+     *            name of the preset
+     * @param function
+     *            which should be saved in the preset
+     */
+    public FunctionPreset(String name, AbstractFunction function) {
+        this.name = name;
+        this.function = function.copy(CopyType.WITHOUT_POSITION);
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public void loadPreset(AbstractFunction function) {
-		/* iterate over all tasks */
-		for (int task = 0; task < this.function.getAvailableTasks().length; task++) {
-			/* set the active task */
-			if (this.function.getAvailableTasks()[task] == this.function
-					.getActiveTask()) {
-				function.setActiveTask(function.getAvailableTasks()[task]);
-			}
-			/* assign all parameters */
-			for (int param = 0; param < this.function.getAvailableTasks()[task]
-					.getParameters().length; param++) {
+    @Override
+    public void loadPreset(AbstractFunction function) {
+        /* iterate over all tasks */
+        for (int task = 0; task < this.function.getAvailableTasks().length; task++) {
+            /* set the active task */
+            if (this.function.getAvailableTasks()[task] == this.function
+                    .getActiveTask()) {
+                function.setActiveTask(function.getAvailableTasks()[task]);
+            }
+            /* assign all parameters */
+            for (int param = 0; param < this.function.getAvailableTasks()[task]
+                    .getParameters().length; param++) {
 
-				/* check if parameter values equals */
-				try {
-					if (this.function.getAvailableTasks()[task].getParameters()[param]
-							.getName().equals(
-									function.getAvailableTasks()[task]
-											.getParameters()[param].getName())) {
-						function.getAvailableTasks()[task].getParameters()[param]
-								.setValue(this.function.getAvailableTasks()[task]
-										.getParameters()[param].getValue());
-					}
-				} catch (ArrayIndexOutOfBoundsException e) {
-					/* just ignore, not so important */
-				}
-			}
-		}
-	}
+                /* check if parameter values equals */
+                try {
+                    if (this.function.getAvailableTasks()[task].getParameters()[param]
+                            .getName().equals(
+                                    function.getAvailableTasks()[task]
+                                            .getParameters()[param].getName())) {
+                        function.getAvailableTasks()[task].getParameters()[param]
+                                .setValue(this.function.getAvailableTasks()[task]
+                                        .getParameters()[param].getValue());
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    /* just ignore, not so important */
+                }
+            }
+        }
+    }
 
-	@Override
-	protected AbstractFunction getInheritedFunction() {
-		return function;
-	}
+    @Override
+    protected AbstractFunction getInheritedFunction() {
+        return function;
+    }
 }

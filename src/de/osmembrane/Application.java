@@ -60,295 +60,299 @@ import de.osmembrane.view.interfaces.IView;
  */
 public class Application {
 
-	private PipelineBackup pipelineBackup;
-	
-	/**
-	 * Creates a new Application and writes the build number on the splash.
-	 */
-	public Application() {
-		if (GraphicsEnvironment.isHeadless()) {
-			return;
-		}
-		
-		SplashScreen splash = SplashScreen.getSplashScreen();
-		if (splash != null) {
-			Graphics2D g = (Graphics2D) splash.createGraphics();
-			Dimension size = splash.getSize();
-			g.setColor(new Color(255, 255, 255));
-			g.drawRect(0, 0, size.width, size.height);
-			g.drawString(String.format("%s (%s)", Constants.VERSION, Constants.REVISION_ID),
-					size.width - 170, size.height - 45);
-			g.setPaintMode();
-			splash.update();
-		}
-	}
+    private PipelineBackup pipelineBackup;
 
-	/**
-	 * Connects the most basic stuff of the MVC architecture
-	 */
-	public void initiate() {
-		try {
-			// connect model and view
-			ModelProxy.getInstance().addObserver(ViewRegistry.getInstance());
+    /**
+     * Creates a new Application and writes the build number on the splash.
+     */
+    public Application() {
+        if (GraphicsEnvironment.isHeadless()) {
+            return;
+        }
 
-			// guarantee the View is initialized
-			ViewRegistry.getInstance();
+        SplashScreen splash = SplashScreen.getSplashScreen();
+        if (splash != null) {
+            Graphics2D g = (Graphics2D) splash.createGraphics();
+            Dimension size = splash.getSize();
+            g.setColor(new Color(255, 255, 255));
+            g.drawRect(0, 0, size.width, size.height);
+            g.drawString(String.format("%s (%s)", Constants.VERSION,
+                    Constants.REVISION_ID), size.width - 170, size.height - 45);
+            g.setPaintMode();
+            splash.update();
+        }
+    }
 
-			// guarantee the Controller is initialized
-			ActionRegistry.getInstance();
+    /**
+     * Connects the most basic stuff of the MVC architecture
+     */
+    public void initiate() {
+        try {
+            // connect model and view
+            ModelProxy.getInstance().addObserver(ViewRegistry.getInstance());
 
-			// set the EDT Exception handler
-			System.setProperty("sun.awt.exception.handler",
-					EDTExceptionHandler.class.getName());
+            // guarantee the View is initialized
+            ViewRegistry.getInstance();
 
-		} catch (Exception e) {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
-							.getInstance().getString(
-									"GenericInitializationCriticalError")));
-		}
-	}
+            // guarantee the Controller is initialized
+            ActionRegistry.getInstance();
 
-	/**
-	 * Initializes the model.
-	 */
-	public void createModels() {
-		try {
-			ModelProxy.getInstance().getSettings().initiate();
+            // set the EDT Exception handler
+            System.setProperty("sun.awt.exception.handler",
+                    EDTExceptionHandler.class.getName());
 
-			ModelProxy.getInstance().getFunctions()
-					.initiate(Resource.OSMEMBRANE_XML.getURL());
+        } catch (Exception e) {
+            Application.handleException(new ControlledException(this,
+                    ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
+                            .getInstance().getString(
+                                    "GenericInitializationCriticalError")));
+        }
+    }
 
-			ModelProxy.getInstance().getPreset()
-					.initiate(Resource.PRESET_XML.getURL());
+    /**
+     * Initializes the model.
+     */
+    public void createModels() {
+        try {
+            ModelProxy.getInstance().getSettings().initiate();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
-							.getInstance().getString(
-									"GenericInitializationCriticalError")));
-		}
-	}
+            ModelProxy.getInstance().getFunctions()
+                    .initiate(Resource.OSMEMBRANE_XML.getURL());
 
-	/**
-	 * Sets the active locale.
-	 */
-	public void setLocale() {
-		Locale activeLocale = (Locale) ModelProxy.getInstance().getSettings()
-				.getValue(SettingType.ACTIVE_LANGUAGE);
+            ModelProxy.getInstance().getPreset()
+                    .initiate(Resource.PRESET_XML.getURL());
 
-		I18N.getInstance().setLocale(activeLocale);
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            Application.handleException(new ControlledException(this,
+                    ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
+                            .getInstance().getString(
+                                    "GenericInitializationCriticalError")));
+        }
+    }
 
-	/**
-	 * Shows the main window after application startup. Is guaranteed to be
-	 * invoked by a different {@link Runnable}
-	 */
-	public void showMainFrame() {
-		try {
-			IView mainFrame = ViewRegistry.getInstance().getMainFrame(true);
-			mainFrame.showWindow();
-			mainFrame.bringToFront();
-		} catch (Exception e) {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
-							.getInstance().getString(
-									"GenericInitializationCriticalError")));
-		}
-	}
+    /**
+     * Sets the active locale.
+     */
+    public void setLocale() {
+        Locale activeLocale = (Locale) ModelProxy.getInstance().getSettings()
+                .getValue(SettingType.ACTIVE_LANGUAGE);
 
-	/**
-	 * Called whenever there's a {@link Throwable} to catch.
-	 */
-	public static void handleException(Throwable t) {
-		if (GraphicsEnvironment.isHeadless()) {
-			throw new RuntimeException(t);
-		}
-		
-		// if it's one of our own, decode it
-		if (t instanceof ControlledException) {
-			ControlledException ce = (ControlledException) t;
+        I18N.getInstance().setLocale(activeLocale);
+    }
 
-			Throwable toShow = t;
-			if ((ce.getCause() != null) && (ce.getMessage() == null)) {
-				toShow = ce.getCause();
-			}
-			ViewRegistry.showException(toShow, ce.getKind(),
-					ce.getCausingObject());
-		} else {
-			// else the view will handle it (e.g. finding out about error cause
-			// etc.)
-			ViewRegistry.showException(t, null, null);
-		}
-	}
+    /**
+     * Shows the main window after application startup. Is guaranteed to be
+     * invoked by a different {@link Runnable}
+     */
+    public void showMainFrame() {
+        try {
+            IView mainFrame = ViewRegistry.getInstance().getMainFrame(true);
+            mainFrame.showWindow();
+            mainFrame.bringToFront();
+        } catch (Exception e) {
+            Application.handleException(new ControlledException(this,
+                    ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, e, I18N
+                            .getInstance().getString(
+                                    "GenericInitializationCriticalError")));
+        }
+    }
 
-	/**
-	 * Checks if a backup is needed to be load.
-	 */
-	public void checkForBackup() {
-		boolean backupAvailable = ModelProxy.getInstance().getPipeline()
-				.isBackupAvailable();
+    /**
+     * Called whenever there's a {@link Throwable} to catch.
+     */
+    public static void handleException(Throwable t) {
+        if (GraphicsEnvironment.isHeadless()) {
+            throw new RuntimeException(t);
+        }
 
-		boolean skippedLoad = false;
+        // if it's one of our own, decode it
+        if (t instanceof ControlledException) {
+            ControlledException ce = (ControlledException) t;
 
-		if (backupAvailable) {
-			int result = JOptionPane.showConfirmDialog(
-					null,
-					I18N.getInstance().getString(
-							"Application.BackupPipelineFound"),
-					I18N.getInstance().getString(
-							"Application.BackupPipelineFound.Title"),
-					JOptionPane.YES_NO_OPTION);
-			if (result == JOptionPane.NO_OPTION) {
-				skippedLoad = true;
-			} else {
-				/* load the pipeline */
-				try {
-					ModelProxy.getInstance().getPipeline().loadBackup();
-				} catch (FileException e) {
-					Application.handleException(new ControlledException(this,
-							ExceptionSeverity.WARNING, e, I18N.getInstance()
-									.getString(
-											"Controller.Actions.Load.Failed."
-													+ e.getType())));
-				}
-			}
-		}
+            Throwable toShow = t;
+            if ((ce.getCause() != null) && (ce.getMessage() == null)) {
+                toShow = ce.getCause();
+            }
+            ViewRegistry.showException(toShow, ce.getKind(),
+                    ce.getCausingObject());
+        } else {
+            // else the view will handle it (e.g. finding out about error cause
+            // etc.)
+            ViewRegistry.showException(t, null, null);
+        }
+    }
 
-		if (skippedLoad || !backupAvailable) {
-			ModelProxy.getInstance().getPipeline().clear();
-		}
-	}
+    /**
+     * Checks if a backup is needed to be load.
+     */
+    public void checkForBackup() {
+        boolean backupAvailable = ModelProxy.getInstance().getPipeline()
+                .isBackupAvailable();
 
-	/**
-	 * Creates the home directory of OSMembrane if it does not exists.
-	 */
-	public void createHomeDirectory() {
-		File home = Tools.urlToFile(Constants.DEFAULT_USER_FOLDER);
-		if (!home.isDirectory()) {
-			if (!home.mkdir()) {
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, I18N
-								.getInstance().getString(
-										"Execption.HomeFolderCreationFailed",
-										home)));
-			}
-		}
-	}
+        boolean skippedLoad = false;
 
-//	/**
-//	 * Checks for updates.
-//	 */
-//	public void checkForUpdates() {
-//		new Thread() {
-//			public void run() {
-//				SettingsTypeUpdateInterval interval = (SettingsTypeUpdateInterval) ModelProxy
-//						.getInstance().getSettings()
-//						.getValue(SettingType.UPDATE_INTERVAL);
-//				long timeDiff = interval.getTimeDiff();
-//				long lastUpdateLookup = (Long) ModelProxy.getInstance()
-//						.getSettings().getValue(SettingType.LAST_UPDATE_LOOKUP);
-//				long currentTime = TimeUnit.MILLISECONDS.toSeconds(System
-//						.currentTimeMillis());
-//				URL updateSite = Constants.UPDATE_WEBSITE;
-//
-//				if (timeDiff > 0) {
-//					if (lastUpdateLookup + timeDiff < currentTime) {
-//						/* update */
-//						try {
-//							BufferedReader br = new BufferedReader(
-//									new InputStreamReader(
-//											updateSite.openStream()));
-//
-//							int availableBuild = 0;
-//							String downloadSite = "";
-//							StringBuilder message = new StringBuilder();
-//
-//							String line;
-//							int lineId = 0;
-//							while ((line = br.readLine()) != null) {
-//								if (lineId == 0) {
-//									try {
-//										availableBuild = Integer.parseInt(line);
-//									} catch (NumberFormatException e) {
-//										/* invalid version */
-//										availableBuild = 0;
-//									}
-//								} else if (lineId == 1) {
-//									downloadSite = line;
-//								} else {
-//									message.append("\n" + line);
-//								}
-//								lineId++;
-//							}
-//							br.close();
-//						} catch (IOException e) {
-//							/* hidden, not so important... */
-//						}
-//
-//						try {
-//							ModelProxy
-//									.getInstance()
-//									.getSettings()
-//									.setValue(SettingType.LAST_UPDATE_LOOKUP,
-//											currentTime);
-//						} catch (UnparsableFormatException e) {
-//						}
-//					}
-//				}
-//			}
-//		}.start();
-//	}
+        if (backupAvailable) {
+            int result = JOptionPane.showConfirmDialog(
+                    null,
+                    I18N.getInstance().getString(
+                            "Application.BackupPipelineFound"),
+                    I18N.getInstance().getString(
+                            "Application.BackupPipelineFound.Title"),
+                    JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.NO_OPTION) {
+                skippedLoad = true;
+            } else {
+                /* load the pipeline */
+                try {
+                    ModelProxy.getInstance().getPipeline().loadBackup();
+                } catch (FileException e) {
+                    Application.handleException(new ControlledException(this,
+                            ExceptionSeverity.WARNING, e, I18N.getInstance()
+                                    .getString(
+                                            "Controller.Actions.Load.Failed."
+                                                    + e.getType())));
+                }
+            }
+        }
 
-	/**
-	 * Configures some bits and pieces of the UI that are per application.
-	 * This method should be called before any UI components are created.
-	 */
-	public void configureUIDefaults() {
-		
-		// Update default on every look and feel change.
-		UIManager.addPropertyChangeListener(new PropertyChangeListener() {
-			
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (!"lookAndFeel".equals(evt.getPropertyName())) {
-					return;
-				}
-				configureInputMaps();
-			}
-		});
-		
-		// Update defaults once now
-		configureInputMaps();
-	}
+        if (skippedLoad || !backupAvailable) {
+            ModelProxy.getInstance().getPipeline().clear();
+        }
+    }
 
-	private void configureInputMaps() {
-		InputMap inputMap = (InputMap) UIManager.getDefaults().get("Button.focusInputMap");
-		
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), "pressed");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true), "released");
-	}
+    /**
+     * Creates the home directory of OSMembrane if it does not exists.
+     */
+    public void createHomeDirectory() {
+        File home = Tools.urlToFile(Constants.DEFAULT_USER_FOLDER);
+        if (!home.isDirectory()) {
+            if (!home.mkdir()) {
+                Application.handleException(new ControlledException(this,
+                        ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR, I18N
+                                .getInstance().getString(
+                                        "Execption.HomeFolderCreationFailed",
+                                        home)));
+            }
+        }
+    }
 
-	void initializeBackup() {
-		pipelineBackup = new PipelineBackup();
-		ModelProxy.getInstance().getPipeline().addObserver(pipelineBackup);
-		pipelineBackup.start();
-	}
+    // /**
+    // * Checks for updates.
+    // */
+    // public void checkForUpdates() {
+    // new Thread() {
+    // public void run() {
+    // SettingsTypeUpdateInterval interval = (SettingsTypeUpdateInterval)
+    // ModelProxy
+    // .getInstance().getSettings()
+    // .getValue(SettingType.UPDATE_INTERVAL);
+    // long timeDiff = interval.getTimeDiff();
+    // long lastUpdateLookup = (Long) ModelProxy.getInstance()
+    // .getSettings().getValue(SettingType.LAST_UPDATE_LOOKUP);
+    // long currentTime = TimeUnit.MILLISECONDS.toSeconds(System
+    // .currentTimeMillis());
+    // URL updateSite = Constants.UPDATE_WEBSITE;
+    //
+    // if (timeDiff > 0) {
+    // if (lastUpdateLookup + timeDiff < currentTime) {
+    // /* update */
+    // try {
+    // BufferedReader br = new BufferedReader(
+    // new InputStreamReader(
+    // updateSite.openStream()));
+    //
+    // int availableBuild = 0;
+    // String downloadSite = "";
+    // StringBuilder message = new StringBuilder();
+    //
+    // String line;
+    // int lineId = 0;
+    // while ((line = br.readLine()) != null) {
+    // if (lineId == 0) {
+    // try {
+    // availableBuild = Integer.parseInt(line);
+    // } catch (NumberFormatException e) {
+    // /* invalid version */
+    // availableBuild = 0;
+    // }
+    // } else if (lineId == 1) {
+    // downloadSite = line;
+    // } else {
+    // message.append("\n" + line);
+    // }
+    // lineId++;
+    // }
+    // br.close();
+    // } catch (IOException e) {
+    // /* hidden, not so important... */
+    // }
+    //
+    // try {
+    // ModelProxy
+    // .getInstance()
+    // .getSettings()
+    // .setValue(SettingType.LAST_UPDATE_LOOKUP,
+    // currentTime);
+    // } catch (UnparsableFormatException e) {
+    // }
+    // }
+    // }
+    // }
+    // }.start();
+    // }
 
-	void createViews() {
-		ViewRegistry vr = ViewRegistry.getInstance();
-		MainFrame mf = new MainFrame();
-		vr.register(mf);
-		vr.register(new AboutDialog(mf));
-		vr.register(new BoundingBoxDialog(mf));
-		vr.register(new CommandLineDialog(mf));
-		vr.register(new ExceptionDialog(mf));
-		vr.register(new ExecutionStateDialog(mf));
-		vr.register(new FunctionPresetDialog(mf));
-		vr.register(new ListDialog(mf));
-		vr.register(new PipelineSettingsDialog(mf));
-		vr.register(new SettingsDialog(mf));
-		vr.register(new TutorialFrame());
-	}
+    /**
+     * Configures some bits and pieces of the UI that are per application. This
+     * method should be called before any UI components are created.
+     */
+    public void configureUIDefaults() {
+
+        // Update default on every look and feel change.
+        UIManager.addPropertyChangeListener(new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (!"lookAndFeel".equals(evt.getPropertyName())) {
+                    return;
+                }
+                configureInputMaps();
+            }
+        });
+
+        // Update defaults once now
+        configureInputMaps();
+    }
+
+    private void configureInputMaps() {
+        InputMap inputMap = (InputMap) UIManager.getDefaults().get(
+                "Button.focusInputMap");
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
+                "pressed");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true),
+                "released");
+    }
+
+    void initializeBackup() {
+        pipelineBackup = new PipelineBackup();
+        ModelProxy.getInstance().getPipeline().addObserver(pipelineBackup);
+        pipelineBackup.start();
+    }
+
+    void createViews() {
+        ViewRegistry vr = ViewRegistry.getInstance();
+        MainFrame mf = new MainFrame();
+        vr.register(mf);
+        vr.register(new AboutDialog(mf));
+        vr.register(new BoundingBoxDialog(mf));
+        vr.register(new CommandLineDialog(mf));
+        vr.register(new ExceptionDialog(mf));
+        vr.register(new ExecutionStateDialog(mf));
+        vr.register(new FunctionPresetDialog(mf));
+        vr.register(new ListDialog(mf));
+        vr.register(new PipelineSettingsDialog(mf));
+        vr.register(new SettingsDialog(mf));
+        vr.register(new TutorialFrame());
+    }
 }

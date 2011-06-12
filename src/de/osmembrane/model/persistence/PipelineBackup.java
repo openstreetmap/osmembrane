@@ -25,67 +25,69 @@ import de.osmembrane.tools.I18N;
 
 /**
  * Pipeline backup service on a separate background thread;
+ * 
  * @author igor_podolskiy, jakob_jarosch
- *
+ * 
  */
 public class PipelineBackup implements Observer {
-	
-	private Semaphore backupAvailable = new Semaphore(0);
-	private AbstractPipeline pipelineToBackup;
 
-	/**
-	 * Internal autosave thread used for backing up the pipeline.
-	 */
-	private Thread autosaveThread = new Thread() {
+    private Semaphore backupAvailable = new Semaphore(0);
+    private AbstractPipeline pipelineToBackup;
 
-		/* anonymous class' constructor */ 
-		{
-			setDaemon(true);
-			setName("OSMembrane Backup Thread");
-		}
-		
-		@Override
-		public void run() {
+    /**
+     * Internal autosave thread used for backing up the pipeline.
+     */
+    private Thread autosaveThread = new Thread() {
 
-			while (!isInterrupted()) {
-				try {
-					backupAvailable.acquire();
-					backupAvailable.drainPermits();
-					pipelineToBackup.backupPipeline();
-				} catch (InterruptedException e) {
-					interrupt();
-				} catch (FileException e) {
-					/* forward the exception to the view */
-					Application
-							.handleException(new ControlledException(this,
-									ExceptionSeverity.WARNING, e,
-									I18N.getInstance().getString(
-											"Exception.AutosavePipelineFailed", Constants.DEFAULT_BACKUP_FILE)));
+        /* anonymous class' constructor */
+        {
+            setDaemon(true);
+            setName("OSMembrane Backup Thread");
+        }
 
-				}
-			}
-		}
-	};
+        @Override
+        public void run() {
 
-	@Override
-	public synchronized void update(Observable o, Object arg) {
-		if (arg instanceof PipelineObserverObject) {
-			this.pipelineToBackup = ((PipelineObserverObject) arg).getPipeline();
-			this.backupAvailable.release();
-		}
-	}
-	
-	/**
-	 * Starts the background backup handler.
-	 */
-	public void start() {
-		autosaveThread.start();	
-	}
-	
-	/**
-	 * Stops the background backup handler.
-	 */
-	public void stop() {
-		autosaveThread.interrupt();
-	}
+            while (!isInterrupted()) {
+                try {
+                    backupAvailable.acquire();
+                    backupAvailable.drainPermits();
+                    pipelineToBackup.backupPipeline();
+                } catch (InterruptedException e) {
+                    interrupt();
+                } catch (FileException e) {
+                    /* forward the exception to the view */
+                    Application.handleException(new ControlledException(this,
+                            ExceptionSeverity.WARNING, e, I18N.getInstance()
+                                    .getString(
+                                            "Exception.AutosavePipelineFailed",
+                                            Constants.DEFAULT_BACKUP_FILE)));
+
+                }
+            }
+        }
+    };
+
+    @Override
+    public synchronized void update(Observable o, Object arg) {
+        if (arg instanceof PipelineObserverObject) {
+            this.pipelineToBackup = ((PipelineObserverObject) arg)
+                    .getPipeline();
+            this.backupAvailable.release();
+        }
+    }
+
+    /**
+     * Starts the background backup handler.
+     */
+    public void start() {
+        autosaveThread.start();
+    }
+
+    /**
+     * Stops the background backup handler.
+     */
+    public void stop() {
+        autosaveThread.interrupt();
+    }
 }

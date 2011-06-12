@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.model.persistence;
 
 import java.io.BufferedInputStream;
@@ -41,66 +39,66 @@ import de.osmembrane.tools.Tools;
  */
 public class SettingPersistence extends AbstractPersistence {
 
-	@Override
-	public void save(URL file, Object data) throws FileException {
-		if (!(data instanceof Map)) {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
-					"SettingPersistence#save() got a wrong"
-							+ " object, object is the following instance:\n"
-							+ data.getClass()));
-		}
+    @Override
+    public void save(URL file, Object data) throws FileException {
+        if (!(data instanceof Map)) {
+            Application.handleException(new ControlledException(this,
+                    ExceptionSeverity.UNEXPECTED_BEHAVIOR,
+                    "SettingPersistence#save() got a wrong"
+                            + " object, object is the following instance:\n"
+                            + data.getClass()));
+        }
 
-		try {
-			FileOutputStream fos = new FileOutputStream(Tools.urlToFile(file));
-			BufferedOutputStream bos = new BufferedOutputStream(fos);
-			ObjectOutputStream oos = new ObjectOutputStream(bos);
+        try {
+            FileOutputStream fos = new FileOutputStream(Tools.urlToFile(file));
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
 
-			oos.writeObject(data);
-			oos.close();
-			bos.close();
-			fos.close();
-		} catch (IOException e) {
-			throw new FileException(Type.NOT_WRITABLE, e);
-		}
-	}
+            oos.writeObject(data);
+            oos.close();
+            bos.close();
+            fos.close();
+        } catch (IOException e) {
+            throw new FileException(Type.NOT_WRITABLE, e);
+        }
+    }
 
-	@Override
-	public Object load(URL file) throws FileException {
-		try {
-			BufferedInputStream bis = new BufferedInputStream(file.openStream());
-			ObjectInputStream ois = new ObjectInputStream(bis);
+    @Override
+    public Object load(URL file) throws FileException {
+        try {
+            BufferedInputStream bis = new BufferedInputStream(file.openStream());
+            ObjectInputStream ois = new ObjectInputStream(bis);
 
-			@SuppressWarnings("unchecked")
-			Map<SettingType, Object> object = (Map<SettingType, Object>) ois
-					.readObject();
-			ois.close();
-			bis.close();
+            @SuppressWarnings("unchecked")
+            Map<SettingType, Object> object = (Map<SettingType, Object>) ois
+                    .readObject();
+            ois.close();
+            bis.close();
 
-			return object;
-		} catch (FileNotFoundException e) {
-			throw new FileException(Type.NOT_FOUND, e);
-		} catch (IOException e) {
-			throw new FileException(Type.NOT_READABLE, e);
-		} catch (ClassNotFoundException e) {
-			throw new FileException(Type.WRONG_FORMAT, e);
-		}
-	}
+            return object;
+        } catch (FileNotFoundException e) {
+            throw new FileException(Type.NOT_FOUND, e);
+        } catch (IOException e) {
+            throw new FileException(Type.NOT_READABLE, e);
+        } catch (ClassNotFoundException e) {
+            throw new FileException(Type.WRONG_FORMAT, e);
+        }
+    }
 
-	@Override
-	public void update(Observable o, Object arg) {
-		if (arg instanceof SettingsObserverObject) {
-			try {
-				SettingsObserverObject soo = (SettingsObserverObject) arg;
-				soo.getSettingsModel().saveSettings();
-			} catch (FileException e) {
-				/* forward the exception to the view */
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.WARNING, e,
-						I18N.getInstance().getString(
-								"Model.Settings.AutosaveSettingsFailed")));
-			}
-		}
-	}
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof SettingsObserverObject) {
+            try {
+                SettingsObserverObject soo = (SettingsObserverObject) arg;
+                soo.getSettingsModel().saveSettings();
+            } catch (FileException e) {
+                /* forward the exception to the view */
+                Application.handleException(new ControlledException(this,
+                        ExceptionSeverity.WARNING, e,
+                        I18N.getInstance().getString(
+                                "Model.Settings.AutosaveSettingsFailed")));
+            }
+        }
+    }
 
 }

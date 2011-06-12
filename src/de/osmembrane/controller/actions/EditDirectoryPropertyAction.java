@@ -9,7 +9,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -32,35 +31,35 @@ import de.osmembrane.model.settings.SettingType;
  */
 public class EditDirectoryPropertyAction extends AbstractAction {
 
-	private static final long serialVersionUID = -1358550319488735885L;
+    private static final long serialVersionUID = -1358550319488735885L;
 
-	/**
-	 * Creates a new {@link EditDirectoryPropertyAction}
-	 */
-	public EditDirectoryPropertyAction() {
-	}
+    /**
+     * Creates a new {@link EditDirectoryPropertyAction}
+     */
+    public EditDirectoryPropertyAction() {
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ContainingEvent ce = (ContainingEvent) e;
-		AbstractParameter ap = (AbstractParameter) ce.getContained();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ContainingEvent ce = (ContainingEvent) e;
+        AbstractParameter ap = (AbstractParameter) ce.getContained();
 
-		File startDir = new File((String) ModelProxy.getInstance()
-				.getSettings()
-				.getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
-		
-		JFileChooser fileChooser = new JFileChooser(startDir);
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fileChooser.setAcceptAllFileFilterUsed(false);
+        File startDir = new File((String) ModelProxy.getInstance()
+                .getSettings()
+                .getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
 
-		String value = ap.getValue();
-		if ((value == null) || (value.isEmpty())) {
-			value = ".";
-		}
-		fileChooser.setCurrentDirectory(new File(value));
+        JFileChooser fileChooser = new JFileChooser(startDir);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
 
-		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			ap.setValue(fileChooser.getCurrentDirectory().getAbsolutePath());
-		}
-	}
+        String value = ap.getValue();
+        if ((value == null) || (value.isEmpty())) {
+            value = ".";
+        }
+        fileChooser.setCurrentDirectory(new File(value));
+
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            ap.setValue(fileChooser.getCurrentDirectory().getAbsolutePath());
+        }
+    }
 }

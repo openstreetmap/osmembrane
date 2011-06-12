@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.model.persistence;
 
 import java.io.BufferedReader;
@@ -39,67 +37,68 @@ import de.osmembrane.tools.Tools;
  */
 public class BashPersistence extends AbstractPersistence {
 
-	private static final Class<? extends IParser> PARSER = FileType.BASH
-			.getParserClass();
+    private static final Class<? extends IParser> PARSER = FileType.BASH
+            .getParserClass();
 
-	@Override
-	public void save(URL filename, Object data) throws FileException {
-		if (!(data instanceof PipelinePersistenceObject)) {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.UNEXPECTED_BEHAVIOR,
-					"BashPersistence#save() got a wrong"
-							+ " object, object is the following instance:\n"
-							+ data.getClass()));
-		}
+    @Override
+    public void save(URL filename, Object data) throws FileException {
+        if (!(data instanceof PipelinePersistenceObject)) {
+            Application.handleException(new ControlledException(this,
+                    ExceptionSeverity.UNEXPECTED_BEHAVIOR,
+                    "BashPersistence#save() got a wrong"
+                            + " object, object is the following instance:\n"
+                            + data.getClass()));
+        }
 
-		try {
-			File file = Tools.urlToFile(filename);
-			FileWriter fw = new FileWriter(file);
-			BufferedWriter bw = new BufferedWriter(fw);
-			
-			String output = ParserFactory.getInstance().getParser(PARSER)
-					.parsePipeline((PipelinePersistenceObject) data);
+        try {
+            File file = Tools.urlToFile(filename);
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
 
-			bw.write(output);
-			bw.close();
-			fw.close();
+            String output = ParserFactory.getInstance().getParser(PARSER)
+                    .parsePipeline((PipelinePersistenceObject) data);
 
-		} catch (IOException e) {
-			throw new FileException(Type.NOT_WRITABLE, e);
-		}
-	}
+            bw.write(output);
+            bw.close();
+            fw.close();
 
-	@Override
-	public Object load(URL filename) throws FileException {
-		IParser parser = ParserFactory.getInstance().getParser(PARSER);
-		
-		try {
-			InputStreamReader isr = new InputStreamReader(filename.openStream());
-			BufferedReader br = new BufferedReader(isr);
+        } catch (IOException e) {
+            throw new FileException(Type.NOT_WRITABLE, e);
+        }
+    }
 
-			StringBuilder fileContent = new StringBuilder();
-			String line;
-			while ((line = br.readLine()) != null) {
-				fileContent.append(line + parser.getBreaklineCommand());
-			}
-			br.close();
-			isr.close();
+    @Override
+    public Object load(URL filename) throws FileException {
+        IParser parser = ParserFactory.getInstance().getParser(PARSER);
 
-			PipelinePersistenceObject functions = parser.parseString(fileContent.toString());
+        try {
+            InputStreamReader isr = new InputStreamReader(filename.openStream());
+            BufferedReader br = new BufferedReader(isr);
 
-			return functions;
+            StringBuilder fileContent = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                fileContent.append(line + parser.getBreaklineCommand());
+            }
+            br.close();
+            isr.close();
 
-		} catch (FileNotFoundException e) {
-			throw new FileException(Type.NOT_FOUND, e);
-		} catch (IOException e) {
-			throw new FileException(Type.NOT_READABLE, e);
-		} catch (ParseException e) {
-			throw new FileException(Type.SYNTAX_PROBLEM, e);
-		}
-	}
+            PipelinePersistenceObject functions = parser
+                    .parseString(fileContent.toString());
 
-	@Override
-	public void update(Observable o, Object arg) {
-		return;
-	}
+            return functions;
+
+        } catch (FileNotFoundException e) {
+            throw new FileException(Type.NOT_FOUND, e);
+        } catch (IOException e) {
+            throw new FileException(Type.NOT_READABLE, e);
+        } catch (ParseException e) {
+            throw new FileException(Type.SYNTAX_PROBLEM, e);
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        return;
+    }
 }

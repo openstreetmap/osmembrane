@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.panels;
 
 /**
@@ -22,31 +20,31 @@ package de.osmembrane.view.panels;
  * 
  */
 public enum Tool {
-	/**
-	 * The magic default tool, that behaves as follows:
-	 * <ul>
-	 * <li>if a {@link PipelineFunction} or {@link PipelineLink} is below the
-	 * cursor, it behaves like the selection tool</li>
-	 * <li>if nothing is below the cursor, it behaves like the view tool</li>
-	 * <li>if a {@link PipelineConnector} is below the cursor, it behaves like
-	 * the connection tool</li>
-	 * </ul>
-	 */
-	DEFAULT_MAGIC_TOOL,
+    /**
+     * The magic default tool, that behaves as follows:
+     * <ul>
+     * <li>if a {@link PipelineFunction} or {@link PipelineLink} is below the
+     * cursor, it behaves like the selection tool</li>
+     * <li>if nothing is below the cursor, it behaves like the view tool</li>
+     * <li>if a {@link PipelineConnector} is below the cursor, it behaves like
+     * the connection tool</li>
+     * </ul>
+     */
+    DEFAULT_MAGIC_TOOL,
 
-	/**
-	 * tool to select {@link PipelineFunction}s or {@link PipelineLink}s in
-	 * order to move {@link PipelineFunction}s or delete selections
-	 */
-	SELECTION_TOOL,
+    /**
+     * tool to select {@link PipelineFunction}s or {@link PipelineLink}s in
+     * order to move {@link PipelineFunction}s or delete selections
+     */
+    SELECTION_TOOL,
 
-	/**
-	 * tool to move or zoom the {@link PipelinePanel}
-	 */
-	VIEW_TOOL,
+    /**
+     * tool to move or zoom the {@link PipelinePanel}
+     */
+    VIEW_TOOL,
 
-	/**
-	 * tool to create {@link PipelineLink}s
-	 */
-	CONNECTION_TOOL;
+    /**
+     * tool to create {@link PipelineLink}s
+     */
+    CONNECTION_TOOL;
 }

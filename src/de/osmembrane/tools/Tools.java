@@ -9,7 +9,6 @@
  * Last changed: $Date: 2011-02-15 15:54:41 +0100 (Di, 15 Feb 2011) $
  */
 
-
 package de.osmembrane.tools;
 
 import java.io.File;
@@ -23,23 +22,23 @@ import java.net.URL;
  */
 public class Tools {
 
-	/**
-	 * Creates a file from an URL.
-	 * 
-	 * @param url
-	 *            which should be converted
-	 * @return to a File converted URL
-	 */
-	public static File urlToFile(URL url) {
-		if (url == null) {
-			return null;
-		}
-		File f;
-		try {
-			f = new File(url.toURI());
-		} catch (URISyntaxException e) {
-			f = new File(url.getPath());
-		}
-		return f;
-	}
+    /**
+     * Creates a file from an URL.
+     * 
+     * @param url
+     *            which should be converted
+     * @return to a File converted URL
+     */
+    public static File urlToFile(URL url) {
+        if (url == null) {
+            return null;
+        }
+        File f;
+        try {
+            f = new File(url.toURI());
+        } catch (URISyntaxException e) {
+            f = new File(url.getPath());
+        }
+        return f;
+    }
 }

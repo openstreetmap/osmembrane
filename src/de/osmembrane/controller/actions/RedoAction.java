@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -34,28 +32,30 @@ import de.osmembrane.tools.IconLoader.Size;
  */
 public class RedoAction extends AbstractAction {
 
-	private static final long serialVersionUID = 5665756570061846480L;
+    private static final long serialVersionUID = 5665756570061846480L;
 
-	/**
-	 * Creates a new {@link RedoAction}
-	 */
-	public RedoAction() {
-		putValue(Action.NAME,
-				I18N.getInstance().getString("Controller.Actions.Redo.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.Redo.Description"));
-		putValue(Action.SMALL_ICON,
-				Resource.PROGRAM_ICON.getImageIcon("redo.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY,
-				Resource.PROGRAM_ICON.getImageIcon("redo.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
-				HeadlessSafe.getMenuShortcutKeyMask()));
-	}
+    /**
+     * Creates a new {@link RedoAction}
+     */
+    public RedoAction() {
+        putValue(Action.NAME,
+                I18N.getInstance().getString("Controller.Actions.Redo.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.Redo.Description"));
+        putValue(Action.SMALL_ICON,
+                Resource.PROGRAM_ICON.getImageIcon("redo.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY,
+                Resource.PROGRAM_ICON.getImageIcon("redo.png", Size.NORMAL));
+        putValue(
+                Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_Y,
+                        HeadlessSafe.getMenuShortcutKeyMask()));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ModelProxy.getInstance().getPipeline().redo();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ModelProxy.getInstance().getPipeline().redo();
+    }
 }

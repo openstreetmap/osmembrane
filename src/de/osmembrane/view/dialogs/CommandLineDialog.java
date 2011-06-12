@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.dialogs;
 
 import java.awt.Dimension;
@@ -51,136 +49,138 @@ import de.osmembrane.view.interfaces.ICommandLineDialog;
  * 
  */
 public class CommandLineDialog extends AbstractDialog implements
-		ICommandLineDialog {
+        ICommandLineDialog {
 
-	private static final long serialVersionUID = -904804959704267472L;
+    private static final long serialVersionUID = -904804959704267472L;
 
-	private FileType fileType;
-	
-	/**
-	 * the component to display the command line
-	 */
-	private JTextArea commandline;
+    private FileType fileType;
 
-	private AbstractPipeline pipeline;
+    /**
+     * the component to display the command line
+     */
+    private JTextArea commandline;
 
-	/**
-	 * Creates a new {@link CommandLineDialog}
-	 */
-	public CommandLineDialog(Window owner) {
-		super(owner);
-		setWindowTitle(I18N.getInstance().getString("View.CommandLineDialog"));
+    private AbstractPipeline pipeline;
 
-		// set the basics up
-		setLayout(new GridBagLayout());
+    /**
+     * Creates a new {@link CommandLineDialog}
+     */
+    public CommandLineDialog(Window owner) {
+        super(owner);
+        setWindowTitle(I18N.getInstance().getString("View.CommandLineDialog"));
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(8, 8, 8, 8);
-			
-		// format		
-		JRadioButton cmdRB = new JRadioButton(
-				I18N.getInstance().getString("Controller.Actions.FileType.CMD.Name"));
-		cmdRB.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				fileType = FileType.CMD;
-				regenerate();
-			}
-		});
-				
-		JRadioButton bashRB = new JRadioButton(
-				I18N.getInstance().getString("Controller.Actions.FileType.BASH.Name"));
-		
-		bashRB.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				fileType = FileType.BASH;
-				regenerate();
-			}
-		});
-		
-		ButtonGroup group = new ButtonGroup();
-		group.add(cmdRB);
-		group.add(bashRB);
+        // set the basics up
+        setLayout(new GridBagLayout());
 
-		fileType = FileType.BASH;
-		bashRB.setSelected(true);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(8, 8, 8, 8);
 
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel formatLabel = new JLabel(I18N.getInstance().getString("View.CommandLineDialog.Format"));
-		panel.add(formatLabel);
-		panel.add(cmdRB);
-		panel.add(bashRB);
-		
-		add(panel, gbc);
-		
-		gbc.insets = new Insets(0, 8, 8, 8);
-		gbc.anchor = GridBagConstraints.CENTER;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		
-		// text
-		commandline = new JTextArea();
-		commandline.setLineWrap(true);
-		commandline.setWrapStyleWord(true);
-		JScrollPane clPane = new JScrollPane(commandline);
-		clPane.setPreferredSize(new Dimension(640, 480));
-		add(clPane, gbc);
+        // format
+        JRadioButton cmdRB = new JRadioButton(I18N.getInstance().getString(
+                "Controller.Actions.FileType.CMD.Name"));
+        cmdRB.addActionListener(new ActionListener() {
 
-		// export
-		gbc.gridx = 0;
-		gbc.gridy = 2;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fileType = FileType.CMD;
+                regenerate();
+            }
+        });
 
-		JPanel buttonGrid = new JPanel(new GridLayout(1, 3, 10, 0));
+        JRadioButton bashRB = new JRadioButton(I18N.getInstance().getString(
+                "Controller.Actions.FileType.BASH.Name"));
 
-		JButton exportButton = new JButton(ActionRegistry.getInstance().get(
-				ExportPipelineAction.class));
-		buttonGrid.add(exportButton);
+        bashRB.addActionListener(new ActionListener() {
 
-		// Copy to clipboard
-		JButton copyToClipButton = new JButton(I18N.getInstance().getString(
-				"View.CopyToClipboard"));
-		copyToClipButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Toolkit.getDefaultToolkit()
-						.getSystemClipboard()
-						.setContents(
-								new StringSelection(commandline.getText()),
-								null);
-			}
-		});
-		buttonGrid.add(copyToClipButton);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fileType = FileType.BASH;
+                regenerate();
+            }
+        });
 
-		// OK Button
-		JButton okButton = new JButton(I18N.getInstance().getString("View.Close"));
-		okButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				hideWindow();
-			}
-		});
-		buttonGrid.add(okButton);
+        ButtonGroup group = new ButtonGroup();
+        group.add(cmdRB);
+        group.add(bashRB);
 
-		add(buttonGrid, gbc);
+        fileType = FileType.BASH;
+        bashRB.setSelected(true);
 
-		pack();
-		centerWindow();
-	}
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel formatLabel = new JLabel(I18N.getInstance().getString(
+                "View.CommandLineDialog.Format"));
+        panel.add(formatLabel);
+        panel.add(cmdRB);
+        panel.add(bashRB);
 
-	@Override
-	public void setPipeline(AbstractPipeline pipeline) {
-		this.pipeline = pipeline;
-		regenerate();
-	}
+        add(panel, gbc);
 
-	private void regenerate() {
-		this.commandline.setText(pipeline.generate(fileType));
-	}
+        gbc.insets = new Insets(0, 8, 8, 8);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+
+        // text
+        commandline = new JTextArea();
+        commandline.setLineWrap(true);
+        commandline.setWrapStyleWord(true);
+        JScrollPane clPane = new JScrollPane(commandline);
+        clPane.setPreferredSize(new Dimension(640, 480));
+        add(clPane, gbc);
+
+        // export
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+
+        JPanel buttonGrid = new JPanel(new GridLayout(1, 3, 10, 0));
+
+        JButton exportButton = new JButton(ActionRegistry.getInstance().get(
+                ExportPipelineAction.class));
+        buttonGrid.add(exportButton);
+
+        // Copy to clipboard
+        JButton copyToClipButton = new JButton(I18N.getInstance().getString(
+                "View.CopyToClipboard"));
+        copyToClipButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Toolkit.getDefaultToolkit()
+                        .getSystemClipboard()
+                        .setContents(
+                                new StringSelection(commandline.getText()),
+                                null);
+            }
+        });
+        buttonGrid.add(copyToClipButton);
+
+        // OK Button
+        JButton okButton = new JButton(I18N.getInstance().getString(
+                "View.Close"));
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hideWindow();
+            }
+        });
+        buttonGrid.add(okButton);
+
+        add(buttonGrid, gbc);
+
+        pack();
+        centerWindow();
+    }
+
+    @Override
+    public void setPipeline(AbstractPipeline pipeline) {
+        this.pipeline = pipeline;
+        regenerate();
+    }
+
+    private void regenerate() {
+        this.commandline.setText(pipeline.generate(fileType));
+    }
 
 }

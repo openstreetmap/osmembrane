@@ -35,26 +35,26 @@ import javax.xml.bind.annotation.XmlType;
 @SuppressWarnings(value = "all")
 public enum CheckDefault {
 
-	@XmlEnumValue("on")
-	ON("on"), @XmlEnumValue("off")
-	OFF("off");
-	private final String value;
+    @XmlEnumValue("on")
+    ON("on"), @XmlEnumValue("off")
+    OFF("off");
+    private final String value;
 
-	CheckDefault(String v) {
-		value = v;
-	}
+    CheckDefault(String v) {
+        value = v;
+    }
 
-	public String value() {
-		return value;
-	}
+    public String value() {
+        return value;
+    }
 
-	public static CheckDefault fromValue(String v) {
-		for (CheckDefault c : CheckDefault.values()) {
-			if (c.value.equals(v)) {
-				return c;
-			}
-		}
-		throw new IllegalArgumentException(v);
-	}
+    public static CheckDefault fromValue(String v) {
+        for (CheckDefault c : CheckDefault.values()) {
+            if (c.value.equals(v)) {
+                return c;
+            }
+        }
+        throw new IllegalArgumentException(v);
+    }
 
 }

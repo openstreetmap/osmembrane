@@ -22,12 +22,12 @@ import de.osmembrane.view.dialogs.CommandLineDialog;
  */
 public interface ICommandLineDialog extends IView {
 
-	/**
-	 * Sets the pipeline to process.
-	 * 
-	 * @param pipeline
-	 *            the pipeline;
-	 */
-	public void setPipeline(AbstractPipeline pipeline);
+    /**
+     * Sets the pipeline to process.
+     * 
+     * @param pipeline
+     *            the pipeline;
+     */
+    public void setPipeline(AbstractPipeline pipeline);
 
 }

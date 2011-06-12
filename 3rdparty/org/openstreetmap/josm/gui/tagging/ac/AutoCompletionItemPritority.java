@@ -2,39 +2,45 @@
 package org.openstreetmap.josm.gui.tagging.ac;
 
 /**
- * Describes the priority of an item in an autocompletion list.
- * The selected flag is currently only used in plugins.
- *
+ * Describes the priority of an item in an autocompletion list. The selected
+ * flag is currently only used in plugins.
+ * 
  * Instances of this class are not modifiable.
  */
-public class AutoCompletionItemPritority implements Comparable<AutoCompletionItemPritority> {
+public class AutoCompletionItemPritority implements
+        Comparable<AutoCompletionItemPritority> {
 
     /**
-     * Indicates, that the value is standard and it is found in the data.
-     * This has higher priority than some arbitrary standard value that is
-     * usually not used by the user.
+     * Indicates, that the value is standard and it is found in the data. This
+     * has higher priority than some arbitrary standard value that is usually
+     * not used by the user.
      */
-    public static AutoCompletionItemPritority IS_IN_STANDARD_AND_IN_DATASET = new AutoCompletionItemPritority(true, true, false);
+    public static AutoCompletionItemPritority IS_IN_STANDARD_AND_IN_DATASET = new AutoCompletionItemPritority(
+            true, true, false);
 
     /**
-     * Indicates that this is an arbitrary value from the data set, i.e.
-     * the value of a tag name=*.
+     * Indicates that this is an arbitrary value from the data set, i.e. the
+     * value of a tag name=*.
      */
-    public static AutoCompletionItemPritority IS_IN_DATASET = new AutoCompletionItemPritority(true, false, false);
+    public static AutoCompletionItemPritority IS_IN_DATASET = new AutoCompletionItemPritority(
+            true, false, false);
 
     /**
-     * Indicates that this is a standard value, i.e. a standard tag name
-     * or a standard value for a given tag name (from the presets).
+     * Indicates that this is a standard value, i.e. a standard tag name or a
+     * standard value for a given tag name (from the presets).
      */
-    public static AutoCompletionItemPritority IS_IN_STANDARD = new AutoCompletionItemPritority(false, true, false);
+    public static AutoCompletionItemPritority IS_IN_STANDARD = new AutoCompletionItemPritority(
+            false, true, false);
 
     /**
      * Indicates that this is a value from a selected object.
      */
-    public static AutoCompletionItemPritority  IS_IN_SELECTION  = new AutoCompletionItemPritority(false, false, true);
+    public static AutoCompletionItemPritority IS_IN_SELECTION = new AutoCompletionItemPritority(
+            false, false, true);
 
     /** Unknown priority. This is the lowest priority. */
-    public static AutoCompletionItemPritority UNKNOWN = new AutoCompletionItemPritority(false, false, false);
+    public static AutoCompletionItemPritority UNKNOWN = new AutoCompletionItemPritority(
+            false, false, false);
 
     private final boolean inDataSet;
     private final boolean inStandard;
@@ -43,11 +49,16 @@ public class AutoCompletionItemPritority implements Comparable<AutoCompletionIte
     /**
      * Creates a new AC item priority descriptor.
      * 
-     * @param inDataSet <code>true</code> if the item is in the data set
-     * @param inStandard <code>true</code> if the item is in the presets
-     * @param selected <code>true</code> if the item is a value from a selected object
+     * @param inDataSet
+     *            <code>true</code> if the item is in the data set
+     * @param inStandard
+     *            <code>true</code> if the item is in the presets
+     * @param selected
+     *            <code>true</code> if the item is a value from a selected
+     *            object
      */
-    public AutoCompletionItemPritority(boolean inDataSet, boolean inStandard, boolean selected) {
+    public AutoCompletionItemPritority(boolean inDataSet, boolean inStandard,
+            boolean selected) {
         this.inDataSet = inDataSet;
         this.inStandard = inStandard;
         this.selected = selected;
@@ -55,7 +66,7 @@ public class AutoCompletionItemPritority implements Comparable<AutoCompletionIte
 
     /**
      * Returns whether the item is in the data set.
-	 *
+     * 
      * @return <code>true</code> if the item is in the data set.
      */
     public boolean isInDataSet() {
@@ -81,34 +92,39 @@ public class AutoCompletionItemPritority implements Comparable<AutoCompletionIte
     }
 
     /**
-     * Imposes an ordering on the priorities.
-     * Currently, being in the current DataSet is worth more than being in the Presets.
+     * Imposes an ordering on the priorities. Currently, being in the current
+     * DataSet is worth more than being in the Presets.
      */
     public int compareTo(AutoCompletionItemPritority other) {
         int sel = Boolean.valueOf(selected).compareTo(other.selected);
-        if (sel != 0) return sel;
+        if (sel != 0)
+            return sel;
 
         int ds = Boolean.valueOf(inDataSet).compareTo(other.inDataSet);
-        if (ds != 0) return ds;
+        if (ds != 0)
+            return ds;
 
         int std = Boolean.valueOf(inStandard).compareTo(other.inStandard);
-        if (std != 0) return std;
+        if (std != 0)
+            return std;
 
         return 0;
     }
 
     /**
-     * Merges two priorities.
-     * The resulting priority is always >= the original ones.
+     * Merges two priorities. The resulting priority is always >= the original
+     * ones.
      */
-    public AutoCompletionItemPritority mergeWith(AutoCompletionItemPritority other) {
-        return new AutoCompletionItemPritority(
-                inDataSet || other.inDataSet,
-                inStandard || other.inStandard,
-                selected || other.selected);
+    public AutoCompletionItemPritority mergeWith(
+            AutoCompletionItemPritority other) {
+        return new AutoCompletionItemPritority(inDataSet || other.inDataSet,
+                inStandard || other.inStandard, selected || other.selected);
     }
 
-    @Override public String toString() {
-        return String.format("<Priority; inDataSet: %b, inStandard: %b, selected: %b>", inDataSet, inStandard, selected);
+    @Override
+    public String toString() {
+        return String.format(
+                "<Priority; inDataSet: %b, inStandard: %b, selected: %b>",
+                inDataSet, inStandard, selected);
     }
 }

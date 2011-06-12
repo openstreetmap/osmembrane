@@ -41,36 +41,36 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "roles", propOrder = { "role" })
 public class Roles {
 
-	@XmlElement(required = true)
-	protected List<Role> role;
+    @XmlElement(required = true)
+    protected List<Role> role;
 
-	/**
-	 * Gets the value of the role property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the role property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getRole().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list {@link Role }
-	 * 
-	 * 
-	 */
-	public List<Role> getRole() {
-		if (role == null) {
-			role = new ArrayList<Role>();
-		}
-		return this.role;
-	}
+    /**
+     * Gets the value of the role property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list, not a
+     * snapshot. Therefore any modification you make to the returned list will
+     * be present inside the JAXB object. This is why there is not a
+     * <CODE>set</CODE> method for the role property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * 
+     * <pre>
+     * getRole().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list {@link Role }
+     * 
+     * 
+     */
+    public List<Role> getRole() {
+        if (role == null) {
+            role = new ArrayList<Role>();
+        }
+        return this.role;
+    }
 
 }

@@ -9,7 +9,6 @@
  * Last changed: $Date: 2011-02-07 10:56:49 +0100 (Mo, 07 Feb 2011) $
  */
 
-
 package de.osmembrane.view.dialogs;
 
 import java.awt.BorderLayout;
@@ -43,207 +42,208 @@ import de.osmembrane.view.interfaces.IPipelineSettingsDialog;
  * 
  */
 public class PipelineSettingsDialog extends AbstractDialog implements
-		IPipelineSettingsDialog {
+        IPipelineSettingsDialog {
 
-	private static final long serialVersionUID = 6498307196575629577L;
+    private static final long serialVersionUID = 6498307196575629577L;
 
-	/**
-	 * Whether or not to apply the changes made in the dialog
-	 */
-	private boolean applyChanges;
+    /**
+     * Whether or not to apply the changes made in the dialog
+     */
+    private boolean applyChanges;
 
-	/**
-	 * all those settings
-	 */
-	private JTextField pipelineName;
+    /**
+     * all those settings
+     */
+    private JTextField pipelineName;
 
-	private JCheckBox verboseFlag;
-	private JSpinner verbose;
+    private JCheckBox verboseFlag;
+    private JSpinner verbose;
 
-	private JCheckBox debugFlag;
-	private JSpinner debug;
+    private JCheckBox debugFlag;
+    private JSpinner debug;
 
-	private JTextArea comment;
+    private JTextArea comment;
 
-	/**
-	 * Generates a new {@link PipelineSettingsDialog}.
-	 * @param owner 
-	 */
-	public PipelineSettingsDialog(Window owner) {
-		super(owner);
-		
-		// set the basics up
-		setLayout(new BorderLayout());
+    /**
+     * Generates a new {@link PipelineSettingsDialog}.
+     * 
+     * @param owner
+     */
+    public PipelineSettingsDialog(Window owner) {
+        super(owner);
 
-		setWindowTitle(I18N.getInstance().getString(
-				"View.PipelineSettingsDialog"));
+        // set the basics up
+        setLayout(new BorderLayout());
 
-		// control buttons
-		JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
-		okButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				applyChanges = true;
-				hideWindow();
-			}
-		});
+        setWindowTitle(I18N.getInstance().getString(
+                "View.PipelineSettingsDialog"));
 
-		JButton cancelButton = new JButton(I18N.getInstance().getString(
-				"View.Cancel"));
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				applyChanges = false;
-				hideWindow();
-			}
-		});
+        // control buttons
+        JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                applyChanges = true;
+                hideWindow();
+            }
+        });
 
-		JPanel buttonCtrlGrid = new JPanel(new GridLayout(1, 3));
-		buttonCtrlGrid.add(okButton);
-		buttonCtrlGrid.add(cancelButton);
+        JButton cancelButton = new JButton(I18N.getInstance().getString(
+                "View.Cancel"));
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                applyChanges = false;
+                hideWindow();
+            }
+        });
 
-		JPanel buttonCtrlFlow = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		buttonCtrlFlow.add(buttonCtrlGrid);
+        JPanel buttonCtrlGrid = new JPanel(new GridLayout(1, 3));
+        buttonCtrlGrid.add(okButton);
+        buttonCtrlGrid.add(cancelButton);
 
-		add(buttonCtrlFlow, BorderLayout.SOUTH);
+        JPanel buttonCtrlFlow = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonCtrlFlow.add(buttonCtrlGrid);
 
-		// actual settings
-		JPanel settings = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(8, 8, 8, 8);
+        add(buttonCtrlFlow, BorderLayout.SOUTH);
 
-		final int minFieldWidth = 256;
-		final int minSpinnerWidth = 64;
+        // actual settings
+        JPanel settings = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 8, 8, 8);
 
-		gbc.gridy = 0;
-		gbc.gridx = 0;
-		settings.add(
-				new JLabel(I18N.getInstance().getString(
-						"View.PipelineSettingsDialog.Name")
-						+ ":"), gbc);
-		gbc.gridx = 1;
-		pipelineName = new JTextField();
-		pipelineName.setPreferredSize(new Dimension(minFieldWidth, pipelineName
-				.getPreferredSize().height));
-		settings.add(pipelineName, gbc);
+        final int minFieldWidth = 256;
+        final int minSpinnerWidth = 64;
 
-		gbc.gridy = 1;
-		gbc.gridx = 0;
-		verboseFlag = new JCheckBox(I18N.getInstance().getString(
-				"View.PipelineSettingsDialog.Verbose")
-				+ ":");
-		verboseFlag.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				verbose.setEnabled(verboseFlag.isSelected());
-				if (verbose.getValue().equals(-1)) {
-					verbose.setValue(0);
-				}				
-			}
-		});
-		settings.add(verboseFlag, gbc);
-		gbc.gridx = 1;
-		verbose = new JSpinner();
-		verbose.setPreferredSize(new Dimension(minSpinnerWidth, verbose
-				.getPreferredSize().height));
-		settings.add(verbose, gbc);
+        gbc.gridy = 0;
+        gbc.gridx = 0;
+        settings.add(
+                new JLabel(I18N.getInstance().getString(
+                        "View.PipelineSettingsDialog.Name")
+                        + ":"), gbc);
+        gbc.gridx = 1;
+        pipelineName = new JTextField();
+        pipelineName.setPreferredSize(new Dimension(minFieldWidth, pipelineName
+                .getPreferredSize().height));
+        settings.add(pipelineName, gbc);
 
-		gbc.gridy = 2;
-		gbc.gridx = 0;
-		debugFlag = new JCheckBox(I18N.getInstance().getString(
-				"View.PipelineSettingsDialog.Debug")
-				+ ":");
-		debugFlag.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				debug.setEnabled(debugFlag.isSelected());
-				if (debug.getValue().equals(-1)) {
-					debug.setValue(0);
-				}
-			}
-		});
-		settings.add(debugFlag, gbc);
-		gbc.gridx = 1;
-		debug = new JSpinner();
-		debug.setPreferredSize(new Dimension(minSpinnerWidth, debug
-				.getPreferredSize().height));
-		settings.add(debug, gbc);
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        verboseFlag = new JCheckBox(I18N.getInstance().getString(
+                "View.PipelineSettingsDialog.Verbose")
+                + ":");
+        verboseFlag.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                verbose.setEnabled(verboseFlag.isSelected());
+                if (verbose.getValue().equals(-1)) {
+                    verbose.setValue(0);
+                }
+            }
+        });
+        settings.add(verboseFlag, gbc);
+        gbc.gridx = 1;
+        verbose = new JSpinner();
+        verbose.setPreferredSize(new Dimension(minSpinnerWidth, verbose
+                .getPreferredSize().height));
+        settings.add(verbose, gbc);
 
-		gbc.gridy = 3;
-		gbc.gridx = 0;
-		settings.add(
-				new JLabel(I18N.getInstance().getString(
-						"View.PipelineSettingsDialog.Comment")
-						+ ":"), gbc);
+        gbc.gridy = 2;
+        gbc.gridx = 0;
+        debugFlag = new JCheckBox(I18N.getInstance().getString(
+                "View.PipelineSettingsDialog.Debug")
+                + ":");
+        debugFlag.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                debug.setEnabled(debugFlag.isSelected());
+                if (debug.getValue().equals(-1)) {
+                    debug.setValue(0);
+                }
+            }
+        });
+        settings.add(debugFlag, gbc);
+        gbc.gridx = 1;
+        debug = new JSpinner();
+        debug.setPreferredSize(new Dimension(minSpinnerWidth, debug
+                .getPreferredSize().height));
+        settings.add(debug, gbc);
 
-		gbc.gridy = 4;
-		gbc.gridx = 0;
-		gbc.gridwidth = 2;
-		comment = new JTextArea();
-		comment.setPreferredSize(new Dimension(minFieldWidth * 2, minFieldWidth));
-		settings.add(new JScrollPane(comment), gbc);
+        gbc.gridy = 3;
+        gbc.gridx = 0;
+        settings.add(
+                new JLabel(I18N.getInstance().getString(
+                        "View.PipelineSettingsDialog.Comment")
+                        + ":"), gbc);
 
-		add(settings, BorderLayout.CENTER);
+        gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
+        comment = new JTextArea();
+        comment.setPreferredSize(new Dimension(minFieldWidth * 2, minFieldWidth));
+        settings.add(new JScrollPane(comment), gbc);
 
-		pack();
-		centerWindow();
-	}
+        add(settings, BorderLayout.CENTER);
 
-	@Override
-	public boolean shallApplyChanges() {
-		return this.applyChanges;
-	}
+        pack();
+        centerWindow();
+    }
 
-	@Override
-	public void setVerbose(int mode) {
-		verboseFlag.setSelected(mode >= 0);
-		verbose.setEnabled(mode >= 0);
-		verbose.setValue(mode);
-	}
+    @Override
+    public boolean shallApplyChanges() {
+        return this.applyChanges;
+    }
 
-	@Override
-	public int getVerbose() {
-		if (verboseFlag.isSelected()) {
-			return (Integer) verbose.getValue();
-		} else {
-			return -1;
-		}
-	}
+    @Override
+    public void setVerbose(int mode) {
+        verboseFlag.setSelected(mode >= 0);
+        verbose.setEnabled(mode >= 0);
+        verbose.setValue(mode);
+    }
 
-	@Override
-	public void setDebug(int mode) {
-		debugFlag.setSelected(mode >= 0);
-		debug.setEnabled(mode >= 0);
-		debug.setValue(mode);
-	}
+    @Override
+    public int getVerbose() {
+        if (verboseFlag.isSelected()) {
+            return (Integer) verbose.getValue();
+        } else {
+            return -1;
+        }
+    }
 
-	@Override
-	public int getDebug() {
-		if (debugFlag.isSelected()) {
-			return (Integer) debug.getValue();
-		} else {
-			return -1;
-		}
-	}
+    @Override
+    public void setDebug(int mode) {
+        debugFlag.setSelected(mode >= 0);
+        debug.setEnabled(mode >= 0);
+        debug.setValue(mode);
+    }
 
-	@Override
-	public void setComment(String comment) {
-		this.comment.setText(comment);
-	}
+    @Override
+    public int getDebug() {
+        if (debugFlag.isSelected()) {
+            return (Integer) debug.getValue();
+        } else {
+            return -1;
+        }
+    }
 
-	@Override
-	public String getComment() {
-		return comment.getText();
-	}
+    @Override
+    public void setComment(String comment) {
+        this.comment.setText(comment);
+    }
 
-	@Override
-	public void setName(String name) {
-		pipelineName.setText(name);
-	}
+    @Override
+    public String getComment() {
+        return comment.getText();
+    }
 
-	@Override
-	public String getName() {
-		return pipelineName.getText();
-	}
+    @Override
+    public void setName(String name) {
+        pipelineName.setText(name);
+    }
+
+    @Override
+    public String getName() {
+        return pipelineName.getText();
+    }
 
 }

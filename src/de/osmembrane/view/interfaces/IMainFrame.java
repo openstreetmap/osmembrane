@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.interfaces;
 
 import java.awt.Point;
@@ -26,43 +24,43 @@ import de.osmembrane.view.frames.MainFrameGlassPane;
  */
 public interface IMainFrame extends IView {
 
-	/**
-	 * @return the currently selected object on the pipeline of the main frame.
-	 */
-	public Object getSelected();
+    /**
+     * @return the currently selected object on the pipeline of the main frame.
+     */
+    public Object getSelected();
 
-	/**
-	 * Sets the explanation hint in the inspector panel to hint
-	 * 
-	 * @param hint
-	 *            the hint to display
-	 */
-	public void setHint(String hint);
+    /**
+     * Sets the explanation hint in the inspector panel to hint
+     * 
+     * @param hint
+     *            the hint to display
+     */
+    public void setHint(String hint);
 
-	/**
-	 * @return the glass pane in front of the {@link MainFrame}'s contents that
-	 *         can display data there (mainly Library-to-Pipeline drag & drop)
-	 */
-	public MainFrameGlassPane getMainGlassPane();
+    /**
+     * @return the glass pane in front of the {@link MainFrame}'s contents that
+     *         can display data there (mainly Library-to-Pipeline drag & drop)
+     */
+    public MainFrameGlassPane getMainGlassPane();
 
-	/**
-	 * Finds out whether drag & drop can be finished at at.
-	 * 
-	 * @param at
-	 *            {@link Point} on the getMainGlassPane() to check for
-	 * @return whether or not the point is valid drag and drop target
-	 */
-	public boolean isDragAndDropTarget(Point at);
+    /**
+     * Finds out whether drag & drop can be finished at at.
+     * 
+     * @param at
+     *            {@link Point} on the getMainGlassPane() to check for
+     * @return whether or not the point is valid drag and drop target
+     */
+    public boolean isDragAndDropTarget(Point at);
 
-	/**
-	 * Returns the {@link IZoomDevice} capable of performing zooms
-	 * 
-	 * @return the corresponding IZoomDevice or null, if none present
-	 */
-	public IZoomDevice getZoomDevice();
+    /**
+     * Returns the {@link IZoomDevice} capable of performing zooms
+     * 
+     * @return the corresponding IZoomDevice or null, if none present
+     */
+    public IZoomDevice getZoomDevice();
 
-	/**
-	 * Maximizes the window.
-	 */
-	public void maximizeWindow();
+    /**
+     * Maximizes the window.
+     */
+    public void maximizeWindow();
 }

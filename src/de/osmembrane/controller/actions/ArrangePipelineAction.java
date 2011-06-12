@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -34,30 +32,32 @@ import de.osmembrane.tools.IconLoader.Size;
  */
 public class ArrangePipelineAction extends AbstractAction {
 
-	private static final long serialVersionUID = -932349116204149527L;
+    private static final long serialVersionUID = -932349116204149527L;
 
-	/**
-	 * Creates a new {@link ArrangePipelineAction}
-	 */
-	public ArrangePipelineAction() {
-		putValue(
-				Action.NAME,
-				I18N.getInstance().getString(
-						"Controller.Actions.ArrangePipeline.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.ArrangePipeline.Description"));
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
-				"arrange_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
-				"arrange_pipeline.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A,
-				HeadlessSafe.getMenuShortcutKeyMask()));
-	}
+    /**
+     * Creates a new {@link ArrangePipelineAction}
+     */
+    public ArrangePipelineAction() {
+        putValue(
+                Action.NAME,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ArrangePipeline.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ArrangePipeline.Description"));
+        putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+                "arrange_pipeline.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+                "arrange_pipeline.png", Size.NORMAL));
+        putValue(
+                Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_A,
+                        HeadlessSafe.getMenuShortcutKeyMask()));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ModelProxy.getInstance().getPipeline().arrangePipeline();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ModelProxy.getInstance().getPipeline().arrangePipeline();
+    }
 }

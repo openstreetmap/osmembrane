@@ -9,7 +9,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -38,47 +37,49 @@ import de.osmembrane.view.interfaces.ICommandLineDialog;
  */
 public class GeneratePipelineAction extends AbstractAction {
 
-	private static final long serialVersionUID = -932349116204149527L;
+    private static final long serialVersionUID = -932349116204149527L;
 
-	/**
-	 * Creates a new {@link GeneratePipelineAction}
-	 */
-	public GeneratePipelineAction() {
-		putValue(
-				Action.NAME,
-				I18N.getInstance().getString(
-						"Controller.Actions.GeneratePipeline.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.GeneratePipeline.Description"));
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
-				"generate_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
-				"generate_pipeline.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G,
-				HeadlessSafe.getMenuShortcutKeyMask()));
-	}
+    /**
+     * Creates a new {@link GeneratePipelineAction}
+     */
+    public GeneratePipelineAction() {
+        putValue(
+                Action.NAME,
+                I18N.getInstance().getString(
+                        "Controller.Actions.GeneratePipeline.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.GeneratePipeline.Description"));
+        putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+                "generate_pipeline.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+                "generate_pipeline.png", Size.NORMAL));
+        putValue(
+                Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_G,
+                        HeadlessSafe.getMenuShortcutKeyMask()));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ICommandLineDialog commandLineDialog = ViewRegistry.getInstance()
-				.getCasted(CommandLineDialog.class, ICommandLineDialog.class);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ICommandLineDialog commandLineDialog = ViewRegistry.getInstance()
+                .getCasted(CommandLineDialog.class, ICommandLineDialog.class);
 
-		/* Check if the pipeline is complete */
-		if (!ModelProxy.getInstance().getPipeline().isComplete()) {
-			if (!(JOptionPane.showConfirmDialog(
-					null,
-					I18N.getInstance().getString(
-							"Controller.Actions.PipelineNotComplete"),
-					I18N.getInstance().getString(
-							"Controller.Actions.PipelineNotComplete.Title"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
-				return;
-			}
-		}
+        /* Check if the pipeline is complete */
+        if (!ModelProxy.getInstance().getPipeline().isComplete()) {
+            if (!(JOptionPane.showConfirmDialog(
+                    null,
+                    I18N.getInstance().getString(
+                            "Controller.Actions.PipelineNotComplete"),
+                    I18N.getInstance().getString(
+                            "Controller.Actions.PipelineNotComplete.Title"),
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
+                return;
+            }
+        }
 
-		commandLineDialog.setPipeline(ModelProxy.getInstance().getPipeline());
-		commandLineDialog.showWindow();
-	}
+        commandLineDialog.setPipeline(ModelProxy.getInstance().getPipeline());
+        commandLineDialog.showWindow();
+    }
 }

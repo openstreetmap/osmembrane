@@ -9,7 +9,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -45,116 +44,116 @@ import de.osmembrane.tools.Tools;
  */
 public class ExportPipelineAction extends AbstractAction {
 
-	private static final long serialVersionUID = 8382050986007810817L;
+    private static final long serialVersionUID = 8382050986007810817L;
 
-	/**
-	 * Creates a new {@link ExportPipelineAction}
-	 */
-	public ExportPipelineAction() {
-		putValue(
-				Action.NAME,
-				I18N.getInstance().getString(
-						"Controller.Actions.ExportPipeline.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.ExportPipeline.Description"));
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
-				"export_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
-				"export_pipeline.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E,
-				HeadlessSafe.getMenuShortcutKeyMask()));
-	}
+    /**
+     * Creates a new {@link ExportPipelineAction}
+     */
+    public ExportPipelineAction() {
+        putValue(
+                Action.NAME,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ExportPipeline.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ExportPipeline.Description"));
+        putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+                "export_pipeline.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+                "export_pipeline.png", Size.NORMAL));
+        putValue(
+                Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_E,
+                        HeadlessSafe.getMenuShortcutKeyMask()));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		/* Check if the pipeline is complete */
-		if (!ModelProxy.getInstance().getPipeline().isComplete()) {
-			if (!(JOptionPane.showConfirmDialog(
-					null,
-					I18N.getInstance().getString(
-							"Controller.Actions.PipelineNotComplete"),
-					I18N.getInstance().getString(
-							"Controller.Actions.PipelineNotComplete.Title"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
-				return;
-			}
-		}
-		
-		
-		File startDir = new File((String) ModelProxy.getInstance()
-				.getSettings()
-				.getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
-		JFileChooser fileChooser = new JFileChooser(startDir);
-		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
-		fileChooser.addChoosableFileFilter(FileType.BASH.getFileFilter());
-		fileChooser.addChoosableFileFilter(FileType.CMD.getFileFilter());
-		fileChooser.addChoosableFileFilter(FileType.ALLTYPES.getFileFilter());
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-		int result = fileChooser.showSaveDialog(null);
+        /* Check if the pipeline is complete */
+        if (!ModelProxy.getInstance().getPipeline().isComplete()) {
+            if (!(JOptionPane.showConfirmDialog(
+                    null,
+                    I18N.getInstance().getString(
+                            "Controller.Actions.PipelineNotComplete"),
+                    I18N.getInstance().getString(
+                            "Controller.Actions.PipelineNotComplete.Title"),
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
+                return;
+            }
+        }
 
-		if (result == JFileChooser.APPROVE_OPTION) {
+        File startDir = new File((String) ModelProxy.getInstance()
+                .getSettings()
+                .getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
+        JFileChooser fileChooser = new JFileChooser(startDir);
+        fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
+        fileChooser.addChoosableFileFilter(FileType.BASH.getFileFilter());
+        fileChooser.addChoosableFileFilter(FileType.CMD.getFileFilter());
+        fileChooser.addChoosableFileFilter(FileType.ALLTYPES.getFileFilter());
 
-			
-			try {
-				/* parse the file to an URL */
-				URL file = fileChooser.getSelectedFile().toURI().toURL();
-				FileType type = FileType.fileTypeFor(fileChooser
-						.getSelectedFile());
+        int result = fileChooser.showSaveDialog(null);
 
-				if (type == null) {
-					/*
-					 * could not find out which type the file has, add the
-					 * system dependent extension.
-					 */
-					String fileWithExplicitExtensionString = fileChooser
-							.getSelectedFile().getAbsolutePath();
+        if (result == JFileChooser.APPROVE_OPTION) {
 
-					/* check if it is windows */
-					if (System.getProperty("os.name").toLowerCase()
-							.contains("win")) {
-						fileWithExplicitExtensionString += FileType.CMD
-								.getExtension();
-						type = FileType.CMD;
-					} else {
-						/* should be a unix based os, use bash */
-						fileWithExplicitExtensionString += FileType.BASH
-								.getExtension();
-						type = FileType.BASH;
-					}
+            try {
+                /* parse the file to an URL */
+                URL file = fileChooser.getSelectedFile().toURI().toURL();
+                FileType type = FileType.fileTypeFor(fileChooser
+                        .getSelectedFile());
 
-					file = new File(fileWithExplicitExtensionString).toURI()
-							.toURL();
-				}
+                if (type == null) {
+                    /*
+                     * could not find out which type the file has, add the
+                     * system dependent extension.
+                     */
+                    String fileWithExplicitExtensionString = fileChooser
+                            .getSelectedFile().getAbsolutePath();
 
-				/* Check if the file does not already exists. */
-				if (Tools.urlToFile(file).isFile()) {
-					int confirmResult = JOptionPane.showConfirmDialog(
-							null,
-							I18N.getInstance().getString(
-									"Controller.Actions.File.Override"),
-							I18N.getInstance().getString(
-									"Controller.Actions.File.Override.Title"),
-							JOptionPane.YES_NO_OPTION);
-					if (confirmResult == JOptionPane.NO_OPTION
-							|| result == JOptionPane.CLOSED_OPTION) {
-						return;
-					}
-				}
+                    /* check if it is windows */
+                    if (System.getProperty("os.name").toLowerCase()
+                            .contains("win")) {
+                        fileWithExplicitExtensionString += FileType.CMD
+                                .getExtension();
+                        type = FileType.CMD;
+                    } else {
+                        /* should be a unix based os, use bash */
+                        fileWithExplicitExtensionString += FileType.BASH
+                                .getExtension();
+                        type = FileType.BASH;
+                    }
 
-				ModelProxy.getInstance().getPipeline()
-						.exportPipeline(file, type);
-			} catch (FileException e1) {
-				String message = I18N.getInstance().getString(
-						"Controller.Actions.Save.Failed." + e1.getType(),
-						e1.getParentException().getMessage());
+                    file = new File(fileWithExplicitExtensionString).toURI()
+                            .toURL();
+                }
 
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.WARNING, e1, message));
-			} catch (MalformedURLException e1) {
-			}
-		}
-	}
+                /* Check if the file does not already exists. */
+                if (Tools.urlToFile(file).isFile()) {
+                    int confirmResult = JOptionPane.showConfirmDialog(
+                            null,
+                            I18N.getInstance().getString(
+                                    "Controller.Actions.File.Override"),
+                            I18N.getInstance().getString(
+                                    "Controller.Actions.File.Override.Title"),
+                            JOptionPane.YES_NO_OPTION);
+                    if (confirmResult == JOptionPane.NO_OPTION
+                            || result == JOptionPane.CLOSED_OPTION) {
+                        return;
+                    }
+                }
+
+                ModelProxy.getInstance().getPipeline()
+                        .exportPipeline(file, type);
+            } catch (FileException e1) {
+                String message = I18N.getInstance().getString(
+                        "Controller.Actions.Save.Failed." + e1.getType(),
+                        e1.getParentException().getMessage());
+
+                Application.handleException(new ControlledException(this,
+                        ExceptionSeverity.WARNING, e1, message));
+            } catch (MalformedURLException e1) {
+            }
+        }
+    }
 }

@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view;
 
 import java.awt.GraphicsEnvironment;
@@ -36,55 +34,56 @@ import de.osmembrane.view.interfaces.IView;
 @SuppressWarnings("serial")
 public abstract class AbstractDialog extends JDialog implements IView {
 
-	/**
-	 * common constructor for all dialog view elements
-	 */
-	public AbstractDialog(Window owner) {
-		super(owner);
-		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-		setModalityType(ModalityType.APPLICATION_MODAL);
-		setResizable(false);
+    /**
+     * common constructor for all dialog view elements
+     */
+    public AbstractDialog(Window owner) {
+        super(owner);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        setModalityType(ModalityType.APPLICATION_MODAL);
+        setResizable(false);
 
-		// close dialog on escape
-		this.getLayeredPane().getActionMap().put("close", new AbstractAction() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				hideWindow();
-			}
-		});
-		
-		this.getLayeredPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
-	
-	}
+        // close dialog on escape
+        this.getLayeredPane().getActionMap().put("close", new AbstractAction() {
 
-	@Override
-	public void showWindow() {
-		setVisible(true);
-	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hideWindow();
+            }
+        });
 
-	@Override
-	public void hideWindow() {
-		setVisible(false);
-	}
+        this.getLayeredPane()
+                .getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
 
-	@Override
-	public void setWindowTitle(String title) {
-		setTitle(title);
-	}
+    }
 
-	@Override
-	public void centerWindow() {
-		Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment()
-				.getCenterPoint();
-		Point edgeLeftTop = new Point(screenCenter.x - (getWidth() / 2),
-				screenCenter.y - (getHeight() / 2));
-		setLocation(edgeLeftTop.x, edgeLeftTop.y);
-	}
+    @Override
+    public void showWindow() {
+        setVisible(true);
+    }
 
-	@Override
-	public void bringToFront() {
-		toFront();
-	}
+    @Override
+    public void hideWindow() {
+        setVisible(false);
+    }
+
+    @Override
+    public void setWindowTitle(String title) {
+        setTitle(title);
+    }
+
+    @Override
+    public void centerWindow() {
+        Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                .getCenterPoint();
+        Point edgeLeftTop = new Point(screenCenter.x - (getWidth() / 2),
+                screenCenter.y - (getHeight() / 2));
+        setLocation(edgeLeftTop.x, edgeLeftTop.y);
+    }
+
+    @Override
+    public void bringToFront() {
+        toFront();
+    }
 }

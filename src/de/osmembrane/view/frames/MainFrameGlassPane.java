@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.frames;
 
 import java.awt.GridLayout;
@@ -31,62 +29,62 @@ import de.osmembrane.view.panels.StartPanel;
  */
 public class MainFrameGlassPane extends JComponent {
 
-	private static final long serialVersionUID = -997512362081326789L;
+    private static final long serialVersionUID = -997512362081326789L;
 
-	/**
-	 * the {@link LibraryFunction} that is currently dragged to store
-	 */
-	private LibraryFunction dragAndDrop;
+    /**
+     * the {@link LibraryFunction} that is currently dragged to store
+     */
+    private LibraryFunction dragAndDrop;
 
-	/**
-	 * Initializer for new {@link MainFrameGlassPane}
-	 * 
-	 * @param showStartScreen
-	 *            whether the start screen shall be displayed upon
-	 *            initialization
-	 */
-	public MainFrameGlassPane(boolean showStartScreen) {
-		if (showStartScreen) {
-			setLayout(new GridLayout(1, 1));
-			JPanel startPanel = new StartPanel();
-			add(startPanel);
-		}
-	}
+    /**
+     * Initializer for new {@link MainFrameGlassPane}
+     * 
+     * @param showStartScreen
+     *            whether the start screen shall be displayed upon
+     *            initialization
+     */
+    public MainFrameGlassPane(boolean showStartScreen) {
+        if (showStartScreen) {
+            setLayout(new GridLayout(1, 1));
+            JPanel startPanel = new StartPanel();
+            add(startPanel);
+        }
+    }
 
-	/**
-	 * Draws a specific {@link LibraryFunction} that is currently dragged & drop
-	 * where the cursor is
-	 * 
-	 * @param libraryFunction
-	 *            the view function to be drawn
-	 * @param point
-	 *            top left position of the view function to be drawn
-	 */
-	public void dragAndDrop(LibraryFunction libraryFunction, Point point) {
-		if (dragAndDrop == null) {
-			// add the display function
-			dragAndDrop = new LibraryFunction(null,
-					libraryFunction.getModelFunctionPrototype(), false);
+    /**
+     * Draws a specific {@link LibraryFunction} that is currently dragged & drop
+     * where the cursor is
+     * 
+     * @param libraryFunction
+     *            the view function to be drawn
+     * @param point
+     *            top left position of the view function to be drawn
+     */
+    public void dragAndDrop(LibraryFunction libraryFunction, Point point) {
+        if (dragAndDrop == null) {
+            // add the display function
+            dragAndDrop = new LibraryFunction(null,
+                    libraryFunction.getModelFunctionPrototype(), false);
 
-			dragAndDrop.setSize(libraryFunction.getPreferredSize());
-			dragAndDrop.forceHighlight(true);
-			dragAndDrop.setCursor(DragSource.DefaultCopyDrop);
+            dragAndDrop.setSize(libraryFunction.getPreferredSize());
+            dragAndDrop.forceHighlight(true);
+            dragAndDrop.setCursor(DragSource.DefaultCopyDrop);
 
-			add(dragAndDrop);
-			setVisible(true);
-		}
-		dragAndDrop.setLocation(point);
-	}
+            add(dragAndDrop);
+            setVisible(true);
+        }
+        dragAndDrop.setLocation(point);
+    }
 
-	/**
-	 * Ends the current drag and drop functionality and restores normal behavior
-	 */
-	public void endDragAndDrop() {
-		if (dragAndDrop != null) {
-			remove(dragAndDrop);
-			dragAndDrop = null;
-		}
-		setVisible(false);
-	}
+    /**
+     * Ends the current drag and drop functionality and restores normal behavior
+     */
+    public void endDragAndDrop() {
+        if (dragAndDrop != null) {
+            remove(dragAndDrop);
+            dragAndDrop = null;
+        }
+        setVisible(false);
+    }
 
 }

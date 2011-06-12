@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.dialogs;
 
 import java.awt.Dimension;
@@ -42,267 +40,267 @@ import de.osmembrane.view.AbstractDialog;
  */
 public class ExceptionDialog extends AbstractDialog {
 
-	private static final long serialVersionUID = 3750775593370584501L;
+    private static final long serialVersionUID = 3750775593370584501L;
 
-	/**
-	 * The components that will describe the exception occured
-	 */
-	private JLabel icon;
-	private JLabel caption;
-	private JLabel exceptionMessage;
-	private JTextArea exceptionText;
-	private JScrollPane exceptionTextPane;
+    /**
+     * The components that will describe the exception occured
+     */
+    private JLabel icon;
+    private JLabel caption;
+    private JLabel exceptionMessage;
+    private JTextArea exceptionText;
+    private JScrollPane exceptionTextPane;
 
-	/**
-	 * The OK and "Show stack trace" Button
-	 */
-	private JButton okButton;
-	private JButton showTraceButton;
+    /**
+     * The OK and "Show stack trace" Button
+     */
+    private JButton okButton;
+    private JButton showTraceButton;
 
-	/**
-	 * Whether the exception was fatal and the application should exit now
-	 */
-	private boolean fatal;
+    /**
+     * Whether the exception was fatal and the application should exit now
+     */
+    private boolean fatal;
 
-	/**
-	 * The line break
-	 */
-	private final String NL = System.getProperty("line.separator");
+    /**
+     * The line break
+     */
+    private final String NL = System.getProperty("line.separator");
 
-	/**
-	 * Initializes the {@link ExceptionDialog}
-	 */
-	public ExceptionDialog(Window owner) {
-		super(owner);
-		
-		// set the basics up
-		setLayout(new GridBagLayout());
+    /**
+     * Initializes the {@link ExceptionDialog}
+     */
+    public ExceptionDialog(Window owner) {
+        super(owner);
 
-		icon = new JLabel();
-		caption = new JLabel();
-		caption.setFont(caption.getFont().deriveFont(Font.BOLD));
-		exceptionMessage = new JLabel();
-		exceptionText = new JTextArea();
-		exceptionText.setEditable(false);
+        // set the basics up
+        setLayout(new GridBagLayout());
 
-		exceptionTextPane = new JScrollPane(exceptionText);
-		exceptionTextPane.setPreferredSize(new Dimension(640, 480));
+        icon = new JLabel();
+        caption = new JLabel();
+        caption.setFont(caption.getFont().deriveFont(Font.BOLD));
+        exceptionMessage = new JLabel();
+        exceptionText = new JTextArea();
+        exceptionText.setEditable(false);
 
-		okButton = new JButton();
-		okButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (fatal) {
-					System.exit(0);
-				} else {
-					hideWindow();
-				}
-			}
-		});
+        exceptionTextPane = new JScrollPane(exceptionText);
+        exceptionTextPane.setPreferredSize(new Dimension(640, 480));
 
-		showTraceButton = new JButton(I18N.getInstance().getString(
-				"View.ShowStackTrace"));
-		showTraceButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				exceptionTextPane.setPreferredSize(new Dimension(
-						(getWidth() > 648) ? getWidth() - 8 : 640, 480));
-				showTraceButton.setVisible(false);
-				exceptionTextPane.setVisible(true);
-				exceptionText.setCaretPosition(0);
-				pack();
-				centerWindow();
-			}
-		});
+        okButton = new JButton();
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (fatal) {
+                    System.exit(0);
+                } else {
+                    hideWindow();
+                }
+            }
+        });
 
-		// grid bag layout
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(8, 8, 8, 8);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.gridheight = 2;
-		add(icon, gbc);
+        showTraceButton = new JButton(I18N.getInstance().getString(
+                "View.ShowStackTrace"));
+        showTraceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exceptionTextPane.setPreferredSize(new Dimension(
+                        (getWidth() > 648) ? getWidth() - 8 : 640, 480));
+                showTraceButton.setVisible(false);
+                exceptionTextPane.setVisible(true);
+                exceptionText.setCaretPosition(0);
+                pack();
+                centerWindow();
+            }
+        });
 
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.gridheight = 1;
-		gbc.gridwidth = 1;
-		add(caption, gbc);
+        // grid bag layout
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        add(icon, gbc);
 
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		gbc.gridwidth = 1;
-		add(exceptionMessage, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 1;
+        add(caption, gbc);
 
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.gridwidth = 2;
-		add(exceptionTextPane, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        add(exceptionMessage, gbc);
 
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		gbc.gridwidth = 2;
-		JPanel buttons = new JPanel();
-		buttons.add(showTraceButton);
-		buttons.add(okButton);
-		if (showTraceButton.getPreferredSize().width > okButton
-				.getPreferredSize().width) {
-			okButton.setPreferredSize(showTraceButton.getPreferredSize());
-		} else {
-			showTraceButton.setPreferredSize(okButton.getPreferredSize());
-		}
-		add(buttons, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        add(exceptionTextPane, gbc);
 
-		pack();
-		centerWindow();
-	}
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        JPanel buttons = new JPanel();
+        buttons.add(showTraceButton);
+        buttons.add(okButton);
+        if (showTraceButton.getPreferredSize().width > okButton
+                .getPreferredSize().width) {
+            okButton.setPreferredSize(showTraceButton.getPreferredSize());
+        } else {
+            showTraceButton.setPreferredSize(okButton.getPreferredSize());
+        }
+        add(buttons, gbc);
 
-	/**
-	 * 
-	 * @param ste
-	 *            the {@link StackTraceElement} to print into a string
-	 * @return the human readable string representation of the stack trace
-	 *         element
-	 */
-	private String printStackTraceElement(StackTraceElement ste) {
-		return "	" + I18N.getInstance().getString("View.ErrorDialog.At") + " "
-				+ ste.getClassName() + "." + ste.getMethodName() + "("
-				+ ste.getFileName() + ":" + ste.getLineNumber() + ")" + NL;
-	}
+        pack();
+        centerWindow();
+    }
 
-	/**
-	 * Displays a Throwable and handles the possibly necessary shutdown.
-	 * 
-	 * @param t
-	 *            the occurred Throwable
-	 * @param severity
-	 *            the kind of the exception
-	 * @param causingObject
-	 *            the causing object or null, if unknown
-	 */
-	public void showException(Throwable t, ExceptionSeverity severity,
-			Object causingObject) {
+    /**
+     * 
+     * @param ste
+     *            the {@link StackTraceElement} to print into a string
+     * @return the human readable string representation of the stack trace
+     *         element
+     */
+    private String printStackTraceElement(StackTraceElement ste) {
+        return "	" + I18N.getInstance().getString("View.ErrorDialog.At") + " "
+                + ste.getClassName() + "." + ste.getMethodName() + "("
+                + ste.getFileName() + ":" + ste.getLineNumber() + ")" + NL;
+    }
 
-		// ensure valid pointers
-		if (t == null) {
-			Application.handleException(new NullPointerException());
-		}
+    /**
+     * Displays a Throwable and handles the possibly necessary shutdown.
+     * 
+     * @param t
+     *            the occurred Throwable
+     * @param severity
+     *            the kind of the exception
+     * @param causingObject
+     *            the causing object or null, if unknown
+     */
+    public void showException(Throwable t, ExceptionSeverity severity,
+            Object causingObject) {
 
-		if (causingObject == null) {
-			if (t.getStackTrace().length > 0) {
-				causingObject = t.getStackTrace()[0];
-			} else {
-				// empty stack traces are some sort of exception cause
-				causingObject = t.getStackTrace();
-			}
-		}
+        // ensure valid pointers
+        if (t == null) {
+            Application.handleException(new NullPointerException());
+        }
 
-		if (severity == null) {
-			severity = ExceptionSeverity.INVALID;
-		}
+        if (causingObject == null) {
+            if (t.getStackTrace().length > 0) {
+                causingObject = t.getStackTrace()[0];
+            } else {
+                // empty stack traces are some sort of exception cause
+                causingObject = t.getStackTrace();
+            }
+        }
 
-		// set icon
+        if (severity == null) {
+            severity = ExceptionSeverity.INVALID;
+        }
 
-		switch (severity) {
-		case WARNING:
-			setWindowTitle(I18N.getInstance().getString(
-					"View.ErrorDialog.Warning"));
-			break;
-		case UNEXPECTED_BEHAVIOR:
-			setWindowTitle(I18N.getInstance().getString(
-					"View.ErrorDialog.UnexpectedException"));
-			break;
-		case CRITICAL_UNEXPECTED_BEHAVIOR:
-			setWindowTitle(I18N.getInstance().getString(
-					"View.ErrorDialog.CriticalUnexpectedException"));
-			break;
-		default:
-			setWindowTitle(I18N.getInstance().getString(
-					"View.ErrorDialog.Exception"));
-		}
+        // set icon
 
-		caption.setText(I18N.getInstance().getString("View.ErrorDialog.In",
-				t.getClass().getCanonicalName(), causingObject.toString()));
+        switch (severity) {
+        case WARNING:
+            setWindowTitle(I18N.getInstance().getString(
+                    "View.ErrorDialog.Warning"));
+            break;
+        case UNEXPECTED_BEHAVIOR:
+            setWindowTitle(I18N.getInstance().getString(
+                    "View.ErrorDialog.UnexpectedException"));
+            break;
+        case CRITICAL_UNEXPECTED_BEHAVIOR:
+            setWindowTitle(I18N.getInstance().getString(
+                    "View.ErrorDialog.CriticalUnexpectedException"));
+            break;
+        default:
+            setWindowTitle(I18N.getInstance().getString(
+                    "View.ErrorDialog.Exception"));
+        }
 
-		// find a suitable description, if one exists
-		String message = t.getLocalizedMessage();
-		if (message == null) {
-			message = t.getMessage();
-			if (message == null) {
-				if (t.getCause() != null) {
-					message = t.getCause().getLocalizedMessage();
-					if (message == null) {
-						message = t.getCause().getMessage();
-						if (message == null) {
-							message = I18N.getInstance().getString(
-									"View.ErrorDialog.NoMessage");
-						}
-					}
-				} else {
-					message = I18N.getInstance().getString(
-							"View.ErrorDialog.NoMessage");
-				}
-			}
+        caption.setText(I18N.getInstance().getString("View.ErrorDialog.In",
+                t.getClass().getCanonicalName(), causingObject.toString()));
 
-		}
-		exceptionMessage.setText(message);
+        // find a suitable description, if one exists
+        String message = t.getLocalizedMessage();
+        if (message == null) {
+            message = t.getMessage();
+            if (message == null) {
+                if (t.getCause() != null) {
+                    message = t.getCause().getLocalizedMessage();
+                    if (message == null) {
+                        message = t.getCause().getMessage();
+                        if (message == null) {
+                            message = I18N.getInstance().getString(
+                                    "View.ErrorDialog.NoMessage");
+                        }
+                    }
+                } else {
+                    message = I18N.getInstance().getString(
+                            "View.ErrorDialog.NoMessage");
+                }
+            }
 
-		// general information
-		StringBuilder sb = new StringBuilder();
-		sb.append(I18N.getInstance().getString("View.ErrorDialog.Caused",
-				causingObject.toString(), t.toString())
-				+ NL + NL);
-		for (StackTraceElement ste : t.getStackTrace()) {
-			sb.append(printStackTraceElement(ste));
-		}
+        }
+        exceptionMessage.setText(message);
 
-		/*
-		 * loop through the causes, find out if any of them was an instance of
-		 * Error
-		 */
-		boolean causeWasError = false;
-		Throwable causedBy = t.getCause();
-		while (causedBy != null) {
-			sb.append(I18N.getInstance().getString("View.ErrorDialog.CausedBy",
-					causedBy.toString())
-					+ NL);
-			for (StackTraceElement ste : causedBy.getStackTrace()) {
-				sb.append(printStackTraceElement(ste));
-			}
+        // general information
+        StringBuilder sb = new StringBuilder();
+        sb.append(I18N.getInstance().getString("View.ErrorDialog.Caused",
+                causingObject.toString(), t.toString())
+                + NL + NL);
+        for (StackTraceElement ste : t.getStackTrace()) {
+            sb.append(printStackTraceElement(ste));
+        }
 
-			if (causedBy instanceof Error) {
-				causeWasError = true;
-			}
+        /*
+         * loop through the causes, find out if any of them was an instance of
+         * Error
+         */
+        boolean causeWasError = false;
+        Throwable causedBy = t.getCause();
+        while (causedBy != null) {
+            sb.append(I18N.getInstance().getString("View.ErrorDialog.CausedBy",
+                    causedBy.toString())
+                    + NL);
+            for (StackTraceElement ste : causedBy.getStackTrace()) {
+                sb.append(printStackTraceElement(ste));
+            }
 
-			causedBy = causedBy.getCause();
-		}
+            if (causedBy instanceof Error) {
+                causeWasError = true;
+            }
 
-		exceptionText.setText(sb.toString());
+            causedBy = causedBy.getCause();
+        }
 
-		// determine whether it was a fatal error
-		fatal = (severity == ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR)
-				|| (causeWasError);
+        exceptionText.setText(sb.toString());
 
-		icon.setIcon(UIManager.getIcon("OptionPane.warningIcon"));
-		if (fatal || (severity == null)) {
-			icon.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
-		}
+        // determine whether it was a fatal error
+        fatal = (severity == ExceptionSeverity.CRITICAL_UNEXPECTED_BEHAVIOR)
+                || (causeWasError);
 
-		if (fatal) {
-			okButton.setText(I18N.getInstance().getString("View.Quit"));
-		} else {
-			okButton.setText(I18N.getInstance().getString("View.OK"));
-		}
+        icon.setIcon(UIManager.getIcon("OptionPane.warningIcon"));
+        if (fatal || (severity == null)) {
+            icon.setIcon(UIManager.getIcon("OptionPane.errorIcon"));
+        }
 
-		// normally hide the stack trace, for warnings hide most of the dialog
-		exceptionTextPane.setVisible(false);
-		showTraceButton.setVisible(severity != ExceptionSeverity.WARNING);
-		caption.setVisible(severity != ExceptionSeverity.WARNING);
-		okButton.requestFocusInWindow();
+        if (fatal) {
+            okButton.setText(I18N.getInstance().getString("View.Quit"));
+        } else {
+            okButton.setText(I18N.getInstance().getString("View.OK"));
+        }
 
-		pack();
-		centerWindow();
-		showWindow();
-	}
+        // normally hide the stack trace, for warnings hide most of the dialog
+        exceptionTextPane.setVisible(false);
+        showTraceButton.setVisible(severity != ExceptionSeverity.WARNING);
+        caption.setVisible(severity != ExceptionSeverity.WARNING);
+        okButton.requestFocusInWindow();
+
+        pack();
+        centerWindow();
+        showWindow();
+    }
 
 }

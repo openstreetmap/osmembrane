@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -36,32 +34,33 @@ import de.osmembrane.view.interfaces.IMainFrame;
  */
 public class ZoomOutAction extends AbstractAction {
 
-	private static final long serialVersionUID = 6291772549719149526L;
+    private static final long serialVersionUID = 6291772549719149526L;
 
-	/**
-	 * Creates a new {@link ZoomOutAction}
-	 */
-	public ZoomOutAction() {
-		putValue(Action.NAME,
-				I18N.getInstance().getString("Controller.Actions.ZoomOut.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.ZoomOut.Description"));
-		putValue(Action.SMALL_ICON,
-				Resource.PROGRAM_ICON.getImageIcon("zoom_out.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY,
-				Resource.PROGRAM_ICON.getImageIcon("zoom_out.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
-						HeadlessSafe.getMenuShortcutKeyMask()));
-	}
+    /**
+     * Creates a new {@link ZoomOutAction}
+     */
+    public ZoomOutAction() {
+        putValue(Action.NAME,
+                I18N.getInstance().getString("Controller.Actions.ZoomOut.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ZoomOut.Description"));
+        putValue(Action.SMALL_ICON,
+                Resource.PROGRAM_ICON.getImageIcon("zoom_out.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY,
+                Resource.PROGRAM_ICON.getImageIcon("zoom_out.png", Size.NORMAL));
+        putValue(
+                Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
+                        HeadlessSafe.getMenuShortcutKeyMask()));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
-				MainFrame.class, IMainFrame.class);
-		mainFrame.getZoomDevice().zoomOut();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
+                MainFrame.class, IMainFrame.class);
+        mainFrame.getZoomDevice().zoomOut();
+    }
 
 }

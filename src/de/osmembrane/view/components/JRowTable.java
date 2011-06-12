@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.components;
 
 import java.util.Vector;
@@ -30,100 +28,100 @@ import javax.swing.table.TableModel;
  */
 public class JRowTable extends JTable {
 
-	private static final long serialVersionUID = -6750075292555886817L;
+    private static final long serialVersionUID = -6750075292555886817L;
 
-	/**
-	 * the row editor model
-	 */
-	protected RowEditorModel rowEditorModel = null;
+    /**
+     * the row editor model
+     */
+    protected RowEditorModel rowEditorModel = null;
 
-	/**
-	 * @see JTable#JTable
-	 */
-	public JRowTable() {
-		super();
-	}
+    /**
+     * @see JTable#JTable
+     */
+    public JRowTable() {
+        super();
+    }
 
-	/**
-	 * @see JTable#JTable
-	 */
-	public JRowTable(TableModel tm) {
-		super(tm);
-	}
+    /**
+     * @see JTable#JTable
+     */
+    public JRowTable(TableModel tm) {
+        super(tm);
+    }
 
-	/**
-	 * @see JTable#JTable
-	 */
-	public JRowTable(TableModel tm, TableColumnModel tcm) {
-		super(tm, tcm);
-	}
+    /**
+     * @see JTable#JTable
+     */
+    public JRowTable(TableModel tm, TableColumnModel tcm) {
+        super(tm, tcm);
+    }
 
-	/**
-	 * @see JTable#JTable
-	 */
-	public JRowTable(TableModel tm, TableColumnModel tcm, ListSelectionModel lsm) {
-		super(tm, tcm, lsm);
-	}
+    /**
+     * @see JTable#JTable
+     */
+    public JRowTable(TableModel tm, TableColumnModel tcm, ListSelectionModel lsm) {
+        super(tm, tcm, lsm);
+    }
 
-	/**
-	 * @see JTable#JTable
-	 */
-	public JRowTable(int rowCount, int colCount) {
-		super(rowCount, colCount);
-	}
+    /**
+     * @see JTable#JTable
+     */
+    public JRowTable(int rowCount, int colCount) {
+        super(rowCount, colCount);
+    }
 
-	/**
-	 * @see JTable#JTable
-	 */
-	public JRowTable(Vector<?> rowData, Vector<?> columnNames) {
-		super(rowData, columnNames);
-	}
+    /**
+     * @see JTable#JTable
+     */
+    public JRowTable(Vector<?> rowData, Vector<?> columnNames) {
+        super(rowData, columnNames);
+    }
 
-	/**
-	 * @see JTable#JTable
-	 */
-	public JRowTable(final Object[][] rowData, final Object[] columnNames) {
-		super(rowData, columnNames);
-	}
+    /**
+     * @see JTable#JTable
+     */
+    public JRowTable(final Object[][] rowData, final Object[] columnNames) {
+        super(rowData, columnNames);
+    }
 
-	/**
-	 * Initializes a new {@link JRowTable} with a row editor model
-	 * 
-	 * @param tm
-	 *            classic TableModel, see {@link JTable#JTable}
-	 * @param rem
-	 *            the RowEditorModel to work with
-	 */
-	public JRowTable(TableModel tm, RowEditorModel rem) {
-		super(tm, null, null);
-		this.rowEditorModel = rem;
-	}
+    /**
+     * Initializes a new {@link JRowTable} with a row editor model
+     * 
+     * @param tm
+     *            classic TableModel, see {@link JTable#JTable}
+     * @param rem
+     *            the RowEditorModel to work with
+     */
+    public JRowTable(TableModel tm, RowEditorModel rem) {
+        super(tm, null, null);
+        this.rowEditorModel = rem;
+    }
 
-	/**
-	 * @param rowEditorModel
-	 *            the rowEditorModel to set
-	 */
-	public void setRowEditorModel(RowEditorModel rowEditorModel) {
-		this.rowEditorModel = rowEditorModel;
-	}
+    /**
+     * @param rowEditorModel
+     *            the rowEditorModel to set
+     */
+    public void setRowEditorModel(RowEditorModel rowEditorModel) {
+        this.rowEditorModel = rowEditorModel;
+    }
 
-	/**
-	 * @return the rowEditorModel
-	 */
-	public RowEditorModel getRowEditorModel() {
-		return rowEditorModel;
-	}
+    /**
+     * @return the rowEditorModel
+     */
+    public RowEditorModel getRowEditorModel() {
+        return rowEditorModel;
+    }
 
-	@Override
-	public TableCellEditor getCellEditor(int row, int column) {
-		if (rowEditorModel != null) {
-			TableCellEditor tce = rowEditorModel.getEditorRow(row);
-			if (tce != null) {
-				return tce;
-			}
-		}
+    @Override
+    public TableCellEditor getCellEditor(int row, int column) {
+        if (rowEditorModel != null) {
+            TableCellEditor tce = rowEditorModel.getEditorRow(row);
+            if (tce != null) {
+                return tce;
+            }
+        }
 
-		return super.getCellEditor(row, column);
-	}
+        return super.getCellEditor(row, column);
+    }
 
 }

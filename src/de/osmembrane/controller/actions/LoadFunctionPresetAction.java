@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -40,52 +38,52 @@ import de.osmembrane.view.panels.PipelineFunction;
  */
 public class LoadFunctionPresetAction extends AbstractAction {
 
-	private static final long serialVersionUID = 6264271045174747984L;
+    private static final long serialVersionUID = 6264271045174747984L;
 
-	/**
-	 * Creates a new {@link LoadFunctionPresetAction}
-	 */
-	public LoadFunctionPresetAction() {
-		putValue(
-				Action.NAME,
-				I18N.getInstance().getString(
-						"Controller.Actions.LoadFunctionPreset.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.LoadFunctionPreset.Description"));
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
-				"load_pipeline.png", Size.SMALL));
-	}
+    /**
+     * Creates a new {@link LoadFunctionPresetAction}
+     */
+    public LoadFunctionPresetAction() {
+        putValue(
+                Action.NAME,
+                I18N.getInstance().getString(
+                        "Controller.Actions.LoadFunctionPreset.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.LoadFunctionPreset.Description"));
+        putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+                "load_pipeline.png", Size.SMALL));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
-				MainFrame.class, IMainFrame.class);
-		Object select = mainFrame.getSelected();
-		if ((select == null) || !(select instanceof PipelineFunction)) {
-			return;
-		}
-		AbstractFunction function = ((PipelineFunction) select)
-				.getModelFunction();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
+                MainFrame.class, IMainFrame.class);
+        Object select = mainFrame.getSelected();
+        if ((select == null) || !(select instanceof PipelineFunction)) {
+            return;
+        }
+        AbstractFunction function = ((PipelineFunction) select)
+                .getModelFunction();
 
-		AbstractSettings settings = ModelProxy.getInstance().getSettings();
+        AbstractSettings settings = ModelProxy.getInstance().getSettings();
 
-		IFunctionPresetDialog fpd = ViewRegistry.getInstance().getCasted(
-				FunctionPresetDialog.class, IFunctionPresetDialog.class);
+        IFunctionPresetDialog fpd = ViewRegistry.getInstance().getCasted(
+                FunctionPresetDialog.class, IFunctionPresetDialog.class);
 
-		do {
-			AbstractFunctionPreset afp[] = settings
-					.getAllFunctionPresets(function);
+        do {
+            AbstractFunctionPreset afp[] = settings
+                    .getAllFunctionPresets(function);
 
-			fpd.open(afp);
+            fpd.open(afp);
 
-			AbstractFunctionPreset preset = fpd.getSelectedPreset();
-			if (fpd.loadSelected()) {
-				preset.loadPreset(function);
-			} else if (fpd.deleteSelected()) {
-				settings.deleteFunctionPreset(preset);
-			}
-		} while (fpd.deleteSelected());
-	}
+            AbstractFunctionPreset preset = fpd.getSelectedPreset();
+            if (fpd.loadSelected()) {
+                preset.loadPreset(function);
+            } else if (fpd.deleteSelected()) {
+                settings.deleteFunctionPreset(preset);
+            }
+        } while (fpd.deleteSelected());
+    }
 }

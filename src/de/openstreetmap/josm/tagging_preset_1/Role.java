@@ -44,166 +44,166 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "role")
 public class Role {
 
-	@XmlAttribute
-	protected String key;
-	@XmlAttribute
-	protected String text;
-	@XmlAttribute(name = "text_context")
-	protected String textContext;
-	@XmlAttribute
-	protected RoleRequisite requisite;
-	@XmlAttribute
-	protected String type;
-	@XmlAttribute
-	protected BigInteger count;
-	@XmlAttribute
-	protected Boolean required;
+    @XmlAttribute
+    protected String key;
+    @XmlAttribute
+    protected String text;
+    @XmlAttribute(name = "text_context")
+    protected String textContext;
+    @XmlAttribute
+    protected RoleRequisite requisite;
+    @XmlAttribute
+    protected String type;
+    @XmlAttribute
+    protected BigInteger count;
+    @XmlAttribute
+    protected Boolean required;
 
-	/**
-	 * Gets the value of the key property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getKey() {
-		return key;
-	}
+    /**
+     * Gets the value of the key property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getKey() {
+        return key;
+    }
 
-	/**
-	 * Sets the value of the key property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setKey(String value) {
-		this.key = value;
-	}
+    /**
+     * Sets the value of the key property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setKey(String value) {
+        this.key = value;
+    }
 
-	/**
-	 * Gets the value of the text property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getText() {
-		return text;
-	}
+    /**
+     * Gets the value of the text property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getText() {
+        return text;
+    }
 
-	/**
-	 * Sets the value of the text property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setText(String value) {
-		this.text = value;
-	}
+    /**
+     * Sets the value of the text property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setText(String value) {
+        this.text = value;
+    }
 
-	/**
-	 * Gets the value of the textContext property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getTextContext() {
-		return textContext;
-	}
+    /**
+     * Gets the value of the textContext property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getTextContext() {
+        return textContext;
+    }
 
-	/**
-	 * Sets the value of the textContext property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setTextContext(String value) {
-		this.textContext = value;
-	}
+    /**
+     * Sets the value of the textContext property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setTextContext(String value) {
+        this.textContext = value;
+    }
 
-	/**
-	 * Gets the value of the requisite property.
-	 * 
-	 * @return possible object is {@link RoleRequisite }
-	 * 
-	 */
-	public RoleRequisite getRequisite() {
-		return requisite;
-	}
+    /**
+     * Gets the value of the requisite property.
+     * 
+     * @return possible object is {@link RoleRequisite }
+     * 
+     */
+    public RoleRequisite getRequisite() {
+        return requisite;
+    }
 
-	/**
-	 * Sets the value of the requisite property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link RoleRequisite }
-	 * 
-	 */
-	public void setRequisite(RoleRequisite value) {
-		this.requisite = value;
-	}
+    /**
+     * Sets the value of the requisite property.
+     * 
+     * @param value
+     *            allowed object is {@link RoleRequisite }
+     * 
+     */
+    public void setRequisite(RoleRequisite value) {
+        this.requisite = value;
+    }
 
-	/**
-	 * Gets the value of the type property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getType() {
-		return type;
-	}
+    /**
+     * Gets the value of the type property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getType() {
+        return type;
+    }
 
-	/**
-	 * Sets the value of the type property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setType(String value) {
-		this.type = value;
-	}
+    /**
+     * Sets the value of the type property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setType(String value) {
+        this.type = value;
+    }
 
-	/**
-	 * Gets the value of the count property.
-	 * 
-	 * @return possible object is {@link BigInteger }
-	 * 
-	 */
-	public BigInteger getCount() {
-		return count;
-	}
+    /**
+     * Gets the value of the count property.
+     * 
+     * @return possible object is {@link BigInteger }
+     * 
+     */
+    public BigInteger getCount() {
+        return count;
+    }
 
-	/**
-	 * Sets the value of the count property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link BigInteger }
-	 * 
-	 */
-	public void setCount(BigInteger value) {
-		this.count = value;
-	}
+    /**
+     * Sets the value of the count property.
+     * 
+     * @param value
+     *            allowed object is {@link BigInteger }
+     * 
+     */
+    public void setCount(BigInteger value) {
+        this.count = value;
+    }
 
-	/**
-	 * Gets the value of the required property.
-	 * 
-	 * @return possible object is {@link Boolean }
-	 * 
-	 */
-	public Boolean isRequired() {
-		return required;
-	}
+    /**
+     * Gets the value of the required property.
+     * 
+     * @return possible object is {@link Boolean }
+     * 
+     */
+    public Boolean isRequired() {
+        return required;
+    }
 
-	/**
-	 * Sets the value of the required property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
-	 * 
-	 */
-	public void setRequired(Boolean value) {
-		this.required = value;
-	}
+    /**
+     * Sets the value of the required property.
+     * 
+     * @param value
+     *            allowed object is {@link Boolean }
+     * 
+     */
+    public void setRequired(Boolean value) {
+        this.required = value;
+    }
 
 }

@@ -9,7 +9,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -32,38 +31,40 @@ import de.osmembrane.model.settings.SettingType;
  */
 public class EditFilePropertyAction extends AbstractAction {
 
-	private static final long serialVersionUID = 1481319711002406388L;
+    private static final long serialVersionUID = 1481319711002406388L;
 
-	/**
-	 * Creates a new {@link EditFilePropertyAction}
-	 */
-	public EditFilePropertyAction() {
-	}
+    /**
+     * Creates a new {@link EditFilePropertyAction}
+     */
+    public EditFilePropertyAction() {
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ContainingEvent ce = (ContainingEvent) e;
-		AbstractParameter ap = (AbstractParameter) ce.getContained();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ContainingEvent ce = (ContainingEvent) e;
+        AbstractParameter ap = (AbstractParameter) ce.getContained();
 
-		String wd = (String) ModelProxy.getInstance().getSettings().getValue(SettingType.DEFAULT_WORKING_DIRECTORY);
-		if(wd.length() == 0) {
-			wd = null;
-		}
-		
-		JFileChooser fileChooser = new JFileChooser(wd);
+        String wd = (String) ModelProxy.getInstance().getSettings()
+                .getValue(SettingType.DEFAULT_WORKING_DIRECTORY);
+        if (wd.length() == 0) {
+            wd = null;
+        }
 
-		String value = ap.getValue();
-		if ((value == null) || (value.isEmpty())) {
-			value = ".";
-		}
-		fileChooser.setSelectedFile(new File(value));
+        JFileChooser fileChooser = new JFileChooser(wd);
 
-		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			String path = fileChooser.getSelectedFile().getAbsolutePath();
-			if(wd != null) {
-				path = new File(wd).toURI().relativize(new File(path).toURI()).getPath();
-			}
-			ap.setValue(path);
-		}
-	}
+        String value = ap.getValue();
+        if ((value == null) || (value.isEmpty())) {
+            value = ".";
+        }
+        fileChooser.setSelectedFile(new File(value));
+
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String path = fileChooser.getSelectedFile().getAbsolutePath();
+            if (wd != null) {
+                path = new File(wd).toURI().relativize(new File(path).toURI())
+                        .getPath();
+            }
+            ap.setValue(path);
+        }
+    }
 }

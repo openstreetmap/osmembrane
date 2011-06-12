@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.model.persistence;
 
 import java.net.URL;
@@ -30,35 +28,35 @@ import de.osmembrane.model.xml.XMLOsmosisStructure;
  */
 public class XMLOsmosisStructurePersistence extends AbstractPersistence {
 
-	@Override
-	public Object load(URL file) throws FileException {
-		JAXBContext jc;
-		try {
-			jc = JAXBContext.newInstance("de.osmembrane.model.xml");
+    @Override
+    public Object load(URL file) throws FileException {
+        JAXBContext jc;
+        try {
+            jc = JAXBContext.newInstance("de.osmembrane.model.xml");
 
-			if (file == null) {
-				throw new FileException(Type.NOT_FOUND);
-			}
+            if (file == null) {
+                throw new FileException(Type.NOT_FOUND);
+            }
 
-			Unmarshaller u = jc.createUnmarshaller();
+            Unmarshaller u = jc.createUnmarshaller();
 
-			XMLOsmosisStructure otd = (XMLOsmosisStructure) u.unmarshal(file);
+            XMLOsmosisStructure otd = (XMLOsmosisStructure) u.unmarshal(file);
 
-			return otd;
-		} catch (JAXBException e) {
-			throw new FileException(Type.WRONG_FORMAT, e);
-		}
-	}
+            return otd;
+        } catch (JAXBException e) {
+            throw new FileException(Type.WRONG_FORMAT, e);
+        }
+    }
 
-	@Deprecated
-	@Override
-	public void save(URL file, Object data) {
-		throw new UnsupportedOperationException();
-	}
+    @Deprecated
+    @Override
+    public void save(URL file, Object data) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	@Deprecated
-	public void update(Observable o, Object arg) {
-		return;
-	}
+    @Override
+    @Deprecated
+    public void update(Observable o, Object arg) {
+        return;
+    }
 }

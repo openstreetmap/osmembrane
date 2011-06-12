@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view;
 
 import java.awt.GraphicsEnvironment;
@@ -30,39 +28,39 @@ import de.osmembrane.view.interfaces.IView;
 @SuppressWarnings("serial")
 public abstract class AbstractFrame extends JFrame implements IView {
 
-	/**
-	 * common constructor for all frame view elements
-	 */
-	public AbstractFrame() {
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-	}
+    /**
+     * common constructor for all frame view elements
+     */
+    public AbstractFrame() {
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    }
 
-	@Override
-	public void showWindow() {
-		setVisible(true);
-	}
+    @Override
+    public void showWindow() {
+        setVisible(true);
+    }
 
-	@Override
-	public void hideWindow() {
-		setVisible(false);
-	}
+    @Override
+    public void hideWindow() {
+        setVisible(false);
+    }
 
-	@Override
-	public void setWindowTitle(String title) {
-		setTitle(title);
-	}
+    @Override
+    public void setWindowTitle(String title) {
+        setTitle(title);
+    }
 
-	@Override
-	public void centerWindow() {
-		Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment()
-				.getCenterPoint();
-		Point edgeLeftTop = new Point(screenCenter.x - (getWidth() / 2),
-				screenCenter.y - (getHeight() / 2));
-		setLocation(edgeLeftTop.x, edgeLeftTop.y);
-	}
+    @Override
+    public void centerWindow() {
+        Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                .getCenterPoint();
+        Point edgeLeftTop = new Point(screenCenter.x - (getWidth() / 2),
+                screenCenter.y - (getHeight() / 2));
+        setLocation(edgeLeftTop.x, edgeLeftTop.y);
+    }
 
-	@Override
-	public void bringToFront() {
-		toFront();
-	}
+    @Override
+    public void bringToFront() {
+        toFront();
+    }
 }

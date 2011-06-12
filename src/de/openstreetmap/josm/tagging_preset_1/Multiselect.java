@@ -51,255 +51,255 @@ import javax.xml.namespace.QName;
 @XmlType(name = "multiselect")
 public class Multiselect {
 
-	@XmlAttribute(required = true)
-	protected String key;
-	@XmlAttribute
-	protected String text;
-	@XmlAttribute(name = "text_context")
-	protected String textContext;
-	@XmlAttribute(required = true)
-	protected String values;
-	@XmlAttribute(name = "values_context")
-	protected String valuesContext;
-	@XmlAttribute(name = "display_values")
-	protected String displayValues;
-	@XmlAttribute(name = "default")
-	protected String _default;
-	@XmlAttribute
-	protected String delimiter;
-	@XmlAttribute(name = "delete_if_empty")
-	protected Boolean deleteIfEmpty;
-	@XmlAttribute
-	protected Boolean required;
-	@XmlAnyAttribute
-	private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+    @XmlAttribute(required = true)
+    protected String key;
+    @XmlAttribute
+    protected String text;
+    @XmlAttribute(name = "text_context")
+    protected String textContext;
+    @XmlAttribute(required = true)
+    protected String values;
+    @XmlAttribute(name = "values_context")
+    protected String valuesContext;
+    @XmlAttribute(name = "display_values")
+    protected String displayValues;
+    @XmlAttribute(name = "default")
+    protected String _default;
+    @XmlAttribute
+    protected String delimiter;
+    @XmlAttribute(name = "delete_if_empty")
+    protected Boolean deleteIfEmpty;
+    @XmlAttribute
+    protected Boolean required;
+    @XmlAnyAttribute
+    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 
-	/**
-	 * Gets the value of the key property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getKey() {
-		return key;
-	}
+    /**
+     * Gets the value of the key property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getKey() {
+        return key;
+    }
 
-	/**
-	 * Sets the value of the key property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setKey(String value) {
-		this.key = value;
-	}
+    /**
+     * Sets the value of the key property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setKey(String value) {
+        this.key = value;
+    }
 
-	/**
-	 * Gets the value of the text property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getText() {
-		return text;
-	}
+    /**
+     * Gets the value of the text property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getText() {
+        return text;
+    }
 
-	/**
-	 * Sets the value of the text property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setText(String value) {
-		this.text = value;
-	}
+    /**
+     * Sets the value of the text property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setText(String value) {
+        this.text = value;
+    }
 
-	/**
-	 * Gets the value of the textContext property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getTextContext() {
-		return textContext;
-	}
+    /**
+     * Gets the value of the textContext property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getTextContext() {
+        return textContext;
+    }
 
-	/**
-	 * Sets the value of the textContext property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setTextContext(String value) {
-		this.textContext = value;
-	}
+    /**
+     * Sets the value of the textContext property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setTextContext(String value) {
+        this.textContext = value;
+    }
 
-	/**
-	 * Gets the value of the values property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getValues() {
-		return values;
-	}
+    /**
+     * Gets the value of the values property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getValues() {
+        return values;
+    }
 
-	/**
-	 * Sets the value of the values property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setValues(String value) {
-		this.values = value;
-	}
+    /**
+     * Sets the value of the values property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setValues(String value) {
+        this.values = value;
+    }
 
-	/**
-	 * Gets the value of the valuesContext property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getValuesContext() {
-		return valuesContext;
-	}
+    /**
+     * Gets the value of the valuesContext property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getValuesContext() {
+        return valuesContext;
+    }
 
-	/**
-	 * Sets the value of the valuesContext property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setValuesContext(String value) {
-		this.valuesContext = value;
-	}
+    /**
+     * Sets the value of the valuesContext property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setValuesContext(String value) {
+        this.valuesContext = value;
+    }
 
-	/**
-	 * Gets the value of the displayValues property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getDisplayValues() {
-		return displayValues;
-	}
+    /**
+     * Gets the value of the displayValues property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getDisplayValues() {
+        return displayValues;
+    }
 
-	/**
-	 * Sets the value of the displayValues property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setDisplayValues(String value) {
-		this.displayValues = value;
-	}
+    /**
+     * Sets the value of the displayValues property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setDisplayValues(String value) {
+        this.displayValues = value;
+    }
 
-	/**
-	 * Gets the value of the default property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getDefault() {
-		return _default;
-	}
+    /**
+     * Gets the value of the default property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getDefault() {
+        return _default;
+    }
 
-	/**
-	 * Sets the value of the default property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setDefault(String value) {
-		this._default = value;
-	}
+    /**
+     * Sets the value of the default property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setDefault(String value) {
+        this._default = value;
+    }
 
-	/**
-	 * Gets the value of the delimiter property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getDelimiter() {
-		return delimiter;
-	}
+    /**
+     * Gets the value of the delimiter property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getDelimiter() {
+        return delimiter;
+    }
 
-	/**
-	 * Sets the value of the delimiter property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setDelimiter(String value) {
-		this.delimiter = value;
-	}
+    /**
+     * Sets the value of the delimiter property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setDelimiter(String value) {
+        this.delimiter = value;
+    }
 
-	/**
-	 * Gets the value of the deleteIfEmpty property.
-	 * 
-	 * @return possible object is {@link Boolean }
-	 * 
-	 */
-	public Boolean isDeleteIfEmpty() {
-		return deleteIfEmpty;
-	}
+    /**
+     * Gets the value of the deleteIfEmpty property.
+     * 
+     * @return possible object is {@link Boolean }
+     * 
+     */
+    public Boolean isDeleteIfEmpty() {
+        return deleteIfEmpty;
+    }
 
-	/**
-	 * Sets the value of the deleteIfEmpty property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
-	 * 
-	 */
-	public void setDeleteIfEmpty(Boolean value) {
-		this.deleteIfEmpty = value;
-	}
+    /**
+     * Sets the value of the deleteIfEmpty property.
+     * 
+     * @param value
+     *            allowed object is {@link Boolean }
+     * 
+     */
+    public void setDeleteIfEmpty(Boolean value) {
+        this.deleteIfEmpty = value;
+    }
 
-	/**
-	 * Gets the value of the required property.
-	 * 
-	 * @return possible object is {@link Boolean }
-	 * 
-	 */
-	public Boolean isRequired() {
-		return required;
-	}
+    /**
+     * Gets the value of the required property.
+     * 
+     * @return possible object is {@link Boolean }
+     * 
+     */
+    public Boolean isRequired() {
+        return required;
+    }
 
-	/**
-	 * Sets the value of the required property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
-	 * 
-	 */
-	public void setRequired(Boolean value) {
-		this.required = value;
-	}
+    /**
+     * Sets the value of the required property.
+     * 
+     * @param value
+     *            allowed object is {@link Boolean }
+     * 
+     */
+    public void setRequired(Boolean value) {
+        this.required = value;
+    }
 
-	/**
-	 * Gets a map that contains attributes that aren't bound to any typed
-	 * property on this class.
-	 * 
-	 * <p>
-	 * the map is keyed by the name of the attribute and the value is the string
-	 * value of the attribute.
-	 * 
-	 * the map returned by this method is live, and you can add new attribute by
-	 * updating the map directly. Because of this design, there's no setter.
-	 * 
-	 * 
-	 * @return always non-null
-	 */
-	public Map<QName, String> getOtherAttributes() {
-		return otherAttributes;
-	}
+    /**
+     * Gets a map that contains attributes that aren't bound to any typed
+     * property on this class.
+     * 
+     * <p>
+     * the map is keyed by the name of the attribute and the value is the string
+     * value of the attribute.
+     * 
+     * the map returned by this method is live, and you can add new attribute by
+     * updating the map directly. Because of this design, there's no setter.
+     * 
+     * 
+     * @return always non-null
+     */
+    public Map<QName, String> getOtherAttributes() {
+        return otherAttributes;
+    }
 
 }

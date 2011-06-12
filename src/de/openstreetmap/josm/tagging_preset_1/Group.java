@@ -56,105 +56,105 @@ import javax.xml.namespace.QName;
 @XmlSeeAlso({ Root.class })
 public class Group {
 
-	@XmlElements({ @XmlElement(name = "item", type = Item.class),
-			@XmlElement(name = "separator", type = Separator.class),
-			@XmlElement(name = "group", type = Group.class) })
-	protected List<Object> groupOrItemOrSeparator;
-	@XmlAttribute
-	protected String name;
-	@XmlAttribute
-	protected String icon;
-	@XmlAnyAttribute
-	private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+    @XmlElements({ @XmlElement(name = "item", type = Item.class),
+            @XmlElement(name = "separator", type = Separator.class),
+            @XmlElement(name = "group", type = Group.class) })
+    protected List<Object> groupOrItemOrSeparator;
+    @XmlAttribute
+    protected String name;
+    @XmlAttribute
+    protected String icon;
+    @XmlAnyAttribute
+    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 
-	/**
-	 * Gets the value of the groupOrItemOrSeparator property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the groupOrItemOrSeparator property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getGroupOrItemOrSeparator().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list {@link Item }
-	 * {@link Separator } {@link Group }
-	 * 
-	 * 
-	 */
-	public List<Object> getGroupOrItemOrSeparator() {
-		if (groupOrItemOrSeparator == null) {
-			groupOrItemOrSeparator = new ArrayList<Object>();
-		}
-		return this.groupOrItemOrSeparator;
-	}
+    /**
+     * Gets the value of the groupOrItemOrSeparator property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list, not a
+     * snapshot. Therefore any modification you make to the returned list will
+     * be present inside the JAXB object. This is why there is not a
+     * <CODE>set</CODE> method for the groupOrItemOrSeparator property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * 
+     * <pre>
+     * getGroupOrItemOrSeparator().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list {@link Item }
+     * {@link Separator } {@link Group }
+     * 
+     * 
+     */
+    public List<Object> getGroupOrItemOrSeparator() {
+        if (groupOrItemOrSeparator == null) {
+            groupOrItemOrSeparator = new ArrayList<Object>();
+        }
+        return this.groupOrItemOrSeparator;
+    }
 
-	/**
-	 * Gets the value of the name property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * Gets the value of the name property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * Sets the value of the name property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setName(String value) {
-		this.name = value;
-	}
+    /**
+     * Sets the value of the name property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setName(String value) {
+        this.name = value;
+    }
 
-	/**
-	 * Gets the value of the icon property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getIcon() {
-		return icon;
-	}
+    /**
+     * Gets the value of the icon property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getIcon() {
+        return icon;
+    }
 
-	/**
-	 * Sets the value of the icon property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setIcon(String value) {
-		this.icon = value;
-	}
+    /**
+     * Sets the value of the icon property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setIcon(String value) {
+        this.icon = value;
+    }
 
-	/**
-	 * Gets a map that contains attributes that aren't bound to any typed
-	 * property on this class.
-	 * 
-	 * <p>
-	 * the map is keyed by the name of the attribute and the value is the string
-	 * value of the attribute.
-	 * 
-	 * the map returned by this method is live, and you can add new attribute by
-	 * updating the map directly. Because of this design, there's no setter.
-	 * 
-	 * 
-	 * @return always non-null
-	 */
-	public Map<QName, String> getOtherAttributes() {
-		return otherAttributes;
-	}
+    /**
+     * Gets a map that contains attributes that aren't bound to any typed
+     * property on this class.
+     * 
+     * <p>
+     * the map is keyed by the name of the attribute and the value is the string
+     * value of the attribute.
+     * 
+     * the map returned by this method is live, and you can add new attribute by
+     * updating the map directly. Because of this design, there's no setter.
+     * 
+     * 
+     * @return always non-null
+     */
+    public Map<QName, String> getOtherAttributes() {
+        return otherAttributes;
+    }
 
 }

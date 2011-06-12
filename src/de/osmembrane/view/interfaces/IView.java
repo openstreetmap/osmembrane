@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.interfaces;
 
 import java.awt.Window;
@@ -28,36 +26,36 @@ import de.osmembrane.view.dialogs.ExceptionDialog;
  */
 public interface IView {
 
-	/**
-	 * Shows the particular window
-	 */
-	public void showWindow();
+    /**
+     * Shows the particular window
+     */
+    public void showWindow();
 
-	/**
-	 * Hides the particular window
-	 */
-	public void hideWindow();
+    /**
+     * Hides the particular window
+     */
+    public void hideWindow();
 
-	/**
-	 * Sets the title of the particular window
-	 * 
-	 * @param viewTitle
-	 *            the new title
-	 */
-	public void setWindowTitle(String viewTitle);
+    /**
+     * Sets the title of the particular window
+     * 
+     * @param viewTitle
+     *            the new title
+     */
+    public void setWindowTitle(String viewTitle);
 
-	/**
-	 * Centers this particular frame on the screen.
-	 */
-	public void centerWindow();
+    /**
+     * Centers this particular frame on the screen.
+     */
+    public void centerWindow();
 
-	/**
-	 * Brings this window to the front.
-	 */
-	public void bringToFront();
+    /**
+     * Brings this window to the front.
+     */
+    public void bringToFront();
 
-	/**
-	 * @see Window#dispose()
-	 */
-	public void dispose();
+    /**
+     * @see Window#dispose()
+     */
+    public void dispose();
 }

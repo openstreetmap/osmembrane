@@ -9,7 +9,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -29,27 +28,27 @@ import de.osmembrane.model.pipeline.AbstractFunction;
  */
 public class EditPropertyAction extends AbstractAction {
 
-	private static final long serialVersionUID = 320672706619084111L;
+    private static final long serialVersionUID = 320672706619084111L;
 
-	/**
-	 * Creates a new {@link EditPropertyAction}
-	 */
-	public EditPropertyAction() {
-	}
+    /**
+     * Creates a new {@link EditPropertyAction}
+     */
+    public EditPropertyAction() {
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ContainingFunctionChangeParameterEvent cfcpe = (ContainingFunctionChangeParameterEvent) e;
-		AbstractFunction af = (AbstractFunction) cfcpe.getContained();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ContainingFunctionChangeParameterEvent cfcpe = (ContainingFunctionChangeParameterEvent) e;
+        AbstractFunction af = (AbstractFunction) cfcpe.getContained();
 
-		// set new parameter
-		if (cfcpe.wasNewParameterSet()) {
-			cfcpe.getChangedParameter().setValue(cfcpe.getNewParameterValue());
-		}
+        // set new parameter
+        if (cfcpe.wasNewParameterSet()) {
+            cfcpe.getChangedParameter().setValue(cfcpe.getNewParameterValue());
+        }
 
-		// set new task
-		if (cfcpe.wasNewTaskSet()) {
-			af.setActiveTask(cfcpe.getNewTask());
-		}
-	}
+        // set new task
+        if (cfcpe.wasNewTaskSet()) {
+            af.setActiveTask(cfcpe.getNewTask());
+        }
+    }
 }

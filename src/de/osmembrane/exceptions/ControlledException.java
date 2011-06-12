@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.exceptions;
 
 /**
@@ -26,81 +24,81 @@ package de.osmembrane.exceptions;
  */
 public class ControlledException extends Exception {
 
-	private static final long serialVersionUID = -5332782603656616624L;
+    private static final long serialVersionUID = -5332782603656616624L;
 
-	private Object causingObject;
+    private Object causingObject;
 
-	private ExceptionSeverity severity;
+    private ExceptionSeverity severity;
 
-	/**
-	 * Creates a new ControlledException.
-	 * 
-	 * @param causingObject
-	 *            the object which caused the exception
-	 * @param severity
-	 *            the severity of the exception
-	 * @param message
-	 *            the message associated with the exception
-	 */
-	public ControlledException(Object causingObject,
-			ExceptionSeverity severity, String message) {
-		super(message);
-		this.causingObject = causingObject;
-		this.severity = severity;
-	}
+    /**
+     * Creates a new ControlledException.
+     * 
+     * @param causingObject
+     *            the object which caused the exception
+     * @param severity
+     *            the severity of the exception
+     * @param message
+     *            the message associated with the exception
+     */
+    public ControlledException(Object causingObject,
+            ExceptionSeverity severity, String message) {
+        super(message);
+        this.causingObject = causingObject;
+        this.severity = severity;
+    }
 
-	/**
-	 * Creates a new ControlledException.
-	 * 
-	 * @param causingObject
-	 *            the object which caused the exception
-	 * @param severity
-	 *            the severity of the exception
-	 * @param cause
-	 *            the cause associated with the exception
-	 * @deprecated When only using the cause, it is not useful to create a
-	 *             separate ControlledException. Instead, <b>please give a
-	 *             describing message</b>!
-	 */
-	@Deprecated
-	public ControlledException(Object causingObject,
-			ExceptionSeverity severity, Throwable cause) {
-		super(cause);
-		this.causingObject = causingObject;
-		this.severity = severity;
-	}
+    /**
+     * Creates a new ControlledException.
+     * 
+     * @param causingObject
+     *            the object which caused the exception
+     * @param severity
+     *            the severity of the exception
+     * @param cause
+     *            the cause associated with the exception
+     * @deprecated When only using the cause, it is not useful to create a
+     *             separate ControlledException. Instead, <b>please give a
+     *             describing message</b>!
+     */
+    @Deprecated
+    public ControlledException(Object causingObject,
+            ExceptionSeverity severity, Throwable cause) {
+        super(cause);
+        this.causingObject = causingObject;
+        this.severity = severity;
+    }
 
-	/**
-	 * Creates a new ControlledException.
-	 * 
-	 * @param causingObject
-	 *            the object which caused the exception
-	 * @param severity
-	 *            the severity of the exception
-	 * @param cause
-	 *            the cause associated with the exception
-	 * @param message
-	 *            the message associated with the exception
-	 */
-	public ControlledException(Object causingObject,
-			ExceptionSeverity severity, Throwable cause, String message) {
-		super(message, cause);
-		this.causingObject = causingObject;
-		this.severity = severity;
-	}
+    /**
+     * Creates a new ControlledException.
+     * 
+     * @param causingObject
+     *            the object which caused the exception
+     * @param severity
+     *            the severity of the exception
+     * @param cause
+     *            the cause associated with the exception
+     * @param message
+     *            the message associated with the exception
+     */
+    public ControlledException(Object causingObject,
+            ExceptionSeverity severity, Throwable cause, String message) {
+        super(message, cause);
+        this.causingObject = causingObject;
+        this.severity = severity;
+    }
 
-	/**
-	 * @return the causingClass
-	 */
-	public Object getCausingObject() {
-		return causingObject;
-	}
+    /**
+     * @return the causingClass
+     */
+    public Object getCausingObject() {
+        return causingObject;
+    }
 
-	/**
-	 * @return the kind
-	 */
-	public ExceptionSeverity getKind() {
-		return severity;
-	}
+    /**
+     * @return the kind
+     */
+    public ExceptionSeverity getKind() {
+        return severity;
+    }
 
 }

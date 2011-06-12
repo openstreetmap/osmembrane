@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.panels;
 
 import java.awt.Color;
@@ -45,109 +43,109 @@ import javax.swing.JPanel;
  */
 public abstract class DisplayTemplatePanel extends JPanel {
 
-	protected static final long serialVersionUID = -2046897951374601603L;
+    protected static final long serialVersionUID = -2046897951374601603L;
 
-	/**
-	 * Map used for the prerendered objects.
-	 */
-	private static Map<Object, List<Image>> prerender;
+    /**
+     * Map used for the prerendered objects.
+     */
+    private static Map<Object, List<Image>> prerender;
 
-	/**
-	 * Internal {@link DisplayTemplatePanel} for prerendering.
-	 * (derivateDisplay() calls are only possible on instances)
-	 */
-	private static DisplayTemplatePanel prerenderPanel;
+    /**
+     * Internal {@link DisplayTemplatePanel} for prerendering.
+     * (derivateDisplay() calls are only possible on instances)
+     */
+    private static DisplayTemplatePanel prerenderPanel;
 
-	/**
-	 * Renders the correct pre-rendered display image based on template in the
-	 * given color and with the given icon.
-	 * 
-	 * @param template
-	 *            the ImageIcon to colorize and iconify
-	 * @param color
-	 *            The Color this image shall display in
-	 * @param icon
-	 *            The icon this image shall display
-	 * @return the pre-rendered Image in the color and with the icon
-	 */
-	protected Image derivateDisplay(ImageIcon template, Color color, Image icon) {
-		// copy displayTemplate to a BufferedImage
-		BufferedImage result = new BufferedImage(template.getIconWidth(),
-				template.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    /**
+     * Renders the correct pre-rendered display image based on template in the
+     * given color and with the given icon.
+     * 
+     * @param template
+     *            the ImageIcon to colorize and iconify
+     * @param color
+     *            The Color this image shall display in
+     * @param icon
+     *            The icon this image shall display
+     * @return the pre-rendered Image in the color and with the icon
+     */
+    protected Image derivateDisplay(ImageIcon template, Color color, Image icon) {
+        // copy displayTemplate to a BufferedImage
+        BufferedImage result = new BufferedImage(template.getIconWidth(),
+                template.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 
-		Graphics2D g = result.createGraphics();
-		g.drawImage(template.getImage(), 0, 0, this);
+        Graphics2D g = result.createGraphics();
+        g.drawImage(template.getImage(), 0, 0, this);
 
-		WritableRaster r = result.getRaster();
+        WritableRaster r = result.getRaster();
 
-		// Scan the lines with a float multiplication
-		float[] colorRGB = color.getColorComponents(null);
-		float[] pixelRow = new float[4 * result.getWidth()];
+        // Scan the lines with a float multiplication
+        float[] colorRGB = color.getColorComponents(null);
+        float[] pixelRow = new float[4 * result.getWidth()];
 
-		for (int y = 0; y < result.getHeight(); y++) {
-			r.getPixels(0, y, result.getWidth() - 1, 1, pixelRow);
+        for (int y = 0; y < result.getHeight(); y++) {
+            r.getPixels(0, y, result.getWidth() - 1, 1, pixelRow);
 
-			for (int x = 0; x < result.getWidth(); x++) {
-				pixelRow[4 * x + 0] *= colorRGB[0];
-				pixelRow[4 * x + 1] *= colorRGB[1];
-				pixelRow[4 * x + 2] *= colorRGB[2];
-			}
+            for (int x = 0; x < result.getWidth(); x++) {
+                pixelRow[4 * x + 0] *= colorRGB[0];
+                pixelRow[4 * x + 1] *= colorRGB[1];
+                pixelRow[4 * x + 2] *= colorRGB[2];
+            }
 
-			r.setPixels(0, y, result.getWidth() - 1, 1, pixelRow);
-		}
+            r.setPixels(0, y, result.getWidth() - 1, 1, pixelRow);
+        }
 
-		// place the icon
-		if (icon != null) {
-			g.drawImage(icon, getWidth() - (icon.getWidth(this) / 2),
-					getHeight() - (icon.getHeight(this) / 2), this);
-		}
+        // place the icon
+        if (icon != null) {
+            g.drawImage(icon, getWidth() - (icon.getWidth(this) / 2),
+                    getHeight() - (icon.getHeight(this) / 2), this);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 * Calls
-	 * {@link DisplayTemplatePanel#derivateDisplay(ImageIcon, Color, Image)} for
-	 * the object forObject and stores it in the list for forObject for quick
-	 * further access.
-	 * 
-	 * If there is already an image stored for forObject, it is overwritten. You
-	 * can easily test this by checking
-	 * {@link DisplayTemplatePanel#givePrerender(Object)} == null.
-	 * 
-	 * @param forObject
-	 *            object to identify the prerendering
-	 * @see #derivateDisplay(ImageIcon, Color, Image)
-	 * @return the immediately created Image
-	 */
-	protected static Image prerenderDisplay(Object forObject,
-			ImageIcon template, Color color, Image icon) {
-		if (prerender == null) {
-			prerender = new HashMap<Object, List<Image>>();
-		}
-		if (prerenderPanel == null) {
-			prerenderPanel = new DisplayTemplatePanel() {
-				private static final long serialVersionUID = -8556169733942717510L;
-			};
-		}
+    /**
+     * Calls
+     * {@link DisplayTemplatePanel#derivateDisplay(ImageIcon, Color, Image)} for
+     * the object forObject and stores it in the list for forObject for quick
+     * further access.
+     * 
+     * If there is already an image stored for forObject, it is overwritten. You
+     * can easily test this by checking
+     * {@link DisplayTemplatePanel#givePrerender(Object)} == null.
+     * 
+     * @param forObject
+     *            object to identify the prerendering
+     * @see #derivateDisplay(ImageIcon, Color, Image)
+     * @return the immediately created Image
+     */
+    protected static Image prerenderDisplay(Object forObject,
+            ImageIcon template, Color color, Image icon) {
+        if (prerender == null) {
+            prerender = new HashMap<Object, List<Image>>();
+        }
+        if (prerenderPanel == null) {
+            prerenderPanel = new DisplayTemplatePanel() {
+                private static final long serialVersionUID = -8556169733942717510L;
+            };
+        }
 
-		if (prerender.get(forObject) == null) {
-			prerender.put(forObject, new ArrayList<Image>());
-		}
-		Image created = prerenderPanel.derivateDisplay(template, color, icon);
-		prerender.get(forObject).add(created);
-		return created;
-	}
+        if (prerender.get(forObject) == null) {
+            prerender.put(forObject, new ArrayList<Image>());
+        }
+        Image created = prerenderPanel.derivateDisplay(template, color, icon);
+        prerender.get(forObject).add(created);
+        return created;
+    }
 
-	/**
-	 * Returns the prerendered {@link Image} created for forObject
-	 * 
-	 * @param forObject
-	 *            object to identify the prerendering
-	 * @return the prerendered images for forObject, or null if none exists
-	 */
-	protected static List<Image> givePrerender(Object forObject) {
-		return (prerender != null) ? prerender.get(forObject) : null;
-	}
+    /**
+     * Returns the prerendered {@link Image} created for forObject
+     * 
+     * @param forObject
+     *            object to identify the prerendering
+     * @return the prerendered images for forObject, or null if none exists
+     */
+    protected static List<Image> givePrerender(Object forObject) {
+        return (prerender != null) ? prerender.get(forObject) : null;
+    }
 
 }

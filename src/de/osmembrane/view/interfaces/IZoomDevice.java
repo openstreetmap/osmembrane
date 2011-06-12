@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.interfaces;
 
 /**
@@ -22,24 +20,24 @@ package de.osmembrane.view.interfaces;
  */
 public interface IZoomDevice {
 
-	/**
-	 * Zooms in
-	 */
-	public void zoomIn();
+    /**
+     * Zooms in
+     */
+    public void zoomIn();
 
-	/**
-	 * Zooms out
-	 */
-	public void zoomOut();
+    /**
+     * Zooms out
+     */
+    public void zoomOut();
 
-	/**
-	 * Resets the view to standard
-	 */
-	public void resetView();
+    /**
+     * Resets the view to standard
+     */
+    public void resetView();
 
-	/**
-	 * Shows the entire pipeline
-	 */
-	public void showEntireView();
+    /**
+     * Shows the entire pipeline
+     */
+    public void showEntireView();
 
 }

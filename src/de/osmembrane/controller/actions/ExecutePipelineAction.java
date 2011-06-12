@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -46,95 +44,96 @@ import de.osmembrane.view.interfaces.IExecutionStateDialog;
  */
 public class ExecutePipelineAction extends AbstractAction {
 
-	private static final long serialVersionUID = -173334958831335922L;
+    private static final long serialVersionUID = -173334958831335922L;
 
-	/**
-	 * Creates a new {@link ExecutePipelineAction}
-	 */
-	public ExecutePipelineAction() {
-		putValue(
-				Action.NAME,
-				I18N.getInstance().getString(
-						"Controller.Actions.ExecutePipeline.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.ExecutePipeline.Description"));
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
-				"execute_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
-				"execute_pipeline.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X,
-				HeadlessSafe.getMenuShortcutKeyMask()));
-	}
+    /**
+     * Creates a new {@link ExecutePipelineAction}
+     */
+    public ExecutePipelineAction() {
+        putValue(
+                Action.NAME,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ExecutePipeline.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.ExecutePipeline.Description"));
+        putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+                "execute_pipeline.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+                "execute_pipeline.png", Size.NORMAL));
+        putValue(
+                Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_X,
+                        HeadlessSafe.getMenuShortcutKeyMask()));
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		/* Check if the pipeline is complete */
-		if (!ModelProxy.getInstance().getPipeline().isComplete()) {
-			if (!(JOptionPane.showConfirmDialog(
-					null,
-					I18N.getInstance().getString(
-							"Controller.Actions.PipelineNotComplete"),
-					I18N.getInstance().getString(
-							"Controller.Actions.PipelineNotComplete.Title"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
-				return;
-			}
-		}
-		
-		
-		FileType type = FileType.EXECUTION_FILETYPE;
-		String pipeline = ModelProxy.getInstance().getPipeline().generate(type);
+    @SuppressWarnings("unchecked")
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-		/* the path to osmosis */
-		final String osmosisPath = (String) ModelProxy.getInstance()
-				.getSettings().getValue(SettingType.DEFAULT_OSMOSIS_PATH);
+        /* Check if the pipeline is complete */
+        if (!ModelProxy.getInstance().getPipeline().isComplete()) {
+            if (!(JOptionPane.showConfirmDialog(
+                    null,
+                    I18N.getInstance().getString(
+                            "Controller.Actions.PipelineNotComplete"),
+                    I18N.getInstance().getString(
+                            "Controller.Actions.PipelineNotComplete.Title"),
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
+                return;
+            }
+        }
 
-		/* the working directory */
-		final String workingDirectory = (String) ModelProxy.getInstance()
-				.getSettings().getValue(SettingType.DEFAULT_WORKING_DIRECTORY);
+        FileType type = FileType.EXECUTION_FILETYPE;
+        String pipeline = ModelProxy.getInstance().getPipeline().generate(type);
 
-		final List<String> parameters = new ArrayList<String>();
+        /* the path to osmosis */
+        final String osmosisPath = (String) ModelProxy.getInstance()
+                .getSettings().getValue(SettingType.DEFAULT_OSMOSIS_PATH);
 
-		/* transform the params */
-		String[] params = pipeline.split(" +");
-		for (String param : params) {
-			if (param.length() > 0) {
-				parameters.add(param);
-			}
-		}
+        /* the working directory */
+        final String workingDirectory = (String) ModelProxy.getInstance()
+                .getSettings().getValue(SettingType.DEFAULT_WORKING_DIRECTORY);
 
-		IExecutionStateDialog dialog = ViewRegistry.getInstance().getCasted(
-				ExecutionStateDialog.class, IExecutionStateDialog.class);
+        final List<String> parameters = new ArrayList<String>();
 
-		/* clear the contents of the exectuion window */
-		dialog.clear();
-		
-		Class<? extends Action> action;
-		if (e.getSource() instanceof Action) {
-			action = (Class<? extends Action>) e.getSource().getClass();
-		} else {
-			action = null;
-		}
+        /* transform the params */
+        String[] params = pipeline.split(" +");
+        for (String param : params) {
+            if (param.length() > 0) {
+                parameters.add(param);
+            }
+        }
 
-		try {
-			PipelineExecutor executor = new PipelineExecutor(osmosisPath,
-					workingDirectory, parameters, dialog);
-			executor.setCallbackAction(action);
-			executor.start();
-			dialog.showWindow();
-		} catch (IllegalArgumentException e1) {
-			Application
-					.handleException(new ControlledException(
-							this,
-							ExceptionSeverity.WARNING,
-							I18N.getInstance()
-									.getString(
-											"Controller.Actions.ExecutePipeline.OsmosisNotFound")));
-		}
+        IExecutionStateDialog dialog = ViewRegistry.getInstance().getCasted(
+                ExecutionStateDialog.class, IExecutionStateDialog.class);
 
-	}
+        /* clear the contents of the exectuion window */
+        dialog.clear();
+
+        Class<? extends Action> action;
+        if (e.getSource() instanceof Action) {
+            action = (Class<? extends Action>) e.getSource().getClass();
+        } else {
+            action = null;
+        }
+
+        try {
+            PipelineExecutor executor = new PipelineExecutor(osmosisPath,
+                    workingDirectory, parameters, dialog);
+            executor.setCallbackAction(action);
+            executor.start();
+            dialog.showWindow();
+        } catch (IllegalArgumentException e1) {
+            Application
+                    .handleException(new ControlledException(
+                            this,
+                            ExceptionSeverity.WARNING,
+                            I18N.getInstance()
+                                    .getString(
+                                            "Controller.Actions.ExecutePipeline.OsmosisNotFound")));
+        }
+
+    }
 }

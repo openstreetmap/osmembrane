@@ -9,7 +9,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -44,77 +43,82 @@ import de.osmembrane.tools.IconLoader.Size;
  */
 public class SaveAsPipelineAction extends AbstractAction {
 
-	private static final long serialVersionUID = 5036259208332239931L;
+    private static final long serialVersionUID = 5036259208332239931L;
 
-	/**
-	 * Creates a new {@link SaveAsPipelineAction}
-	 */
-	public SaveAsPipelineAction() {
-		putValue(
-				Action.NAME,
-				I18N.getInstance().getString(
-						"Controller.Actions.SaveAsPipeline.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.SaveAsPipeline.Description"));
-		putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
-				"save_pipeline.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
-				"save_pipeline.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				HeadlessSafe.getMenuShortcutKeyMask()));
-	}
+    /**
+     * Creates a new {@link SaveAsPipelineAction}
+     */
+    public SaveAsPipelineAction() {
+        putValue(
+                Action.NAME,
+                I18N.getInstance().getString(
+                        "Controller.Actions.SaveAsPipeline.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.SaveAsPipeline.Description"));
+        putValue(Action.SMALL_ICON, Resource.PROGRAM_ICON.getImageIcon(
+                "save_pipeline.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+                "save_pipeline.png", Size.NORMAL));
+        putValue(
+                Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_S,
+                        HeadlessSafe.getMenuShortcutKeyMask()));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-		File startDir = new File((String) ModelProxy.getInstance()
-				.getSettings()
-				.getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
-		JFileChooser fileChooser = new JFileChooser(startDir);
-		fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
+        File startDir = new File((String) ModelProxy.getInstance()
+                .getSettings()
+                .getValue((SettingType.DEFAULT_WORKING_DIRECTORY)));
+        JFileChooser fileChooser = new JFileChooser(startDir);
+        fileChooser.setFileFilter(FileType.OSMEMBRANE.getFileFilter());
 
-		int result = fileChooser.showSaveDialog(null);
+        int result = fileChooser.showSaveDialog(null);
 
-		if (result == JFileChooser.APPROVE_OPTION) {
+        if (result == JFileChooser.APPROVE_OPTION) {
 
-			/* check if the .osmembrane extension is missing */
-			String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-			if (!filePath.toLowerCase().endsWith(FileType.OSMEMBRANE.getExtension().toLowerCase())) {
-				filePath = filePath + FileType.OSMEMBRANE.getExtension();
-			}
+            /* check if the .osmembrane extension is missing */
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!filePath.toLowerCase().endsWith(
+                    FileType.OSMEMBRANE.getExtension().toLowerCase())) {
+                filePath = filePath + FileType.OSMEMBRANE.getExtension();
+            }
 
-			/* Check if the file does not already exists. */
-			if (new File(filePath).isFile()) {
-				int confirmResult = JOptionPane.showConfirmDialog(null,
-								I18N.getInstance().getString(
-										"Controller.Actions.File.Override"),
-								I18N.getInstance().getString("Controller.Actions.File.Override.Title"),
-								JOptionPane.YES_NO_OPTION);
-				if(confirmResult == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
-					return;
-				}
-			}
+            /* Check if the file does not already exists. */
+            if (new File(filePath).isFile()) {
+                int confirmResult = JOptionPane.showConfirmDialog(
+                        null,
+                        I18N.getInstance().getString(
+                                "Controller.Actions.File.Override"),
+                        I18N.getInstance().getString(
+                                "Controller.Actions.File.Override.Title"),
+                        JOptionPane.YES_NO_OPTION);
+                if (confirmResult == JOptionPane.NO_OPTION
+                        || result == JOptionPane.CLOSED_OPTION) {
+                    return;
+                }
+            }
 
+            /* parse the file to an URL */
+            URL file;
+            try {
+                file = new File(filePath).toURI().toURL();
+            } catch (MalformedURLException e1) {
+                file = null;
+            }
 
-			/* parse the file to an URL */
-			URL file;
-			try {
-				file = new File(filePath).toURI().toURL();
-			} catch (MalformedURLException e1) {
-				file = null;
-			}
-
-			try {
-				ModelProxy.getInstance().getPipeline().savePipeline(file);
-			} catch (FileException e1) {
-				Application.handleException(new ControlledException(this,
-						ExceptionSeverity.WARNING, e1, I18N.getInstance()
-								.getString(
-										"Controller.Actions.Save.Failed."
-												+ e1.getType())));
-			}
-		}
-	}
+            try {
+                ModelProxy.getInstance().getPipeline().savePipeline(file);
+            } catch (FileException e1) {
+                Application.handleException(new ControlledException(this,
+                        ExceptionSeverity.WARNING, e1, I18N.getInstance()
+                                .getString(
+                                        "Controller.Actions.Save.Failed."
+                                                + e1.getType())));
+            }
+        }
+    }
 }

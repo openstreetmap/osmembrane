@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.model.parser;
 
 import java.util.regex.Pattern;
@@ -22,19 +20,21 @@ import java.util.regex.Pattern;
  */
 public class CmdParser extends CommandlineParser {
 
-	protected String BREAKLINE_SYMBOL = "^";
-	protected String BREAKLINE_COMMAND = "\r\n";
-	protected String COMMENT_SYMBOL = ":: ";
-	protected Pattern[] COMMENT_PATTERNS = { Pattern.compile("::.*$", Pattern.MULTILINE),
-			Pattern.compile("^\\p{Space}*REM .*$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE) };
+    protected String BREAKLINE_SYMBOL = "^";
+    protected String BREAKLINE_COMMAND = "\r\n";
+    protected String COMMENT_SYMBOL = ":: ";
+    protected Pattern[] COMMENT_PATTERNS = {
+            Pattern.compile("::.*$", Pattern.MULTILINE),
+            Pattern.compile("^\\p{Space}*REM .*$", Pattern.CASE_INSENSITIVE
+                    | Pattern.MULTILINE) };
 
-	/**
-	 * Creates a new {@link CmdParser}.
-	 */
-	public CmdParser() {
-		super.setBreaklineSymbol(BREAKLINE_SYMBOL);
-		super.setBreaklineCommand(BREAKLINE_COMMAND);
-		super.setCommentSymbol(COMMENT_SYMBOL);
-		super.setRegexCommentPatterns(COMMENT_PATTERNS);
-	}
+    /**
+     * Creates a new {@link CmdParser}.
+     */
+    public CmdParser() {
+        super.setBreaklineSymbol(BREAKLINE_SYMBOL);
+        super.setBreaklineCommand(BREAKLINE_COMMAND);
+        super.setCommentSymbol(COMMENT_SYMBOL);
+        super.setRegexCommentPatterns(COMMENT_PATTERNS);
+    }
 }

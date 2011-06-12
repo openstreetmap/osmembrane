@@ -29,7 +29,7 @@ public class AutoCompletingComboBox extends JComboBox {
 
     /**
      * Auto-complete a JComboBox.
-     *
+     * 
      * Inspired by http://www.orbital-computer.de/JComboBox/
      */
     class AutoCompletingComboBoxDocument extends PlainDocument {
@@ -40,13 +40,16 @@ public class AutoCompletingComboBox extends JComboBox {
             this.comboBox = comboBox;
         }
 
-        @Override public void remove(int offs, int len) throws BadLocationException {
+        @Override
+        public void remove(int offs, int len) throws BadLocationException {
             if (selecting)
                 return;
             super.remove(offs, len);
         }
 
-        @Override public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+        @Override
+        public void insertString(int offs, String str, AttributeSet a)
+                throws BadLocationException {
             if (selecting || (offs == 0 && str.equals(getText(0, getLength()))))
                 return;
             boolean initial = (offs == 0 && getLength() == 0 && str.length() > 1);
@@ -64,27 +67,20 @@ public class AutoCompletingComboBox extends JComboBox {
                 return;
 
             int size = getLength();
-            int start = offs+str.length();
+            int start = offs + str.length();
             int end = start;
             String curText = getText(0, size);
 
             // if the text starts with a number we don't autocomplete
             // TODO deal with numbers
-/*
-            if (Main.pref.getBoolean("autocomplete.dont_complete_numbers", true)) {
-                try {
-                    Long.parseLong(str);
-                    if (curText.length() == 0)
-                        // we don't autocomplete on numbers
-                        return;
-                    Long.parseLong(curText);
-                    return;
-                } catch (NumberFormatException e) {
-                    // either the new text or the current text isn't a number. We continue with
-                    // autocompletion
-                }
-            }
-*/
+            /*
+             * if (Main.pref.getBoolean("autocomplete.dont_complete_numbers",
+             * true)) { try { Long.parseLong(str); if (curText.length() == 0) //
+             * we don't autocomplete on numbers return; Long.parseLong(curText);
+             * return; } catch (NumberFormatException e) { // either the new
+             * text or the current text isn't a number. We continue with //
+             * autocompletion } }
+             */
             // lookup and select a matching item
             Object item = lookupItem(curText);
             setSelectedItem(item);
@@ -93,8 +89,7 @@ public class AutoCompletingComboBox extends JComboBox {
             }
             if (item != null) {
                 String newText = ((AutoCompletionListItem) item).getValue();
-                if (!newText.equals(curText))
-                {
+                if (!newText.equals(curText)) {
                     selecting = true;
                     super.remove(0, size);
                     super.insertString(0, newText, a);
@@ -103,7 +98,8 @@ public class AutoCompletingComboBox extends JComboBox {
                     end = getLength();
                 }
             }
-            JTextComponent editor = (JTextComponent)comboBox.getEditor().getEditorComponent();
+            JTextComponent editor = (JTextComponent) comboBox.getEditor()
+                    .getEditorComponent();
             editor.setSelectionStart(start);
             editor.setSelectionEnd(end);
         }
@@ -118,12 +114,15 @@ public class AutoCompletingComboBox extends JComboBox {
             ComboBoxModel model = comboBox.getModel();
             AutoCompletionListItem bestItem = null;
             for (int i = 0, n = model.getSize(); i < n; i++) {
-                AutoCompletionListItem currentItem = (AutoCompletionListItem) model.getElementAt(i);
+                AutoCompletionListItem currentItem = (AutoCompletionListItem) model
+                        .getElementAt(i);
                 if (currentItem.getValue().equals(pattern)) {
                     return currentItem;
                 }
                 if (currentItem.getValue().startsWith(pattern)) {
-                    if (bestItem == null || currentItem.getPriority().compareTo(bestItem.getPriority()) > 0) {
+                    if (bestItem == null
+                            || currentItem.getPriority().compareTo(
+                                    bestItem.getPriority()) > 0) {
                         bestItem = currentItem;
                     }
                 }
@@ -137,42 +136,48 @@ public class AutoCompletingComboBox extends JComboBox {
      */
     public AutoCompletingComboBox() {
         setRenderer(new AutoCompleteListCellRenderer());
-        final JTextComponent editor = (JTextComponent) this.getEditor().getEditorComponent();
+        final JTextComponent editor = (JTextComponent) this.getEditor()
+                .getEditorComponent();
         editor.setDocument(new AutoCompletingComboBoxDocument(this));
-        editor.addFocusListener(
-                new FocusListener() {
-                    public void focusLost(FocusEvent e) {
-                    }
-                    public void focusGained(FocusEvent e) {
-                        editor.selectAll();
-                    }
-                }
-        );
+        editor.addFocusListener(new FocusListener() {
+            public void focusLost(FocusEvent e) {
+            }
+
+            public void focusGained(FocusEvent e) {
+                editor.selectAll();
+            }
+        });
     }
 
     /**
-     * Convert the selected item into a String
-     * that can be edited in the editor component.
-     *
-     * @param editor    the editor
-     * @param item      accepts AutoCompletionListItem, String and null
+     * Convert the selected item into a String that can be edited in the editor
+     * component.
+     * 
+     * @param editor
+     *            the editor
+     * @param item
+     *            accepts AutoCompletionListItem, String and null
      */
-    @Override public void configureEditor(ComboBoxEditor editor, Object item) {
+    @Override
+    public void configureEditor(ComboBoxEditor editor, Object item) {
         if (item == null) {
             editor.setItem(null);
         } else if (item instanceof String) {
             editor.setItem(item);
         } else if (item instanceof AutoCompletionListItem) {
-            editor.setItem(((AutoCompletionListItem)item).getValue());
+            editor.setItem(((AutoCompletionListItem) item).getValue());
         } else
             throw new IllegalArgumentException();
     }
 
     /**
      * Selects a given item in the ComboBox model
-     * @param item      accepts AutoCompletionListItem, String and null
+     * 
+     * @param item
+     *            accepts AutoCompletionListItem, String and null
      */
-    @Override public void setSelectedItem(Object item) {
+    @Override
+    public void setSelectedItem(Object item) {
         if (item == null) {
             super.setSelectedItem(null);
         } else if (item instanceof AutoCompletionListItem) {
@@ -180,14 +185,16 @@ public class AutoCompletingComboBox extends JComboBox {
         } else if (item instanceof String) {
             String s = (String) item;
             // find the string in the model or create a new item
-            for (int i=0; i< getModel().getSize(); i++) {
-                AutoCompletionListItem acItem = (AutoCompletionListItem) getModel().getElementAt(i);
+            for (int i = 0; i < getModel().getSize(); i++) {
+                AutoCompletionListItem acItem = (AutoCompletionListItem) getModel()
+                        .getElementAt(i);
                 if (s.equals(acItem.getValue())) {
                     super.setSelectedItem(acItem);
                     return;
                 }
             }
-            super.setSelectedItem(new AutoCompletionListItem(s, AutoCompletionItemPritority.UNKNOWN));
+            super.setSelectedItem(new AutoCompletionListItem(s,
+                    AutoCompletionItemPritority.UNKNOWN));
         } else
             throw new IllegalArgumentException();
     }
@@ -196,11 +203,12 @@ public class AutoCompletingComboBox extends JComboBox {
      * sets the items of the combobox to the given strings
      */
     public void setPossibleItems(Collection<String> elems) {
-        DefaultComboBoxModel model = (DefaultComboBoxModel)this.getModel();
+        DefaultComboBoxModel model = (DefaultComboBoxModel) this.getModel();
         Object oldValue = this.getEditor().getItem();
         model.removeAllElements();
         for (String elem : elems) {
-            model.addElement(new AutoCompletionListItem(elem, AutoCompletionItemPritority.UNKNOWN));
+            model.addElement(new AutoCompletionListItem(elem,
+                    AutoCompletionItemPritority.UNKNOWN));
         }
         this.getEditor().setItem(oldValue);
     }
@@ -209,7 +217,7 @@ public class AutoCompletingComboBox extends JComboBox {
      * sets the items of the combobox to the given AutoCompletionListItems
      */
     public void setPossibleACItems(Collection<AutoCompletionListItem> elems) {
-        DefaultComboBoxModel model = (DefaultComboBoxModel)this.getModel();
+        DefaultComboBoxModel model = (DefaultComboBoxModel) this.getModel();
         Object oldValue = this.getEditor().getItem();
         model.removeAllElements();
         for (AutoCompletionListItem elem : elems) {
@@ -217,7 +225,6 @@ public class AutoCompletingComboBox extends JComboBox {
         }
         this.getEditor().setItem(oldValue);
     }
-
 
     protected boolean isAutocompleteEnabled() {
         return autocompleteEnabled;
@@ -228,25 +235,21 @@ public class AutoCompletingComboBox extends JComboBox {
     }
 
     /**
-     * ListCellRenderer for AutoCompletingComboBox
-     * renders an AutoCompletionListItem by showing only the string value part
+     * ListCellRenderer for AutoCompletingComboBox renders an
+     * AutoCompletionListItem by showing only the string value part
      */
-    public static class AutoCompleteListCellRenderer extends JLabel implements ListCellRenderer {
+    public static class AutoCompleteListCellRenderer extends JLabel implements
+            ListCellRenderer {
 
-    	/**
-    	 * Creates a new instance of the cell renderer.
-    	 */
+        /**
+         * Creates a new instance of the cell renderer.
+         */
         public AutoCompleteListCellRenderer() {
             setOpaque(true);
         }
 
-        public Component getListCellRendererComponent(
-                JList list,
-                Object value,
-                int index,
-                boolean isSelected,
-                boolean cellHasFocus)
-        {
+        public Component getListCellRendererComponent(JList list, Object value,
+                int index, boolean isSelected, boolean cellHasFocus) {
             if (isSelected) {
                 setBackground(list.getSelectionBackground());
                 setForeground(list.getSelectionForeground());

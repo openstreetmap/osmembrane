@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.model.persistence;
 
 import java.net.URL;
@@ -31,37 +29,37 @@ import de.osmembrane.model.persistence.FileException.Type;
  */
 public class TaggingPresetPresistence extends AbstractPersistence {
 
-	@Override
-	public Object load(URL file) throws FileException {
-		JAXBContext jc;
-		try {
-			jc = JAXBContext
-					.newInstance("de.openstreetmap.josm.tagging_preset_1");
+    @Override
+    public Object load(URL file) throws FileException {
+        JAXBContext jc;
+        try {
+            jc = JAXBContext
+                    .newInstance("de.openstreetmap.josm.tagging_preset_1");
 
-			if (file == null) {
-				throw new FileException(Type.NOT_FOUND);
-			}
+            if (file == null) {
+                throw new FileException(Type.NOT_FOUND);
+            }
 
-			Unmarshaller u = jc.createUnmarshaller();
+            Unmarshaller u = jc.createUnmarshaller();
 
-			@SuppressWarnings("unchecked")
-			JAXBElement<Root> root = (JAXBElement<Root>) u.unmarshal(file);
+            @SuppressWarnings("unchecked")
+            JAXBElement<Root> root = (JAXBElement<Root>) u.unmarshal(file);
 
-			return root.getValue();
-		} catch (JAXBException e) {
-			throw new FileException(Type.WRONG_FORMAT, e);
-		}
-	}
+            return root.getValue();
+        } catch (JAXBException e) {
+            throw new FileException(Type.WRONG_FORMAT, e);
+        }
+    }
 
-	@Deprecated
-	@Override
-	public void save(URL file, Object data) {
-		throw new UnsupportedOperationException();
-	}
+    @Deprecated
+    @Override
+    public void save(URL file, Object data) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	@Deprecated
-	public void update(Observable o, Object arg) {
-		return;
-	}
+    @Override
+    @Deprecated
+    public void update(Observable o, Object arg) {
+        return;
+    }
 }

@@ -9,7 +9,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -31,26 +30,26 @@ import de.osmembrane.view.interfaces.IListDialog;
  */
 public class EditListPropertyAction extends AbstractAction {
 
-	private static final long serialVersionUID = 3473005271005241300L;
+    private static final long serialVersionUID = 3473005271005241300L;
 
-	/**
-	 * Creates a new {@link EditListPropertyAction}
-	 */
-	public EditListPropertyAction() {
-	}
+    /**
+     * Creates a new {@link EditListPropertyAction}
+     */
+    public EditListPropertyAction() {
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ContainingEvent ce = (ContainingEvent) e;
-		AbstractParameter ap = (AbstractParameter) ce.getContained();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ContainingEvent ce = (ContainingEvent) e;
+        AbstractParameter ap = (AbstractParameter) ce.getContained();
 
-		IListDialog list = ViewRegistry.getInstance().getCasted(
-				ListDialog.class, IListDialog.class);
+        IListDialog list = ViewRegistry.getInstance().getCasted(
+                ListDialog.class, IListDialog.class);
 
-		list.open(ap);
-		if (list.shallApplyChanges()) {
-			ap.setValue(list.getEdits());
-		}
+        list.open(ap);
+        if (list.shallApplyChanges()) {
+            ap.setValue(list.getEdits());
+        }
 
-	}
+    }
 }

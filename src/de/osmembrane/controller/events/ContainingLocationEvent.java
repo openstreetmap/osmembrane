@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.events;
 
 import java.awt.geom.Point2D;
@@ -23,37 +21,37 @@ import java.awt.geom.Point2D;
  */
 public class ContainingLocationEvent extends ContainingEvent {
 
-	private static final long serialVersionUID = -5189868477891735798L;
+    private static final long serialVersionUID = -5189868477891735798L;
 
-	/**
-	 * the location
-	 */
-	protected Point2D location;
+    /**
+     * the location
+     */
+    protected Point2D location;
 
-	/**
-	 * @see ContainingEvent#ContainingEvent(Object, Object)
-	 * @param location
-	 *            the location
-	 */
-	public ContainingLocationEvent(Object source, Object contained,
-			Point2D location) {
-		super(source, contained);
-		this.location = location;
-	}
+    /**
+     * @see ContainingEvent#ContainingEvent(Object, Object)
+     * @param location
+     *            the location
+     */
+    public ContainingLocationEvent(Object source, Object contained,
+            Point2D location) {
+        super(source, contained);
+        this.location = location;
+    }
 
-	/**
-	 * @param location
-	 *            the location to set
-	 */
-	public void setLocation(Point2D location) {
-		this.location = location;
-	}
+    /**
+     * @param location
+     *            the location to set
+     */
+    public void setLocation(Point2D location) {
+        this.location = location;
+    }
 
-	/**
-	 * @return the location
-	 */
-	public Point2D getLocation() {
-		return this.location;
-	}
+    /**
+     * @return the location
+     */
+    public Point2D getLocation() {
+        return this.location;
+    }
 
 }

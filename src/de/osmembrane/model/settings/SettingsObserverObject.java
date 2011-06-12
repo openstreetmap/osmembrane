@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.model.settings;
 
 /**
@@ -20,52 +18,52 @@ package de.osmembrane.model.settings;
  */
 public class SettingsObserverObject {
 
-	private SettingType changedEntry;
-	private AbstractSettings settingsModel;
+    private SettingType changedEntry;
+    private AbstractSettings settingsModel;
 
-	/**
-	 * @see SettingsObserverObject#SettingsObserverObject(SettingType)
-	 */
-	public SettingsObserverObject() {
-		this.changedEntry = null;
-	}
+    /**
+     * @see SettingsObserverObject#SettingsObserverObject(SettingType)
+     */
+    public SettingsObserverObject() {
+        this.changedEntry = null;
+    }
 
-	/**
-	 * Creates a new {@link SettingsObserverObject} with given changed type of
-	 * the entry.
-	 * 
-	 * @param changedEntry
-	 *            type of changed entry
-	 */
-	public SettingsObserverObject(SettingType changedEntry) {
-		this.changedEntry = changedEntry;
-	}
+    /**
+     * Creates a new {@link SettingsObserverObject} with given changed type of
+     * the entry.
+     * 
+     * @param changedEntry
+     *            type of changed entry
+     */
+    public SettingsObserverObject(SettingType changedEntry) {
+        this.changedEntry = changedEntry;
+    }
 
-	/**
-	 * Returns the type of the changed entry.
-	 * 
-	 * @return type of the changed entry
-	 */
-	public SettingType getChangedEntry() {
-		return changedEntry;
-	}
+    /**
+     * Returns the type of the changed entry.
+     * 
+     * @return type of the changed entry
+     */
+    public SettingType getChangedEntry() {
+        return changedEntry;
+    }
 
-	/**
-	 * Sets the {@link Settings}-model.
-	 * 
-	 * @param settingsModel
-	 */
-	public void setSettingsModel(Settings settingsModel) {
-		this.settingsModel = settingsModel;
-	}
+    /**
+     * Sets the {@link Settings}-model.
+     * 
+     * @param settingsModel
+     */
+    public void setSettingsModel(Settings settingsModel) {
+        this.settingsModel = settingsModel;
+    }
 
-	/**
-	 * Returns the {@link Settings}-model which is the initiator of the
-	 * notification.
-	 * 
-	 * @return the {@link Settings}-model
-	 */
-	public AbstractSettings getSettingsModel() {
-		return settingsModel;
-	}
+    /**
+     * Returns the {@link Settings}-model which is the initiator of the
+     * notification.
+     * 
+     * @return the {@link Settings}-model
+     */
+    public AbstractSettings getSettingsModel() {
+        return settingsModel;
+    }
 }

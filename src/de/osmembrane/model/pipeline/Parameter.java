@@ -9,7 +9,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.model.pipeline;
 
 import java.io.ObjectStreamException;
@@ -29,187 +28,187 @@ import de.osmembrane.tools.I18N;
  */
 public class Parameter extends AbstractParameter {
 
-	private static final long serialVersionUID = 2011011821310001L;
+    private static final long serialVersionUID = 2011011821310001L;
 
-	/**
-	 * The XML counterpart of the parameter.
-	 */
-	transient private XMLParameter xmlParam;
-	private Identifier xmlParamIdentifier;
+    /**
+     * The XML counterpart of the parameter.
+     */
+    transient private XMLParameter xmlParam;
+    private Identifier xmlParamIdentifier;
 
-	/**
-	 * The enum values for the parameter (if {@link Parameter#type} is
-	 * {@link ParameterType#ENUM}).
-	 */
-	private List<EnumValue> enumValues = new ArrayList<EnumValue>();
+    /**
+     * The enum values for the parameter (if {@link Parameter#type} is
+     * {@link ParameterType#ENUM}).
+     */
+    private List<EnumValue> enumValues = new ArrayList<EnumValue>();
 
-	/**
-	 * Parent task.
-	 */
-	private AbstractTask parentTask;
+    /**
+     * Parent task.
+     */
+    private AbstractTask parentTask;
 
-	/**
-	 * Type of the parameter.
-	 */
-	private ParameterType type;
+    /**
+     * Type of the parameter.
+     */
+    private ParameterType type;
 
-	/**
-	 * Value of the Parameter.
-	 */
-	private String value;
+    /**
+     * Value of the Parameter.
+     */
+    private String value;
 
-	/**
-	 * Constructor for a new {@link Parameter}.
-	 * 
-	 * @param xmlParam
-	 *            XML counterpart which should be represented by the
-	 *            {@link Parameter}.
-	 */
-	public Parameter(AbstractTask parentTask, XMLParameter xmlParam) {
-		this.type = ParameterType.parseString(xmlParam.getType());
-		this.value = null;
-		this.xmlParam = xmlParam;
-		this.parentTask = parentTask;
+    /**
+     * Constructor for a new {@link Parameter}.
+     * 
+     * @param xmlParam
+     *            XML counterpart which should be represented by the
+     *            {@link Parameter}.
+     */
+    public Parameter(AbstractTask parentTask, XMLParameter xmlParam) {
+        this.type = ParameterType.parseString(xmlParam.getType());
+        this.value = null;
+        this.xmlParam = xmlParam;
+        this.parentTask = parentTask;
 
-		/* set the identifiers */
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
-		this.xmlParamIdentifier = afp
-				.getMatchingXMLParameterIdentifier(this.xmlParam);
+        /* set the identifiers */
+        AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
+        this.xmlParamIdentifier = afp
+                .getMatchingXMLParameterIdentifier(this.xmlParam);
 
-		/* create enum values */
-		for (XMLEnumValue xmlEnum : xmlParam.getEnumValue()) {
-			enumValues.add(new EnumValue(xmlEnum));
-		}
-	}
+        /* create enum values */
+        for (XMLEnumValue xmlEnum : xmlParam.getEnumValue()) {
+            enumValues.add(new EnumValue(xmlEnum));
+        }
+    }
 
-	@Override
-	public AbstractTask getParent() {
-		return parentTask;
-	}
+    @Override
+    public AbstractTask getParent() {
+        return parentTask;
+    }
 
-	@Override
-	public String getName() {
-		return xmlParam.getName();
-	}
+    @Override
+    public String getName() {
+        return xmlParam.getName();
+    }
 
-	@Override
-	public String getFriendlyName() {
-		/* fallback when friendlyName is not available */
-		if (xmlParam.getFriendlyName() == null) {
-			return getName();
-		}
+    @Override
+    public String getFriendlyName() {
+        /* fallback when friendlyName is not available */
+        if (xmlParam.getFriendlyName() == null) {
+            return getName();
+        }
 
-		return xmlParam.getFriendlyName();
-	}
+        return xmlParam.getFriendlyName();
+    }
 
-	@Override
-	public String getDescription() {
-		return I18N.getInstance().getDescription(xmlParam);
-	}
+    @Override
+    public String getDescription() {
+        return I18N.getInstance().getDescription(xmlParam);
+    }
 
-	@Override
-	public ParameterType getType() {
-		return type;
-	}
+    @Override
+    public ParameterType getType() {
+        return type;
+    }
 
-	@Override
-	public AbstractEnumValue[] getEnumValue() {
-		EnumValue[] values = new EnumValue[enumValues.size()];
-		return enumValues.toArray(values);
-	}
+    @Override
+    public AbstractEnumValue[] getEnumValue() {
+        EnumValue[] values = new EnumValue[enumValues.size()];
+        return enumValues.toArray(values);
+    }
 
-	@Override
-	public String getListType() {
-		return xmlParam.getListType();
-	}
+    @Override
+    public String getListType() {
+        return xmlParam.getListType();
+    }
 
-	@Override
-	public String getDefaultValue() {
-		return xmlParam.getDefaultValue();
-	}
+    @Override
+    public String getDefaultValue() {
+        return xmlParam.getDefaultValue();
+    }
 
-	@Override
-	public boolean isDefaultValue() {
-		return (getValue() == null);
-	}
+    @Override
+    public boolean isDefaultValue() {
+        return (getValue() == null);
+    }
 
-	@Override
-	public String getValue() {
-		return value;
-	}
+    @Override
+    public String getValue() {
+        return value;
+    }
 
-	@Override
-	public boolean setValue(String value) {
-		if(this.getType().isStringEmpty(value)) {
-			this.value = null;
-		} else {
-			this.value = value;
-		}
+    @Override
+    public boolean setValue(String value) {
+        if (this.getType().isStringEmpty(value)) {
+            this.value = null;
+        } else {
+            this.value = value;
+        }
 
-		setChanged();
-		notifyObservers();
+        setChanged();
+        notifyObservers();
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public boolean validate(String value) {
-		switch (this.getType()) {
-		case ENUM:
-			for(AbstractEnumValue enumValue : getEnumValue()) {
-				if(enumValue.getValue().equals(value)) {
-					return true;
-				}
-			}
-			break;
+    @Override
+    public boolean validate(String value) {
+        switch (this.getType()) {
+        case ENUM:
+            for (AbstractEnumValue enumValue : getEnumValue()) {
+                if (enumValue.getValue().equals(value)) {
+                    return true;
+                }
+            }
+            break;
 
-		default:
-			return this.getType().validate(value);
-		}
-		
-		return false;
-	}
+        default:
+            return this.getType().validate(value);
+        }
 
-	@Override
-	public boolean isValid() {
-		if (getValue() != null) {
-			return validate(getValue());
-		} else {
-			return validate(getDefaultValue());
-		}
-	}
-	
-	@Override
-	public boolean isRequired() {
-		return xmlParam.isRequired();
-	}
+        return false;
+    }
 
-	@Override
-	public boolean isDefaultParameter() {
-		return xmlParam.isDefaultParameter();
-	}
+    @Override
+    public boolean isValid() {
+        if (getValue() != null) {
+            return validate(getValue());
+        } else {
+            return validate(getDefaultValue());
+        }
+    }
 
-	@Override
-	public boolean hasSpaces() {
-		return xmlParam.isHasSpaces();
-	}
+    @Override
+    public boolean isRequired() {
+        return xmlParam.isRequired();
+    }
 
-	@Override
-	public Parameter copy(CopyType type, AbstractTask task) {
-		Parameter newParam = new Parameter(task, this.xmlParam);
+    @Override
+    public boolean isDefaultParameter() {
+        return xmlParam.isDefaultParameter();
+    }
 
-		/* copy the param-value */
-		if (type.copyValues()) {
-			newParam.value = this.value;
-		}
+    @Override
+    public boolean hasSpaces() {
+        return xmlParam.isHasSpaces();
+    }
 
-		return newParam;
-	}
+    @Override
+    public Parameter copy(CopyType type, AbstractTask task) {
+        Parameter newParam = new Parameter(task, this.xmlParam);
 
-	private Object readResolve() throws ObjectStreamException {
-		AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
-		this.xmlParam = afp.getMatchingXMLParameter(this.xmlParamIdentifier);
+        /* copy the param-value */
+        if (type.copyValues()) {
+            newParam.value = this.value;
+        }
 
-		return this;
-	}
+        return newParam;
+    }
+
+    private Object readResolve() throws ObjectStreamException {
+        AbstractFunctionPrototype afp = ModelProxy.getInstance().getFunctions();
+        this.xmlParam = afp.getMatchingXMLParameter(this.xmlParamIdentifier);
+
+        return this;
+    }
 }

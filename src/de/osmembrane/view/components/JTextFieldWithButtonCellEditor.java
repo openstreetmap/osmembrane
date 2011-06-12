@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.components;
 
 import java.awt.Component;
@@ -27,33 +25,33 @@ import javax.swing.table.TableCellEditor;
  * 
  */
 public class JTextFieldWithButtonCellEditor extends AbstractCellEditor
-		implements TableCellEditor {
+        implements TableCellEditor {
 
-	private static final long serialVersionUID = 5432943873776422277L;
+    private static final long serialVersionUID = 5432943873776422277L;
 
-	/**
-	 * {@link JTextFieldWithButton} to be stored and edited
-	 */
-	private JTextFieldWithButton jtfwb;
+    /**
+     * {@link JTextFieldWithButton} to be stored and edited
+     */
+    private JTextFieldWithButton jtfwb;
 
-	/**
-	 * Creates a new {@link JTextFieldWithButtonCellEditor} for jtfwb
-	 * 
-	 * @param jtfwb
-	 */
-	public JTextFieldWithButtonCellEditor(JTextFieldWithButton jtfwb) {
-		this.jtfwb = jtfwb;
-	}
+    /**
+     * Creates a new {@link JTextFieldWithButtonCellEditor} for jtfwb
+     * 
+     * @param jtfwb
+     */
+    public JTextFieldWithButtonCellEditor(JTextFieldWithButton jtfwb) {
+        this.jtfwb = jtfwb;
+    }
 
-	@Override
-	public Object getCellEditorValue() {
-		return jtfwb.getValue();
-	}
+    @Override
+    public Object getCellEditorValue() {
+        return jtfwb.getValue();
+    }
 
-	@Override
-	public Component getTableCellEditorComponent(JTable table, Object value,
-			boolean isSelected, int row, int column) {
-		return jtfwb;
-	}
+    @Override
+    public Component getTableCellEditorComponent(JTable table, Object value,
+            boolean isSelected, int row, int column) {
+        return jtfwb;
+    }
 
 }

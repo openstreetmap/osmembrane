@@ -12,28 +12,28 @@ import java.awt.event.KeyEvent;
  * @author Igor Podolskiy
  */
 public class HeadlessSafe {
-	/**
-	 * Returns the default shortcut key mask of the given toolkit, or CTRL_MASK
-	 * in a headless environment.
-	 * 
-	 * @param tk
-	 *            the toolkit to get the shortcut key mask for.
-	 * @return the shortcut key mask.
-	 */
-	public static int getMenuShortcutKeyMask(Toolkit tk) {
-		if (GraphicsEnvironment.isHeadless()) {
-			return KeyEvent.CTRL_MASK;
-		}
+    /**
+     * Returns the default shortcut key mask of the given toolkit, or CTRL_MASK
+     * in a headless environment.
+     * 
+     * @param tk
+     *            the toolkit to get the shortcut key mask for.
+     * @return the shortcut key mask.
+     */
+    public static int getMenuShortcutKeyMask(Toolkit tk) {
+        if (GraphicsEnvironment.isHeadless()) {
+            return KeyEvent.CTRL_MASK;
+        }
 
-		return tk.getMenuShortcutKeyMask();
-	}
+        return tk.getMenuShortcutKeyMask();
+    }
 
-	/**
-	 * Get the shortcut key mask for the default toolkit.
-	 * 
-	 * @return
-	 */
-	public static int getMenuShortcutKeyMask() {
-		return getMenuShortcutKeyMask(Toolkit.getDefaultToolkit());
-	}
+    /**
+     * Get the shortcut key mask for the default toolkit.
+     * 
+     * @return
+     */
+    public static int getMenuShortcutKeyMask() {
+        return getMenuShortcutKeyMask(Toolkit.getDefaultToolkit());
+    }
 }

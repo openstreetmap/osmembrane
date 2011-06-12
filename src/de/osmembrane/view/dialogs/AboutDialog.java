@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.view.dialogs;
 
 import java.awt.BorderLayout;
@@ -35,42 +33,41 @@ import de.osmembrane.view.AbstractDialog;
  */
 public class AboutDialog extends AbstractDialog {
 
-	private static final long serialVersionUID = 525351301396477062L;
+    private static final long serialVersionUID = 525351301396477062L;
 
-	/**
-	 * Creates a new {@link AboutDialog}.
-	 */
-	public AboutDialog(Window owner) {
-		super(owner);
-		setLayout(new BorderLayout());
+    /**
+     * Creates a new {@link AboutDialog}.
+     */
+    public AboutDialog(Window owner) {
+        super(owner);
+        setLayout(new BorderLayout());
 
-		JLabel splash = new JLabel(new ImageIcon(this.getClass().getResource(
-				"/de/osmembrane/resources/images/splash.png")));
-		add(splash, BorderLayout.NORTH);
+        JLabel splash = new JLabel(new ImageIcon(this.getClass().getResource(
+                "/de/osmembrane/resources/images/splash.png")));
+        add(splash, BorderLayout.NORTH);
 
-		JEditorPane infoText = new JEditorPane();
-		infoText.setContentType("text/html");
-		infoText.setEditable(false);
-		infoText.setText(
-				I18N.getInstance().getString(
-						"View.AboutDialog.BuildInfo", 
-						Constants.VERSION, Constants.REVISION_ID) + "\n" +
-				I18N.getInstance().getString("View.AboutDialog.Info"));
-		add(infoText, BorderLayout.CENTER);
+        JEditorPane infoText = new JEditorPane();
+        infoText.setContentType("text/html");
+        infoText.setEditable(false);
+        infoText.setText(I18N.getInstance().getString(
+                "View.AboutDialog.BuildInfo", Constants.VERSION,
+                Constants.REVISION_ID)
+                + "\n" + I18N.getInstance().getString("View.AboutDialog.Info"));
+        add(infoText, BorderLayout.CENTER);
 
-		JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
-		okButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				hideWindow();
-			}
-		});
-		
-		add(okButton, BorderLayout.SOUTH);
-		setTitle(I18N.getInstance().getString("View.AboutDialog"));
+        JButton okButton = new JButton(I18N.getInstance().getString("View.OK"));
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hideWindow();
+            }
+        });
 
-		pack();
-		centerWindow();
-	}
+        add(okButton, BorderLayout.SOUTH);
+        setTitle(I18N.getInstance().getString("View.AboutDialog"));
+
+        pack();
+        centerWindow();
+    }
 
 }

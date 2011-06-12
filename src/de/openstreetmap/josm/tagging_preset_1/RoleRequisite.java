@@ -35,26 +35,26 @@ import javax.xml.bind.annotation.XmlType;
 @SuppressWarnings(value = "all")
 public enum RoleRequisite {
 
-	@XmlEnumValue("required")
-	REQUIRED("required"), @XmlEnumValue("optional")
-	OPTIONAL("optional");
-	private final String value;
+    @XmlEnumValue("required")
+    REQUIRED("required"), @XmlEnumValue("optional")
+    OPTIONAL("optional");
+    private final String value;
 
-	RoleRequisite(String v) {
-		value = v;
-	}
+    RoleRequisite(String v) {
+        value = v;
+    }
 
-	public String value() {
-		return value;
-	}
+    public String value() {
+        return value;
+    }
 
-	public static RoleRequisite fromValue(String v) {
-		for (RoleRequisite c : RoleRequisite.values()) {
-			if (c.value.equals(v)) {
-				return c;
-			}
-		}
-		throw new IllegalArgumentException(v);
-	}
+    public static RoleRequisite fromValue(String v) {
+        for (RoleRequisite c : RoleRequisite.values()) {
+            if (c.value.equals(v)) {
+                return c;
+            }
+        }
+        throw new IllegalArgumentException(v);
+    }
 
 }

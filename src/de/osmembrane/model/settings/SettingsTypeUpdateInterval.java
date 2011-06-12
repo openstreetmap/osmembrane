@@ -17,31 +17,31 @@ package de.osmembrane.model.settings;
  * @author jakob_jarosch
  */
 public enum SettingsTypeUpdateInterval {
-	/** once a day */
-	ONCE_A_DAY(new Long(24 * 60 * 60)),
-	/** once a week */
-	ONCE_A_WEEK(new Long(7 * 24 * 60 * 60)),
-	/** never */
-	NEVER(new Long(0));
+    /** once a day */
+    ONCE_A_DAY(new Long(24 * 60 * 60)),
+    /** once a week */
+    ONCE_A_WEEK(new Long(7 * 24 * 60 * 60)),
+    /** never */
+    NEVER(new Long(0));
 
-	private Long timeDiff;
+    private Long timeDiff;
 
-	/**
-	 * Creates a new {@link SettingsTypeUpdateInterval}.
-	 * 
-	 * @param timeDiff
-	 *            interval described in seconds
-	 */
-	SettingsTypeUpdateInterval(Long timeDiff) {
-		this.timeDiff = timeDiff;
-	}
+    /**
+     * Creates a new {@link SettingsTypeUpdateInterval}.
+     * 
+     * @param timeDiff
+     *            interval described in seconds
+     */
+    SettingsTypeUpdateInterval(Long timeDiff) {
+        this.timeDiff = timeDiff;
+    }
 
-	/**
-	 * Returns the gap between two updates.
-	 * 
-	 * @return gap in seconds.
-	 */
-	public Long getTimeDiff() {
-		return timeDiff;
-	}
+    /**
+     * Returns the gap between two updates.
+     * 
+     * @return gap in seconds.
+     */
+    public Long getTimeDiff() {
+        return timeDiff;
+    }
 }

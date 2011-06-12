@@ -9,7 +9,6 @@
  * Last changed: $Date$
  */
 
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -41,52 +40,54 @@ import de.osmembrane.view.panels.PipelineFunction;
  */
 public class DuplicateFunctionAction extends AbstractAction {
 
-	private static final long serialVersionUID = -592625521848954610L;
+    private static final long serialVersionUID = -592625521848954610L;
 
-	/**
-	 * Creates a new {@link DuplicateFunctionAction}
-	 */
-	public DuplicateFunctionAction() {
-		putValue(
-				Action.NAME,
-				I18N.getInstance().getString(
-						"Controller.Actions.DuplicateFunction.Name"));
-		putValue(
-				Action.SHORT_DESCRIPTION,
-				I18N.getInstance().getString(
-						"Controller.Actions.DuplicateFunction.Description"));
-		putValue(Action.SMALL_ICON,
-				Resource.PROGRAM_ICON.getImageIcon("duplicate.png", Size.SMALL));
-		putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
-				"duplicate.png", Size.NORMAL));
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D,
-				HeadlessSafe.getMenuShortcutKeyMask()));
-		setEnabled(false);
-	}
+    /**
+     * Creates a new {@link DuplicateFunctionAction}
+     */
+    public DuplicateFunctionAction() {
+        putValue(
+                Action.NAME,
+                I18N.getInstance().getString(
+                        "Controller.Actions.DuplicateFunction.Name"));
+        putValue(
+                Action.SHORT_DESCRIPTION,
+                I18N.getInstance().getString(
+                        "Controller.Actions.DuplicateFunction.Description"));
+        putValue(Action.SMALL_ICON,
+                Resource.PROGRAM_ICON.getImageIcon("duplicate.png", Size.SMALL));
+        putValue(Action.LARGE_ICON_KEY, Resource.PROGRAM_ICON.getImageIcon(
+                "duplicate.png", Size.NORMAL));
+        putValue(
+                Action.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_D,
+                        HeadlessSafe.getMenuShortcutKeyMask()));
+        setEnabled(false);
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
-				MainFrame.class, IMainFrame.class);
-		Object selected = mainFrame.getSelected();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        IMainFrame mainFrame = ViewRegistry.getInstance().getCasted(
+                MainFrame.class, IMainFrame.class);
+        Object selected = mainFrame.getSelected();
 
-		if (selected != null) {
-			if (selected instanceof PipelineFunction) {
-				PipelineFunction pf = (PipelineFunction) selected;
+        if (selected != null) {
+            if (selected instanceof PipelineFunction) {
+                PipelineFunction pf = (PipelineFunction) selected;
 
-				// create new duplicate
-				AbstractFunction duplicate = pf.getModelFunction().copy(
-						CopyType.COPY_ALL);
+                // create new duplicate
+                AbstractFunction duplicate = pf.getModelFunction().copy(
+                        CopyType.COPY_ALL);
 
-				// set its location
-				Point2D duplLoc = duplicate.getCoordinate();
-				duplicate.setCoordinate(new Point2D.Double(duplLoc.getX() + 1.0
-						* Math.random() * pf.getPreferredSize().width, duplLoc
-						.getY() + 1.1 * pf.getPreferredSize().height));
+                // set its location
+                Point2D duplLoc = duplicate.getCoordinate();
+                duplicate.setCoordinate(new Point2D.Double(duplLoc.getX() + 1.0
+                        * Math.random() * pf.getPreferredSize().width, duplLoc
+                        .getY() + 1.1 * pf.getPreferredSize().height));
 
-				// add it
-				ModelProxy.getInstance().getPipeline().addFunction(duplicate);
-			}
-		}
-	}
+                // add it
+                ModelProxy.getInstance().getPipeline().addFunction(duplicate);
+            }
+        }
+    }
 }

@@ -3,28 +3,31 @@ package org.openstreetmap.josm.gui.tagging.ac;
 
 /**
  * Represents an entry in the list of auto completion values.
- *
- *  An AutoCompletionListItem has a <em>priority</em> and a <em>value</em>.
- *
- *  The priority helps to sort the auto completion items according to their importance. For instance,
- *  in an auto completion list for tag names, standard tag names would be assigned a higher
- *  priority than arbitrary tag names present in the current data set. There are three priority levels,
- *  defined in {@link AutoCompletionItemPritority}.
- *
+ * 
+ * An AutoCompletionListItem has a <em>priority</em> and a <em>value</em>.
+ * 
+ * The priority helps to sort the auto completion items according to their
+ * importance. For instance, in an auto completion list for tag names, standard
+ * tag names would be assigned a higher priority than arbitrary tag names
+ * present in the current data set. There are three priority levels, defined in
+ * {@link AutoCompletionItemPritority}.
+ * 
  * The value is a string which will be displayed in the auto completion list.
- *
+ * 
  */
-public class AutoCompletionListItem implements Comparable<AutoCompletionListItem>{
+public class AutoCompletionListItem implements
+        Comparable<AutoCompletionListItem> {
 
     /** the pritority of this item */
-    private  AutoCompletionItemPritority priority;
+    private AutoCompletionItemPritority priority;
     /** the value of this item */
     private String value;
 
     /**
      * constructor
      */
-    public AutoCompletionListItem(String value, AutoCompletionItemPritority priority) {
+    public AutoCompletionListItem(String value,
+            AutoCompletionItemPritority priority) {
         this.value = value;
         this.priority = priority;
     }
@@ -32,7 +35,8 @@ public class AutoCompletionListItem implements Comparable<AutoCompletionListItem
     /**
      * Creates a new AC list item with the given value and an unknown priority.
      * 
-     * @param value the string value fo the item
+     * @param value
+     *            the string value fo the item
      */
     public AutoCompletionListItem(String value) {
         this.value = value;
@@ -47,9 +51,8 @@ public class AutoCompletionListItem implements Comparable<AutoCompletionListItem
         priority = AutoCompletionItemPritority.UNKNOWN;
     }
 
-
     /**
-     *
+     * 
      * @return the priority
      */
     public AutoCompletionItemPritority getPriority() {
@@ -58,14 +61,16 @@ public class AutoCompletionListItem implements Comparable<AutoCompletionListItem
 
     /**
      * sets the priority
-     * @param priority  the priority
+     * 
+     * @param priority
+     *            the priority
      */
     public void setPriority(AutoCompletionItemPritority priority) {
         this.priority = priority;
     }
 
     /**
-     *
+     * 
      * @return the value
      */
     public String getValue() {
@@ -74,16 +79,21 @@ public class AutoCompletionListItem implements Comparable<AutoCompletionListItem
 
     /**
      * sets the value
-     * @param value the value; must not be null
-     * @exception IllegalArgumentException thrown, if value if null
+     * 
+     * @param value
+     *            the value; must not be null
+     * @exception IllegalArgumentException
+     *                thrown, if value if null
      */
     public void setValue(String value) {
         if (value == null)
-            throw new IllegalArgumentException("argument 'value' must not be null");
+            throw new IllegalArgumentException(
+                    "argument 'value' must not be null");
         this.value = value;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("<val='");
         sb.append(value);
@@ -93,23 +103,25 @@ public class AutoCompletionListItem implements Comparable<AutoCompletionListItem
         return sb.toString();
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result
-        + ((priority == null) ? 0 : priority.hashCode());
+                + ((priority == null) ? 0 : priority.hashCode());
         result = prime * result + ((value == null) ? 0 : value.hashCode());
         return result;
     }
 
-    @Override public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final AutoCompletionListItem other = (AutoCompletionListItem)obj;
+        final AutoCompletionListItem other = (AutoCompletionListItem) obj;
         if (priority == null) {
             if (other.priority != null)
                 return false;

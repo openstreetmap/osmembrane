@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane.controller.actions;
 
 import java.awt.event.ActionEvent;
@@ -34,26 +32,26 @@ import de.osmembrane.tools.I18N;
  */
 public class AddConnectionAction extends AbstractAction {
 
-	private static final long serialVersionUID = -4952578414694320718L;
+    private static final long serialVersionUID = -4952578414694320718L;
 
-	/**
-	 * Creates a new {@link AddConnectionAction}
-	 */
-	public AddConnectionAction() {
-	}
+    /**
+     * Creates a new {@link AddConnectionAction}
+     */
+    public AddConnectionAction() {
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ConnectingFunctionsEvent cfe = (ConnectingFunctionsEvent) e;
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ConnectingFunctionsEvent cfe = (ConnectingFunctionsEvent) e;
 
-		try {
-			cfe.getConnectionSource().addConnectionTo(
-					cfe.getConnectionDestination());
-		} catch (ConnectorException e1) {
-			Application.handleException(new ControlledException(this,
-					ExceptionSeverity.WARNING, I18N.getInstance().getString(
-							"Model.Pipeline.AddConnection." + e1.getType())));
+        try {
+            cfe.getConnectionSource().addConnectionTo(
+                    cfe.getConnectionDestination());
+        } catch (ConnectorException e1) {
+            Application.handleException(new ControlledException(this,
+                    ExceptionSeverity.WARNING, I18N.getInstance().getString(
+                            "Model.Pipeline.AddConnection." + e1.getType())));
 
-		}
-	}
+        }
+    }
 }

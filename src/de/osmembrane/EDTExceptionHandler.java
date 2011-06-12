@@ -9,8 +9,6 @@
  * Last changed: $Date$
  */
 
-
-
 package de.osmembrane;
 
 import de.osmembrane.view.dialogs.ExceptionDialog;
@@ -26,14 +24,14 @@ import de.osmembrane.view.dialogs.ExceptionDialog;
  */
 public class EDTExceptionHandler {
 
-	/**
-	 * Handles exceptions thrown by the EDT of Swing
-	 * 
-	 * @param t
-	 *            the {@link Throwable} to catch
-	 */
-	public void handle(Throwable t) {
-		Application.handleException(t);
-	}
+    /**
+     * Handles exceptions thrown by the EDT of Swing
+     * 
+     * @param t
+     *            the {@link Throwable} to catch
+     */
+    public void handle(Throwable t) {
+        Application.handleException(t);
+    }
 
 }
