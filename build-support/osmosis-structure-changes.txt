@@ -1,5 +1,0 @@
-Changes between 0.37 and 0.38
-
-add> --read-bin
-add> --write-bin
-rem> --fast-write-pgsql

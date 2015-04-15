@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: de.osmembrane.Main
-SplashScreen-Image: de/osmembrane/resources/images/splash.png
-
