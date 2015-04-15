@@ -1,4 +1,6 @@
-/build
-/dist
-/bin
 *~
+target/
+.project
+.classpath
+.settings/
+*.DS_Store
