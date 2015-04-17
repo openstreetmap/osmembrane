@@ -1,8 +1,19 @@
 
 language: java
+sudo: no
 
 jdk:
-  - oraclejdk8
+- oraclejdk8
 
 before_install:
 - make dependencies
+
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: "E+5kzuDWLLSTeShg1VDRrFHNQ/Slg/DrikU8LECryjeqxKMk0rqDPsEOtuaybnNbuT18X24GcZOQMb0/PVGBO5SgfpUDR27+Hh8R6T6M8mduDoyfcj2WAZ3zPsLBKym88rIMNC0cY1pP0SzwE3lwIWnZFlUq1nSEoEQrTZZ+DAc="
+  file: target/OSMembrane.jar
+  on:
+    tags: true
+    all_branches: true
