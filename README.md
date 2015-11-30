@@ -1,6 +1,8 @@
 # OSMembrane - The GUI for [osmosis](https://github.com/openstreetmap/osmosis) [![Build Status](https://travis-ci.org/openstreetmap/OSMembrane.svg?branch=master)](https://travis-ci.org/openstreetmap/OSMembrane)
 OSMembrane is a frontend to the Osmosis data processing tool. It helps by grouping tasks in functions and shows a visual representation of the pipeline. Additionally, it features a bounding box chooser and an AutoComplete list of key/key.value lists imported from JOSM.
 
+![screenshot](http://wiki.openstreetmap.org/w/images/thumb/0/09/OSMembraneThumb.png/640px-OSMembraneThumb.png)
+
 ## Install the current version
 A build of a recent version is always available on GitHub, you can download it [here](https://github.com/openstreetmap/OSMembrane/releases).
 
