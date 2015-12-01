@@ -3,4 +3,7 @@ target/
 .project
 .classpath
 .settings/
+.idea/
+.vagrant/
+*.iml
 *.DS_Store
