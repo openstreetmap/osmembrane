@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <XMLOsmosisStructure xmlns="http://osmembrane.de/model/xml"
-                     formatVersion="1.0.0" osmosisVersion="0.38">
+                     formatVersion="1.0.0" osmosisVersion="0.45">
     <functionGroup id="input-output" friendlyName="Input &amp; Output" color="255, 239, 0">
         <function id="read" friendlyName="Read Entity Tasks">
             <task name="read-xml" friendlyName="Read OSM XML" shortName="rx">
@@ -37,7 +37,8 @@
                         </value>
                     </description>
                 </parameter>
-                <parameter name="compressionMethod" type="enum" defaultValue="none">
+                <parameter name="compressionMethod" type="enum" defaultValue="auto">
+                    <enumValue value="auto"/>
                     <enumValue value="none" friendlyName="None"/>
                     <enumValue value="gzip"/>
                     <enumValue value="bzip2"/>
@@ -95,7 +96,8 @@
                         </value>
                     </description>
                 </parameter>
-                <parameter name="compressionMethod" type="enum" defaultValue="none">
+                <parameter name="compressionMethod" type="enum" defaultValue="auto">
+                    <enumValue value="auto"/>
                     <enumValue value="none" friendlyName="None"/>
                     <enumValue value="gzip"/>
                     <enumValue value="bzip2"/>
@@ -363,9 +365,9 @@
                     <value>Reads the current contents of an OSM binary file.</value>
                 </description>
             </task>
-            <task name="read-bin" shortName="rb">
+            <task name="read-pbf-fast" shortName="rbf">
                 <outputPipe index="0" count="single" type="entity"/>
-                <parameter name="file" defaultParameter="true" defaultValue="dump.osmbin" type="filename">
+                <parameter name="file" defaultParameter="true" defaultValue="dump.osm.pbf" type="filename">
                     <description lang="de">
                         <value>Der Name der zu lesenden Datei.</value>
                     </description>
@@ -373,11 +375,15 @@
                         <value>The name of the file to be read.</value>
                     </description>
                 </parameter>
-                <description lang="de">
-                    <value>Liest den aktuellen Inhalt von einer OSM-Binärdatei.</value>
-                </description>
+                <parameter name="workers" defaultParameter="false" defaultValue="1" type="int">
+                    <description lang="en">
+                        <value>The number of worker threads to use.</value>
+                    </description>
+                </parameter>
                 <description lang="en">
-                    <value>Reads the current contents of an OSM binary file.</value>
+                    <value>Reads the current contents of an OSM binary file. This is the same as the standard --read-pbf
+                        task except that it allows multiple worker threads to be utilised to improve performance.
+                    </value>
                 </description>
             </task>
             <task name="read-api" shortName="ra">
@@ -448,7 +454,8 @@
                         </value>
                     </description>
                 </parameter>
-                <parameter name="compressionMethod" type="enum" defaultValue="none">
+                <parameter name="compressionMethod" type="enum" defaultValue="auto">
+                    <enumValue value="auto"/>
                     <enumValue value="none" friendlyName="None"/>
                     <enumValue value="gzip"/>
                     <enumValue value="bzip2"/>
@@ -728,7 +735,8 @@
                         <value>The name of the osm file to be written, "-" means STDOUT.</value>
                     </description>
                 </parameter>
-                <parameter name="compressionMethod" type="enum" defaultValue="none">
+                <parameter name="compressionMethod" type="enum" defaultValue="auto">
+                    <enumValue value="auto"/>
                     <enumValue value="none" friendlyName="None"/>
                     <enumValue value="gzip"/>
                     <enumValue value="bzip2"/>
@@ -967,104 +975,6 @@
                     <value>Writes data to an OSM binary file.</value>
                 </description>
             </task>
-            <task name="write-bin" shortName="wb">
-                <inputPipe index="0" count="single" type="entity"/>
-                <parameter name="file" defaultParameter="true" defaultValue="dump.osmbin" type="filename">
-                    <description lang="de">
-                        <value>Der Name der Datei, die geschrieben werden soll.</value>
-                    </description>
-                    <description lang="en">
-                        <value>The name of the file to be written.</value>
-                    </description>
-                </parameter>
-                <parameter name="batchlimit" required="false" type="int" defaultValue="8000" defaultParameter="false">
-                    <description lang="de">
-                        <value>Blockgröße, die bei der Kompression genutzt werden soll. Dies ist ein vernünftiger
-                            Standard. Batch-Limits, die zu groß sind, können dazu führen, dass Dateien die definierten
-                            Dateigrößen-Grenzen überschreiten.
-                        </value>
-                    </description>
-                    <description lang="en">
-                        <value>Block size used when compressing. This is a reasonable default. Batchlimits that are too
-                            big may cause files to exceed the defined filesize limits.
-                        </value>
-                    </description>
-                </parameter>
-                <parameter name="omitmetadata" type="boolean" booleanEncoding="truefalse" defaultParameter="false"
-                           defaultValue="false">
-                    <description lang="de">
-                        <value>Nicht-geografische Metadaten in OSM-Entitys auslassen. Dies beinhaltet Versionsnummer und
-                            Timestamp der letzten Bearbeitung des Entitys sowie den Usernamen und die ID des letzten
-                            Änderers. Diese Metadaten auszulassen kann 15% der Dateigröße sparen, wenn zu Software
-                            exportiert wird, die diese Daten nicht benötigt.
-                        </value>
-                    </description>
-                    <description lang="en">
-                        <value>Omit non-geographic metadata on OSM entities. This includes version number and timestamp
-                            of the last edit to the entity as well as the user name and id of the last modifier.
-                            Omitting this metadata can save 15% of the file size when exporting to software that does
-                            not need this data.
-                        </value>
-                    </description>
-                </parameter>
-                <parameter name="usedense" type="boolean" booleanEncoding="truefalse" defaultParameter="false"
-                           defaultValue="true">
-                    <description lang="de">
-                        <value>Nodes können in einem normalen oder einem dichten Format repräsentiert werden. Das dichte
-                            Format ist etwa 30% kleiner, aber komplexer. Um es einfacher zu machen, mit (zukünftiger)
-                            Software zusammenzuarbeiten, die nicht das dichte Format implementiert, kann das dichte
-                            Format deaktiviert werden.
-                        </value>
-                    </description>
-                    <description lang="en">
-                        <value>Nodes can be represented in a regular format or a dense format. The dense format is about
-                            30% smaller, but more complex. To make it easier to interoperate with (future) software that
-                            chooses to not implement the dense format, the dense format may be disabled.
-                        </value>
-                    </description>
-                </parameter>
-                <parameter name="granularity" type="int" defaultParameter="false" defaultValue="100">
-                    <description lang="de">
-                        <value>Die Granularität oder Präzision mit der Koordinaten gespeichert werden. Der Standardwert
-                            von 100 Nanograd ist die höchste Genauigkeit, die von OSM genutzt wird, entsprechend etwa
-                            1.1cm am Äquator. In der aktuellen Osmosis-Implementierung muss die Granularität ein
-                            Vielfaches von 100 sein. Wenn Kartendaten für Software exportiert werden, die nicht die
-                            volle Genauigkeit benötigt, kann das Erhöhen der Granularität auf 10000 Nanograd ungefähr
-                            10% Dateigröße sparen, während die Genauigkeit bei etwa 1.1m bleibt.
-                        </value>
-                    </description>
-                    <description lang="en">
-                        <value>The granularity or precision used to store coordinates. The default of 100 nanodegrees is
-                            the highest precision used by OSM, corresponding to about 1.1cm at the equator. In the
-                            current osmosis implementation, the granularity must be a multiple of 100. If map data is
-                            going to be exported to software that does not need the full precision, increasing the
-                            granularity to 10000 nanodegrees can save about 10% of the file size, while still having
-                            1.1m precision.
-                        </value>
-                    </description>
-                </parameter>
-                <parameter name="compress" type="enum" defaultParameter="false" defaultValue="deflate">
-                    <enumValue value="deflate"/>
-                    <enumValue value="none"/>
-                    <description lang="de">
-                        <value>'deflate' benutzt Deflate-Komprimierung auf jedem Block. 'none' deaktiviert
-                            Komprimierung. Diese Dateien sind etwa doppelt so schnell zu beschreiben und doppelt so
-                            groß.
-                        </value>
-                    </description>
-                    <description lang="en">
-                        <value>'deflate' uses deflate compression on each block. 'none' disables compression. These
-                            files are about twice as fast to write and twice the size.
-                        </value>
-                    </description>
-                </parameter>
-                <description lang="de">
-                    <value>Schreibt Daten in eine OSM-Binary-Datei.</value>
-                </description>
-                <description lang="en">
-                    <value>Writes data to an OSM binary file.</value>
-                </description>
-            </task>
             <task name="write-pgsql" shortName="wp">
                 <inputPipe count="single" index="0" type="entity"/>
                 <parameter name="authFile" defaultParameter="false" required="false" type="filename">
@@ -1107,6 +1017,13 @@
                         <value>The database password.</value>
                     </description>
                 </parameter>
+                <parameter name="postgresSchema" defaultParameter="false" required="false" type="string">
+                    <description lang="en">
+                        <value>The database schema to use on Postgresql. This value is pre-pended to search_path
+                            variable.
+                        </value>
+                    </description>
+                </parameter>
                 <parameter name="validateSchemaVersion" defaultParameter="false" required="false" defaultValue="true"
                            type="boolean" booleanEncoding="yesno">
                     <description lang="de">
@@ -1136,33 +1053,7 @@
                         </value>
                     </description>
                 </parameter>
-                <parameter name="enableBboxBuilder" defaultParameter="false" required="false" defaultValue="false"
-                           type="boolean" booleanEncoding="yesno">
-                    <description lang="de">
-                        <value>Wenn ja angegeben wird, wird der Task die BBox-Geometrie-Spalte mit einer Java-basierten
-                            Lösung statt einem Post-Import-Query aufbauen. Diese Option zu benutzen bringt signifikante
-                            Performanceverbesserungen im Vergleich zum Standard-Query-Vorgehen. Beachte, dass der Task
-                            fehlschlagen wird, wenn die Option aktiviert ist und die BBox-Spalte nicht existiert.
-                        </value>
-                    </description>
-                    <description lang="en">
-                        <value>If yes is specified, the task will build the bbox geometry column using a java-based
-                            solution instead of running a post-import query. Using this option provides significant
-                            performance improvements compared to the default query approach. Note that the task will
-                            fail if this option is enabled and the bbox column doesn't exist.
-                        </value>
-                    </description>
-                </parameter>
-                <parameter name="enableLinestringBuilder" defaultParameter="false" required="false" defaultValue="false"
-                           type="boolean" booleanEncoding="yesno">
-                    <description lang="de">
-                        <value>Wie die enableBBoxBuilder-Option, nur für die Linestring-Geometry-Spalte.</value>
-                    </description>
-                    <description lang="en">
-                        <value>As per the enableBboxBuilder option but for the linestring geometry column.</value>
-                    </description>
-                </parameter>
-                <parameter name="nodeLocationStoreType" defaultParameter="false" required="false"
+                <parameter name="nodeLocationStoreType" defaultParameter="true" required="false"
                            defaultValue="CompactTempFile" type="enum">
                     <enumValue value="InMemory"/>
                     <enumValue value="TempFile"/>
@@ -1188,6 +1079,17 @@
                             Otherwise you must choose between the "TempFile" option which is much slower but still
                             faster than relying on the default database geometry building implementation, or the
                             "CompactTempFile" option which is more efficient for smaller datasets.
+                        </value>
+                    </description>
+                </parameter>
+                <parameter name="keepInvalidWays" defaultParameter="false" required="false" defaultValue="true"
+                           type="boolean" booleanEncoding="yesno">
+                    <description lang="en">
+                        <value>Invalid ways are ways with less than two nodes in them. These ways generate invalid
+                            line strings which can cause problems when running spatial queries. If this option is set to
+                            "no" then they are silently discarded. Note that invalid line strings can come from other
+                            sources like ways with multiple nodes at the same location, but these are not currently
+                            detected and will be included.
                         </value>
                     </description>
                 </parameter>
@@ -1262,9 +1164,20 @@
                             knowledge of all node locations. This option specifies how those nodes are temporarily
                             stored. If you have large amounts of memory (at least 6GB of system memory, a 64-bit JVM and
                             at least 4GB of JVM RAM specified with the -Xmx option) you may use the "InMemory" option.
-                            Otherwise you must choose between the "TempFile" option which is much slower but still
-                            faster than relying on the default database geometry building implementation, or the
+                            Otherwise you must choose between the "TempFile" option which is much slower but still faster
+                            than relying on the default database geometry building implementation, or the
                             "CompactTempFile" option which is more efficient for smaller datasets.
+                        </value>
+                    </description>
+                </parameter>
+                <parameter name="keepInvalidWays" defaultParameter="false" required="false" defaultValue="true"
+                           type="boolean" booleanEncoding="yesno">
+                    <description lang="en">
+                        <value>Invalid ways are ways with less than two nodes in them. These ways generate invalid
+                            line strings which can cause problems when running spatial queries. If this option is set to
+                            "no" then they are silently discarded. Note that invalid linestrings can come from other
+                            sources like ways with multiple nodes at the same location, but these are not currently
+                            detected and will be included.
                         </value>
                     </description>
                 </parameter>
@@ -1312,7 +1225,8 @@
                         <value>The name of the osm change file to be written, "-" means STDOUT.</value>
                     </description>
                 </parameter>
-                <parameter name="compressionMethod" type="enum" defaultValue="none">
+                <parameter name="compressionMethod" type="enum" defaultValue="auto">
+                    <enumValue value="auto"/>
                     <enumValue value="none" friendlyName="None"/>
                     <enumValue value="gzip"/>
                     <enumValue value="bzip2"/>
@@ -1541,6 +1455,17 @@
                         <value>If validateSchemaVersion is yes, this option controls the result of a schema version
                             check failure. If this option is yes, a warning is displayed and execution continues. If
                             this option is no, an error is displayed and the program aborts.
+                        </value>
+                    </description>
+                </parameter>
+                <parameter name="keepInvalidWays" defaultParameter="false" required="false" defaultValue="true"
+                           type="boolean" booleanEncoding="yesno">
+                    <description lang="en">
+                        <value>Invalid ways are ways with less than two nodes in them. These ways generate invalid
+                            line strings which can cause problems when running spatial queries. If this option is set to
+                            "no" then they are silently discarded. Note that invalid line strings can come from other
+                            sources like ways with multiple nodes at the same location, but these are not currently
+                            detected and will be included.
                         </value>
                     </description>
                 </parameter>
@@ -2006,6 +1931,20 @@
                         </value>
                     </description>
                 </parameter>
+                <parameter name="cascadingRelations" type="boolean" booleanEncoding="yesno" defaultValue="false">
+                    <description lang="en">
+                        <value>If a relation is selected for inclusion, always include all its parents as well. Without
+                            this flag, whether or not the parent of an included relation is included can depend on the
+                            order in which they appear - if the parent relation is processed but at the time it is not
+                            known that it will become "relevant" by way of a child relation, then it is not included.
+                            With this flag, all relations are read before a decision is made which ones to include. This
+                            flag is not required, and will be ignored, if either completeWays or completeRelations is
+                            set, as those flags automatically create a temporary list of all relations and thus allow
+                            proper parent selection. cascadingRelations, however, uses less resources than those options
+                            because it only requires temporary storage for relations.
+                        </value>
+                    </description>
+                </parameter>
                 <parameter name="idTrackerType" type="enum" defaultValue="Dynamic">
                     <enumValue value="Dynamic"/>
                     <enumValue value="BitSet"/>
@@ -2109,6 +2048,11 @@
                         <value>Comma-separated list of desired key.value combinations.</value>
                     </description>
                 </parameter>
+                <parameter name="keyValueListFile" type="filename" defaultValue="key-value.txt">
+                    <description lang="en">
+                        <value>The file containing the list of desired key.value combinations, one per line.</value>
+                    </description>
+                </parameter>
                 <description lang="de">
                     <value>Unter Angabe einer Liste von "Key.Value"-Tags, lässt dieser Filter nur diejenigen Nodes
                         durch, die wenigstens einen dieser Tags gesetzt haben. Beachte, dass dieser Filter nur auf Nodes
@@ -2189,6 +2133,11 @@
                     </description>
                     <description lang="en">
                         <value>Comma-separated list of desired key.value combinations.</value>
+                    </description>
+                </parameter>
+                <parameter name="keyValueListFile" type="filename" defaultValue="key-value.txt">
+                    <description lang="en">
+                        <value>The file containing the list of desired key.value combinations, one per line.</value>
                     </description>
                 </parameter>
                 <description lang="de">
@@ -2472,6 +2421,11 @@
                         <value>The time interval between updates in seconds.</value>
                     </description>
                 </parameter>
+                <parameter name="label" type="string" defaultValue="">
+                    <description lang="en">
+                        <value>A label that the log messages of this particular logger will be prefixed with.</value>
+                    </description>
+                </parameter>
                 <description lang="de">
                     <value>Loggt Fortschrittsinformationen mit Hilfe der JDK-Logging auf Info-Level in regelmäßigen
                         Abständen. Dies kann in die Pipeline eingebaut werden, um den Fortschritt lang dauernder Tasks
@@ -2501,6 +2455,11 @@
                     </description>
                     <description lang="en">
                         <value>The time interval between updates in seconds.</value>
+                    </description>
+                </parameter>
+                <parameter name="label" type="string" defaultValue="">
+                    <description lang="en">
+                        <value>A label that the log messages of this particular logger will be prefixed with.</value>
                     </description>
                 </parameter>
                 <description lang="de">
@@ -2571,6 +2530,35 @@
                     </description>
                     <description lang="en">
                         <value>The method to use for resolving conflicts between data from the two sources.</value>
+                    </description>
+                </parameter>
+                <parameter name="bufferCapacity" type="int" defaultValue="20">
+                    <description lang="en">
+                        <value>The size of the input buffers. This is defined in terms of the number of entity objects
+                            to be stored. An entity corresponds to an OSM type such as a node.
+                        </value>
+                    </description>
+                </parameter>
+                <parameter name="boundRemovedAction" type="enum" defaultValue="warn">
+                    <enumValue value="ignore">
+                        <description lang="en">
+                            <value>Continue processing quietly.</value>
+                        </description>
+                    </enumValue>
+                    <enumValue value="warn">
+                        <description lang="en">
+                            <value>Continue processing but emit a warning to the log.</value>
+                        </description>
+                    </enumValue>
+                    <enumValue value="fail">
+                        <description lang="en">
+                            <value>Stop processing.</value>
+                        </description>
+                    </enumValue>
+                    <description lang="en">
+                        <value>Specifies what to do if the merge task suppresses the output of the Bound entity into the
+                            resulting stream
+                        </value>
                     </description>
                 </parameter>
                 <description lang="de">
@@ -2656,18 +2644,27 @@
             <task name="sort" shortName="s">
                 <inputPipe type="entity" count="single" index="0"/>
                 <outputPipe type="entity" count="single" index="0"/>
-                <description lang="de">
-                    <value>Sortiert die gesamten Daten in einem Entity-Stream entsprechend einer bestimmten Ordnung.
-                        Dies benutzt ein Datei-basiertes Merge-Sort, was die Speicherauslastung minimiert und es
-                        ermöglicht, beliebig viele Daten zu sortieren.
-                    </value>
-                </description>
-                <description lang="en">
-                    <value>Sorts all data in an entity stream according to a specified ordering. This uses a file-based
-                        merge sort keeping memory usage to a minimum and allowing arbitrarily large data sets to be
-                        sorted.
-                    </value>
-                </description>
+                <parameter name="type" type="enum" defaultValue="TypeThenId" defaultParameter="true">
+                    <enumValue value="TypeThenId">
+                        <description lang="en">
+                            <value>This specifies to sort by the entity type (eg. nodes before ways), then by the entity
+                                id. This is the ordering a planet file contains.
+                            </value>
+                        </description>
+                    </enumValue>
+                    <description lang="de">
+                        <value>Sortiert die gesamten Daten in einem Entity-Stream entsprechend einer bestimmten Ordnung.
+                            Dies benutzt ein Datei-basiertes Merge-Sort, was die Speicherauslastung minimiert und es
+                            ermöglicht, beliebig viele Daten zu sortieren.
+                        </value>
+                    </description>
+                    <description lang="en">
+                        <value>Sorts all data in an entity stream according to a specified ordering. This uses a
+                            file-based merge sort keeping memory usage to a minimum and allowing arbitrarily large data
+                            sets to be sorted.
+                        </value>
+                    </description>
+                </parameter>
             </task>
             <description lang="de">
                 <value>Sortiert die Inhalte eines Entity-Streams.</value>
@@ -2745,6 +2742,13 @@
                 <inputPipe index="0" count="single" type="entity"/>
                 <inputPipe index="1" count="single" type="change"/>
                 <outputPipe index="0" count="single" type="entity"/>
+                <parameter name="bufferCapacity" type="int" defaultValue="20">
+                    <description lang="en">
+                        <value>The size of the input buffers. This is defined in terms of the number of entity objects
+                            to be stored. An entity corresponds to an OSM type such as a node.
+                        </value>
+                    </description>
+                </parameter>
                 <description lang="de">
                     <value>Wendet einen Change-Stream auf einen Data-Stream an. Beachte, dass dieser Task es erfordert,
                         dass beide Eingabestreams zuerst nach Typ, dann nach ID sortiert sind.
@@ -2768,6 +2772,13 @@
                 <inputPipe index="0" count="single" type="entity"/>
                 <inputPipe index="1" count="single" type="entity"/>
                 <outputPipe index="0" count="single" type="change"/>
+                <parameter name="bufferCapacity" type="int" defaultValue="20">
+                    <description lang="en">
+                        <value>The size of the input buffers. This is defined in terms of the number of entity objects
+                            to be stored. An entity corresponds to an OSM type such as a node.
+                        </value>
+                    </description>
+                </parameter>
                 <description lang="de">
                     <value>Vergleicht zwei Datenquellen und erzeugt ein Change-Set aus den Unterschieden. Beachte, dass
                         dieser Task es erfordert, dass beide Eingabestreams zuerst nach Typ, dann nach ID sortiert sind.
@@ -2796,6 +2807,13 @@
                     </description>
                     <description lang="en">
                         <value>The number of change streams to be appended.</value>
+                    </description>
+                </parameter>
+                <parameter name="bufferCapacity" type="int" defaultValue="20">
+                    <description lang="en">
+                        <value>The size of the input buffers. This is defined in terms of the number of entity objects
+                            to be stored. An entity corresponds to an OSM type such as a node.
+                        </value>
                     </description>
                 </parameter>
                 <description lang="de">
@@ -3160,12 +3178,27 @@
                         </value>
                     </description>
                 </parameter>
-                <parameter name="directory" type="directory" defaultValue="replicate" required="true">
-                    <description lang="de">
-                        <value>Das Arbeitsverzeichnis.</value>
-                    </description>
+                <parameter name="iterations" defaultParameter="false" type="int" defaultValue="1" required="false">
                     <description lang="en">
-                        <value>The working directory.</value>
+                        <value>The number of replication intervals to perform. 0 means infinite.</value>
+                    </description>
+                </parameter>
+                <parameter name="minInterval" defaultParameter="false" type="int" defaultValue="0" required="false">
+                    <description lang="en">
+                        <value>The minimum interval to wait between replication intervals in milliseconds. A non-zero
+                            value prevents the task running in a tight loop and places an upper limit on the rate of
+                            replication intervals generated.
+                        </value>
+                    </description>
+                </parameter>
+                <parameter name="maxInterval" defaultParameter="false" type="int" defaultValue="0" required="false">
+                    <description lang="en">
+                        <value>The maximum interval to wait between replication intervals in milliseconds if no data is
+                            available. A non-zero value prevents large numbers of empty files being generated in periods
+                            of inactivity, but may lead to clients thinking they are lagging the server if it is set too
+                            high. Note that an interval may still exceed this value due to the time taken to process an
+                            interval.
+                        </value>
                     </description>
                 </parameter>
                 <description lang="de">
@@ -3294,45 +3327,45 @@
                 </description>
             </task>
             <description lang="de">
+                <function id="dataset-osmbin-0.6" friendlyName="Write Dataset OSM-binary (0.6)">
+                    <task name="dataset-osmbin-0.6" friendlyName="Write Dataset OSM-binary (0.6)">
+                        <inputType count="single" index="0" type="entity"/>
+                        <parameter name="dir" type="directory">
+                            <description lang="de">
+                                <value>Der Name des Verzeichnisses, in das geschrieben werden soll. Wird erzeugt, falls
+                                    nötig. Falls osmbin-data existiert, wird automatisch angehangen/geupdated.
+                                </value>
+                            </description>
+                            <description lang="en">
+                                <value>The name of the directory to be written to. Will be created if needed. Will
+                                    append/update if osmbin-data exists.
+                                </value>
+                            </description>
+                        </parameter>
+                        <description lang="de">
+                            <value>Liest und schreibt in ein Verzeichnis in Osmbin Version 1.0 und ermöglicht wahlfreien
+                                Zugriff für weitere Tasks.
+                            </value>
+                        </description>
+                        <description lang="en">
+                            <value>Read and write from/to a directory in Osmbin version 1.0 and provide random access to
+                                it for further tasks
+                            </value>
+                        </description>
+                    </task>
+                    <description lang="de">
+                        <value>Schreibt in ein Verzeichnis in Osmbin Version 1.0.</value>
+                    </description>
+                    <description lang="en">
+                        <value>Read and write from/to a directory in Osmbin version 1.0 and provide random access to it
+                            for further tasks.
+                        </value>
+                    </description>
+                </function>
                 <value>Schreibt in ein Verzeichnis in Osmbin Version 1.0.</value>
             </description>
             <description lang="en">
                 <value>Writes to a directory in Osmbin version 1.0.</value>
-            </description>
-        </function>
-        <function id="dataset-osmbin-0.6" friendlyName="Write Dataset OSM-binary (0.6)">
-            <task name="dataset-osmbin-0.6" friendlyName="Write Dataset OSM-binary (0.6)">
-                <inputType count="single" index="0" type="entity"/>
-                <parameter name="dir" type="directory">
-                    <description lang="de">
-                        <value>Der Name des Verzeichnisses, in das geschrieben werden soll. Wird erzeugt, falls nötig.
-                            Falls osmbin-data existiert, wird automatisch angehangen/geupdated.
-                        </value>
-                    </description>
-                    <description lang="en">
-                        <value>The name of the directory to be written to. Will be created if needed. Will append/update
-                            if osmbin-data exists.
-                        </value>
-                    </description>
-                </parameter>
-                <description lang="de">
-                    <value>Liest und schreibt in ein Verzeichnis in Osmbin Version 1.0 und ermöglicht wahlfreien Zugriff
-                        für weitere Tasks.
-                    </value>
-                </description>
-                <description lang="en">
-                    <value>Read and write from/to a directory in Osmbin version 1.0 and provide random access to it for
-                        further tasks
-                    </value>
-                </description>
-            </task>
-            <description lang="de">
-                <value>Schreibt in ein Verzeichnis in Osmbin Version 1.0.</value>
-            </description>
-            <description lang="en">
-                <value>Read and write from/to a directory in Osmbin version 1.0 and provide random access to it for
-                    further tasks.
-                </value>
             </description>
         </function>
         <function id="reindex-osmbin-0.6" friendlyName="Reindex OSM-binary (0.6)">
