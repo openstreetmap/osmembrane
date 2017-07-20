@@ -23,3 +23,6 @@ The repository contains all necessary files to build the application from scratc
 ```
 
 The resulting jar is located in the `target` folder.
+
+## Credits
+OSMembrane was developed by Christian Endres, Jakob Jarosch and Tobias Kuhn during a practical student project at the University of Stuttgart which was supervised by Igor Podolskiy.
