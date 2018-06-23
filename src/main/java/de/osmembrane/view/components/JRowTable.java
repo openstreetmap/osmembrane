@@ -33,7 +33,7 @@ public class JRowTable extends JTable {
     /**
      * the row editor model
      */
-    protected RowEditorModel rowEditorModel = null;
+    private RowEditorModel rowEditorModel = null;
 
     /**
      * @see JTable#JTable
@@ -73,7 +73,7 @@ public class JRowTable extends JTable {
     /**
      * @see JTable#JTable
      */
-    public JRowTable(Vector<?> rowData, Vector<?> columnNames) {
+    public JRowTable(Vector<? extends Vector> rowData, Vector<?> columnNames) {
         super(rowData, columnNames);
     }
 
