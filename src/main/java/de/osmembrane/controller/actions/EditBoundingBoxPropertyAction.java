@@ -1,43 +1,42 @@
 /*
  * This file is part of the OSMembrane project.
  * More informations under www.osmembrane.de
- * 
+ *
  * The project is licensed under the GNU GENERAL PUBLIC LICENSE 3.0.
  * for more details about the license see http://www.osmembrane.de/license/
- * 
+ *
  * Source: $HeadURL$ ($Revision$)
  * Last changed: $Date$
  */
 
 package de.osmembrane.controller.actions;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-
 import de.osmembrane.Application;
 import de.osmembrane.controller.events.ContainingEvent;
+import de.osmembrane.controller.mapper.StringBoundingBoxMapper;
 import de.osmembrane.exceptions.ControlledException;
 import de.osmembrane.exceptions.ExceptionSeverity;
 import de.osmembrane.model.pipeline.AbstractParameter;
+import de.osmembrane.model.pipeline.BoundingBox;
 import de.osmembrane.model.pipeline.ParameterType;
-import de.osmembrane.resources.Constants;
 import de.osmembrane.tools.I18N;
 import de.osmembrane.view.ViewRegistry;
 import de.osmembrane.view.dialogs.BoundingBoxDialog;
 import de.osmembrane.view.interfaces.IBoundingBoxDialog;
-import de.unistuttgart.iev.osm.bboxchooser.Bounds;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
 
 /**
  * Action to edit a parameter which is a bounding box and therefore open the
  * {@link BoundingBoxDialog}. Receives a {@link ContainingEvent}.
- * 
+ *
  * @author tobias_kuhn
- * 
  */
 public class EditBoundingBoxPropertyAction extends AbstractAction {
 
     private static final long serialVersionUID = -8977717015720840558L;
+
+    private final StringBoundingBoxMapper mapper = new StringBoundingBoxMapper();
 
     /**
      * Creates a new {@link EditBoundingBoxPropertyAction}
@@ -57,10 +56,9 @@ public class EditBoundingBoxPropertyAction extends AbstractAction {
 
                 if (p.getParent().getBBox() != null) {
                     try {
-                        ibbd.setBoundingBox(new Bounds(p.getParent().getBBox(),
-                                Constants.BBOX_SEPERATOR));
+                        ibbd.setBoundingBox(mapper.toBoundingBox(p.getParent().getBBox()));
                     } catch (IllegalArgumentException e1) {
-                        ibbd.setBoundingBox(null);
+                        ibbd.setBoundingBox(new BoundingBox(0, 0, 0, 0));
                     }
                 } else {
                     ibbd.setBoundingBox(null);
@@ -68,16 +66,15 @@ public class EditBoundingBoxPropertyAction extends AbstractAction {
                 ibbd.centerWindow();
                 ibbd.showWindow();
 
-                Bounds b = ibbd.getBoundingBox();
+                BoundingBox b = ibbd.getBoundingBox();
                 if (b != null) {
-                    p.getParent().setBBox(
-                            b.encodeAsString(Constants.BBOX_SEPERATOR));
+                    p.getParent().setBBox(mapper.toString(b));
                 }
             }
         } else {
             Application.handleException(new ControlledException(this,
                     ExceptionSeverity.UNEXPECTED_BEHAVIOR, I18N.getInstance()
-                            .getString("Controller.Actions.InvalidEvent")));
+                    .getString("Controller.Actions.InvalidEvent")));
         }
     }
 }
