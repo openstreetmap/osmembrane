@@ -6,7 +6,8 @@ OSMembrane is a frontend to the Osmosis data processing tool. It helps by groupi
 ## Install the current version
 A build of a recent version is always available on GitHub, you can download it [here](https://github.com/openstreetmap/OSMembrane/releases).
 
-[Java 8](https://www.java.com/de/download/) is required to run OSMembrane. After the installation of Java just double click the downloaded file.
+[Java 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html) is required to run OSMembrane (OpenJDK works fine). Depending on the operating 
+system you can just double click the downloaded JAR file or run it on the command line with `java -jar OSMembrane.jar`.
 
 A quick [tutorial](https://github.com/openstreetmap/OSMembrane/blob/master/manual/manual.pdf) on how to use OSMembrane you can find [here](https://github.com/openstreetmap/OSMembrane/blob/master/manual/manual.pdf).
 
@@ -14,11 +15,7 @@ A quick [tutorial](https://github.com/openstreetmap/OSMembrane/blob/master/manua
 The repository contains all necessary files to build the application from scratch. Only a current version of [Apache Maven](https://maven.apache.org/download.cgi) is required. To actually build the application simply run the Makefile. Windows users can use [Vagrant](https://www.vagrantup.com/downloads.html) to get a matching build environment.
 
 ```
-# Installs required custom maven dependencies in the local repository
-# This command must only be executed once
-~ $ make depdendencies
-
-# Actually builds the application
+# Build the application
 ~ $ make build
 ```
 
