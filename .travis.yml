@@ -19,3 +19,4 @@ deploy:
     repo: openstreetmap/OSMembrane
     tags: true
     all_branches: true
+    jdk: openjdk10
