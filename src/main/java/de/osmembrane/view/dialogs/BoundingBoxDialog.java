@@ -1,114 +1,91 @@
 /*
  * This file is part of the OSMembrane project.
  * More informations under www.osmembrane.de
- * 
+ *
  * The project is licensed under the GNU GENERAL PUBLIC LICENSE 3.0.
  * for more details about the license see http://www.osmembrane.de/license/
- * 
+ *
  * Source: $HeadURL$ ($Revision$)
  * Last changed: $Date$
  */
 
 package de.osmembrane.view.dialogs;
 
-import java.awt.GraphicsEnvironment;
-import java.awt.Point;
+import de.osmembrane.model.pipeline.BoundingBox;
+import de.osmembrane.tools.I18N;
+import de.osmembrane.view.AbstractDialog;
+import de.osmembrane.view.components.JBoundingBoxChooser;
+import de.osmembrane.view.interfaces.IBoundingBoxDialog;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
-
-import de.osmembrane.view.interfaces.IBoundingBoxDialog;
-import de.unistuttgart.iev.osm.bboxchooser.BBoxChooserDialog;
-import de.unistuttgart.iev.osm.bboxchooser.Bounds;
-import de.unistuttgart.iev.osm.bboxchooser.DialogResponse;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 /**
- * 
- * Simple dialog to display the generated command line, export it, or copy it to
- * the clipboard.
- * 
- * @see "Spezifikation.pdf, chapter 2.4 (German)"
- * 
+ * Dialog for the bounding box chooser
+ *
  * @author tobias_kuhn
- * 
  */
-public class BoundingBoxDialog implements IBoundingBoxDialog {
+public class BoundingBoxDialog extends AbstractDialog implements IBoundingBoxDialog {
 
-    private static final long serialVersionUID = 5182327519016989905L;
-
-    /**
-     * The external {@link BBoxChooserDialog} that will be used.
-     */
-    private BBoxChooserDialog dialog;
+    private JBoundingBoxChooser boundingBoxChooser;
+    private boolean canceled;
 
     /**
      * Creates a new {@link BoundingBoxDialog}
      */
     @SuppressWarnings("serial")
     public BoundingBoxDialog(Window owner) {
-        dialog = new BBoxChooserDialog();
-        dialog.setModal(true);
+        super(owner);
+        setLayout(new BorderLayout());
+        setTitle(I18N.getInstance().getString("View.BoundingBoxDialog"));
 
-        dialog.getLayeredPane().getActionMap()
-                .put("close", new AbstractAction() {
+        boundingBoxChooser = new JBoundingBoxChooser();
+        add(boundingBoxChooser, BorderLayout.CENTER);
 
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        hideWindow();
-                    }
-                });
+        JPanel buttonGrid = new JPanel(new GridLayout(1, 2, 16, 16));
 
-        dialog.getLayeredPane()
-                .getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
-                .put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
+        JButton cancelButton = new JButton(I18N.getInstance().getString(
+                "View.OK"));
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canceled = false;
+                hideWindow();
+            }
+        });
+        buttonGrid.add(cancelButton);
+
+        // OK Button
+        JButton okButton = new JButton(I18N.getInstance().getString(
+                "View.Cancel"));
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canceled = true;
+                hideWindow();
+            }
+        });
+        buttonGrid.add(okButton);
+
+        add(buttonGrid, BorderLayout.SOUTH);
+
+        pack();
+        centerWindow();
+        setResizable(true);
     }
 
     @Override
-    public void hideWindow() {
-        dialog.setVisible(false);
+    public BoundingBox getBoundingBox() {
+        return canceled ? null : boundingBoxChooser.getBoundingBox();
     }
 
     @Override
-    public void setWindowTitle(String viewTitle) {
-        dialog.setTitle(viewTitle);
-    }
+    public void setBoundingBox(BoundingBox bounds) {
+        boundingBoxChooser.setBoundingBox(bounds);
 
-    @Override
-    public void centerWindow() {
-        Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                .getCenterPoint();
-        Point edgeLeftTop = new Point(screenCenter.x - (dialog.getWidth() / 2),
-                screenCenter.y - (dialog.getHeight() / 2));
-        dialog.setLocation(edgeLeftTop.x, edgeLeftTop.y);
-    }
-
-    @Override
-    public void bringToFront() {
-        dialog.toFront();
-    }
-
-    @Override
-    public void showWindow() {
-        dialog.setVisible(true);
-    }
-
-    @Override
-    public Bounds getBoundingBox() {
-        return (dialog.getResponse() == DialogResponse.OK) ? dialog
-                .getBoundingBox() : null;
-    }
-
-    @Override
-    public void setBoundingBox(Bounds bounds) {
-        dialog.setBoundingBox(bounds);
-    }
-
-    @Override
-    public void dispose() {
-        dialog.dispose();
     }
 }

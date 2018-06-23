@@ -1,9 +1,6 @@
 
-all: dependencies build
+all: build
 
-dependencies:
-	(cd libs/ && ./install.sh)
-	
 build:
 	mvn package
 

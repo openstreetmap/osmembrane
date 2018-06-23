@@ -19,14 +19,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>de.osmembrane.thirdparty</groupId>
-            <artifactId>bboxchooser</artifactId>
-            <version>0.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>de.osmembrane.thirdparty</groupId>
-            <artifactId>jmapviewer</artifactId>
-            <version>0.1.0</version>
+            <groupId>org.jxmapviewer</groupId>
+            <artifactId>jxmapviewer2</artifactId>
+            <version>2.4</version>
         </dependency>
 
         <dependency>
