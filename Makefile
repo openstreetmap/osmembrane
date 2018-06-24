@@ -2,5 +2,5 @@
 all: build
 
 build:
-	mvn package
+	./gradlew build
 

@@ -12,14 +12,15 @@ system you can just double click the downloaded JAR file or run it on the comman
 A quick [tutorial](https://github.com/openstreetmap/OSMembrane/blob/master/manual/manual.pdf) on how to use OSMembrane you can find [here](https://github.com/openstreetmap/OSMembrane/blob/master/manual/manual.pdf).
 
 ## Building the application
-The repository contains all necessary files to build the application from scratch. Only a current version of [Apache Maven](https://maven.apache.org/download.cgi) is required. To actually build the application simply run the Makefile. Windows users can use [Vagrant](https://www.vagrantup.com/downloads.html) to get a matching build environment.
+The repository contains all necessary files to build the application from scratch by running [Gradle](https://gradle.org/). To actually build the application 
+simply run the Makefile. Windows users can use the `gradlew.bat`.
 
 ```
 # Build the application
 ~ $ make build
 ```
 
-The resulting jar is located in the `target` folder.
+The resulting jar is located in the `build/libs` folder.
 
 ## Credits
 OSMembrane was developed by Christian Endres, Jakob Jarosch and Tobias Kuhn during a practical student project at the University of Stuttgart which was supervised by Igor Podolskiy.
