@@ -4,6 +4,7 @@ sudo: false
 
 jdk:
 - openjdk8
+- openjdk9
 - openjdk10
 
 deploy:
@@ -11,9 +12,9 @@ deploy:
   provider: releases
   api_key:
     secure: UmM3Ic71tkCGHQME3ih/mTwVZfHNW3hg5nZWfDyZuA73YuWHf76Fg6oYG1hkdSvFftuFPe1OrgqYkKFgz3PwziDIKKND1TqwG99atVC5YqCG9SJDSHxed2rTF73BSIcLrFfyFtRBFBXIhesTT6l1rw1Jmy71ysSRCknwPwBgt24=
-  file: target/OSMembrane.jar
+  file: build/libs/*
   on:
     repo: openstreetmap/OSMembrane
     tags: true
     all_branches: true
-    jdk: openjdk10
+    jdk: openjdk9
