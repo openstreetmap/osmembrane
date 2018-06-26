@@ -9,6 +9,7 @@ deploy:
   api_key:
     secure: QP+YLqMCvDHv3UDTQCfvARYdE/8ritfvZiPspZwCqDVSiwlI/U4z57lbyAmK4/hsm+grzDSQYhhdwxs3wlf2Ew0bJzT5ZcxgH9TQYFlMCo14tKGDvVr/hlARvGtrGmvWVtvECdPGXcVZjvhWeXQ0+VDdvWmOn97IV9/rOfwnk4w=
   file: build/libs/*
+  skip_cleanup: true
   on:
     repo: openstreetmap/osmembrane
     tags: true
