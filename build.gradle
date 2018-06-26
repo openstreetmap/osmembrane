@@ -27,6 +27,7 @@ jar {
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
+    archiveName 'OSMembrane.jar'
 }
 
 dependencies {
