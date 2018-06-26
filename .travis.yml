@@ -1,20 +1,16 @@
-
 language: java
 sudo: false
-
 jdk:
 - openjdk8
 - openjdk9
 - openjdk10
-
 deploy:
-  skip_cleanup: true
   provider: releases
   api_key:
-    secure: UmM3Ic71tkCGHQME3ih/mTwVZfHNW3hg5nZWfDyZuA73YuWHf76Fg6oYG1hkdSvFftuFPe1OrgqYkKFgz3PwziDIKKND1TqwG99atVC5YqCG9SJDSHxed2rTF73BSIcLrFfyFtRBFBXIhesTT6l1rw1Jmy71ysSRCknwPwBgt24=
+    secure: QP+YLqMCvDHv3UDTQCfvARYdE/8ritfvZiPspZwCqDVSiwlI/U4z57lbyAmK4/hsm+grzDSQYhhdwxs3wlf2Ew0bJzT5ZcxgH9TQYFlMCo14tKGDvVr/hlARvGtrGmvWVtvECdPGXcVZjvhWeXQ0+VDdvWmOn97IV9/rOfwnk4w=
   file: build/libs/*
   on:
-    repo: openstreetmap/OSMembrane
+    repo: openstreetmap/osmembrane
     tags: true
     all_branches: true
     jdk: openjdk9
