@@ -15,3 +15,8 @@ deploy:
     tags: true
     all_branches: true
     jdk: openjdk9
+
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
